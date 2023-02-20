@@ -1,5 +1,6 @@
 import { Card } from "./Card"
 import styles from "../styles/Landing.module.css"
+import BaseLayout from './layout/BaseLayout'
 
 interface Props { }
 
