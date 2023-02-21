@@ -1,4 +1,5 @@
 import { Landing } from '@/components/Landing'
+import BaseLayout from '@/components/layout/BaseLayout'
 import { createBrowserSupabaseClient, createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { GetServerSideProps } from 'next'
@@ -10,7 +11,7 @@ const Home: React.FC<Props> = ({ user }) => {
     if (!user) {
         console.log('no session')
         return (
-            <div className="container" style={{ padding: '50px 0 100px 0' }}>
+            <BaseLayout title="Landing">
                 <Landing />
                 <Auth
                     redirectTo="http://localhost:3000/"
@@ -20,16 +21,18 @@ const Home: React.FC<Props> = ({ user }) => {
                     socialLayout="horizontal"
                     onlyThirdPartyProviders={true}
                 />
-            </div>
+            </BaseLayout>
         )
     }
     console.log('session', user)
     return (
-        <div className="container" style={{ padding: '50px 0 100px 0' }}>
-            <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
-            <p>user:</p>
-            <pre>{JSON.stringify(user, null, 2)}</pre>
-        </div>
+        <BaseLayout title="UserAuthenticate">
+            <>
+                <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
+                <p>user:</p>
+                <pre>{JSON.stringify(user, null, 2)}</pre>
+            </>
+        </BaseLayout>
     )
 }
 
