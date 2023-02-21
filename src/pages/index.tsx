@@ -9,7 +9,6 @@ interface Props {
 const Home: React.FC<Props> = ({ user }) => {
     const supabaseClient = createBrowserSupabaseClient()
     if (!user) {
-        console.log('no session')
         return (
             <BaseLayout title="Landing">
                 <Landing />
@@ -24,14 +23,11 @@ const Home: React.FC<Props> = ({ user }) => {
             </BaseLayout>
         )
     }
-    console.log('session', user)
+
     return (
         <BaseLayout title="UserAuthenticate">
-            <>
-                <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
-                <p>user:</p>
-                <pre>{JSON.stringify(user, null, 2)}</pre>
-            </>
+            <p>user:</p>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
         </BaseLayout>
     )
 }
