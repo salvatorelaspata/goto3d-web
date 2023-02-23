@@ -1,4 +1,5 @@
 import BaseLayout from '@/components/layout/BaseLayout'
+import { Constants } from '@/constants'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
@@ -26,7 +27,7 @@ const Project: React.FC<{
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const supabase = createServerSupabaseClient(context)
     const { data, error } = await supabase
-        .from('viewer-3d-dev')
+        .from(Constants.projectsTable)
         .select('*')
     if (error) {
         return {
