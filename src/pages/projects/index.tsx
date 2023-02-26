@@ -1,4 +1,5 @@
 import BaseLayout from '@/components/layout/BaseLayout'
+import Table from '@/components/Table'
 import { Constants } from '@/constants'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { GetServerSideProps } from 'next'
@@ -9,8 +10,7 @@ const Project: React.FC<{
 }> = ({ projects }) => {
     return (
         <BaseLayout title="Project">
-            <h1>Project</h1>
-            <ul>
+            {/* <ul>
                 {projects.map((p: any) => (
                     <li key={p.id}>
                         <p>{p.id}</p>
@@ -20,7 +20,8 @@ const Project: React.FC<{
                         </Link>
                     </li>
                 ))}
-            </ul>
+            </ul> */}
+            <Table columns={Object.keys(projects[0])} data={projects} />
         </BaseLayout>
     )
 }
