@@ -1,7 +1,6 @@
 // create table component
 interface TableProps {
-  columns: string[]
-  data: any[]
+  data?: any[]
 }
 const Cell = ({ value }: { value: string[] | string }) => {
   return <td className="border-black border-solid border-2 p-2">
@@ -15,7 +14,8 @@ const Cell = ({ value }: { value: string[] | string }) => {
   </td>
 }
 
-const Table: React.FC<TableProps> = ({ columns, data }) => {
+const Table: React.FC<TableProps> = ({ data }) => {
+  const columns = data && data.length > 0 ? Object.keys(data[0]) : []
   return (
     <table className="table-fixed">
       <thead>
@@ -26,7 +26,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         </tr>
       </thead>
       <tbody >
-        {data.map((row, i) => {
+        {data && data.map((row, i) => {
           return (
             <tr key={i}>
               {columns.map((cell, _i) => {

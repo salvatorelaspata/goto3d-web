@@ -9,147 +9,105 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      catalogs: {
+      Catalog: {
         Row: {
-          created_at: string | null
+          description: string
           id: number
-          public: boolean | null
-          title: string | null
+          public: boolean
+          title: string
         }
         Insert: {
-          created_at?: string | null
-          id?: number
-          public?: boolean | null
-          title?: string | null
+          description: string
+          id: number
+          public: boolean
+          title: string
         }
         Update: {
-          created_at?: string | null
+          description?: string
           id?: number
-          public?: boolean | null
-          title?: string | null
+          public?: boolean
+          title?: string
         }
       }
-      "dashboard-users": {
+      File: {
         Row: {
-          created_at: string | null
-          email: string | null
-          email_verified: boolean | null
-          family_name: string | null
-          given_name: string | null
-          hd: string | null
+          file_name: string
           id: number
-          image: string | null
-          locale: string | null
-          name: string | null
-          picture: string | null
-          profile: string | null
-          userId: string | null
+          mime_type: string
+          projects_id: number
+          size: number
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
-          email_verified?: boolean | null
-          family_name?: string | null
-          given_name?: string | null
-          hd?: string | null
-          id?: number
-          image?: string | null
-          locale?: string | null
-          name?: string | null
-          picture?: string | null
-          profile?: string | null
-          userId?: string | null
+          file_name: string
+          id: number
+          mime_type: string
+          projects_id: number
+          size: number
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
-          email_verified?: boolean | null
-          family_name?: string | null
-          given_name?: string | null
-          hd?: string | null
+          file_name?: string
           id?: number
-          image?: string | null
-          locale?: string | null
-          name?: string | null
-          picture?: string | null
-          profile?: string | null
-          userId?: string | null
+          mime_type?: string
+          projects_id?: number
+          size?: number
         }
       }
-      process: {
+      Model: {
         Row: {
-          count: number | null
-          created_at: string | null
-          files: string[] | null
+          file_name: string
+          id: number
+          mime_type: string
+          projects_id: number
+          size: number
+        }
+        Insert: {
+          file_name: string
+          id: number
+          mime_type: string
+          projects_id: number
+          size: number
+        }
+        Update: {
+          file_name?: string
+          id?: number
+          mime_type?: string
+          projects_id?: number
+          size?: number
+        }
+      }
+      Project: {
+        Row: {
+          catalogs_id: number | null
+          created_at: string
+          description: string
           finished_at: string | null
           id: number
-          models_url: string[] | null
+          name: string
           started_at: string | null
-          status: string | null
-          userId: string | null
-          uuid: string | null
+          status: string
+          user_id: string
         }
         Insert: {
-          count?: number | null
-          created_at?: string | null
-          files?: string[] | null
+          catalogs_id?: number | null
+          created_at?: string
+          description: string
           finished_at?: string | null
           id?: number
-          models_url?: string[] | null
+          name: string
           started_at?: string | null
-          status?: string | null
-          userId?: string | null
-          uuid?: string | null
+          status: string
+          user_id: string
         }
         Update: {
-          count?: number | null
-          created_at?: string | null
-          files?: string[] | null
+          catalogs_id?: number | null
+          created_at?: string
+          description?: string
           finished_at?: string | null
           id?: number
-          models_url?: string[] | null
+          name?: string
           started_at?: string | null
-          status?: string | null
-          userId?: string | null
-          uuid?: string | null
-        }
-      }
-      projects: {
-        Row: {
-          catalog_id: number | null
-          created_at: string | null
-          description: string | null
-          id: number
-          mode: string | null
-          name: string | null
-          process_uuid: number | null
-          public: boolean | null
-          tags: string[] | null
-          user_id: number | null
-        }
-        Insert: {
-          catalog_id?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: number
-          mode?: string | null
-          name?: string | null
-          process_uuid?: number | null
-          public?: boolean | null
-          tags?: string[] | null
-          user_id?: number | null
-        }
-        Update: {
-          catalog_id?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: number
-          mode?: string | null
-          name?: string | null
-          process_uuid?: number | null
-          public?: boolean | null
-          tags?: string[] | null
-          user_id?: number | null
+          status?: string
+          user_id?: string
         }
       }
       "viewer-3d-dev": {
@@ -188,53 +146,6 @@ export interface Database {
           status?: string | null
           userId?: string | null
           uuid?: string | null
-        }
-      }
-      "viewer-3d-dev-users": {
-        Row: {
-          created_at: string | null
-          email: string | null
-          email_verified: boolean | null
-          family_name: string | null
-          given_name: string | null
-          hd: string | null
-          id: number
-          image: string | null
-          locale: string | null
-          name: string | null
-          picture: string | null
-          profile: string | null
-          userId: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          email_verified?: boolean | null
-          family_name?: string | null
-          given_name?: string | null
-          hd?: string | null
-          id?: number
-          image?: string | null
-          locale?: string | null
-          name?: string | null
-          picture?: string | null
-          profile?: string | null
-          userId?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          email_verified?: boolean | null
-          family_name?: string | null
-          given_name?: string | null
-          hd?: string | null
-          id?: number
-          image?: string | null
-          locale?: string | null
-          name?: string | null
-          picture?: string | null
-          profile?: string | null
-          userId?: string | null
         }
       }
     }

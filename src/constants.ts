@@ -4,8 +4,6 @@ type itemHeaderProps = {
 }
 
 export class Constants {
-  public static readonly projectsTable: string = 'projects-dev'
-  public static readonly catalogsTable: string = 'catalogs-dev'
   public static readonly privateRoutes: itemHeaderProps[] = [
     {
       name: 'Progetti',
