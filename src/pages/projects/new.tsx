@@ -1,5 +1,7 @@
 import Form, { FieldProps } from "@/components/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
+import MessageToast from "@/components/MessageToast";
+import { useToast } from "@/hooks/useToast";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -11,17 +13,21 @@ interface NewProjectProps {
   fields: FieldProps[],
   user: string
 }
-
+const SuccessToastComponent = () => <MessageToast message="Project created successfully" />
 const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   const supabase = useSupabaseClient<Database>()
+  const [triggerToast, toastRender] = useToast()
+  const finalToast = toastRender()
   const onSubmit = ({ name, description, files }: any) => {
     // save project
     supabase.from('Project').insert({ name, description, status: 'draft', user_id: user, catalogs_id: null })
       .then(({ data, error }) => {
         console.log({ data, error })
+        debugger;
+        triggerToast()
       })
     // send file to processor
-    _sendFile(files)
+    // _sendFile(files)
   }
 
   const _sendFile = async (files: FileList) => {
@@ -48,6 +54,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   return (
     <BaseLayout title="New Project">
       <Form fields={fields} onSubmit={onSubmit} />
+      {finalToast(<SuccessToastComponent />)}
     </BaseLayout>
   );
 };
