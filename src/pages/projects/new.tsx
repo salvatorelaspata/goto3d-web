@@ -4,7 +4,7 @@ import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import axios from "axios";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSideProps } from "next";
 import { v4 as uuidv4 } from 'uuid';
 
 interface NewProjectProps {
@@ -14,15 +14,14 @@ interface NewProjectProps {
 
 const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   const supabase = useSupabaseClient<Database>()
-  const onSubmit = ({ name, description }: any) => {
-    console.log({ name, description, user })
+  const onSubmit = ({ name, description, files }: any) => {
     // save project
     supabase.from('Project').insert({ name, description, status: 'draft', user_id: user, catalogs_id: null })
       .then(({ data, error }) => {
         console.log({ data, error })
       })
     // send file to processor
-
+    _sendFile(files)
   }
 
   const _sendFile = async (files: FileList) => {
@@ -73,37 +72,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 // export const getStaticProps = async () => {
-const fields: FieldProps[] = [{
-  id: uuidv4(), label: 'Name',
-  name: 'name',
-  type: 'text'
-}, {
-  id: uuidv4(), label: 'Description',
-  name: 'description',
-  type: 'textarea'
-},
-// {
-//   id: uuidv4(), label: 'Visibility',
-//   name: 'visibility',
-//   type: 'select',
-//   options: [
-//     { label: 'Public', value: 'public' },
-//     { label: 'Private', value: 'private' }
-//   ]
-// },
-{
-  id: uuidv4(),
-  label: 'Files',
-  name: 'files',
-  type: 'file',
-  multiple: true
-}
+const fields: FieldProps[] = [
+  {
+    id: uuidv4(), label: 'Name',
+    name: 'name',
+    type: 'text'
+  }, {
+    id: uuidv4(), label: 'Description',
+    name: 'description',
+    type: 'textarea'
+  },
+  {
+    id: uuidv4(),
+    label: 'Files',
+    name: 'files',
+    type: 'file',
+    multiple: true
+  }
 ]
-// return {
-//   props: {
-//     fields
-//   }
 // }
-// }
-
 export default NewProject;
