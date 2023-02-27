@@ -34,21 +34,21 @@ export interface Database {
           file_name: string
           id: number
           mime_type: string
-          projects_id: number
+          project_id: number
           size: number
         }
         Insert: {
           file_name: string
-          id: number
+          id?: number
           mime_type: string
-          projects_id: number
+          project_id: number
           size: number
         }
         Update: {
           file_name?: string
           id?: number
           mime_type?: string
-          projects_id?: number
+          project_id?: number
           size?: number
         }
       }
@@ -96,7 +96,7 @@ export interface Database {
           name: string
           started_at?: string | null
           status: string
-          user_id: string
+          user_id?: string
         }
         Update: {
           catalogs_id?: number | null

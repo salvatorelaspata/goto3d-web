@@ -44,8 +44,12 @@ export const Header = () => {
                             </Link>
                         </li>
                     ))}
-                    {/* <SignButtons /> */}
-                    <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
+                    {user && <li className="flex">
+                        <button onClick={() => {
+                            supabaseClient.auth.signOut()
+                            router.push('/')
+                        }}>Sign out</button>
+                    </li>}
                 </ul>
             </div>
             <div>
