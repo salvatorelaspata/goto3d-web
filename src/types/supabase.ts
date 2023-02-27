@@ -18,7 +18,7 @@ export interface Database {
         }
         Insert: {
           description: string
-          id: number
+          id?: number
           public: boolean
           title: string
         }
@@ -36,6 +36,7 @@ export interface Database {
           mime_type: string
           project_id: number
           size: number
+          user_id: string | null
         }
         Insert: {
           file_name: string
@@ -43,6 +44,7 @@ export interface Database {
           mime_type: string
           project_id: number
           size: number
+          user_id?: string | null
         }
         Update: {
           file_name?: string
@@ -50,6 +52,7 @@ export interface Database {
           mime_type?: string
           project_id?: number
           size?: number
+          user_id?: string | null
         }
       }
       Model: {

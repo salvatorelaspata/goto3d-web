@@ -1,10 +1,8 @@
 import Form, { FieldProps } from "@/components/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
-import MessageToast from "@/components/MessageToast";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import axios from "axios";
 import { GetServerSideProps } from "next";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,30 +31,30 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
     console.log('_dataFiles', _dataFiles)
   }
   const _filesToTable = (files: FileList, project_id: number) => {
-    return Array.from(files).map((file) => {
+    return Array.from(files || []).map((file) => {
       return { file_name: file.name, mime_type: file.type, size: file.size, project_id: project_id }
     })
   }
-  const _sendFile = async (files: FileList) => {
-    const formData = new FormData()
-    if (files) {
-      Array.from(files).forEach((file, i) => {
-        formData.append(`files`, file, file.name)
-      })
-    }
-    // send files to server
-    try {
-      const data = await axios.post(`http://localhost:3002/upload-files`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "u": user || ''
-        }
-      })
-      console.log('data', data)
-    } catch (error) {
-      console.log('error', error)
-    }
-  }
+  // const _sendFile = async (files: FileList) => {
+  //   const formData = new FormData()
+  //   if (files) {
+  //     Array.from(files).forEach((file, i) => {
+  //       formData.append(`files`, file, file.name)
+  //     })
+  //   }
+  //   // send files to server
+  //   try {
+  //     const data = await axios.post(`http://localhost:3002/upload-files`, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         "u": user || ''
+  //       }
+  //     })
+  //     console.log('data', data)
+  //   } catch (error) {
+  //     console.log('error', error)
+  //   }
+  // }
 
 
   return (
@@ -85,7 +83,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-// export const getStaticProps = async () => {
 const fields: FieldProps[] = [
   {
     id: uuidv4(), label: 'Name',
@@ -104,5 +101,5 @@ const fields: FieldProps[] = [
     multiple: true
   }
 ]
-// }
+
 export default NewProject;
