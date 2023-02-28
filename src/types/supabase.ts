@@ -15,18 +15,21 @@ export interface Database {
           id: number
           public: boolean
           title: string
+          user_id: string | null
         }
         Insert: {
           description: string
           id?: number
           public: boolean
           title: string
+          user_id?: string | null
         }
         Update: {
           description?: string
           id?: number
           public?: boolean
           title?: string
+          user_id?: string | null
         }
       }
       File: {
@@ -80,7 +83,7 @@ export interface Database {
       }
       Project: {
         Row: {
-          catalogs_id: number | null
+          catalog_id: number | null
           created_at: string
           description: string
           finished_at: string | null
@@ -91,7 +94,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
-          catalogs_id?: number | null
+          catalog_id?: number | null
           created_at?: string
           description: string
           finished_at?: string | null
@@ -102,7 +105,7 @@ export interface Database {
           user_id?: string
         }
         Update: {
-          catalogs_id?: number | null
+          catalog_id?: number | null
           created_at?: string
           description?: string
           finished_at?: string | null

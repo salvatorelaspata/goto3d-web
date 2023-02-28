@@ -23,12 +23,9 @@ const NewCatalog: React.FC<NewCatalogProps> = ({ fields }) => {
       console.log(_errorCatalog)
       return
     }
-    console.log(_dataCatalog)
-
-    // update project
-    const { error: _errorCatalogUpdate } = await supabase.from('Project')
-      .update({ catalogs_id: _dataCatalog.id })
-      .eq('id', parseInt(projects))
+    const { data: _dataCatalogUpdate, error: _errorCatalogUpdate } = await supabase.from('Project')
+      .update({ catalog_id: _dataCatalog.id })
+      .eq('id', projects);
     if (_errorCatalogUpdate) {
       console.log(_errorCatalogUpdate)
       return
