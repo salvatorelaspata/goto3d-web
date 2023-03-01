@@ -27,39 +27,43 @@ const Home: React.FC<Props> = ({ user }) => {
                 supabaseClient={supabaseClient}
                 providers={['google']}
                 socialLayout="horizontal"
-
-            // onlyThirdPartyProviders={true}
             /></div> : null}
-            <p className={styles.instructions}>
-                <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
-                <br />
-                <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
-                <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
-                <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
-                <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
-            </p>
-            <ul role="list" className={styles['link-card-grid']}>
-                <Card
-                    href="/projects/create"
-                    title="Crea il Progetto"
-                    body="🫥"
-                />
-                <Card
-                    href="https://astro.build/integrations/"
-                    title="Genera il Modello"
-                    body="♺"
-                />
-                <Card
-                    href="https://astro.build/themes/"
-                    title="Crea il catalogo"
-                    body="📦"
-                />
-                <Card
-                    href="https://astro.build/chat/"
-                    title="Condividi il catalogo"
-                    body="❤️"
-                />
-            </ul>
+            <div className='grid grid-cols-2'>
+                <p className={styles.instructions}>
+                    <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
+                    <br />
+                    <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
+                    <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
+                    <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
+                    <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
+                </p>
+                <ul role="list" className={styles['link-card-grid']}>
+                    <div className="justify-between">
+                        <Card
+                            href="/projects/create"
+                            title="Crea il Progetto"
+                            body="🫥"
+                        />
+                        <Card
+                            href="https://astro.build/integrations/"
+                            title="Genera il Modello"
+                            body="♺"
+                        />
+                    </div>
+                    <div className="justify-between">
+                        <Card
+                            href="https://astro.build/themes/"
+                            title="Crea il catalogo"
+                            body="📦"
+                        />
+                        <Card
+                            href="https://astro.build/chat/"
+                            title="Condividi il catalogo"
+                            body="❤️"
+                        />
+                    </div>
+                </ul>
+            </div>
             <div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
                 <div className="container mx-auto">
                     <div className="flex flex-col lg:flex-row items-center justify-between">

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "update-types": "npx supabase gen types typescript --project-id \"babbshwgaemnqpeboequ\" > src/types/supabase.ts",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@next/font": "13.1.6",
