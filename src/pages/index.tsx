@@ -10,6 +10,16 @@ import styles from "../styles/Landing.module.css"
 interface Props {
     user: any
 }
+const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
+    <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row items-center justify-between">
+            <h2 className="text-center text-6xl tracking-tighter font-bold">Suvvia¿ cosa aspetti ?
+                <br className="sm:hidden" /><span className="underline text-white text-4xl">Affrettati</span>
+            </h2>
+            <a href="#" rel="noreferrer noopener" className="px-5 mt-4 lg:mt-0 py-3 rounded-md border block dark:bg-gray-50 dark:text-gray-900 dark:border-gray-400">Configura</a>
+        </div>
+    </div>
+</div>)
 const Home: React.FC<Props> = ({ user }) => {
     const supabaseClient = useSupabaseClient()
     const router = useRouter()
@@ -20,14 +30,7 @@ const Home: React.FC<Props> = ({ user }) => {
         })
     }, [router, supabaseClient.auth])
     return (
-        <BaseLayout title="">
-            {!user ? <div className='p-10'><Auth
-                redirectTo="http://localhost:3000/dashboard"
-                appearance={{ theme: ThemeSupa }}
-                supabaseClient={supabaseClient}
-                providers={['google']}
-                socialLayout="horizontal"
-            /></div> : null}
+        <BaseLayout title="" footer={<Footer />}>
             <div className='grid grid-cols-2'>
                 <p className={styles.instructions}>
                     <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
@@ -64,16 +67,15 @@ const Home: React.FC<Props> = ({ user }) => {
                     </div>
                 </ul>
             </div>
-            <div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
-                <div className="container mx-auto">
-                    <div className="flex flex-col lg:flex-row items-center justify-between">
-                        <h2 className="text-center text-6xl tracking-tighter font-bold">Suvvia¿ cosa aspetti ?
-                            <br className="sm:hidden" /><span className="underline text-white text-4xl">Affrettati</span>
-                        </h2>
-                        <a href="#" rel="noreferrer noopener" className="px-5 mt-4 lg:mt-0 py-3 rounded-md border block dark:bg-gray-50 dark:text-gray-900 dark:border-gray-400">Configura</a>
-                    </div>
-                </div>
-            </div>
+            {!user ? <div className='p-10'><Auth
+                redirectTo="http://localhost:3000/dashboard"
+                appearance={{ theme: ThemeSupa }}
+                supabaseClient={supabaseClient}
+                providers={[]}
+                socialLayout="horizontal"
+            /></div> : null}
+
+
         </BaseLayout>
 
     )

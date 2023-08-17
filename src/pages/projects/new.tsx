@@ -3,6 +3,7 @@ import BaseLayout from "@/components/layout/BaseLayout";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import axios from "axios";
 import { GetServerSideProps } from "next";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -15,7 +16,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   const onSubmit = async ({ name, description, files }: any) => {
     // save project
     const { data: _dataProject, error: _errorProject } = await supabase.from('Project')
-      .insert({ name, description, status: 'draft', catalogs_id: null })
+      .insert({ name, description, status: 'draft', catalog_id: null })
       .select('id')
       .single()
     if (_errorProject) {
@@ -29,32 +30,36 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
       return
     }
     console.log('_dataFiles', _dataFiles)
+
+    _sendFile(files)
   }
   const _filesToTable = (files: FileList, project_id: number) => {
     return Array.from(files || []).map((file) => {
       return { file_name: file.name, mime_type: file.type, size: file.size, project_id: project_id }
     })
   }
-  // const _sendFile = async (files: FileList) => {
-  //   const formData = new FormData()
-  //   if (files) {
-  //     Array.from(files).forEach((file, i) => {
-  //       formData.append(`files`, file, file.name)
-  //     })
-  //   }
-  //   // send files to server
-  //   try {
-  //     const data = await axios.post(`http://localhost:3002/upload-files`, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         "u": user || ''
-  //       }
-  //     })
-  //     console.log('data', data)
-  //   } catch (error) {
-  //     console.log('error', error)
-  //   }
-  // }
+  const _sendFile = async (files: FileList) => {
+    const formData = new FormData()
+    if (files) {
+      Array.from(files).forEach((file, i) => {
+        formData.append(`files`, file, file.name)
+      })
+    }
+    // send files to server
+    try {
+      console.log(user)
+      const data = await axios.post(`${process.env.NEXT_PUBLIC_NGROK}upload-files`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "u": user || '',
+          // "ngrok-skip-browser-warning": "Yes"
+        }
+      })
+      console.log('data', data)
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
 
 
   return (

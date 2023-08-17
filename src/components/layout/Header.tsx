@@ -15,8 +15,9 @@ export const Header = () => {
     useEffect(() => {
         (async () => {
             if (user) {
+                console.log(user)
                 setItemsHeader([...privateRoutes, ...publicRoutes])
-                setUsername('Benvenuto ' + user.user_metadata.name)
+                setUsername(`Benvenuto ${user.user_metadata.name || user.email}`)
             }
         })();
     }, [user])
