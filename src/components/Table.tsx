@@ -31,7 +31,7 @@ const Table: React.FC<TableProps> = ({ data, onRowClick }) => {
           return (
             <tr key={i} onClick={() => { console.log('asd', row, onRowClick); onRowClick && onRowClick(row) }}>
               {columns.map((cell, _i) => {
-                return <Cell key={_i} value={row[cell]} />
+                return <Cell key={_i} value={typeof (row[cell]) === 'object' ? JSON.stringify(row[cell], null, 2) : row[cell]} />
               })}
             </tr>
           )

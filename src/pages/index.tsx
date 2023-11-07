@@ -8,99 +8,103 @@ import { useEffect } from 'react'
 import { Card } from "../components/Card"
 import styles from "../styles/Landing.module.css"
 interface Props {
-    user: any
+  user: any
 }
+
 const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
-    <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
-            <h2 className="text-center text-6xl tracking-tighter font-bold">Suvvia¿ cosa aspetti ?
-                <br className="sm:hidden" /><span className="underline text-white text-4xl">Affrettati</span>
-            </h2>
-            <a href="#" rel="noreferrer noopener" className="px-5 mt-4 lg:mt-0 py-3 rounded-md border block dark:bg-gray-50 dark:text-gray-900 dark:border-gray-400">Configura</a>
-        </div>
+  <div className="container mx-auto">
+    <div className="flex flex-col lg:flex-row items-center justify-between">
+      <h2 className="text-center text-6xl tracking-tighter font-bold">Cosa aspetti ?
+        <br className="sm:hidden" /><span className="underline text-white text-4xl">Affrettati</span>
+      </h2>
+      <a href="#" rel="noreferrer noopener" className="px-5 mt-4 lg:mt-0 py-3 rounded-md border block dark:bg-gray-50 dark:text-gray-900 dark:border-gray-400">Configura</a>
     </div>
+  </div>
 </div>)
+
 const Home: React.FC<Props> = ({ user }) => {
-    const supabaseClient = useSupabaseClient()
-    const router = useRouter()
-    useEffect(() => {
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            console.log(event, session)
-            router.push('/dashboard')
-        })
-    }, [router, supabaseClient.auth])
-    return (
-        <BaseLayout title="" footer={<Footer />}>
-            <div className='grid grid-cols-2'>
-                <p className={styles.instructions}>
-                    <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
-                    <br />
-                    <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
-                    <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
-                    <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
-                    <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
-                </p>
-                <ul role="list" className={styles['link-card-grid']}>
-                    <div className="justify-between">
-                        <Card
-                            href="/projects/create"
-                            title="Crea il Progetto"
-                            body="🫥"
-                        />
-                        <Card
-                            href="https://astro.build/integrations/"
-                            title="Genera il Modello"
-                            body="♺"
-                        />
-                    </div>
-                    <div className="justify-between">
-                        <Card
-                            href="https://astro.build/themes/"
-                            title="Crea il catalogo"
-                            body="📦"
-                        />
-                        <Card
-                            href="https://astro.build/chat/"
-                            title="Condividi il catalogo"
-                            body="❤️"
-                        />
-                    </div>
-                </ul>
-            </div>
-            {!user ? <div className='p-10'><Auth
-                redirectTo="http://localhost:3000/dashboard"
-                appearance={{ theme: ThemeSupa }}
-                supabaseClient={supabaseClient}
-                providers={[]}
-                socialLayout="horizontal"
-            /></div> : null}
-
-
-        </BaseLayout>
-
-    )
+  const supabaseClient = useSupabaseClient()
+  const router = useRouter()
+  useEffect(() => {
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      console.log(event, session)
+      router.push('/dashboard')
+    })
+  }, [router, supabaseClient.auth])
+  return (
+    <BaseLayout title="" footer={<Footer />}>
+      <div className='grid grid-cols-2 p-10'>
+        <p className={styles.instructions}>
+          <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
+          <br />
+          <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
+          <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
+          <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
+          <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
+        </p>
+        <ul role="list" className={styles['link-card-grid']}>
+          <div className="justify-between p-5">
+            <Card
+              href="#"
+              title="Crea il Progetto"
+              body="🫥"
+              icon="1 ➡️"
+              className="m-5"
+            />
+            <Card
+              href="#"
+              title="Genera il Modello"
+              body="♺"
+              icon="3 ➡️"
+              className="m-5"
+            />
+          </div>
+          <div className="justify-between p-5">
+            <Card
+              href="#"
+              title="Crea il catalogo"
+              body="📦"
+              icon="2 ➡️"
+              className="m-5"
+            />
+            <Card
+              href="#"
+              title="Condividi il catalogo"
+              body="❤️"
+              icon="4 ➡️"
+              className="m-5"
+            />
+          </div>
+        </ul>
+      </div>
+      {!user ? <div className='p-10'><Auth
+        redirectTo="http://localhost:8080/dashboard"
+        appearance={{ theme: ThemeSupa }}
+        supabaseClient={supabaseClient}
+        providers={['google']}
+        socialLayout="horizontal"
+      /></div> : null}
+    </BaseLayout>
+  )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    // Create authenticated Supabase Client
-    const supabase = createServerSupabaseClient(ctx)
-    // Check if we have a session
-    const {
-        data: { session },
-    } = await supabase.auth.getSession()
+  // Create authenticated Supabase Client
+  const supabase = createServerSupabaseClient(ctx)
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
 
-    if (session)
-        return {
-            redirect: {
-                destination: '/dashboard',
-                permanent: false
-            }
-        }
+  if (session)
     return {
-        props: {
-            user: null
-        }
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
     }
+
+  return { props: { user: null } }
 }
 
 export default Home

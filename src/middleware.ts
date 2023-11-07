@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from './types/supabase'
 
-export async function middleware(req: NextRequest) {
+export async function middleware (req: NextRequest) {
   // We need to create a response and hand it to the supabase client to be able to modify the response headers.
   const res = NextResponse.next()
   // Create authenticated Supabase Client.

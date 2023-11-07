@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -31,32 +31,7 @@ export interface Database {
           title?: string
           user_id?: string | null
         }
-      }
-      File: {
-        Row: {
-          file_name: string
-          id: number
-          mime_type: string
-          project_id: number
-          size: number
-          user_id: string | null
-        }
-        Insert: {
-          file_name: string
-          id?: number
-          mime_type: string
-          project_id: number
-          size: number
-          user_id?: string | null
-        }
-        Update: {
-          file_name?: string
-          id?: number
-          mime_type?: string
-          project_id?: number
-          size?: number
-          user_id?: string | null
-        }
+        Relationships: []
       }
       Model: {
         Row: {
@@ -80,16 +55,78 @@ export interface Database {
           projects_id?: number
           size?: number
         }
+        Relationships: [
+          {
+            foreignKeyName: "model_projects_id_foreign"
+            columns: ["projects_id"]
+            isOneToOne: false
+            referencedRelation: "Project"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      Process: {
+        Row: {
+          created_at: string
+          detail: Database["public"]["Enums"]["details"] | null
+          feature: Database["public"]["Enums"]["features"] | null
+          finished_at: string | null
+          id: number
+          models_url: string[] | null
+          ordering: Database["public"]["Enums"]["orders"] | null
+          project_id: number
+          started_at: string | null
+          status: string | null
+          userId: string
+          uuid: string | null
+        }
+        Insert: {
+          created_at?: string
+          detail?: Database["public"]["Enums"]["details"] | null
+          feature?: Database["public"]["Enums"]["features"] | null
+          finished_at?: string | null
+          id?: number
+          models_url?: string[] | null
+          ordering?: Database["public"]["Enums"]["orders"] | null
+          project_id: number
+          started_at?: string | null
+          status?: string | null
+          userId?: string
+          uuid?: string | null
+        }
+        Update: {
+          created_at?: string
+          detail?: Database["public"]["Enums"]["details"] | null
+          feature?: Database["public"]["Enums"]["features"] | null
+          finished_at?: string | null
+          id?: number
+          models_url?: string[] | null
+          ordering?: Database["public"]["Enums"]["orders"] | null
+          project_id?: number
+          started_at?: string | null
+          status?: string | null
+          userId?: string
+          uuid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Process_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "Project"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       Project: {
         Row: {
           catalog_id: number | null
           created_at: string
           description: string
-          finished_at: string | null
+          file_location: string | null
+          files: Json[] | null
           id: number
           name: string
-          started_at: string | null
           status: string
           user_id: string
         }
@@ -97,10 +134,10 @@ export interface Database {
           catalog_id?: number | null
           created_at?: string
           description: string
-          finished_at?: string | null
+          file_location?: string | null
+          files?: Json[] | null
           id?: number
           name: string
-          started_at?: string | null
           status: string
           user_id?: string
         }
@@ -108,13 +145,49 @@ export interface Database {
           catalog_id?: number | null
           created_at?: string
           description?: string
-          finished_at?: string | null
+          file_location?: string | null
+          files?: Json[] | null
           id?: number
           name?: string
-          started_at?: string | null
           status?: string
           user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "Project_catalog_id_fkey"
+            columns: ["catalog_id"]
+            isOneToOne: false
+            referencedRelation: "Catalog"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      queue: {
+        Row: {
+          completed_timestamp: string | null
+          created_at: string
+          id: number
+          status: string
+          task_data: Json
+          timestamp: string
+        }
+        Insert: {
+          completed_timestamp?: string | null
+          created_at?: string
+          id?: number
+          status: string
+          task_data: Json
+          timestamp: string
+        }
+        Update: {
+          completed_timestamp?: string | null
+          created_at?: string
+          id?: number
+          status?: string
+          task_data?: Json
+          timestamp?: string
+        }
+        Relationships: []
       }
       "viewer-3d-dev": {
         Row: {
@@ -153,6 +226,7 @@ export interface Database {
           userId?: string | null
           uuid?: string | null
         }
+        Relationships: []
       }
     }
     Views: {
@@ -165,7 +239,9 @@ export interface Database {
       }
     }
     Enums: {
-      [_ in never]: never
+      details: "preview" | "reduced" | "medium" | "full" | "raw"
+      features: "normal" | "high"
+      orders: "unordered" | "sequential"
     }
     CompositeTypes: {
       [_ in never]: never
