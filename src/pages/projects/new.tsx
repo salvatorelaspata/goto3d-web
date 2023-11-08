@@ -11,17 +11,22 @@ interface NewProjectProps {
   fields: FieldProps[],
   user: string
 }
+
+const _filesToTable = (files: FileList, project_id?: number) => {
+  return Array.from(files || []).map((file) => {
+    return { file_name: file.name, mime_type: file.type, size: file.size, ...(project_id && { project_id: project_id }) }
+  })
+}
+
+
 const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   const supabase = useSupabaseClient<Database>()
 
-  const onSubmit = async ({ name, description, files }: any) => {
-    // save project
 
+
+  const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
     const ts = new Date().getTime()
-
     const file_location = 'test/' + ts + '/'
-
-    debugger
 
     const { data: _dataProject, error: _errorProject } = await supabase.from('Project')
       .insert({ name, description, status: 'draft', catalog_id: null, files: _filesToTable(files), file_location })
@@ -32,81 +37,48 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
       return
     }
     console.log('_dataProject', _dataProject)
-    // DEPRECATED
-    // const { data: _dataFiles, error: _errorFiles } = await supabase.from('File').insert(_filesToTable(files, _dataProject.id)).select('id')
-    // if (_errorFiles) {
-    //   console.log('_errorFiles', _errorFiles)
-    //   return
-    // }
-    // console.log('_dataFiles', _dataFiles)
+
     console.time('upload')
-    await _sendFile(files)
+    await _sendFile(files, file_location)
     console.timeEnd('upload')
+
+    // default field for Process (detail, order, feature)
+    const _defaultField = (field: any, fieldName: string) => {
+      return field ?? fields.find(f => f.name === fieldName)?.options?.find(o => o.default)?.value
+    }
+
     const { data: _dataProcess, error: _errorProcess } =
       await supabase.from('Process')
-        .insert({ project_id: _dataProject.id, status: 'draft' })
+        .insert({ project_id: _dataProject.id, status: 'draft', detail: _defaultField(detail, 'detail'), order: _defaultField(order, 'order'), feature: _defaultField(feature, 'feature') })
         .select('id')
+        .single()
+    if (_errorProcess) {
+      console.log('_errorProcess', _errorProcess)
+      return
+    }
+    console.log('_dataProcess', _dataProcess)
   }
-  const _filesToTable = (files: FileList, project_id?: number) => {
-    return Array.from(files || []).map((file) => {
-      return { file_name: file.name, mime_type: file.type, size: file.size, ...(project_id && { project_id: project_id }) }
-    })
-  }
-  const _sendFile = async (files: FileList) => {
-    // upload file in supabase storage
 
+  const _sendFile = async (files: FileList, file_location: string) => {
+    // upload file in supabase storage
     // eseguo sequenzialmente l'upload per dare evidenza all'utente del caricamento
     let percentage = 0
     for (let i = 0; i < files.length; i++) {
       const { data: _dataStorage, error: _errorStorage } =
         await supabase.storage.from('viewer3d-dev')
-          .upload('test/' + files[i].name, files[i], { upsert: true })
+          .upload(file_location + files[i].name, files[i], { upsert: true })
       percentage = (i + 1) / files.length * 100
       if (_errorStorage) {
         console.log('_errorStorage', _errorStorage, percentage)
       }
       console.log('_dataStorage', _dataStorage, percentage)
     }
-
-    // parallelamente (non funziona.. chissà perchè..)
-    // const pAll = []
-    // for (let i = 0; i < files.length; i++) {
-    //   pAll.push(supabase.storage.from('viewer3d-dev').upload('test/' + files[i].name, files[i]))
-    // }
-    // try {
-    //   const res = await Promise.all(pAll)
-    //   console.log('res', res)
-    // } catch (error) {
-    //   console.log(error)
-    // }
-
-
-    // const formData = new FormData()
-    // if (files) {
-    //   Array.from(files).forEach((file, i) => {
-    //     formData.append(`files`, file, file.name)
-    //   })
-    // }
-    // // send files to server
-    // try {
-    //   console.log(user)
-    //   const data = await axios.post(`${process.env.NEXT_PUBLIC_NGROK}upload-files`, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //       "u": user || '',
-    //       // "ngrok-skip-browser-warning": "Yes"
-    //     }
-    //   })
-    //   console.log('data', data)
-    // } catch (error) {
-    //   console.log('error', error)
-    // }
   }
 
 
   return (
     <BaseLayout title="New Project">
-      <Form fields={fields} onSubmit={onSubmit} />
+      {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
     </BaseLayout>
   );
 };
@@ -147,6 +119,39 @@ const fields: FieldProps[] = [
     name: 'files',
     type: 'file',
     multiple: true
+  },
+  {
+    id: uuidv4(),
+    label: 'Details',
+    name: 'detail',
+    type: 'select',
+    options: [
+      { label: 'Preview', value: 'preview' },
+      { label: 'Reduced', value: 'reduced' },
+      { label: 'Medium', value: 'medium', default: true },
+      { label: 'Full', value: 'full' },
+      { label: 'Raw', value: 'raw' },
+    ]
+  },
+  {
+    id: uuidv4(),
+    label: 'Orders',
+    name: 'order',
+    type: 'select',
+    options: [
+      { label: 'Unordered', value: 'unordered', default: true },
+      { label: 'Sequential', value: 'sequential' }
+    ]
+  },
+  {
+    id: uuidv4(),
+    label: 'Features',
+    name: 'feature',
+    type: 'select',
+    options: [
+      { label: 'Normal', value: 'normal', default: true },
+      { label: 'High', value: 'high' }
+    ]
   }
 ]
 

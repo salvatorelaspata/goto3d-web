@@ -70,12 +70,10 @@ export interface Database {
           created_at: string
           detail: Database["public"]["Enums"]["details"] | null
           feature: Database["public"]["Enums"]["features"] | null
-          finished_at: string | null
           id: number
           models_url: string[] | null
-          ordering: Database["public"]["Enums"]["orders"] | null
+          order: Database["public"]["Enums"]["orders"] | null
           project_id: number
-          started_at: string | null
           status: string | null
           userId: string
           uuid: string | null
@@ -84,12 +82,10 @@ export interface Database {
           created_at?: string
           detail?: Database["public"]["Enums"]["details"] | null
           feature?: Database["public"]["Enums"]["features"] | null
-          finished_at?: string | null
           id?: number
           models_url?: string[] | null
-          ordering?: Database["public"]["Enums"]["orders"] | null
+          order?: Database["public"]["Enums"]["orders"] | null
           project_id: number
-          started_at?: string | null
           status?: string | null
           userId?: string
           uuid?: string | null
@@ -98,12 +94,10 @@ export interface Database {
           created_at?: string
           detail?: Database["public"]["Enums"]["details"] | null
           feature?: Database["public"]["Enums"]["features"] | null
-          finished_at?: string | null
           id?: number
           models_url?: string[] | null
-          ordering?: Database["public"]["Enums"]["orders"] | null
+          order?: Database["public"]["Enums"]["orders"] | null
           project_id?: number
-          started_at?: string | null
           status?: string | null
           userId?: string
           uuid?: string | null
@@ -162,32 +156,50 @@ export interface Database {
           }
         ]
       }
-      queue: {
+      Queue: {
         Row: {
           completed_timestamp: string | null
           created_at: string
           id: number
+          process_id: number | null
+          project_id: number | null
           status: string
-          task_data: Json
           timestamp: string
         }
         Insert: {
           completed_timestamp?: string | null
           created_at?: string
           id?: number
+          process_id?: number | null
+          project_id?: number | null
           status: string
-          task_data: Json
           timestamp: string
         }
         Update: {
           completed_timestamp?: string | null
           created_at?: string
           id?: number
+          process_id?: number | null
+          project_id?: number | null
           status?: string
-          task_data?: Json
           timestamp?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Queue_process_id_fkey"
+            columns: ["process_id"]
+            isOneToOne: false
+            referencedRelation: "Process"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Queue_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "Project"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       "viewer-3d-dev": {
         Row: {
