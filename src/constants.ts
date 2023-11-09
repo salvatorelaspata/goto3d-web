@@ -4,8 +4,6 @@ type itemHeaderProps = {
 }
 
 export class Constants {
-  public static readonly userTable: string = 'viewer-3d-dev-user'
-  public static readonly projectTable: string = 'viewer-3d-dev'
   public static readonly privateRoutes: itemHeaderProps[] = [
     {
       name: 'Progetti',

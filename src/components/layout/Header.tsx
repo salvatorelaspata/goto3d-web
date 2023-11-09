@@ -15,8 +15,9 @@ export const Header = () => {
     useEffect(() => {
         (async () => {
             if (user) {
+                console.log(user)
                 setItemsHeader([...privateRoutes, ...publicRoutes])
-                setUsername('Benvenuto ' + user.user_metadata.name)
+                setUsername(`Benvenuto ${user.user_metadata.name || user.email}`)
             }
         })();
     }, [user])
@@ -44,8 +45,12 @@ export const Header = () => {
                             </Link>
                         </li>
                     ))}
-                    {/* <SignButtons /> */}
-                    <button onClick={() => supabaseClient.auth.signOut()}>Sign out</button>
+                    {user && <li className="flex">
+                        <button onClick={() => {
+                            supabaseClient.auth.signOut()
+                            router.push('/')
+                        }}>Sign out</button>
+                    </li>}
                 </ul>
             </div>
             <div>

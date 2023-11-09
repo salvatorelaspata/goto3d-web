@@ -1,8 +1,9 @@
 import type React from 'react'
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <footer className="bg-white dark:bg-gray-900">
+      {children}
       <div className="container px-6 py-2 mx-auto">
         <div className="flex flex-col items-center sm:flex-row sm:justify-between">
           <p className="text-sm text-gray-400">© Copyright 2022. All Rights Reserved.</p>
