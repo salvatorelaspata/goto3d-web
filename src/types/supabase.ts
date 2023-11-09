@@ -164,7 +164,6 @@ export interface Database {
           process_id: number | null
           project_id: number | null
           status: string
-          timestamp: string
         }
         Insert: {
           completed_timestamp?: string | null
@@ -173,7 +172,6 @@ export interface Database {
           process_id?: number | null
           project_id?: number | null
           status: string
-          timestamp: string
         }
         Update: {
           completed_timestamp?: string | null
@@ -182,7 +180,6 @@ export interface Database {
           process_id?: number | null
           project_id?: number | null
           status?: string
-          timestamp?: string
         }
         Relationships: [
           {
@@ -254,6 +251,7 @@ export interface Database {
       details: "preview" | "reduced" | "medium" | "full" | "raw"
       features: "normal" | "high"
       orders: "unordered" | "sequential"
+      process_status: "open" | "in progress" | "done"
     }
     CompositeTypes: {
       [_ in never]: never
