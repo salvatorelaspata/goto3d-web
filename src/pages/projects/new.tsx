@@ -66,7 +66,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
     for (let i = 0; i < files.length; i++) {
       const { data: _dataStorage, error: _errorStorage } =
         await supabase.storage.from('viewer3d-dev')
-          .upload(file_location + files[i].name, files[i], { upsert: true })
+          .upload(file_location + 'images/' + files[i].name, files[i], { upsert: true })
       percentage = (i + 1) / files.length * 100
       if (_errorStorage) {
         console.log('_errorStorage', _errorStorage, percentage)
