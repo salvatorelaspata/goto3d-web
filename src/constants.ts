@@ -10,8 +10,8 @@ export class Constants {
       url: '/projects',
     },
     {
-      name: 'Cataloghi',
-      url: '/catalogs',
+      name: 'Cataloghi (Coming Soon)',
+      url: '',
     },
   ]
   public static readonly publicRoutes: itemHeaderProps[] = [
