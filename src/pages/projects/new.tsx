@@ -63,6 +63,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
     // upload file in supabase storage
     // eseguo sequenzialmente l'upload per dare evidenza all'utente del caricamento
     let percentage = 0
+    if (!files || files.length === 0) return
     for (let i = 0; i < files.length; i++) {
       const { data: _dataStorage, error: _errorStorage } =
         await supabase.storage.from('viewer3d-dev')

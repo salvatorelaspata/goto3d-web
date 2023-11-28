@@ -1,12 +1,13 @@
 import BaseLayout from '@/components/layout/BaseLayout'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from "../components/Card"
 import styles from "../styles/Landing.module.css"
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
 interface Props {
   user: any
 }
@@ -25,65 +26,59 @@ const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gra
 const Home: React.FC<Props> = ({ user }) => {
   const supabaseClient = useSupabaseClient()
   const router = useRouter()
+
   useEffect(() => {
     supabaseClient.auth.onAuthStateChange((event, session) => {
       console.log(event, session)
       router.push('/dashboard')
     })
-  }, [router, supabaseClient.auth])
+  }, [])
   return (
     <BaseLayout title="" footer={<Footer />}>
-      <div className='grid grid-cols-2 p-10'>
-        <p className={styles.instructions}>
-          <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
-          <br />
-          <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
-          <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
-          <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
-          <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
-        </p>
-        <ul role="list" className={styles['link-card-grid']}>
-          <div className="justify-between p-5">
-            <Card
-              href="#"
-              title="Crea il Progetto"
-              body="🫥"
-              icon="1 ➡️"
-              className="m-5"
-            />
-            <Card
-              href="#"
-              title="Genera il Modello"
-              body="♺"
-              icon="3 ➡️"
-              className="m-5"
-            />
-          </div>
-          <div className="justify-between p-5">
-            <Card
-              href="#"
-              title="Crea il catalogo"
-              body="📦"
-              icon="2 ➡️"
-              className="m-5"
-            />
-            <Card
-              href="#"
-              title="Condividi il catalogo"
-              body="❤️"
-              icon="4 ➡️"
-              className="m-5"
-            />
-          </div>
-        </ul>
-      </div>
-      {!user ? <div className='p-10'><Auth
-        redirectTo="http://localhost:8080/dashboard"
-        appearance={{ theme: ThemeSupa }}
-        supabaseClient={supabaseClient}
-        providers={['google']}
-        socialLayout="horizontal"
-      /></div> : null}
+      <p className={styles.instructions}>
+        <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
+        <br />
+        <span className="text-xl"><strong>crea</strong></span> Il tuo progetto.<br />
+        <strong>Scegli le tue foto </strong> per procedere alla creazione del tuo modello <code>3D</code>. <br />
+        <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
+        <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
+      </p>
+      <ul role="list">
+        <Card
+          href="#"
+          title="Crea il Progetto"
+          body="🫥"
+          icon="1 ➡️"
+        />
+        <Card
+          href="#"
+          title="Genera il Modello"
+          body="♺"
+          icon="2 ➡️"
+        />
+        <Card
+          href="#"
+          title="Crea il catalogo"
+          body="📦"
+          icon="3 ➡️"
+        />
+        <Card
+          href="#"
+          title="Condividi il catalogo"
+          body="❤️"
+          icon="4 ➡️"
+        />
+      </ul>
+      {!user ? (
+        <div className='p-10'>
+          <Auth
+            redirectTo="http://localhost:8080/dashboard"
+            appearance={{ theme: ThemeSupa }}
+            supabaseClient={supabaseClient}
+            providers={['google']}
+          />
+        </div>
+      ) : null}
     </BaseLayout>
   )
 }

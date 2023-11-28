@@ -49,6 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { data: textureUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`${_project?.file_location}${textureName}`, 60)
     const { data: backgroundUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`HDR/${backgroundName}`, 60)
 
+    console.log(objUrl, textureUrl, backgroundUrl)
     return {
       props: { _project, _process, models, objUrl: objUrl?.signedUrl, textureUrl: textureUrl?.signedUrl, backgroundUrl: backgroundUrl?.signedUrl }
     }
