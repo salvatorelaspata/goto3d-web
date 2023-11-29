@@ -1,5 +1,7 @@
 import Form, { FieldProps } from "@/components/Form";
+import { Loader } from '@/components/Loader';
 import BaseLayout from "@/components/layout/BaseLayout";
+import { useLoader } from '@/hooks/useLoader';
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -22,9 +24,10 @@ const _filesToTable = (files: FileList, project_id?: number) => {
 const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
   const supabase = useSupabaseClient<Database>()
 
-
+  const { loading, load, hide } = useLoader()
 
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
+    load()
     const ts = new Date().getTime()
     const file_location = 'test/' + ts + '/'
 
@@ -34,7 +37,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
       .single()
     if (_errorProject) {
       console.log('_errorProject', _errorProject)
-      return
+      hide(); return
     }
     console.log('_dataProject', _dataProject)
 
@@ -44,7 +47,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
 
     // default field for Process (detail, order, feature)
     const _defaultField = (field: any, fieldName: string) => {
-      return field ?? fields.find(f => f.name === fieldName)?.options?.find(o => o.default)?.value
+      hide(); return field ?? fields.find(f => f.name === fieldName)?.options?.find(o => o.default)?.value
     }
 
     const { data: _dataProcess, error: _errorProcess } =
@@ -54,7 +57,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
         .single()
     if (_errorProcess) {
       console.log('_errorProcess', _errorProcess)
-      return
+      hide(); return
     }
     console.log('_dataProcess', _dataProcess)
   }
@@ -79,6 +82,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
 
   return (
     <BaseLayout title="New Project">
+      {loading && <Loader />}
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
     </BaseLayout>
   );
