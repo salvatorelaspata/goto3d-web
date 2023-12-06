@@ -1,5 +1,4 @@
 import Form, { FieldProps } from "@/components/Form";
-import { Loader } from '@/components/Loader';
 import BaseLayout from "@/components/layout/BaseLayout";
 import { useLoader } from '@/hooks/useLoader';
 import { Database } from "@/types/supabase";
@@ -10,8 +9,7 @@ import { GetServerSideProps } from "next";
 import { v4 as uuidv4 } from 'uuid';
 
 interface NewProjectProps {
-  fields: FieldProps[],
-  user: string
+  fields: FieldProps[]
 }
 
 const _filesToTable = (files: FileList, project_id?: number) => {
@@ -21,10 +19,10 @@ const _filesToTable = (files: FileList, project_id?: number) => {
 }
 
 
-const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
+const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
   const supabase = useSupabaseClient<Database>()
 
-  const { loading, load, hide } = useLoader()
+  const { load, hide } = useLoader()
 
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
     load()
@@ -82,7 +80,6 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
 
   return (
     <BaseLayout title="New Project">
-      {loading && <Loader />}
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
     </BaseLayout>
   );
@@ -91,21 +88,23 @@ const NewProject: React.FC<NewProjectProps> = ({ fields, user }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const supabase = createServerSupabaseClient<Database>(context)
 
-  const { data, error } = await supabase.auth.getUser()
-  if (error) {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+  if (session)
     return {
-      props: {
-        fields: [],
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
       }
     }
-  } else {
-    return {
-      props: {
-        fields: fields,
-        user: data.user.id
-      }
+  return {
+    props: {
+      fields: fields
     }
   }
+
 }
 
 const fields: FieldProps[] = [

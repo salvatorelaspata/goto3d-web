@@ -1,8 +1,11 @@
+import { useToast } from '@/hooks/useToast'
+
 interface MessageToastProps {
   message: string
 }
-const MessageToast: React.FC<MessageToastProps> = ({ message }) => {
-
+const MessageToast: React.FC<MessageToastProps> = () => {
+  const { message } = useToast()
+  if (!message) return (null)
   return (
     <div className="px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg">
       <p className="text-sm">

@@ -1,6 +1,3 @@
-import { useLoader } from '@/hooks/useLoader';
-
-// create standalone tailwindcss loader component
 export const Loader = () => {
   return (
     <div className="flex justify-center items-center h-screen">
