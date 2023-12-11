@@ -1,6 +1,7 @@
 import Form, { FieldProps } from "@/components/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { useLoader } from '@/hooks/useLoader';
+import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -81,6 +82,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
   return (
     <BaseLayout title="New Project">
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
+      <button onClick={() => actions.showMessageToast('test')}>test</button>
     </BaseLayout>
   );
 };
@@ -92,7 +94,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (session)
+  if (!session)
     return {
       redirect: {
         destination: '/dashboard',

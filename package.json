@@ -30,6 +30,7 @@
     "react-dom": "18.2.0",
     "typescript": "4.9.5",
     "uuid": "^9.0.0",
+    "valtio": "^1.12.1",
     "viewer-3d-lit": "^0.0.28"
   },
   "devDependencies": {

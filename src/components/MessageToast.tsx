@@ -1,16 +1,12 @@
-import { useToast } from '@/hooks/useToast'
+import { useStore } from "@/store/main"
 
-interface MessageToastProps {
-  message: string
-}
-const MessageToast: React.FC<MessageToastProps> = () => {
-  const { message } = useToast()
-  if (!message) return (null)
+const MessageToast: React.FC = () => {
+  const { messageToast } = useStore()
   return (
-    <div className="px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg">
+    <div className="fixed bottom-10 right-5 w-96 px-5 py-4 border-r-8 border-2 border-gray-200 rounded-md border-r-blue-500 bg-white drop-shadow-xl">
       <p className="text-sm">
         <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">i</span>
-        {message}
+        {messageToast}
       </p>
     </div>
   )
