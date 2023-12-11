@@ -39,7 +39,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       hide(); return
     }
     console.log('_dataProject', _dataProject)
-
+    actions.showMessageToast('Project created')
     console.time('upload')
     await _sendFile(files, file_location)
     console.timeEnd('upload')
@@ -58,6 +58,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       console.log('_errorProcess', _errorProcess)
       hide(); return
     }
+    actions.showMessageToast('Process created')
     console.log('_dataProcess', _dataProcess)
   }
 
@@ -74,6 +75,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       if (_errorStorage) {
         console.log('_errorStorage', _errorStorage, percentage)
       }
+      actions.showMessageToast('File upload ' + files[i].name)
       console.log('_dataStorage', _dataStorage, percentage)
     }
   }
@@ -82,7 +84,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
   return (
     <BaseLayout title="New Project">
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
-      <button onClick={() => actions.showMessageToast('test')}>test</button>
+      {/* <button onClick={() => actions.showMessageToast('test')}>test</button> */}
     </BaseLayout>
   );
 };
