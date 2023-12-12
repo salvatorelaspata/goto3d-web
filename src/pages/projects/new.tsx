@@ -1,6 +1,5 @@
 import Form, { FieldProps } from "@/components/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
-import { useLoader } from '@/hooks/useLoader';
 import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
@@ -23,10 +22,9 @@ const _filesToTable = (files: FileList, project_id?: number) => {
 const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
   const supabase = useSupabaseClient<Database>()
 
-  const { load, hide } = useLoader()
 
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
-    load()
+    actions.showLoading()
     const ts = new Date().getTime()
     const file_location = 'test/' + ts + '/'
 
@@ -36,17 +34,17 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       .single()
     if (_errorProject) {
       console.log('_errorProject', _errorProject)
-      hide(); return
+      actions.hideLoading(); return
     }
     console.log('_dataProject', _dataProject)
-    actions.showMessageToast('Project created')
+    actions.addMessageToast('Project created')
     console.time('upload')
     await _sendFile(files, file_location)
     console.timeEnd('upload')
 
     // default field for Process (detail, order, feature)
     const _defaultField = (field: any, fieldName: string) => {
-      hide(); return field ?? fields.find(f => f.name === fieldName)?.options?.find(o => o.default)?.value
+      actions.hideLoading(); return field ?? fields.find(f => f.name === fieldName)?.options?.find(o => o.default)?.value
     }
 
     const { data: _dataProcess, error: _errorProcess } =
@@ -56,9 +54,9 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
         .single()
     if (_errorProcess) {
       console.log('_errorProcess', _errorProcess)
-      hide(); return
+      actions.hideLoading(); return
     }
-    actions.showMessageToast('Process created')
+    actions.addMessageToast('Process created')
     console.log('_dataProcess', _dataProcess)
   }
 
@@ -75,7 +73,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       if (_errorStorage) {
         console.log('_errorStorage', _errorStorage, percentage)
       }
-      actions.showMessageToast('File upload ' + files[i].name)
+      actions.addMessageToast('File upload ' + files[i].name)
       console.log('_dataStorage', _dataStorage, percentage)
     }
   }
@@ -84,7 +82,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
   return (
     <BaseLayout title="New Project">
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
-      {/* <button onClick={() => actions.showMessageToast('test')}>test</button> */}
+      {/* <button onClick={() => actions.addMessageToast('test')}>test</button> */}
     </BaseLayout>
   );
 };
