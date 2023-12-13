@@ -11,7 +11,6 @@ describe('Signup', () => {
     cy.get('button[type="submit"]').contains('Sign up')
     cy.wait(1000)
 
-
     // Fill out the form
     cy.get('input[name="email"]').type(
       `e2e.test.cy.${Math.round(Math.random() * 100)}@gmail.com`
@@ -50,7 +49,9 @@ describe('Signup', () => {
     cy.getCookie('supabase-auth-token').should('not.exist')
 
     // The new page should contain an p with "Email already exists"
-    cy.get('span.supabase-ui-auth_ui-message').contains('User already registered')
+    cy.get('span.supabase-ui-auth_ui-message').contains(
+      'User already registered'
+    )
   })
 })
-export { }
+export {}

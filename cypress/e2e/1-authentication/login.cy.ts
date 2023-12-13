@@ -47,4 +47,4 @@ describe('Login', () => {
     cy.get('span').contains('Invalid login credentials')
   })
 })
-export { }
+export {}

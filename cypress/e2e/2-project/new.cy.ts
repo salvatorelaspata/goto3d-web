@@ -42,17 +42,24 @@ describe('New Project', () => {
     // Fill out the project form
     cy.get('input[name="name"]').type('e2e test project')
     cy.get('textarea[name="description"]').type('e2e test project description')
-    // upload images 
-    const fileNames = [__dirname + '/files/1.jpg', __dirname + '/files/2.jpg', __dirname + '/files/3.jpg', __dirname + '/files/4.jpg', __dirname + '/files/5.jpg'];
+    // upload images
+    const fileNames = [
+      __dirname + '/files/1.jpg',
+      __dirname + '/files/2.jpg',
+      __dirname + '/files/3.jpg',
+      __dirname + '/files/4.jpg',
+      __dirname + '/files/5.jpg',
+    ]
     cy.get('input[type="file"]').selectFile([...fileNames])
     cy.get('button[type="submit"]').click()
 
     cy.intercept('**').as('create')
 
-    cy.wait('@create').then((interception) => {
+    cy.wait('@create').then(interception => {
       console.log(interception)
     })
     // verify the project is created
-
   })
 })
+
+export {}
