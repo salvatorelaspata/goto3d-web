@@ -28,12 +28,13 @@ export default Project
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query
+  const _id: number = parseInt(id as string)
   const supabase = createServerSupabaseClient<Database>(context)
   try {
     // una sorta di innerjoin .-.
     const [{ data: _project }, { data: _process }] = await Promise.all([
-      supabase.from('Project').select('id, status, name, description, file_location').eq('id', id).single(),
-      supabase.from('Process').select('models_url, detail, order, feature, created_at, finished_at').eq('project_id', id).single(),
+      supabase.from('Project').select('id, status, name, description, file_location').eq('id', _id).single(),
+      supabase.from('Process').select('models_url, detail, order, feature, created_at, finished_at').eq('project_id', _id).single(),
     ])
     // get list of models in a folder (file_location) & list of backgrounds
     const { data: models } = await supabase.storage.from('viewer3d-dev').list(`${_project?.file_location}`)
