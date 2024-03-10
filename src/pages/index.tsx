@@ -9,7 +9,8 @@ import styles from "../styles/Landing.module.css"
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 interface Props {
-  user: any
+  user: any,
+  siteUrl: string
 }
 
 const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
@@ -23,7 +24,7 @@ const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gra
   </div>
 </div>)
 
-const Home: React.FC<Props> = ({ user }) => {
+const Home: React.FC<Props> = ({ user, siteUrl }) => {
   const supabaseClient = useSupabaseClient()
   const router = useRouter()
 
@@ -72,7 +73,7 @@ const Home: React.FC<Props> = ({ user }) => {
       {!user ? (
         <div className='p-10'>
           <Auth
-            redirectTo="http://localhost:8080/dashboard"
+            redirectTo={siteUrl || "http://localhost:8080/dashboard"}
             appearance={{ theme: ThemeSupa }}
             supabaseClient={supabaseClient}
             providers={['google']}
@@ -84,6 +85,8 @@ const Home: React.FC<Props> = ({ user }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // retrieve siteurl from env
+  const siteUrl = process.env.SITE_URL
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx)
   // Check if we have a session
@@ -99,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       }
     }
 
-  return { props: { user: null } }
+  return { props: { user: null, siteUrl } }
 }
 
 export default Home
