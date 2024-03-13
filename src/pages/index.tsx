@@ -73,7 +73,7 @@ const Home: React.FC<Props> = ({ user, siteUrl }) => {
       {!user ? (
         <div className='p-10'>
           <Auth
-            redirectTo={siteUrl || "http://localhost:8080/dashboard"}
+            redirectTo={siteUrl}
             appearance={{ theme: ThemeSupa }}
             supabaseClient={supabaseClient}
             providers={['google']}
@@ -86,7 +86,7 @@ const Home: React.FC<Props> = ({ user, siteUrl }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // retrieve siteurl from env
-  const siteUrl = process.env.SITE_URL
+  const siteUrl = process.env.SITE_URL || 'http://localhost:8080/dashboard'
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx)
   // Check if we have a session

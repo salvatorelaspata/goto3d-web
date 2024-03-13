@@ -1,10 +1,12 @@
 import { proxy, useSnapshot } from 'valtio'
-interface State {
+
+export interface ConfigState {
   showMessageToast: boolean
   messagesToast: string[]
   loading: boolean
 }
-const state = proxy<State>({
+
+const state = proxy<ConfigState>({
   showMessageToast: false,
   messagesToast: [],
   loading: false,
