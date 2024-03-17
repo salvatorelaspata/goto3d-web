@@ -1,11 +1,14 @@
 import { useState } from "react"
+import { RadioCard } from "./RadioCard";
 
 export interface FieldProps {
   id: string,
   label: string,
+  description?: string,
   name: string,
-  type: 'text' | 'textarea' | 'select' | 'file',
-  options?: { label: string, value: string, default?: boolean }[], // for select
+  type: 'text' | 'textarea' | 'select' | 'file' | 'radio',
+  icon?: string, // for radio
+  options?: { label: string, value: string, description?: string, default?: boolean }[], // for select
   multiple?: boolean, // for file
   onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void,
   onFileChange?: (e: React.ChangeEvent<FileEventTarget>) => void
@@ -19,25 +22,28 @@ interface FormProps {
 
 type FileEventTarget = HTMLInputElement & { files: FileList };
 
-const _composeInput = ({ id, label, name, type, options, multiple, onChange, onFileChange }: FieldProps) => {
-  let htmlLabel = <label htmlFor={id} className="mt-5">{label}</label>
+const _composeInput = ({ id, label, name, type, icon, options, multiple, onChange, onFileChange }: FieldProps) => {
+  let htmlLabelFor = <label htmlFor={id} className="mt-5 text-lg">{label}</label>
+  let htmlLabel = <span className="mt-5 text-lg">{label}</span>
   switch (type) {
     case 'select':
       return (<>
-        {htmlLabel}
-        <select defaultValue={options?.find(o => o.default)?.value} id={id} name={name} onChange={onChange} className="bg-violet-200">
+        {htmlLabelFor}
+        <select defaultValue={options?.find(o => o.default)?.value} id={id} name={name} onChange={onChange} className="border border-violet-600 bg-white">
           {options?.map(({ label, value, default: d }) => (
             <option key={value} value={value}>{label} {d && '(default)'}</option>
           ))}
         </select>
       </>
       );
+    case 'radio':
+      return (<>{htmlLabel}<RadioCard id={id} name={name} options={options} onChange={onChange} icon={icon}/></>)
     case 'textarea':
-      return (<>{htmlLabel}<textarea id={id} name={name} onChange={onChange} className="bg-violet-200" /></>)
+      return (<>{htmlLabelFor}<textarea id={id} name={name} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2" /></>)
     case 'file':
-      return (<>{htmlLabel}<input id={id} name={name} type={type} multiple onChange={onFileChange} className="bg-violet-200" /></>)
+      return (<>{htmlLabelFor}<input id={id} name={name} type={type} multiple={multiple} onChange={onFileChange} className="border border-violet-600 bg-white rounded-md p-2" /></>)
     default:
-      return (<>{htmlLabel}<input id={id} name={name} type={type} onChange={onChange} className="bg-violet-200" /></>)
+      return (<>{htmlLabelFor}<input id={id} name={name} type={type} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2" /></>)
   }
 }
 
@@ -61,7 +67,7 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, children }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col p-10">
+    <form onSubmit={handleSubmit} className="flex flex-col">
       {fields.length && fields.map((f) => {
         f.onChange = handleChange
         f.onFileChange = handleFileChange
@@ -73,14 +79,14 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, children }) => {
       })}
       {children}
       <div className="flex justify-around mt-10">
-        <button type="submit" className="bg-violet-400 w-full mr-2">
+        <button type="submit" className="rounded-md hover:scale-110 transition duration-300 ease-in-out shadow-md bg-violet-400 text-white font-bold p-4 w-full mr-2">
           Submit
         </button>
-        <button type="reset" className="bg-violet-400 w-full ml-2">
+        <button type="reset" className="rounded-md shadow-md bg-violet-200 p-4 w-full ml-2">
           Reset
         </button>
       </div>
-    </form >
+    </form>
   )
 }
 

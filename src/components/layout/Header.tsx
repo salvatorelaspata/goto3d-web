@@ -15,16 +15,13 @@ export const Header = () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        console.log(user)
         setItemsHeader([...privateRoutes, ...publicRoutes])
         setUsername(`Benvenuto ${user.user_metadata.name || user.email}`)
+        setSelected(router.pathname)
       }
     })();
-  }, [user])
+  }, [user, router.pathname])
 
-  useEffect(() => {
-    setSelected(router.pathname)
-  }, [router.pathname])
 
   return (
     <header className="p-1 dark:bg-gray-800 dark:text-gray-100">
@@ -40,7 +37,7 @@ export const Header = () => {
             <li key={item.name} className="flex">
               <Link rel="noopener noreferrer" href={item.url}
                 className={`flex items-center px-4 -mb-1 border-b-2 dark:border-transparent 
-              ${selected === item.url && 'dark:text-violet-400 dark:border-violet-400'}`}>
+              ${selected === item.url && 'text-violet-400 border-violet-400'}`}>
                 {item.name || ''}
               </Link>
             </li>
