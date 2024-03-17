@@ -46,9 +46,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const backgroundName: string = backgrounds && backgrounds.length > 0 ? backgrounds[Math.floor(Math.random() * backgrounds.length)]?.name : ''
 
     // get the signed url for the obj file
-    const { data: objUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`${_project?.file_location}${objName}`, 60)
-    const { data: textureUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`${_project?.file_location}${textureName}`, 60)
-    const { data: backgroundUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`HDR/${backgroundName}`, 60)
+    const { data: objUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`${_project?.file_location}${objName}`, 2)
+    const { data: textureUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`${_project?.file_location}${textureName}`, 2)
+    const { data: backgroundUrl } = await supabase.storage.from('viewer3d-dev').createSignedUrl(`HDR/${backgroundName}`, 2)
 
     console.log(objUrl, textureUrl, backgroundUrl)
     return {

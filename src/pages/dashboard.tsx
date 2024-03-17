@@ -32,18 +32,17 @@ const Landing = () => {
     };
 
     loadProjects();
-    loadCatalogs();
+    // loadCatalogs();
   }, [supabase]);
 
   return (
     <BaseLayout title="">
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-gray-200 shadow-md rounded-md my-4 p-4">
         {/* Griglia dei progetti */}
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold mb-2">Progetti</h2>
-          <div className="flex overflow-x-scroll">
+          <h2 className="text-3xl font-bold m-2">Progetti</h2>
+          {projects.length !== 0 && <div className="flex overflow-x-scroll">
             {projects.map((project) => (
-              <div key={project.id} className="card p-4 flex flex-col bg-violet-300 m-2 rounded-xl shadow-xl">
+              <div key={project.id} className="p-4 m-2 flex flex-col bg-violet-300  rounded-xl shadow-xl">
                 {/* <img src={project.image_url} alt={project.title} className="mb-4" /> */}
                 <h3 className="text-lg font-bold">{project.name}</h3>
                 <p className="text-sm text-gray-500 mb-4">{project.description}</p>
@@ -52,15 +51,16 @@ const Landing = () => {
                 </button>
               </div>
             ))}
-          </div>
+          </div>}
         </div>
 
         {/* Griglia dei cataloghi */}
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold mb-2">Cataloghi</h2>
-          <div className="flex overflow-x-scroll">
+        <div className="flex flex-col bg-gray-200 shadow-md rounded-md my-4 p-4">
+
+          <h2 className="text-3xl font-bold m-2">Cataloghi (Coming Soon)</h2>
+          {catalogs.length !== 0 && <div className="flex overflow-x-scroll">
             {catalogs.map((catalog) => (
-              <div key={catalog.id} className="card p-4 flex flex-col bg-violet-300 m-2 rounded-xl shadow-xl">
+              <div key={catalog.id} className="p-4 m-2 flex flex-col bg-violet-300  rounded-xl shadow-xl">
                 {/* <img src={catalog.image_url} alt={catalog.title} className="mb-4" /> */}
                 <h3 className="text-lg font-bold">{!catalog.public ? '🙈' : '🤩'} {catalog.title}</h3>
                 <p className="text-sm text-gray-500 mb-4">{catalog.description}</p>
@@ -69,15 +69,14 @@ const Landing = () => {
                 </button>
               </div>
             ))}
-          </div>
-        </div>
+          </div>}
+
       </div>
     </BaseLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  debugger;
   const supabase = createServerSupabaseClient(ctx)
   const {
     data: { session },

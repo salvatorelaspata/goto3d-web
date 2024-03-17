@@ -1,28 +1,30 @@
 import { proxy, useSnapshot } from 'valtio'
-interface State {
-  showMessageToast: boolean
-  messagesToast: string[]
+
+export interface ConfigState {
+  // Modal
+  modalContent: string
+  showModal: boolean
+  // Loading
   loading: boolean
 }
-const state = proxy<State>({
-  showMessageToast: false,
-  messagesToast: [],
+
+const state = proxy<ConfigState>({
+  modalContent: '',
+  showModal: false,
   loading: false,
 })
 
 export const useStore = () => useSnapshot(state)
 
 export const actions = {
-  // Message Toast
-  addMessageToast: (messageToast: string) => {
-    // if (state.messagesToast.length === 10) state.messagesToast.shift()
-    state.messagesToast.push(messageToast)
+  // Modal
+  showModal: (content: string) => {
+    state.modalContent = content
+    state.showModal = true
   },
-  showMessageToast: (duration: number = 3000) => {
-    state.showMessageToast = true
-
-    const t = setTimeout(() => (state.showMessageToast = false), duration)
-    return () => clearTimeout(t)
+  hideModal: () => {
+    state.modalContent = ''
+    state.showModal = false
   },
   // Loading
   showLoading: () => (state.loading = true),

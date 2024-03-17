@@ -6,63 +6,69 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       Catalog: {
         Row: {
-          description: string
+          created_at: string
+          description: string | null
           id: number
-          public: boolean
-          title: string
+          public: boolean | null
+          title: string | null
           user_id: string | null
         }
         Insert: {
-          description: string
+          created_at?: string
+          description?: string | null
           id?: number
-          public: boolean
-          title: string
+          public?: boolean | null
+          title?: string | null
           user_id?: string | null
         }
         Update: {
-          description?: string
+          created_at?: string
+          description?: string | null
           id?: number
-          public?: boolean
-          title?: string
+          public?: boolean | null
+          title?: string | null
           user_id?: string | null
         }
         Relationships: []
       }
       Model: {
         Row: {
-          file_name: string
+          created_at: string
+          file_name: string | null
           id: number
-          mime_type: string
-          projects_id: number
-          size: number
+          mime_type: string | null
+          projects_id: number | null
+          size: number | null
         }
         Insert: {
-          file_name: string
-          id: number
-          mime_type: string
-          projects_id: number
-          size: number
+          created_at?: string
+          file_name?: string | null
+          id?: number
+          mime_type?: string | null
+          projects_id?: number | null
+          size?: number | null
         }
         Update: {
-          file_name?: string
+          created_at?: string
+          file_name?: string | null
           id?: number
-          mime_type?: string
-          projects_id?: number
-          size?: number
+          mime_type?: string | null
+          projects_id?: number | null
+          size?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "model_projects_id_foreign"
+            foreignKeyName: "public_Model_projects_id_fkey"
             columns: ["projects_id"]
             isOneToOne: false
             referencedRelation: "Project"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       Process: {
@@ -73,9 +79,9 @@ export interface Database {
           id: number
           models_url: string[] | null
           order: Database["public"]["Enums"]["orders"] | null
-          project_id: number
-          status: string | null
-          userId: string
+          project_id: number | null
+          status: Database["public"]["Enums"]["process_status"] | null
+          userId: string | null
           uuid: string | null
         }
         Insert: {
@@ -85,9 +91,9 @@ export interface Database {
           id?: number
           models_url?: string[] | null
           order?: Database["public"]["Enums"]["orders"] | null
-          project_id: number
-          status?: string | null
-          userId?: string
+          project_id?: number | null
+          status?: Database["public"]["Enums"]["process_status"] | null
+          userId?: string | null
           uuid?: string | null
         }
         Update: {
@@ -97,63 +103,63 @@ export interface Database {
           id?: number
           models_url?: string[] | null
           order?: Database["public"]["Enums"]["orders"] | null
-          project_id?: number
-          status?: string | null
-          userId?: string
+          project_id?: number | null
+          status?: Database["public"]["Enums"]["process_status"] | null
+          userId?: string | null
           uuid?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Process_project_id_fkey"
+            foreignKeyName: "public_Process_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "Project"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       Project: {
         Row: {
           catalog_id: number | null
           created_at: string
-          description: string
+          description: string | null
           file_location: string | null
-          files: Json[] | null
+          files: Json | null
           id: number
-          name: string
-          status: string
-          user_id: string
+          name: string | null
+          status: string | null
+          user_id: string | null
         }
         Insert: {
           catalog_id?: number | null
           created_at?: string
-          description: string
+          description?: string | null
           file_location?: string | null
-          files?: Json[] | null
+          files?: Json | null
           id?: number
-          name: string
-          status: string
-          user_id?: string
+          name?: string | null
+          status?: string | null
+          user_id?: string | null
         }
         Update: {
           catalog_id?: number | null
           created_at?: string
-          description?: string
+          description?: string | null
           file_location?: string | null
-          files?: Json[] | null
+          files?: Json | null
           id?: number
-          name?: string
-          status?: string
-          user_id?: string
+          name?: string | null
+          status?: string | null
+          user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Project_catalog_id_fkey"
+            foreignKeyName: "public_Project_catalog_id_fkey"
             columns: ["catalog_id"]
             isOneToOne: false
             referencedRelation: "Catalog"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       Queue: {
@@ -163,7 +169,7 @@ export interface Database {
           id: number
           process_id: number | null
           project_id: number | null
-          status: string
+          status: string | null
         }
         Insert: {
           completed_timestamp?: string | null
@@ -171,7 +177,7 @@ export interface Database {
           id?: number
           process_id?: number | null
           project_id?: number | null
-          status: string
+          status?: string | null
         }
         Update: {
           completed_timestamp?: string | null
@@ -179,82 +185,123 @@ export interface Database {
           id?: number
           process_id?: number | null
           project_id?: number | null
-          status?: string
+          status?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "Queue_process_id_fkey"
+            foreignKeyName: "public_Queue_process_id_fkey"
             columns: ["process_id"]
             isOneToOne: false
             referencedRelation: "Process"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "Queue_project_id_fkey"
+            foreignKeyName: "public_Queue_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "Project"
             referencedColumns: ["id"]
-          }
+          },
         ]
-      }
-      "viewer-3d-dev": {
-        Row: {
-          count: number | null
-          created_at: string | null
-          files: string[] | null
-          finished_at: string | null
-          id: number
-          models_url: string[] | null
-          started_at: string | null
-          status: string | null
-          userId: string | null
-          uuid: string | null
-        }
-        Insert: {
-          count?: number | null
-          created_at?: string | null
-          files?: string[] | null
-          finished_at?: string | null
-          id?: number
-          models_url?: string[] | null
-          started_at?: string | null
-          status?: string | null
-          userId?: string | null
-          uuid?: string | null
-        }
-        Update: {
-          count?: number | null
-          created_at?: string | null
-          files?: string[] | null
-          finished_at?: string | null
-          id?: number
-          models_url?: string[] | null
-          started_at?: string | null
-          status?: string | null
-          userId?: string | null
-          uuid?: string | null
-        }
-        Relationships: []
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      install_available_extensions_and_test: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       details: "preview" | "reduced" | "medium" | "full" | "raw"
       features: "normal" | "high"
       orders: "unordered" | "sequential"
-      process_status: "open" | "in progress" | "done"
+      process_status: "open" | "in progress" | "done" | "draft"
     }
     CompositeTypes: {
       [_ in never]: never
     }
   }
 }
+
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+

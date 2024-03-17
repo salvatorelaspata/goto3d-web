@@ -1,26 +1,22 @@
 import BaseLayout from "@/components/layout/BaseLayout";
-import Table from "@/components/Table";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { CatalogCard } from "@/components/CatalogCard";
 
 const Catalogs: React.FC<{
     catalogs: Database['public']['Tables']['Catalog']['Row'][],
     count: number
 }> = ({ catalogs, count }) => {
-    const router = useRouter()
     return (
         <BaseLayout title={`Catalogs(${count})`}>
             <Link href="/catalogs/new" className='bg-violet-500 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded'>
                 New Catalogs
             </Link>
-            <Table data={catalogs} onRowClick={
-                (row: Database['public']['Tables']['Catalog']['Row']) => {
-                    router.push(`/projects/${row.id}`)
-                }
-            } />
+            {catalogs.map((catalog) => (
+                <CatalogCard key={catalog.id} {...catalog} />
+            ))}
         </BaseLayout>
     );
 };

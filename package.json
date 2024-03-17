@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update-types": "npx supabase gen types typescript --project-id \"babbshwgaemnqpeboequ\" --schema public > src/types/supabase.ts",
+    "update-types": "node ./scripts/update-types.js",
     "cypress": "cypress open",
     "cypress:run": "cypress run"
   },
@@ -28,6 +28,7 @@
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^10.0.5",
     "typescript": "4.9.5",
     "uuid": "^9.0.0",
     "valtio": "^1.12.1",

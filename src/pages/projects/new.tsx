@@ -6,23 +6,89 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 // import axios from "axios";
 import { GetServerSideProps } from "next";
-import { v4 as uuidv4 } from 'uuid';
-
-interface NewProjectProps {
-  fields: FieldProps[]
-}
-
+import { Bounce, ToastOptions, toast } from "react-toastify";
+// import { v4 as uuidv4 } from 'uuid';
 const _filesToTable = (files: FileList, project_id?: number) => {
   return Array.from(files || []).map((file) => {
     return { file_name: file.name, mime_type: file.type, size: file.size, ...(project_id && { project_id: project_id }) }
   })
 }
 
+// const opt: ToastOptions = {
+//   position: "bottom-right",
+//   autoClose: 3000,
+//   hideProgressBar: false,
+//   closeOnClick: true,
+//   pauseOnHover: true,
+//   draggable: true,
+//   progress: undefined,
+//   theme: "light",
+//   transition: Bounce,
+// };
 
-const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
+const NewProject: React.FC = () => {
   const supabase = useSupabaseClient<Database>()
 
-
+  const fields: FieldProps[] = [
+    {
+      id: 'formName', // uuidv4(), 
+      label: 'Name',
+      name: 'name',
+      type: 'text'
+    }, {
+      id: 'formDescription', // uuidv4(), 
+      label: 'Description',
+      name: 'description',
+      type: 'textarea'
+    },
+    {
+      id: 'formFiles', // uuidv4(),
+      label: 'Files',
+      name: 'files',
+      type: 'file',
+      multiple: true
+    },
+    {
+      id: 'formDetail', // uuidv4(),
+      label: 'Details',
+      name: 'detail',
+      type: 'radio',
+      description: 'The level of detail of the project',
+      icon: '🧐',
+      options: [
+        { label: 'Preview', value: 'preview', description: 'more fast' },
+        { label: 'Reduced', value: 'reduced', description: 'good compromise' },
+        { label: 'Medium', value: 'medium', default: true, description: 'good compromise' },
+        { label: 'Full', value: 'full', description: 'more accurate' },
+        { label: 'Raw', value: 'raw', description: 'original data'}
+      ]
+    },
+    {
+      id: 'formOrder', // uuidv4(),
+      label: 'Orders',
+      name: 'order',
+      type: 'radio',
+      description: 'The order of the project',
+      icon: '👔',
+      options: [
+        { label: 'Unordered', value: 'unordered', default: true, description: 'no specific order' },
+        { label: 'Sequential', value: 'sequential', description: 'ordered by time' },
+      ]
+    },
+    {
+      id: 'formFeature', // uuidv4(),
+      label: 'Features',
+      name: 'feature',
+      type: 'radio',
+      description: 'The features of the project',
+      icon: '💎',
+      options: [
+        { label: 'Normal', value: 'normal', default: true, description: 'no specific feature' },
+        { label: 'High', value: 'high', description: 'more features'}
+      ]
+    }
+  ]
+  
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
     actions.showLoading()
     const ts = new Date().getTime()
@@ -37,7 +103,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       actions.hideLoading(); return
     }
     console.log('_dataProject', _dataProject)
-    actions.addMessageToast('Project created')
+    toast.success('Project created')
     console.time('upload')
     await _sendFile(files, file_location)
     console.timeEnd('upload')
@@ -56,7 +122,7 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       console.log('_errorProcess', _errorProcess)
       actions.hideLoading(); return
     }
-    actions.addMessageToast('Process created')
+    toast.success('Process created')
     console.log('_dataProcess', _dataProcess)
   }
 
@@ -73,17 +139,18 @@ const NewProject: React.FC<NewProjectProps> = ({ fields }) => {
       if (_errorStorage) {
         console.log('_errorStorage', _errorStorage, percentage)
       }
-      actions.addMessageToast('File upload ' + files[i].name)
+      toast.info('File upload ' + files[i].name)
       console.log('_dataStorage', _dataStorage, percentage)
     }
   }
 
 
   return (
+    <>
     <BaseLayout title="New Project">
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
-      {/* <button onClick={() => actions.addMessageToast('test')}>test</button> */}
     </BaseLayout>
+    </>
   );
 };
 
@@ -101,64 +168,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         permanent: false
       }
     }
+
   return {
-    props: {
-      fields: fields
-    }
+    props: {}
   }
 
 }
 
-const fields: FieldProps[] = [
-  {
-    id: uuidv4(), label: 'Name',
-    name: 'name',
-    type: 'text'
-  }, {
-    id: uuidv4(), label: 'Description',
-    name: 'description',
-    type: 'textarea'
-  },
-  {
-    id: uuidv4(),
-    label: 'Files',
-    name: 'files',
-    type: 'file',
-    multiple: true
-  },
-  {
-    id: uuidv4(),
-    label: 'Details',
-    name: 'detail',
-    type: 'select',
-    options: [
-      { label: 'Preview', value: 'preview' },
-      { label: 'Reduced', value: 'reduced' },
-      { label: 'Medium', value: 'medium', default: true },
-      { label: 'Full', value: 'full' },
-      { label: 'Raw', value: 'raw' },
-    ]
-  },
-  {
-    id: uuidv4(),
-    label: 'Orders',
-    name: 'order',
-    type: 'select',
-    options: [
-      { label: 'Unordered', value: 'unordered', default: true },
-      { label: 'Sequential', value: 'sequential' }
-    ]
-  },
-  {
-    id: uuidv4(),
-    label: 'Features',
-    name: 'feature',
-    type: 'select',
-    options: [
-      { label: 'Normal', value: 'normal', default: true },
-      { label: 'High', value: 'high' }
-    ]
-  }
-]
 
 export default NewProject;

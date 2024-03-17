@@ -1,24 +1,31 @@
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { Loader } from '../Loader';
-import MessageToast from '../MessageToast';
 import { useStore } from '@/store/main';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Modal } from '../Modal';
+interface BaseLayoutProps { 
+    title: string, 
+    children: React.ReactNode, 
+    withFooter?: boolean 
+}
 
-const BaseLayout: React.FC<{ title: string, children: React.ReactNode, footer?: React.ReactNode }> = ({ title, children, footer }) => {
-  const { messagesToast, loading } = useStore()
-  console.log('messagesToast', messagesToast)
+const BaseLayout: React.FC<BaseLayoutProps> = ({ title, children, withFooter = false }) => {
+  const { loading } = useStore()
   return (
-    <div className="App">
+    <div className="flex flex-col min-h-screen p-4">
       <Header />
-      <main>
+      <main className='bg-gray-100 p-4 rounded-md'>
         {loading && <Loader />}
-        {messagesToast.length !== 0 && <MessageToast />}
-        <h1 className='px-4'><span className='text-gradient'>{title}</span></h1>
+        <h1>
+          <span className='text-3xl font-bold mb-2 text-gradient'>{title}</span>
+        </h1>
         {children}
       </main>
-      <Footer>
-        {footer}
-      </Footer>
+      {withFooter && <Footer/>}
+      <ToastContainer/>
+      <Modal />
     </div>
   )
 }

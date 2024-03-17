@@ -3,28 +3,17 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Card } from "../components/Card"
 import styles from "../styles/Landing.module.css"
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-interface Props {
+interface HomeProps {
   user: any,
   siteUrl: string
 }
 
-const Footer = () => (<div className="p-6 py-12 dark:bg-violet-400 dark:text-gray-900">
-  <div className="container mx-auto">
-    <div className="flex flex-col lg:flex-row items-center justify-between">
-      <h2 className="text-center text-6xl tracking-tighter font-bold">Cosa aspetti ?
-        <br className="sm:hidden" /><span className="underline text-white text-4xl">Affrettati</span>
-      </h2>
-      <a href="#" rel="noreferrer noopener" className="px-5 mt-4 lg:mt-0 py-3 rounded-md border block dark:bg-gray-50 dark:text-gray-900 dark:border-gray-400">Configura</a>
-    </div>
-  </div>
-</div>)
-
-const Home: React.FC<Props> = ({ user, siteUrl }) => {
+const Home: React.FC<HomeProps> = ({ user, siteUrl }) => {
   const supabaseClient = useSupabaseClient()
   const router = useRouter()
 
@@ -35,7 +24,7 @@ const Home: React.FC<Props> = ({ user, siteUrl }) => {
     })
   }, [])
   return (
-    <BaseLayout title="" footer={<Footer />}>
+    <BaseLayout title="" withFooter={true}>
       <p className={styles.instructions}>
         <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
         <br />
@@ -73,7 +62,7 @@ const Home: React.FC<Props> = ({ user, siteUrl }) => {
       {!user ? (
         <div className='p-10'>
           <Auth
-            redirectTo={siteUrl || "http://localhost:8080/dashboard"}
+            redirectTo={siteUrl}
             appearance={{ theme: ThemeSupa }}
             supabaseClient={supabaseClient}
             providers={['google']}
@@ -86,7 +75,7 @@ const Home: React.FC<Props> = ({ user, siteUrl }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   // retrieve siteurl from env
-  const siteUrl = process.env.SITE_URL
+  const siteUrl = process.env.SITE_URL || 'http://localhost:8080/dashboard'
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx)
   // Check if we have a session

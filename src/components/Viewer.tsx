@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 import React, { DOMAttributes, lazy, useEffect } from 'react'
 
