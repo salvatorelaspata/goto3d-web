@@ -6,7 +6,7 @@ interface RadioCardProps {
     name: FieldProps['name']
     icon: FieldProps['icon']
     options: FieldProps['options']
-    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void
+    onChange: any
 }
 
 export const RadioCard: React.FC<RadioCardProps> = ({id, name, icon, options, onChange}) => {
