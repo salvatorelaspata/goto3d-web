@@ -2,6 +2,7 @@ import { Database } from "@/types/supabase";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { MouseEventHandler } from "react";
+import { toast } from "react-toastify";
 
 const statusColor = (status: string) => {
     switch (status) {
@@ -28,7 +29,7 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
 
                 await supabase.from('Project')
                     .delete().eq('id', project.id)
-
+                toast.error('Project deleted');
                 router.push('/projects')
             } catch (error) { console.log('error', error) }
         })()

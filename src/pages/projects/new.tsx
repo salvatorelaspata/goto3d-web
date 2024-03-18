@@ -1,109 +1,37 @@
-import Form, { FieldProps } from "@/components/Form";
+import Form from "@/components/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
+import { filesToTable, formFields } from "@/utils/constants";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-// import axios from "axios";
 import { GetServerSideProps } from "next";
-import { Bounce, ToastOptions, toast } from "react-toastify";
-// import { v4 as uuidv4 } from 'uuid';
-const _filesToTable = (files: FileList, project_id?: number) => {
-  return Array.from(files || []).map((file) => {
-    return { file_name: file.name, mime_type: file.type, size: file.size, ...(project_id && { project_id: project_id }) }
-  })
-}
-
-// const opt: ToastOptions = {
-//   position: "bottom-right",
-//   autoClose: 3000,
-//   hideProgressBar: false,
-//   closeOnClick: true,
-//   pauseOnHover: true,
-//   draggable: true,
-//   progress: undefined,
-//   theme: "light",
-//   transition: Bounce,
-// };
+import { toast } from "react-toastify";
 
 const NewProject: React.FC = () => {
   const supabase = useSupabaseClient<Database>()
 
-  const fields: FieldProps[] = [
-    {
-      id: 'formName', // uuidv4(), 
-      label: 'Name',
-      name: 'name',
-      type: 'text'
-    }, {
-      id: 'formDescription', // uuidv4(), 
-      label: 'Description',
-      name: 'description',
-      type: 'textarea'
-    },
-    {
-      id: 'formFiles', // uuidv4(),
-      label: 'Files',
-      name: 'files',
-      type: 'file',
-      multiple: true
-    },
-    {
-      id: 'formDetail', // uuidv4(),
-      label: 'Details',
-      name: 'detail',
-      type: 'radio',
-      description: 'The level of detail of the project',
-      icon: '🧐',
-      options: [
-        { label: 'Preview', value: 'preview', description: 'more fast' },
-        { label: 'Reduced', value: 'reduced', description: 'good compromise' },
-        { label: 'Medium', value: 'medium', default: true, description: 'good compromise' },
-        { label: 'Full', value: 'full', description: 'more accurate' },
-        { label: 'Raw', value: 'raw', description: 'original data'}
-      ]
-    },
-    {
-      id: 'formOrder', // uuidv4(),
-      label: 'Orders',
-      name: 'order',
-      type: 'radio',
-      description: 'The order of the project',
-      icon: '👔',
-      options: [
-        { label: 'Unordered', value: 'unordered', default: true, description: 'no specific order' },
-        { label: 'Sequential', value: 'sequential', description: 'ordered by time' },
-      ]
-    },
-    {
-      id: 'formFeature', // uuidv4(),
-      label: 'Features',
-      name: 'feature',
-      type: 'radio',
-      description: 'The features of the project',
-      icon: '💎',
-      options: [
-        { label: 'Normal', value: 'normal', default: true, description: 'no specific feature' },
-        { label: 'High', value: 'high', description: 'more features'}
-      ]
-    }
-  ]
+  const fields = formFields
   
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
+    
     actions.showLoading()
+
     const ts = new Date().getTime()
     const file_location = 'test/' + ts + '/'
 
     const { data: _dataProject, error: _errorProject } = await supabase.from('Project')
-      .insert({ name, description, status: 'draft', catalog_id: null, files: _filesToTable(files), file_location })
+      .insert({ name, description, status: 'draft', catalog_id: null, files: filesToTable(files), file_location })
       .select('id')
       .single()
-    if (_errorProject) {
+    
+      if (_errorProject) {
       console.log('_errorProject', _errorProject)
       actions.hideLoading(); return
     }
-    console.log('_dataProject', _dataProject)
+    
     toast.success('Project created')
+    
     console.time('upload')
     await _sendFile(files, file_location)
     console.timeEnd('upload')
@@ -118,10 +46,12 @@ const NewProject: React.FC = () => {
         .insert({ project_id: _dataProject.id, status: 'draft', detail: _defaultField(detail, 'detail'), order: _defaultField(order, 'order'), feature: _defaultField(feature, 'feature') })
         .select('id')
         .single()
-    if (_errorProcess) {
+    
+        if (_errorProcess) {
       console.log('_errorProcess', _errorProcess)
       actions.hideLoading(); return
     }
+    
     toast.success('Process created')
     console.log('_dataProcess', _dataProcess)
   }
