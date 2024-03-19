@@ -21,10 +21,10 @@ export const RadioCard: React.FC<RadioCardProps> = ({id, name, icon, options, on
             {/* <h3 className="mb-5 text-lg font-medium text-gray-900 dark:text-white">How much do you expect to use each month?</h3> */}
             <ul id={id} className={`grid w-full gap-4 ${gridCols} sm:grid-cols-1`}>
                 {options && options.map(({ label, description, value, default: d }) => (
-                <li key={value} className={`flex justify-between shadow-md ${disabled && 'hover:scale-105'} transition duration-300 ease-in-out`}>
-                    <input ref={ref} disabled type="radio" id={`${id}--${value}`} name={`${name}`} value={value} className="hidden peer" 
+                <li key={value} className={`flex justify-between shadow-md ${!disabled && 'hover:scale-105'} transition duration-300 ease-in-out`}>
+                    <input ref={ref} disabled={disabled} type="radio" id={`${id}--${value}`} name={`${name}`} value={value} className="hidden peer" 
                             onChange={(e)=>{onChange(e);setSelected(value)}} checked={selected===value}/>
-                    <label htmlFor={`${id}--${value}`} className={`${selected === value && checked} justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 hover:text-gray-600 hover:bg-violet-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700`}>
+                    <label htmlFor={`${id}--${value}`} className={`${selected === value && checked} justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg ${!disabled && 'cursor-pointer dark:hover:text-gray-300 hover:bg-violet-100'} dark:border-gray-700 hover:text-gray-600 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700`}>
                         <div className="block">
                             <div className="w-full flex flex-row justify-between">
                                 <div className="w-full text-md font-semibold">{label}</div>

@@ -41,13 +41,13 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, children, _data, disabled
         </>
         );
       case 'radio':
-        return (<>{htmlLabel}<RadioCard id={id} disabled iValue={data[name] || ""} name={name} options={options} onChange={onChange} icon={icon}/></>)
+        return (<>{htmlLabel}<RadioCard id={id} disabled={disabled} iValue={data[name] || ""} name={name} options={options} onChange={onChange} icon={icon}/></>)
       case 'textarea':
-        return (<>{htmlLabelFor}<textarea id={id} disabled value={data[name] || ""} name={name} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
+        return (<>{htmlLabelFor}<textarea id={id} disabled={disabled} value={data[name] || ""} name={name} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
       case 'file':
-        return (!disabled && <>{htmlLabelFor}<input id={id} disabled name={name} type={type} multiple={multiple} onChange={onFileChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
+        return (!disabled && <>{htmlLabelFor}<input id={id} disabled={disabled} name={name} type={type} multiple={multiple} onChange={onFileChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
       default:
-        return (<>{htmlLabelFor}<input id={id} disabled value={data[name] || ""} name={name} type={type} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
+        return (<>{htmlLabelFor}<input id={id} disabled={disabled} value={data[name] || ""} name={name} type={type} onChange={onChange} className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100" /></>)
     }
   }
 
@@ -80,10 +80,10 @@ const Form: React.FC<FormProps> = ({ fields, onSubmit, children, _data, disabled
       {children}
       <div className="flex justify-around mt-10">
         {!disabled && <>
-          <button type="submit" disabled className="rounded-md disabled:hover:scale-100 hover:scale-110 transition duration-300 ease-in-out shadow-md bg-violet-400 text-white font-bold p-4 m-2 w-full">
+          <button type="submit" disabled={disabled} className="rounded-md disabled:hover:scale-100 hover:scale-110 transition duration-300 ease-in-out shadow-md bg-violet-400 text-white font-bold p-4 m-2 w-full">
             Submit
           </button>
-          <button type="reset" disabled className="rounded-md shadow-md bg-violet-200 p-4 m-2 w-full">
+          <button type="reset" disabled={disabled} className="rounded-md shadow-md bg-violet-200 p-4 m-2 w-full">
             Reset
           </button>
         </>
