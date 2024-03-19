@@ -2,9 +2,8 @@ import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { Constants } from '../../constants'
-import { Breadcrumbs } from '../Breadcrumbs'
-const { publicRoutes, privateRoutes } = Constants
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs'
+import { privateRoutes, publicRoutes } from '@/utils/constants'
 export const Header = () => {
   const supabaseClient = useSupabaseClient()
   const router = useRouter()

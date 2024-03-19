@@ -1,11 +1,12 @@
-import { Constants } from '@/constants';
+
+import { privateRoutes, publicRoutes } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 export const Breadcrumbs: React.FC = () => {
     const router = useRouter()
     const path = router.asPath
-    const routes = Constants.publicRoutes.concat(Constants.privateRoutes)
+    const routes = publicRoutes.concat(privateRoutes)
     // check current route and compose the breadcrumbs
     const crumbs = path.split('/').filter((crumb) => crumb)
     const breadcrumbs = crumbs.map((crumb, i) => {

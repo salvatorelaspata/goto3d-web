@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import BaseLayout from '@/components/layout/BaseLayout'
-import {Grid} from '@/components/Grid'
+import {Grid} from '@/components/ui/Grid'
 import { ProjectCard } from '@/components/ProjectCard'
 
 interface ProjectProps {
@@ -20,7 +20,7 @@ const Project: React.FC<ProjectProps> = ({ projects, count }) => {
           New Project
         </Link>
           <Grid cols={4}>
-            {projects.map((project) => (
+            {projects && projects.map((project) => (
               <ProjectCard key={project.id} {...project} />
             ))}
         </Grid>

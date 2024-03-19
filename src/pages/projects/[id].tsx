@@ -1,4 +1,4 @@
-import Form from '@/components/Form'
+import Form from '@/components/forms/Form'
 import { Viewer } from '@/components/Viewer'
 import BaseLayout from "@/components/layout/BaseLayout"
 import { ModelLayout } from '@/components/layout/ModelLayout'

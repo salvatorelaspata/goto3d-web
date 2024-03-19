@@ -1,4 +1,4 @@
-import Form, { FieldProps } from "@/components/Form";
+import Form, { FieldProps } from "@/components/forms/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";

@@ -1,4 +1,5 @@
-import Form from "@/components/Form";
+import Form from "@/components/forms/Form";
+import { FormProject } from "@/components/forms/FormProject";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
@@ -79,6 +80,7 @@ const NewProject: React.FC = () => {
     <>
     <BaseLayout title="New Project">
       {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
+      {/* <FormProject onSubmit={onSubmit} /> */}
     </BaseLayout>
     </>
   );

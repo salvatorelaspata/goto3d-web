@@ -14,7 +14,7 @@ export const ModelLayout: React.FC<ModelLayoutProp> = ({ children }) => {
                 }}>Change background</button>
             </div>
         </header>
-        <main>
+        <main className="p-2">
             {children}
         </main>
         <footer className="bg-violet-400 text-white">

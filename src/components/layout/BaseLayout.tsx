@@ -4,7 +4,7 @@ import { Loader } from '../Loader';
 import { useStore } from '@/store/main';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Modal } from '../Modal';
+import { Modal } from '../ui/Modal';
 interface BaseLayoutProps { 
     title: string, 
     children: React.ReactNode, 
