@@ -14,12 +14,12 @@ export const Breadcrumbs: React.FC = () => {
         return route ? (
             <li key={i} className='flex items-center m-0'>
                 <a href={route.url} className='text-blue-500'>{route.name}</a>
-                {i < crumbs.length - 1 && <span className='mx-2'>/</span>}
+                {i < crumbs.length - 1 && <span className='mx-2'>{`/`}</span>}
             </li>
         ) : url.includes('new') ? (<li>🆕</li>) : (
             <li key={i} className='flex items-center m-0'>
                 <span>{crumb}</span>
-                {i < crumbs.length - 1 && <span className='mx-2'>//</span>}
+                {i < crumbs.length - 1 && <span className='mx-2'>{`//`}</span>}
             </li>
         )
     })
