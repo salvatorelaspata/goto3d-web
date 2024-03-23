@@ -36,41 +36,6 @@ export type Database = {
         }
         Relationships: []
       }
-      Model: {
-        Row: {
-          created_at: string
-          file_name: string | null
-          id: number
-          mime_type: string | null
-          projects_id: number | null
-          size: number | null
-        }
-        Insert: {
-          created_at?: string
-          file_name?: string | null
-          id?: number
-          mime_type?: string | null
-          projects_id?: number | null
-          size?: number | null
-        }
-        Update: {
-          created_at?: string
-          file_name?: string | null
-          id?: number
-          mime_type?: string | null
-          projects_id?: number | null
-          size?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_Model_projects_id_fkey"
-            columns: ["projects_id"]
-            isOneToOne: false
-            referencedRelation: "Project"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       Process: {
         Row: {
           created_at: string
@@ -81,7 +46,7 @@ export type Database = {
           order: Database["public"]["Enums"]["orders"] | null
           project_id: number | null
           status: Database["public"]["Enums"]["process_status"] | null
-          userId: string | null
+          user_id: string | null
           uuid: string | null
         }
         Insert: {
@@ -93,7 +58,7 @@ export type Database = {
           order?: Database["public"]["Enums"]["orders"] | null
           project_id?: number | null
           status?: Database["public"]["Enums"]["process_status"] | null
-          userId?: string | null
+          user_id?: string | null
           uuid?: string | null
         }
         Update: {
@@ -105,7 +70,7 @@ export type Database = {
           order?: Database["public"]["Enums"]["orders"] | null
           project_id?: number | null
           status?: Database["public"]["Enums"]["process_status"] | null
-          userId?: string | null
+          user_id?: string | null
           uuid?: string | null
         }
         Relationships: [
@@ -124,7 +89,7 @@ export type Database = {
           created_at: string
           description: string | null
           file_location: string | null
-          files: Json | null
+          files: string[] | null
           id: number
           name: string | null
           status: string | null
@@ -135,7 +100,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           file_location?: string | null
-          files?: Json | null
+          files?: string[] | null
           id?: number
           name?: string | null
           status?: string | null
@@ -146,7 +111,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           file_location?: string | null
-          files?: Json | null
+          files?: string[] | null
           id?: number
           name?: string | null
           status?: string | null
@@ -204,12 +169,58 @@ export type Database = {
           },
         ]
       }
+      telegram_user: {
+        Row: {
+          created_at: string
+          first_name: string | null
+          id: number
+          language_code: string | null
+          type: string | null
+          updated_at: string | null
+          user_id: number | null
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          first_name?: string | null
+          id?: number
+          language_code?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: number | null
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          first_name?: string | null
+          id?: number
+          language_code?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: number | null
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      append_array: {
+        Args: {
+          new_element: string
+          id: number
+        }
+        Returns: undefined
+      }
+      remove_array: {
+        Args: {
+          new_element: string
+          id: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       details: "preview" | "reduced" | "medium" | "full" | "raw"

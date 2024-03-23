@@ -36,18 +36,18 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
         })()
     }
     return (
-        <div className="relative cursor-pointer p-4 flex flex-col bg-violet-300 rounded-xl shadow-xl" key={project.id}>
+        <div className="relative p-4 flex flex-col bg-gray-300 border border-x-2 border-y-2 border-violet-400 rounded-xl shadow-xl" key={project.id}>
             {confirm && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col p-2 items-center justify-center rounded-xl">
                     <div className="bg-white bg-opacity-90 p-4 rounded-lg">
                     <p className="text-center font-bold text-black">Sei sicuro di voler eliminare il progetto?</p>
                         
                     <div className="flex justify-between">
-                        <button className="bg-violet-500 text-white p-2 m-2 rounded-lg w-24"
+                        <button className="bg-violet-400 text-white p-2 m-2 rounded-lg w-24"
                             onClick={() => setConfirm(false)}>
-                            No
+                            Annulla
                         </button>
-                        <button className="bg-red-500 text-white p-2 m-2 rounded-lg w-24"
+                        <button className="bg-red-400 text-white p-2 m-2 rounded-lg w-24"
                             onClick={onDelete}>
                             🪣 Si
                         </button>
@@ -61,11 +61,11 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
                 {project.status}
             </span>
             <div className="flex justify-between">
-                <button className="bg-violet-500 text-white font-bold p-2 rounded-lg mt-auto hover:scale-110 transition duration-300 ease-in-out"
+                <button className="bg-green-400 text-white font-bold p-2 rounded-lg mt-auto hover:scale-110 transition duration-300 ease-in-out"
                     onClick={() => router.push(`/projects/${project.id}`)} >
                     🧐 Visualizza
                 </button>
-                <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg"
+                <button className="bg-red-400 hover:bg-red-600 text-white p-2 rounded-lg"
                     onClick={() => setConfirm(true)}>
                     🪣 Cancella
                 </button>
