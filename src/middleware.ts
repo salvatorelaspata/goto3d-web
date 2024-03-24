@@ -34,5 +34,6 @@ export const config = {
     '/projects/',
     '/catalogs/:path*',
     '/catalogs/',
+    '/viewer/:processid',
   ],
 }

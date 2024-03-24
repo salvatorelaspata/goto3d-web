@@ -36,7 +36,7 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
         })()
     }
     return (
-        <div className="relative p-4 flex flex-col bg-gray-300 border border-x-2 border-y-2 border-violet-400 rounded-xl shadow-xl" key={project.id}>
+        <div className="relative p-4 flex flex-col bg-white border border-x-2 border-y-2 border-violet-400 rounded-xl shadow-xl" key={project.id}>
             {confirm && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col p-2 items-center justify-center rounded-xl">
                     <div className="bg-white bg-opacity-90 p-4 rounded-lg">

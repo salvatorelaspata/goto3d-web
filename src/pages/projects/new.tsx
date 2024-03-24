@@ -1,9 +1,9 @@
 import Form from "@/components/forms/Form";
-import { FormProject } from "@/components/forms/FormProject";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
-import { filesToTable, formFields } from "@/utils/constants";
+import { sendToQueue } from "@/utils/amqpClient";
+import { formFields } from "@/utils/constants";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { GetServerSideProps } from "next";
@@ -13,6 +13,20 @@ const NewProject: React.FC = () => {
   const supabase = useSupabaseClient<Database>()
 
   const fields = formFields
+
+  const handleSendMessage = async (id: number) => {
+    const data = await fetch('/api/sendprocess', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id })
+    })
+    const json = await data.json()
+    console.log(json)
+    if(json.ok) toast.success('Process sent to queue')
+    else toast.error('Error sending process to queue')
+  };
 
   const onSubmit = async ({ name, description, files, detail, order, feature }: any) => {
 
@@ -55,6 +69,7 @@ const NewProject: React.FC = () => {
 
     toast.success('Process created')
     console.log('_dataProcess', _dataProcess)
+    handleSendMessage(_dataProcess.id);
   }
 
   const _sendFile = async (files: FileList, file_location: string, projectId: number) => {
@@ -75,7 +90,7 @@ const NewProject: React.FC = () => {
       
       const { data: d, error: e } = await supabase.rpc('append_array', {
         id: projectId,
-        new_element: file_location + 'images/' + files[i].name
+        new_element: files[i].name
       })
       console.log({ d, e })
       console.log('_dataStorage', _dataStorage, percentage)
@@ -87,7 +102,6 @@ const NewProject: React.FC = () => {
     <>
       <BaseLayout title="New Project">
         {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
-        {/* <FormProject onSubmit={onSubmit} /> */}
       </BaseLayout>
     </>
   );
