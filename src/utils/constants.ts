@@ -6,12 +6,12 @@ type itemHeaderProps = {
 
 export const privateRoutes: itemHeaderProps[] = [
   {
-    name: 'Progetti',
-    url: '/projects',
-  },
-  {
     name: 'Cataloghi (Coming Soon)',
     url: '',
+  },
+  {
+    name: 'Progetti',
+    url: '/projects',
   },
   {
     name: 'Profile',

@@ -15,9 +15,9 @@ interface BaseLayoutProps {
 const BaseLayout: React.FC<BaseLayoutProps> = ({ title, children, withFooter = false, fullScreen = true }) => {
   const { loading } = useStore()
   return (
-    <div className={`flex flex-col p-4 ${fullScreen && 'min-h-screen'}`}>
+    <div className={`flex flex-col ${fullScreen && 'min-h-screen'}`}>
       <Header />
-      <main className='bg-gray-100 p-4 rounded-md'>
+      <main className='bg-gray-100 m-4 p-4 rounded-md'>
         {loading && <Loader />}
         <h1>
           <span className='text-3xl font-bold mb-2 text-gradient'>{title}</span>

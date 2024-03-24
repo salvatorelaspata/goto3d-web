@@ -15,7 +15,7 @@ export const Header = () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        setItemsHeader([...privateRoutes, ...publicRoutes])
+        setItemsHeader([...publicRoutes,...privateRoutes])
         setUsername(`Benvenuto ${user.user_metadata.name || user.email}`)
         setSelected(router.pathname)
       }
@@ -53,7 +53,7 @@ export const Header = () => {
       <div>
 
         <React.Suspense fallback={<p>Loading...</p>}>
-          <div className="flex justify-between">
+          <div className="flex justify-between m-2">
             <Breadcrumbs />
             <a
               className={`flex items-center px-4 -mb-1 border-b-2 dark:border-transparent 

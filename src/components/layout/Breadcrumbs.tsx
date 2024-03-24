@@ -14,7 +14,7 @@ export const Breadcrumbs: React.FC = () => {
         const route = routes.find((r) => r.url === url)
         return route ? (
             <li key={i} className='flex items-center m-0'>
-                <a href={route.url} className='text-blue-500'>{route.name}</a>
+                <a href={route.url} className='text-violet-400'>{route.name}</a>
                 {i < crumbs.length - 1 && <span className='mx-2'>{`/`}</span>}
             </li>
         ) : url.includes('new') ? (<li key={'new'}>New</li>) : (
