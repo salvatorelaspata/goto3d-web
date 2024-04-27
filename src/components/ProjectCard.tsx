@@ -43,7 +43,7 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
                     <p className="text-center font-bold text-black">Sei sicuro di voler eliminare il progetto?</p>
                         
                     <div className="flex justify-between">
-                        <button className="bg-violet-400 text-white p-2 m-2 rounded-lg w-24"
+                        <button className="bg-black text-white p-2 m-2 rounded-lg w-24"
                             onClick={() => setConfirm(false)}>
                             Annulla
                         </button>
@@ -61,13 +61,13 @@ export const ProjectCard: React.FC<Database['public']['Tables']['Project']['Row'
                 {project.status}
             </span>
             <div className="flex justify-between">
-                <button className="bg-green-400 text-white font-bold p-2 rounded-lg mt-auto hover:scale-110 transition duration-300 ease-in-out"
-                    onClick={() => router.push(`/projects/${project.id}`)} >
-                    🧐 Visualizza
-                </button>
                 <button className="bg-red-400 hover:bg-red-600 text-white p-2 rounded-lg"
                     onClick={() => setConfirm(true)}>
                     🪣 Cancella
+                </button>
+                <button className="bg-green-400 text-white font-bold p-2 rounded-lg mt-auto hover:scale-110 transition duration-300 ease-in-out"
+                    onClick={() => router.push(`/projects/${project.id}`)} >
+                    🧐 Visualizza
                 </button>
             </div>
         </div>

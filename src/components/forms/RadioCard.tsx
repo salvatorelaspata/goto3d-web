@@ -18,7 +18,7 @@ export const RadioCard:React.FC<RadioCardInputProps> = ({ id, name, disabled, on
         <>
         <input disabled={disabled} type="radio" id={`${id}--${value}`} name={`${name}`} value={value} className="hidden peer" 
                             onChange={(e)=>{onChange(e);setSelected(value)}} checked={selected===value}/>
-        <label htmlFor={`${id}--${value}`} className={`${selected === value && checked} shadow-md ${!disabled && 'hover:scale-105'} transition duration-300 ease-in-out justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg ${!disabled && 'cursor-pointer dark:hover:text-gray-300 hover:bg-violet-100'} dark:border-gray-700 hover:text-gray-600 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700`}>
+        <label htmlFor={`${id}--${value}`} className={`${selected === value && checked} shadow-md ${!disabled && 'hover:scale-105'} transition duration-300 ease-in-out justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg ${!disabled && 'cursor-pointer hover:bg-violet-100'} hover:text-gray-600`}>
             <div className="block">
                 <div className="w-full flex flex-row justify-between">
                     <div className="w-full text-md font-semibold">{label}</div>

@@ -24,7 +24,7 @@ const Home: React.FC<HomeProps> = ({ user, siteUrl }) => {
     })
   }, [])
   return (
-    <BaseLayout title="" withFooter={true}>
+    <BaseLayout title="Welcome" withFooter={true}>
       <p className={styles.instructions}>
         <span><strong className="text-3xl">Config.Reality</strong> ti permette di creare il tuo modello 3d partendo da delle foto</span>
         <br />
@@ -33,41 +33,109 @@ const Home: React.FC<HomeProps> = ({ user, siteUrl }) => {
         <strong>Genera</strong> il tuo modello <strong>3D</strong> e <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
         <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o <code>pubblico</code> per condividerlo con chi hai voglia.
       </p>
-      <ul role="list">
+      <div className="flex justify-between">
         <Card
           href="#"
           title="Crea il Progetto"
           body="🫥"
-          icon="1 ➡️"
+          icon="⒈"
         />
         <Card
           href="#"
           title="Genera il Modello"
           body="♺"
-          icon="2 ➡️"
+          icon="⒉"
         />
         <Card
           href="#"
           title="Crea il catalogo"
           body="📦"
-          icon="3 ➡️"
+          icon="⒊"
         />
         <Card
           href="#"
           title="Condividi il catalogo"
-          body="❤️"
-          icon="4 ➡️"
+          body="❤️" 
+          icon="⒋"
         />
-      </ul>
+      </div>
       {!user ? (
-        <div className='p-10'>
           <Auth
+            localization={{
+              lang: 'en',
+              variables: {
+                sign_up: {
+                  email_label: "Email",
+                  password_label: "Password",
+                  email_input_placeholder: "Inserisci la tua email",
+                  password_input_placeholder: "Inserisci la tua password",
+                  button_label: "Registrati",
+                  loading_button_label: "Registrando...",
+                  social_provider_text: "Registrati con",
+                  link_text: "Non hai un account? Registrati",
+                  confirmation_text: "Ti abbiamo inviato un'email per confermare la tua registrazione. Controlla la tua casella di posta elettronica."
+                },
+                sign_in: {
+                  email_label: "Email",
+                  password_label: "Password",
+                  email_input_placeholder: "Inserisci la tua email",
+                  password_input_placeholder: "Inserisci la tua password",
+                  button_label: "Accedi",
+                  loading_button_label: "Accesso in corso...",
+                  social_provider_text: "Accedi con",
+                  link_text: "Hai già un account? Accedi",
+                  
+                },
+                forgotten_password: {
+                  email_label: "Email",
+                  password_label: "Password",
+                  email_input_placeholder: "Inserisci la tua email per resettare la password",
+                  button_label: "Invia istruzioni di reset",
+                  loading_button_label: "Invio in corso...",
+                  link_text: "Hai dimenticato la password? Resetta la tua password",
+                },
+                update_password: {
+                  password_label: "Nuova password",
+                  password_input_placeholder: "Inserisci la tua nuova password",
+                  button_label: "Aggiorna password",
+                  loading_button_label: "Aggiornamento in corso...",
+                }
+              }
+            }}
             redirectTo={siteUrl}
-            appearance={{ theme: ThemeSupa }}
+            appearance={{
+              theme: ThemeSupa,
+              style: {
+                button: {
+                  borderRadius: "20px",
+                  borderColor: 'rgba(0,0,0,0)',
+                },
+              },
+              variables: {
+                default: {
+                  colors: {
+                    brand: 'rgb(139, 92, 246)',
+                    brandAccent: `rgb(167, 139, 250)`,
+                    anchorTextColor: 'rgb(139, 92, 246)',
+                    inputBorder: 'rgb(139, 92, 246)',
+                    inputLabelText: 'rgb(139, 92, 246)',
+                    inputPlaceholder: 'rgb(139, 92, 246)',
+                    inputText: 'rgb(139, 92, 246)',
+                    anchorTextHoverColor: 'rgb(167, 139, 250)',
+                    messageText: 'rgb(139, 92, 246)',
+                    dividerBackground: 'rgb(139, 92, 246)',
+                    brandButtonText: 'white',
+                    defaultButtonBorder: 'rgb(139, 92, 246)',
+                    inputBackground: 'rgba(139, 92, 246, 0.1)',
+                    inputBorderFocus: 'rgb(167, 139, 250)',
+                    inputBorderHover: 'rgb(167, 139, 250)',
+                  },
+                },
+              },
+            }}
             supabaseClient={supabaseClient}
             providers={['google']}
           />
-        </div>
       ) : null}
     </BaseLayout>
   )
