@@ -28,25 +28,25 @@ export const publicRoutes: itemHeaderProps[] = [
 
 export const formFields: FieldProps[] = [
   {
-    id: 'formName', // uuidv4(), 
+    id: 'formName',
     label: 'Name',
     name: 'name',
     type: 'text'
   }, {
-    id: 'formDescription', // uuidv4(), 
+    id: 'formDescription',
     label: 'Description',
     name: 'description',
     type: 'textarea'
   },
   {
-    id: 'formFiles', // uuidv4(),
+    id: 'formFiles',
     label: 'Files',
     name: 'files',
     type: 'file',
     multiple: true
   },
   {
-    id: 'formDetail', // uuidv4(),
+    id: 'formDetail',
     label: 'Details',
     name: 'detail',
     type: 'radio',
@@ -61,7 +61,7 @@ export const formFields: FieldProps[] = [
     ]
   },
   {
-    id: 'formOrder', // uuidv4(),
+    id: 'formOrder',
     label: 'Orders',
     name: 'order',
     type: 'radio',
@@ -73,7 +73,7 @@ export const formFields: FieldProps[] = [
     ]
   },
   {
-    id: 'formFeature', // uuidv4(),
+    id: 'formFeature',
     label: 'Features',
     name: 'feature',
     type: 'radio',

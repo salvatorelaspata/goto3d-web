@@ -3,8 +3,9 @@ import Link from 'next/link'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { Database } from '@/types/supabase'
 import BaseLayout from '@/components/layout/BaseLayout'
-import {Grid} from '@/components/ui/Grid'
+import { Grid } from '@/components/ui/Grid'
 import { ProjectCard } from '@/components/ProjectCard'
+import { useRouter } from 'next/router'
 
 interface ProjectProps {
   projects: Database['public']['Tables']['Project']['Row'][],
@@ -12,17 +13,19 @@ interface ProjectProps {
 }
 
 const Project: React.FC<ProjectProps> = ({ projects, count }) => {
+  const router = useRouter()
   return (
     <BaseLayout title={`Project (${count})`}>
       <div className='flex flex-col'>
-        <Link className='w-40 text-center p-4 my-4 text-xl bg-violet-500 hover:bg-violet-700 text-white font-bold rounded'
-            href="/projects/new" >
-          New Project
-        </Link>
-          <Grid cols={4}>
-            {projects && projects.map((project) => (
-              <ProjectCard key={project.id} {...project} />
-            ))}
+        <Grid cols={4}>
+          <div className="relative p-4 flex flex-col border border-x-2 border-y-2 bg-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out"
+            onClick={() => router.push(`/projects/new`)}>
+            <h2 className="text-white text-xl font-bold">+ New Project</h2>
+            <p className="text-sm text-white mb-4">Create a new project</p>
+          </div>
+          {projects && projects.map((project) => (
+            <ProjectCard key={project.id} {...project} />
+          ))}
         </Grid>
       </div>
     </BaseLayout>

@@ -4,8 +4,6 @@ import { Database } from "@/types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
-import { v4 as uuidv4 } from 'uuid';
 
 interface NewCatalogProps {
   fields: FieldProps[]
@@ -56,16 +54,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const fields: FieldProps[] = [
     {
-      id: uuidv4(), label: 'Title',
+      id: 'title', label: 'Title',
       name: 'title',
       type: 'text'
     }, {
-      id: uuidv4(), label: 'Description',
+      id: 'description', label: 'Description',
       name: 'description',
       type: 'textarea'
     },
     {
-      id: uuidv4(), label: 'Public',
+      id: 'public', label: 'Public',
       name: 'public',
       type: 'select',
       options: [
@@ -75,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       ]
     },
     {
-      id: uuidv4(),
+      id: 'projects',
       label: 'Projects',
       name: 'projects',
       type: 'select',

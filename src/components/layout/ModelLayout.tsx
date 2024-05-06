@@ -10,8 +10,8 @@ export const ModelLayout: React.FC<ModelLayoutProp> = ({ children }) => {
         <header className="bg-violet-400 m-4 text-white">
             <div className="flex justify-between">
                 <h1 className="text-3xl font-semibold">Viewer 3D</h1>
-                <button className="bg-white text-violet-400 p-2 rounded-md" onClick={()=>{
-                }}>Change background</button>
+                {/* <button className="bg-white text-violet-400 p-2 rounded-md" onClick={()=>{
+                }}>Change background</button> */}
             </div>
         </header>
         <main>

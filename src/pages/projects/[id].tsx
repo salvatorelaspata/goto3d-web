@@ -26,7 +26,7 @@ const Project: React.FC<{
   return (
     <>
       <BaseLayout title={`Project ${id}`} fullScreen={false}>
-        {fields.length && <Form disabled={true} fields={fields} onSubmit={onSubmit} _data={{..._project,..._process}}/>}
+        {fields.length && <Form fields={fields} onSubmit={onSubmit} _data={{..._project,..._process}}/>}
       </BaseLayout>
       <ModelLayout>
         {objUrl && <Viewer objUrl={objUrl} textureUrl={textureUrl} backgroundUrl={backgroundUrl} />}
