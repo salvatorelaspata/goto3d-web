@@ -1,34 +1,42 @@
 import Form, { FieldProps } from "@/components/forms/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { Database } from "@/types/supabase";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { GetServerSideProps } from "next";
 
 interface NewCatalogProps {
-  fields: FieldProps[]
+  fields: FieldProps[];
 }
 
 const NewCatalog: React.FC<NewCatalogProps> = ({ fields }) => {
-  const supabase = useSupabaseClient<Database>()
-  const onSubmit = async ({ title, description, public: _public, projects }: any) => {
+  const supabase = useSupabaseClient<Database>();
+  const onSubmit = async ({
+    title,
+    description,
+    public: _public,
+    projects,
+  }: any) => {
     // save project
-    const { data: _dataCatalog, error: _errorCatalog } = await supabase.from('Catalog')
-      .insert({ title, description, public: _public === 'public' })
-      .select('id')
-      .single()
+    const { data: _dataCatalog, error: _errorCatalog } = await supabase
+      .from("Catalog")
+      .insert({ title, description, public: _public === "public" })
+      .select("id")
+      .single();
     if (_errorCatalog) {
-      console.log(_errorCatalog)
-      return
+      console.log(_errorCatalog);
+      return;
     }
-    const { data: _dataCatalogUpdate, error: _errorCatalogUpdate } = await supabase.from('Project')
-      .update({ catalog_id: _dataCatalog.id })
-      .eq('id', projects);
+    const { data: _dataCatalogUpdate, error: _errorCatalogUpdate } =
+      await supabase
+        .from("Project")
+        .update({ catalog_id: _dataCatalog.id })
+        .eq("id", projects);
     if (_errorCatalogUpdate) {
-      console.log(_errorCatalogUpdate)
-      return
+      console.log(_errorCatalogUpdate);
+      return;
     }
-  }
+  };
   return (
     <BaseLayout title="New Catalog">
       <Form fields={fields} onSubmit={onSubmit} />
@@ -36,55 +44,63 @@ const NewCatalog: React.FC<NewCatalogProps> = ({ fields }) => {
   );
 };
 
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const supabase = createServerSupabaseClient(context)
-  const { data: projects, error, count } = await supabase
-    .from('Project')
-    .select('*', { count: 'exact' })
-    .order('created_at', { ascending: false })
+  const supabase = createPagesServerClient(context);
+  const {
+    data: projects,
+    error,
+    count,
+  } = await supabase
+    .from("Project")
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false });
 
-  const mcProject = projects?.map((project) => {
-    return {
-      label: project.name,
-      value: project.id
-    }
-  }) || []
-  mcProject.unshift({ label: 'Select Projects', value: '' })
+  const mcProject =
+    projects?.map((project) => {
+      return {
+        label: project.name,
+        value: project.id,
+      };
+    }) || [];
+  mcProject.unshift({ label: "Select Projects", value: "" });
 
   const fields: FieldProps[] = [
     {
-      id: 'title', label: 'Title',
-      name: 'title',
-      type: 'text'
-    }, {
-      id: 'description', label: 'Description',
-      name: 'description',
-      type: 'textarea'
+      id: "title",
+      label: "Title",
+      name: "title",
+      type: "text",
     },
     {
-      id: 'public', label: 'Public',
-      name: 'public',
-      type: 'select',
+      id: "description",
+      label: "Description",
+      name: "description",
+      type: "textarea",
+    },
+    {
+      id: "public",
+      label: "Public",
+      name: "public",
+      type: "select",
       options: [
-        { label: 'Select Public', value: '' },
-        { label: 'Public', value: 'public' },
-        { label: 'Private', value: 'private' }
-      ]
+        { label: "Select Public", value: "" },
+        { label: "Public", value: "public" },
+        { label: "Private", value: "private" },
+      ],
     },
     {
-      id: 'projects',
-      label: 'Projects',
-      name: 'projects',
-      type: 'select',
+      id: "projects",
+      label: "Projects",
+      name: "projects",
+      type: "select",
       options: mcProject,
-      multiple: true
-    }
-  ]
+      multiple: true,
+    },
+  ];
   return {
     props: {
-      fields
-    }
-  }
-}
+      fields,
+    },
+  };
+};
 export default NewCatalog;
