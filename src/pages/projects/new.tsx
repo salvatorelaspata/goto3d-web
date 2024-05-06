@@ -1,8 +1,8 @@
+import { Wizard } from "@/components/Wizard";
 import Form from "@/components/forms/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { actions } from "@/store/main";
 import { Database } from "@/types/supabase";
-import { sendToQueue } from "@/utils/amqpClient";
 import { formFields } from "@/utils/constants";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -134,7 +134,8 @@ const NewProject: React.FC = () => {
   return (
     <>
       <BaseLayout title="New Project">
-        {fields.length && <Form fields={fields} onSubmit={onSubmit} />}
+        {/* {fields.length && <Form fields={fields} onSubmit={onSubmit} />} */}
+        <Wizard />
       </BaseLayout>
     </>
   );

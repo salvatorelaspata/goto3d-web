@@ -15,7 +15,7 @@ interface ProjectProps {
 const Project: React.FC<ProjectProps> = ({ projects, count }) => {
   const router = useRouter();
   return (
-    <BaseLayout title={`Project (${count})`}>
+    <BaseLayout title={`Project`} subtitle={`${count}`}>
       <div className="flex flex-col">
         <Grid cols={4}>
           <div
