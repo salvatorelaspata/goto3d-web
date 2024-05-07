@@ -27,7 +27,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({
       <main className="bg-gray-100 m-4 p-4 rounded-md">
         {loading && <Loader />}
         <div className="flex">
-          <h1 className="text-3xl font-bold mb-8 text-gradient">{title}</h1>
+          <h1 className="text-3xl font-bold mb-4 text-gradient">{title}</h1>
           {subtitle && (
             <p className="text-sm text-gray-800 mx-2">({subtitle})</p>
           )}

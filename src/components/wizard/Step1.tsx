@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { Input } from "../forms/Input";
 import { Textarea } from "../forms/Textarea";
-import { WizardStep, divider, mandatory, next, nextText } from "./WizardSteps";
+import { WizardStep, divider, mandatory, nextText } from "./WizardSteps";
+import { actions, useStore } from "@/store/wizardStore";
 
 export const Step1: React.FC = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const { name, description } = useStore();
+  const { setName, setDescription } = actions;
   const form = (
     <div>
-      <form className="flex flex-col">
+      <div className="flex flex-col">
         <Input
           id="name"
           disabled={false}
@@ -28,8 +28,7 @@ export const Step1: React.FC = () => {
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
-        {next}
-      </form>
+      </div>
 
       {divider}
 

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { InputFile } from "../forms/InputFile";
-import { WizardStep, divider, mandatory, next, nextText } from "./WizardSteps";
+import { WizardStep, divider, mandatory, nextText } from "./WizardSteps";
+import { actions, useStore } from "@/store/wizardStore";
 
 export const Step2: React.FC = () => {
-  const [files, setFiles] = useState<FileList | null>(null);
+  const { files } = useStore();
+  const { setFiles, nextStep } = actions;
   const form = (
     <div>
-      <form className="flex flex-col">
+      <div className="flex flex-col">
         {/* SOSTITUIRE CON https://tailwindcomponents.com/component/responsive-multi-file-upload-with-drop-on-and-preview-3 */}
         <InputFile
           id={"files"}
@@ -17,8 +19,7 @@ export const Step2: React.FC = () => {
           onFileChange={(e) => setFiles(e.currentTarget.files)}
           type={"file"}
         />
-        {next}
-      </form>
+      </div>
 
       {divider}
 
