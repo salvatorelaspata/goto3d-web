@@ -1,4 +1,4 @@
-import { Wizard } from "@/components/Wizard";
+import { Wizard } from "@/components/wizard/Wizard";
 import Form from "@/components/forms/Form";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { actions } from "@/store/main";
