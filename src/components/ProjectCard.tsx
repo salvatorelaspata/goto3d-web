@@ -18,9 +18,19 @@ const statusColor = (status: string) => {
 };
 
 export const ProjectCard: React.FC<
-  Partial<Database["public"]["Tables"]["Project"]["Row"]>
-> = ({ id, name, description, status }) => {
+  Partial<Database["public"]["Tables"]["Project"]["Row"]> & { isNew?: boolean }
+> = ({ id, name, description, status, isNew = false }) => {
   const router = useRouter();
+  if (isNew)
+    return (
+      <div
+        className="p-4 flex flex-col border border-x-2 border-y-2 bg-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+        onClick={() => router.push(`/projects/new`)}
+      >
+        <h2 className="text-white text-xl font-bold">+ Nuovo Progetto</h2>
+        <p className="text-sm text-white mb-4">Crea un nuovo Progetto</p>
+      </div>
+    );
   return (
     <div
       key={id}

@@ -16,15 +16,9 @@ const Project: React.FC<ProjectProps> = ({ projects, count }) => {
   const router = useRouter();
   return (
     <BaseLayout title={`Project`} subtitle={`${count}`}>
-      <div className="flex flex-col">
+      <div className="flex flex-col h-full dark:bg-gray-800 dark:text-gray-100 shadow-md rounded-xl px-4 py-8">
         <Grid cols={4}>
-          <div
-            className="relative p-4 flex flex-col border border-x-2 border-y-2 bg-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
-            onClick={() => router.push(`/projects/new`)}
-          >
-            <h2 className="text-white text-xl font-bold">+ New Project</h2>
-            <p className="text-sm text-white mb-4">Create a new project</p>
-          </div>
+          <ProjectCard isNew />
           {projects &&
             projects.map((project) => (
               <ProjectCard key={project.id} {...project} />

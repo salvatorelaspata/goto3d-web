@@ -40,9 +40,20 @@ const state = proxy<ConfigState>({
 export const useStore = () => useSnapshot(state);
 
 export const actions = {
-  nextStep: () => (state.currentStep += 1),
-  prevStep: () => (state.currentStep -= 1),
-  resetStep: () => (state.currentStep = 1),
+  nextStep: () => {
+    if (state.currentStep === 4) return;
+    return (state.currentStep += 1);
+  },
+  prevStep: () => {
+    if (state.currentStep === 0) return;
+    return (state.currentStep -= 1);
+  },
+  goStep: (step: number) => {
+    return (state.currentStep = step);
+  },
+  resetStep: () => {
+    return (state.currentStep = 0);
+  },
 
   // step1
   setName: (name: string) => (state.name = name),

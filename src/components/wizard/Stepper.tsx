@@ -4,7 +4,7 @@ interface StepperProps {
   currentStep: number;
 }
 export const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
-  const { prevStep } = actions;
+  const { goStep } = actions;
   const isCurrent = (step: number) => {
     if (step === currentStep) {
       return [
@@ -26,24 +26,30 @@ export const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
 
   const steps = [
     {
+      step: 0,
       title: "Nome Progetto",
     },
     {
+      step: 1,
       title: "Carica le Immagini",
     },
     {
+      step: 2,
       title: "Configura i Dettagli",
     },
     {
+      step: 3,
       title: "Completa il Progetto",
     },
   ];
 
-  const Step = ({ title, step }: any) => {
+  const Step = ({ title, step }: { title: string; step: number }) => {
     return (
       <li
         className={`w-full flex items-center sm:justify-center ${isCurrent(step)[0]} space-x-2.5 rtl:space-x-reverse hover:cursor-pointer`}
-        onClick={prevStep}
+        onClick={() => {
+          if (step < currentStep) goStep(step);
+        }}
       >
         <span
           className={`flex items-center justify-center w-8 h-8 border rounded-full shrink-0 ${isCurrent(step)[1]}`}
@@ -57,7 +63,7 @@ export const Stepper: React.FC<StepperProps> = ({ currentStep }) => {
   };
 
   return (
-    <ol className="w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse dark:bg-gray-800 dark:text-gray-100 p-8 rounded-xl">
+    <ol className="w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse dark:bg-gray-800 dark:text-gray-100 p-4 rounded-xl">
       {steps.map((step, index) => (
         <Step key={index} title={step.title} step={index + 1} />
       ))}

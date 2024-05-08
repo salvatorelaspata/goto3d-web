@@ -14,12 +14,13 @@ const Dashboard: React.FC<Props> = ({ projects, catalogs }) => {
   const router = useRouter();
 
   return (
-    <BaseLayout title="">
-      <div className="flex flex-col bg-gray-200 shadow-md rounded-md my-4 p-4">
+    <BaseLayout title="Dashboard">
+      <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
         {/* Griglia dei progetti */}
         <h2 className="text-3xl font-bold m-2">Progetti</h2>
         {projects && projects.length !== 0 && (
-          <div className="flex overflow-x-scroll">
+          <div className="flex overflow-auto">
+            <DashboardCard isNew />
             {projects.map((project) => (
               <DashboardCard
                 key={project.id}
@@ -33,8 +34,9 @@ const Dashboard: React.FC<Props> = ({ projects, catalogs }) => {
         )}
       </div>
 
-      {/* Griglia dei cataloghi */}
-      <div className="flex flex-col bg-gray-200 shadow-md rounded-md my-4 p-4">
+      <div className="h-4" />
+
+      <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
         <h2 className="text-3xl font-bold m-2">Cataloghi (Coming Soon)</h2>
         {catalogs && catalogs.length !== 0 && (
           <div className="flex overflow-x-scroll">

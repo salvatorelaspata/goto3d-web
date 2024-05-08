@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { InputFile } from "../forms/InputFile";
-import { WizardStep, divider, mandatory, nextText } from "./WizardSteps";
+import { WizardStep, nextText } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
 
 export const Step2: React.FC = () => {
   const { files } = useStore();
-  const { setFiles, nextStep } = actions;
+  const { setFiles } = actions;
   const form = (
     <div>
       <div className="flex flex-col">
@@ -20,10 +19,6 @@ export const Step2: React.FC = () => {
           type={"file"}
         />
       </div>
-
-      {divider}
-
-      {mandatory}
     </div>
   );
 
@@ -39,6 +34,15 @@ export const Step2: React.FC = () => {
           dalla finestra di dialogo.
         </p>
         {nextText}
+
+        <h1>
+          {" "}
+          un bel modello ispirato a{" "}
+          <a href="https://developer.apple.com/documentation/realitykit/capturing-photographs-for-realitykit-object-capture/">
+            questo
+          </a>{" "}
+          così da far evincere come effettuare le foto al modello
+        </h1>
       </div>
     </div>
   );

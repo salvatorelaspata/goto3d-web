@@ -29,10 +29,6 @@ export const Step1: React.FC = () => {
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
       </div>
-
-      {divider}
-
-      {mandatory}
     </div>
   );
 
