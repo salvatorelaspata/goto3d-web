@@ -1,5 +1,5 @@
 import { FieldProps } from "@/components/forms/Form";
-type itemHeaderProps = {
+export type itemHeaderProps = {
   name: string;
   url: string;
 };

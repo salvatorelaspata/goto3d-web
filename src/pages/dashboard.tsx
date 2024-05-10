@@ -17,7 +17,7 @@ const Dashboard: React.FC<Props> = ({ projects, catalogs }) => {
     <BaseLayout title="Dashboard">
       <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
         {/* Griglia dei progetti */}
-        <h2 className="text-3xl font-bold m-2">Progetti</h2>
+        <h2 className="text-3xl font-bold">Progetti</h2>
         {projects && projects.length !== 0 && (
           <div className="flex overflow-auto">
             <DashboardCard isNew />
@@ -37,9 +37,10 @@ const Dashboard: React.FC<Props> = ({ projects, catalogs }) => {
       <div className="h-4" />
 
       <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
-        <h2 className="text-3xl font-bold m-2">Cataloghi (Coming Soon)</h2>
+        <h2 className="text-3xl font-bold">Cataloghi (Coming Soon...)</h2>
         {catalogs && catalogs.length !== 0 && (
           <div className="flex overflow-x-scroll">
+            <DashboardCard isNew isProject={false} />
             {catalogs.map((catalog) => (
               <DashboardCard
                 key={catalog.id}

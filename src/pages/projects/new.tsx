@@ -133,9 +133,15 @@ const NewProject: React.FC = () => {
 
   return (
     <>
-      <BaseLayout title="New Project" fullScreen={true}>
-        {/* {fields.length && <Form fields={fields} onSubmit={onSubmit} />} */}
+      {/* {fields.length && <Form fields={fields} onSubmit={onSubmit} />} */}
+      {/* <BaseLayout title="New Project" fullScreen={true}>
         <Wizard />
+      </BaseLayout> */}
+
+      <BaseLayout title={`New Project`}>
+        <div className="flex flex-col h-full w-full dark:bg-gray-800 dark:text-gray-100 shadow-md rounded-xl">
+          <Wizard />
+        </div>
       </BaseLayout>
     </>
   );

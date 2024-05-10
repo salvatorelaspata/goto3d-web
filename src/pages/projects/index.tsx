@@ -3,7 +3,7 @@ import Link from "next/link";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 import BaseLayout from "@/components/layout/BaseLayout";
-import { Grid } from "@/components/ui/Grid";
+
 import { ProjectCard } from "@/components/ProjectCard";
 import { useRouter } from "next/router";
 
@@ -17,13 +17,16 @@ const Project: React.FC<ProjectProps> = ({ projects, count }) => {
   return (
     <BaseLayout title={`Project`} subtitle={`${count}`}>
       <div className="flex flex-col h-full dark:bg-gray-800 dark:text-gray-100 shadow-md rounded-xl px-4 py-8">
-        <Grid cols={4}>
+        <div
+          className={`grid grid-cols-1 gap-4
+            md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2`}
+        >
           <ProjectCard isNew />
           {projects &&
             projects.map((project) => (
               <ProjectCard key={project.id} {...project} />
             ))}
-        </Grid>
+        </div>
       </div>
     </BaseLayout>
   );

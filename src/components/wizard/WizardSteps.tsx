@@ -1,29 +1,44 @@
+import { actions, useStore } from "@/store/wizardStore";
+import { Stepper } from "./Stepper";
+
 interface WizardStepProps {
   form: JSX.Element;
   spiegone: JSX.Element;
 }
 
 export const WizardStep: React.FC<WizardStepProps> = ({ form, spiegone }) => {
+  const { nextStep } = actions;
   return (
-    // <div className="w-full dark:bg-gray-800 dark:text-gray-100 rounded-xl my-4 p-4">
-    <div className="grid grid-cols-1 lg:grid-cols-3">
-      <div className="col-span-2 pr-4">{form}</div>
-      <div className="p-5">{spiegone}</div>
-    </div>
-    // </div>
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-3 h-full">
+        <div className="col-span-2 p-4">
+          <Stepper />
+          {form}
+          {divider}
+          {mandatory}
+          <button
+            className="w-full bg-violet-600 text-white p-2 rounded-md mt-4"
+            onClick={nextStep}
+          >
+            Continua {"≫"}
+          </button>
+        </div>
+        <div>{spiegone}</div>
+      </div>
+    </>
   );
 };
 
-export const mandatory = (
-  <p>
-    <span className="text-red-600 my-4">*</span>Campi obbligatori
-  </p>
-);
-
-export const nextText = (
+const mandatory = (
   <p className="py-4">
-    Premi il pulsante Continua per procedere al prossimo step
+    <span className="text-red-600 mx-1">*</span>Campi obbligatori
   </p>
 );
 
-export const divider = <hr className="bg-color-violet" />;
+const divider = <hr className="bg-color-violet" />;
+
+// const nextText = (
+//   <p className="py-4">
+//     Premi il pulsante Continua per procedere al prossimo step
+//   </p>
+// );

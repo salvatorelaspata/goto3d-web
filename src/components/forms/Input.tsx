@@ -13,8 +13,8 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
   return (
     <>
       <label htmlFor={id} className="mt-5 text-lg">
-        <span>{!required ?? "*"}</span>
         {label}
+        {required && <span className="text-red-600 mx-1">*</span>}
       </label>
       <input
         id={id}

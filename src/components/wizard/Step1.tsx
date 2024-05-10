@@ -1,19 +1,30 @@
+import { useEffect } from "react";
 import { Input } from "../forms/Input";
 import { Textarea } from "../forms/Textarea";
-import { WizardStep, divider, mandatory, nextText } from "./WizardSteps";
+import { Form } from "./Form";
+import { Legend } from "./Legend";
+import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
+import { gsap } from "gsap";
+import { Step } from "./Step";
 
 export const Step1: React.FC = () => {
   const { name, description } = useStore();
   const { setName, setDescription } = actions;
+
+  // animate form on mount and the spiegone
+  useEffect(() => {
+    gsap.from(".form", { opacity: 0, duration: 1, x: -100 });
+    gsap.from(".spiegone", { opacity: 0, duration: 1, x: 100 });
+  }, []);
   const form = (
     <div>
-      <div className="flex flex-col">
+      <Form>
         <Input
           id="name"
           disabled={false}
           required={true}
-          label="Nome del progetto"
+          label="Nome"
           name="name"
           type={"text"}
           value={name}
@@ -23,30 +34,27 @@ export const Step1: React.FC = () => {
         <Textarea
           id="description"
           disabled={false}
-          label="Descrizione del progetto (opzionale)"
+          label="Descrizione (opzionale)"
           name="description"
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
         />
-      </div>
+      </Form>
     </div>
   );
 
   const spiegone = (
-    <div>
-      <img src="" />
+    <Legend title="Nome Progetto" step={1}>
       <div className="flex flex-col">
-        <p className="text-sm">STEP 1</p>
-        <h1 className="text-xl">Nome del progetto</h1>
+        <img src="" />
         <p className="py-4">
           Il primo passo per creare un nuovo progetto è inserire il nome.
         </p>
         <p className="py-4">
           Puoi scegliere di impostare una descrizione al tuo progetto.
         </p>
-        {nextText}
       </div>
-    </div>
+    </Legend>
   );
 
   return <WizardStep form={form} spiegone={spiegone} />;
