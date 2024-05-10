@@ -39,9 +39,17 @@ const state = proxy<ConfigState>({
 
 export const useStore = () => useSnapshot(state);
 
+const checks = [
+  () => state.name.length > 0,
+  () => state.files.length > 0,
+  () => state.detail.length > 0 && state.order.length > 0,
+  () => true, // state.status.length > 0,
+];
+
 export const actions = {
   nextStep: () => {
     if (state.currentStep === 4) return;
+    if (!checks[state.currentStep - 1]()) return;
     return (state.currentStep += 1);
   },
   prevStep: () => {

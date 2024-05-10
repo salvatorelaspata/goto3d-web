@@ -1,50 +1,33 @@
+import { ImagesUpload } from "../forms/ImagesUpload";
 import { InputFile } from "../forms/InputFile";
-import { WizardStep, nextText } from "./WizardSteps";
+import { Form } from "./Form";
+import { Legend } from "./Legend";
+import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
 
 export const Step2: React.FC = () => {
   const { files } = useStore();
   const { setFiles } = actions;
   const form = (
-    <div>
-      <div className="flex flex-col">
-        {/* SOSTITUIRE CON https://tailwindcomponents.com/component/responsive-multi-file-upload-with-drop-on-and-preview-3 */}
-        <InputFile
-          id={"files"}
-          disabled={false}
-          label={"Carica immagini"}
-          multiple={true}
-          name={"files"}
-          onFileChange={(e) => setFiles(e.currentTarget.files)}
-          type={"file"}
-        />
+    <Form stretch={false}>
+      <div className="flex flex-col h-full">
+        <ImagesUpload />
       </div>
-    </div>
+    </Form>
   );
 
   const spiegone = (
-    <div>
-      <img src="" />
+    <Legend step={2}>
       <div className="flex flex-col">
-        <p className="text-sm">STEP 2</p>
-        <h1 className="text-xl">Carica immagini</h1>
-        <p className="py-4">Carica le immagini del progetto.</p>
+        <img src="" />
         <p className="py-4">
-          Puoi caricare più immagini contemporaneamente, selezionando più file
-          dalla finestra di dialogo.
+          Il primo passo per creare un nuovo progetto è inserire il nome.
         </p>
-        {nextText}
-
-        <h1>
-          {" "}
-          un bel modello ispirato a{" "}
-          <a href="https://developer.apple.com/documentation/realitykit/capturing-photographs-for-realitykit-object-capture/">
-            questo
-          </a>{" "}
-          così da far evincere come effettuare le foto al modello
-        </h1>
+        <p className="py-4">
+          Puoi scegliere di impostare una descrizione al tuo progetto.
+        </p>
       </div>
-    </div>
+    </Legend>
   );
 
   return <WizardStep form={form} spiegone={spiegone} />;

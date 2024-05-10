@@ -1,11 +1,11 @@
 import { actions, useStore } from "@/store/wizardStore";
 
-interface StepProps {
+interface StepLegendProps {
   title: string;
   step: number;
 }
 
-export const Step: React.FC<StepProps> = ({ title, step }) => {
+export const StepLegend: React.FC<StepLegendProps> = ({ title, step }) => {
   const { currentStep } = useStore();
   const { goStep } = actions;
 
