@@ -8,15 +8,23 @@ import React, { DOMAttributes, lazy, useEffect } from "react";
 // { ssr: false })
 export const ViewerLoader: React.FC = () => {
   // const {objUrl,textureUrl,backgroundUrl} = useStore()
-
+  const [_width, setWidth] = React.useState(700);
+  const [_height, setHeight] = React.useState(700);
   useEffect(() => {
     import("node_modules/viewer-3d-lit-loader/dist/viewer-3d-lit-loader");
+
+    const parent = document.getElementsByClassName("shower");
+    if (parent) {
+      const { clientWidth, clientHeight } = parent[0];
+      setWidth(clientWidth);
+      setHeight(clientHeight);
+    }
   }, []);
 
   return (
     <viewer-3d-lit-loader
-      width="600"
-      height="600"
+      width={_width}
+      height={_height}
       bgTransparent="true"
     ></viewer-3d-lit-loader>
   );

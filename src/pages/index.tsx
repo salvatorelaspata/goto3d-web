@@ -23,7 +23,7 @@ const Home: React.FC<HomeProps> = ({ user, siteUrl }) => {
     });
   }, []);
   return (
-    <BaseLayout title="Benvenuto" withFooter={false} withHeader={false}>
+    <BaseLayout title="Benvenuto" withFooter={true} withHeader={false}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
         <div>
           <span>
@@ -76,7 +76,7 @@ const Home: React.FC<HomeProps> = ({ user, siteUrl }) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 dark:bg-gray-400 dark:text-gray-100 rounded-xl">
-        <div className="text-center  rounded-xl dark:bg-gray-600 dark:text-gray-100">
+        <div className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100">
           <ViewerLoader />
         </div>
         {!user ? (
