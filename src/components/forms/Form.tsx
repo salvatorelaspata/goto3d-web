@@ -10,7 +10,7 @@ export interface FieldProps {
   label: string;
   description?: string;
   name: string;
-  type: "text" | "textarea" | "select" | "file" | "radio";
+  type: "text" | "textarea" | "select" | "file" | "radio" | "password";
   disabled?: boolean;
   value?: string;
   icon?: string; // for radio

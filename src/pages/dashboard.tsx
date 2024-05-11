@@ -2,7 +2,6 @@ import { DashboardCard } from "@/components/DashboardCard";
 import BaseLayout from "@/components/layout/BaseLayout";
 import { Database } from "@/types/supabase";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 

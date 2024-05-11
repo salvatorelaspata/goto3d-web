@@ -1,24 +1,38 @@
-import { useEffect, useState } from 'react'
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
-import { Database } from '@/types/supabase'
-import BaseLayout from '@/components/layout/BaseLayout'
+import { Database } from "@/types/supabase";
+import BaseLayout from "@/components/layout/BaseLayout";
+import { User } from "@supabase/supabase-js";
+import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 
 interface Props {
-  user: any
+  user: User | null;
 }
 
-const Profile: React.FC<Props> = () => {
-  const supabase = useSupabaseClient<Database>()
-  const user = useUser()
-  useEffect(() => {
-    if (user) fetch(user.id)
-  }, [supabase, user])
+const Profile: React.FC<Props> = ({ user }) => {
   return (
-    <BaseLayout title='Profile'>
-      <p><span className='font-mono'>User:</span> {user?.email}</p>
-      <p><span className='font-mono'>Provider:</span> {user?.app_metadata.provider}</p>
+    <BaseLayout title="Profile">
+      <p>
+        <span className="font-mono">User:</span> {user?.email}
+      </p>
+      <p>
+        <span className="font-mono">Provider:</span>{" "}
+        {user?.app_metadata.provider}
+      </p>
     </BaseLayout>
-  )
-}
+  );
+};
 
-export default Profile
+export const getServerSideProps = async (context) => {
+  const supabase = createPagesServerClient(context);
+  const { data } = await supabase.auth.getUser(
+    context.req.cookies["sb_access_token"]
+  );
+  const user = data || null;
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
+
+export default Profile;

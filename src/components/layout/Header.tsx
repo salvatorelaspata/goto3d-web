@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
             <img
               src="/logo.png"
               alt="Logo"
-              className="h-12 dark:filter dark:invert"
+              className="h-10 dark:filter dark:invert"
             />
           </Link>
           <ul className="items-stretch space-x-3 flex">
@@ -73,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
         </div>
         <div>
           <React.Suspense fallback={<p>Loading...</p>}>
-            <div className="flex justify-between m-2">
+            <div className="flex justify-between mx-2">
               {/* <Breadcrumbs /> */}
               <div className="flex">
                 <p className="px-4">{title}</p>
