@@ -19,6 +19,8 @@ export interface ConfigState {
   feature: string;
 
   // step4
+  preview: boolean;
+
   status: string;
   catalog_id: number | null;
   project_id: number;
@@ -33,10 +35,13 @@ const state = proxy<ConfigState>({
   file_location: "",
   files: [],
   files_url: [],
-  detail: "",
-  order: "",
-  feature: "",
+  detail: "reduced",
+  order: "sequential",
+  feature: "normal",
   status: "draft",
+
+  preview: false,
+
   catalog_id: null,
   project_id: 0,
   process_id: 0,
@@ -47,7 +52,10 @@ export const useStore = () => useSnapshot(state);
 const checks = [
   () => state.name.length > 0,
   () => state.files.length > 0,
-  () => state.detail.length > 0 && state.order.length > 0,
+  () =>
+    state.detail.length > 0 &&
+    state.order.length > 0 &&
+    state.feature.length > 0,
   () => true, // state.status.length > 0,
 ];
 

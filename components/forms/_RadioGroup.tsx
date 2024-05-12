@@ -44,7 +44,6 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 description={description}
                 value={value}
                 selected={selected}
-                setSelected={setSelected}
                 onChange={onChange}
               />
             </li>

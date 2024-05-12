@@ -11,7 +11,7 @@ const composeGallery = (files: FileList) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const li = document.createElement("li");
-        li.className = "flex flex-col items-center m-2 w-64";
+        li.className = "flex flex-col items-center m-2 mx-auto w-64";
         const img = document.createElement("img");
         const base64 = e.target?.result as string;
         // check if the file is .png or .jpg
