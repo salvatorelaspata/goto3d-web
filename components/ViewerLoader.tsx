@@ -19,17 +19,16 @@ export const ViewerLoader: React.FC = () => {
       setWidth(clientWidth);
       setHeight(clientHeight);
     }
-  }, []);
 
-  // update size on resize
-  window.onresize = () => {
-    const parent = document.getElementsByClassName("shower");
-    if (parent) {
-      const { clientWidth, clientHeight } = parent[0];
-      setWidth(clientWidth);
-      setHeight(clientHeight);
-    }
-  };
+    window.onresize = () => {
+      const parent = document.getElementsByClassName("shower");
+      if (parent) {
+        const { clientWidth, clientHeight } = parent[0];
+        setWidth(clientWidth);
+        setHeight(clientHeight);
+      }
+    };
+  }, []);
 
   return (
     <viewer-3d-lit-loader

@@ -132,17 +132,8 @@ export default async function NewProject() {
   };
 
   return (
-    <>
-      {/* {fields.length && <Form fields={fields} onSubmit={onSubmit} />} */}
-      {/* <BaseLayout title="New Project" fullScreen={true}>
-        <Wizard />
-      </BaseLayout> */}
-
-      <>
-        <div className="flex flex-col h-full w-full dark:bg-gray-800 dark:text-gray-100 shadow-md rounded-xl">
-          <Wizard />
-        </div>
-      </>
-    </>
+    <div className="flex flex-col h-full w-full dark:bg-gray-800 dark:text-gray-100 shadow-md rounded-xl">
+      <Wizard />
+    </div>
   );
 }

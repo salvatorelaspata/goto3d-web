@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { RadioGroup } from "./RadioGroup";
-import { Select } from "./Select";
 import { Input } from "./Input";
-import { InputFile } from "./InputFile";
 import { Textarea } from "./Textarea";
+import { RadioGroup } from "./_RadioGroup";
+import { Select } from "./_Select";
+import { InputFile } from "./_InputFile";
 
 export interface FieldProps {
   id: string;

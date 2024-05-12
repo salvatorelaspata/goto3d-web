@@ -1,5 +1,4 @@
 import { actions, useStore } from "@/store/wizardStore";
-import { Input } from "../forms/Input";
 import { RadioCard } from "../forms/RadioCard";
 import { Form } from "./Form";
 import { Legend } from "./Legend";

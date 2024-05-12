@@ -1,7 +1,7 @@
 import { formFields } from "@/utils/constants";
 import { RadioCard } from "./RadioCard";
 import { ChangeEvent } from "react";
-import { RadioGroup } from "./RadioGroup";
+import { RadioGroup } from "./_RadioGroup";
 
 interface FormProjectProp {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;

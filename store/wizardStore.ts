@@ -2,6 +2,7 @@
 import { proxy, useSnapshot } from "valtio";
 
 export interface ConfigState {
+  error: string;
   currentStep: number;
   // step1
   name: string;
@@ -10,6 +11,7 @@ export interface ConfigState {
   // step2
   file_location: string;
   files: FileList | [];
+  files_url: string[];
 
   // step3
   detail: string;
@@ -24,11 +26,13 @@ export interface ConfigState {
 }
 
 const state = proxy<ConfigState>({
+  error: "",
   currentStep: 1,
-  name: "",
+  name: "asd",
   description: "",
   file_location: "",
   files: [],
+  files_url: [],
   detail: "",
   order: "",
   feature: "",
@@ -50,7 +54,9 @@ const checks = [
 export const actions = {
   nextStep: () => {
     if (state.currentStep === 4) return;
-    if (!checks[state.currentStep - 1]()) return;
+    if (!checks[state.currentStep - 1]())
+      return (state.error = "Compila tutti i campi obbligatori");
+    state.error = "";
     return (state.currentStep += 1);
   },
   prevStep: () => {
@@ -71,7 +77,15 @@ export const actions = {
   // step2
   setFileLocation: (file_location: string) =>
     (state.file_location = file_location),
-  setFiles: (files: FileList | []) => (state.files = files),
+  setFiles: (files: FileList | []) => {
+    state.files = files;
+    // iterate files and get the filename
+    const files_url: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      files_url.push(files[i].name);
+    }
+    state.files_url = files_url;
+  },
 
   // step3
   setDetail: (detail: string) => (state.detail = detail),

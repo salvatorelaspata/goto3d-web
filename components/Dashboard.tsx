@@ -22,7 +22,7 @@ async function fetchData() {
 export async function Dashboard() {
   const { projects, catalogs } = await fetchData();
   return (
-    <>
+    <div>
       <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
         {/* Griglia dei progetti */}
         <h2 className="text-3xl font-bold">Progetti</h2>
@@ -61,6 +61,6 @@ export async function Dashboard() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

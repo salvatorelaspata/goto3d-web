@@ -14,6 +14,7 @@ export default async function Header() {
   if (user) {
     items.push(...privateRoutes);
   }
+
   const signOut = async () => {
     "use server";
 
@@ -26,18 +27,22 @@ export default async function Header() {
     <>
       <header className="dark:bg-gray-800 dark:text-gray-100">
         <div className="flex justify-between h-10 ">
-          <Link
-            rel="noopener noreferrer"
-            href="/"
-            aria-label="Back to homepage"
-            className="flex items-center"
-          >
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-10 dark:filter dark:invert"
-            />
-          </Link>
+          <div className="flex items-center">
+            <Link
+              rel="noopener noreferrer"
+              href="/"
+              aria-label="Back to homepage"
+              className="flex items-center"
+            >
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-10 dark:filter dark:invert"
+              />
+            </Link>
+            <p className="text-sm ml-2">Hey {user?.email}</p>
+          </div>
+
           <ul className="items-stretch space-x-3 flex">
             {items.map((item) => (
               <li key={item.name} className="flex">

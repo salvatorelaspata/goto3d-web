@@ -1,13 +1,10 @@
 import { ImagesUpload } from "../forms/ImagesUpload";
-import { InputFile } from "../forms/InputFile";
 import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
 
 export const Step2: React.FC = () => {
-  const { files } = useStore();
-  const { setFiles } = actions;
   const form = (
     <Form stretch={false}>
       <div className="flex flex-col h-full">
