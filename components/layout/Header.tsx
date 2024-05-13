@@ -49,7 +49,7 @@ export default async function Header() {
                 <Link
                   rel="noopener noreferrer"
                   href={item.url}
-                  className={`flex items-center px-4 -mb-1 border-b-2 dark:border-transparent`}
+                  className={`py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover`}
                 >
                   {item.name || ""}
                 </Link>

@@ -7,21 +7,22 @@ import { WizardStep } from "./WizardSteps";
 const fields = [
   {
     id: "formOrder",
-    label: "Orders",
+    label: "Ordinamento",
     name: "order",
-    // type: "radio",
-    description: "The order of the project",
+    description:
+      "L'ordine dei campioni. Se si forniscono le immagini in ordine, con immagini adiacenti una accanto all'altra si possono ottenere prestazioni migliori. Questa impostazione non ha alcun impatto sulla qualità dell'oggetto prodotto.",
+    docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/sampleordering-swift.property",
     icon: "👔",
     options: [
       {
         label: "Sequential",
         value: "sequential",
         description: "ordered by time",
+        default: true,
       },
       {
         label: "Unordered",
         value: "unordered",
-        default: true,
         description: "no specific order",
       },
     ],
@@ -30,8 +31,9 @@ const fields = [
     id: "formFeature",
     label: "Features",
     name: "feature",
-    // type: "radio",
-    description: "The features of the project",
+    docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/featuresensitivity-swift.property",
+    description:
+      "La precisione del rilevamento dei punti di riferimento. Il processo di fotogrammetria si basa sulla ricerca di punti di riferimento identificabili nella sovrapposizione delle immagini. I punti di riferimento possono essere difficili da identificare se le immagini non hanno un contrasto sufficiente, non sono a fuoco o se l'oggetto è di un solo colore e manca di dettagli superficiali.",
     icon: "💎",
     options: [
       {
@@ -47,16 +49,20 @@ const fields = [
     id: "formDetail",
     label: "Details",
     name: "detail",
-    // type: "radio",
+    docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/request/detail",
     description: "The level of detail of the project",
     icon: "🧐",
     options: [
       // { label: "Preview", value: "preview", description: "more fast" },
-      { label: "Reduced", value: "reduced", description: "good compromise" },
+      {
+        label: "Reduced",
+        value: "reduced",
+        description: "good compromise",
+        default: true,
+      },
       {
         label: "Medium",
         value: "medium",
-        default: true,
         description: "good compromise",
       },
       { label: "Full", value: "full", description: "more accurate", pro: true },
@@ -91,6 +97,7 @@ export const Step3: React.FC = () => {
                   label={option.label}
                   description={option.description}
                   value={option.value}
+                  d={option.default}
                   selected={
                     store[field.name] === option.value ? option.value : ""
                   }

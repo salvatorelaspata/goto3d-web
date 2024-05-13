@@ -5,17 +5,13 @@ interface DashboardCardProps {
   name: string;
   description: string;
   navTo: string;
-  isNew?: boolean;
-  isProject?: boolean;
 }
-export const DashboardCard: React.FC<DashboardCardProps> = ({
-  id,
-  name,
-  description,
-  navTo,
-  isNew,
-  isProject = true,
-}) => {
+export const DashboardCard: React.FC<
+  Partial<DashboardCardProps> & {
+    isNew?: boolean;
+    isProject?: boolean;
+  }
+> = ({ id, name, description, navTo, isNew, isProject = true }) => {
   if (isNew)
     return (
       <Link

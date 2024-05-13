@@ -1,45 +1,42 @@
 "use client";
+import React, { DOMAttributes, useEffect } from "react";
+import("node_modules/viewer-3d-lit-loader/dist/viewer-3d-lit-loader");
 
-// import { useStore } from '@/store/main'
-import React, { DOMAttributes, lazy, useEffect } from "react";
-
-// dynamic(
-// const DynamicComponentWithNoSSR = lazy(() => import('node_modules/viewer-3d-lit/dist/viewer-3d-lit'))
-// { ssr: false })
 export const ViewerLoader: React.FC = () => {
-  // const {objUrl,textureUrl,backgroundUrl} = useStore()
-  const [_width, setWidth] = React.useState(700);
-  const [_height, setHeight] = React.useState(700);
-  useEffect(() => {
-    import("node_modules/viewer-3d-lit-loader/dist/viewer-3d-lit-loader");
+  // const [_width, setWidth] = React.useState<number>(0);
+  // const [_height, setHeight] = React.useState<number>(0);
 
-    const parent = document.getElementsByClassName("shower");
-    if (parent) {
-      const { clientWidth, clientHeight } = parent[0];
-      setWidth(clientWidth);
-      setHeight(clientHeight);
-    }
+  // useEffect(() => {
+  // const parent = document.getElementsByClassName("shower");
+  // if (parent) {
+  //   const { clientWidth, clientHeight } = parent[0];
+  //   setWidth(clientWidth - 10);
+  //   setHeight(clientHeight - 10);
+  // }
 
-    window.onresize = () => {
-      const parent = document.getElementsByClassName("shower");
-      if (parent) {
-        const { clientWidth, clientHeight } = parent[0];
-        setWidth(clientWidth);
-        setHeight(clientHeight);
-      }
-    };
-  }, []);
+  // window.onresize = () => {
+  //   console.log("resize");
+  //   const parent = document.getElementsByClassName("shower");
+  //   if (parent) {
+  //     const { clientWidth, clientHeight } = parent[0];
+  //     setWidth(clientWidth);
+  //     setHeight(clientHeight);
+  //     console.log("resize", _width, _height, clientWidth, clientHeight);
+  //   }
+  // };
+  // }, []);
 
   return (
     <viewer-3d-lit-loader
-      width={_width}
-      height={_height}
+      // width={_width}
+      // height={_height}
+      fullContent="true"
       bgTransparent="true"
-    ></viewer-3d-lit-loader>
+    />
   );
 };
 
-type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
+type CustomElement<T> = Partial<T & DOMAttributes<T>>;
 
 declare global {
   namespace JSX {

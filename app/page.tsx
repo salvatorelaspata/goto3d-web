@@ -1,5 +1,3 @@
-import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
-import { GetServerSideProps } from "next";
 import { Card } from "../components/Card";
 import Auth from "@/components/Auth";
 import { ViewerLoader } from "@/components/ViewerLoader";
@@ -17,7 +15,7 @@ export default async function Home({
   } = await supabase.auth.getUser();
 
   return (
-    <>
+    <div className="h-full flex flex-col items-stretch">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
         <div>
           <span>
@@ -69,7 +67,7 @@ export default async function Home({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 dark:bg-gray-400 dark:text-gray-100 rounded-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 dark:bg-gray-400 dark:text-gray-100 rounded-xl h-full">
         <div className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100">
           <ViewerLoader />
         </div>
@@ -87,6 +85,6 @@ export default async function Home({
           <Dashboard />
         )}
       </div>
-    </>
+    </div>
   );
 }
