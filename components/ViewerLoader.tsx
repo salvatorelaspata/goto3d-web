@@ -28,9 +28,9 @@ export const ViewerLoader: React.FC = () => {
 
   return (
     <viewer-3d-lit-loader
-      // width={_width}
-      // height={_height}
-      fullContent="true"
+      width={400}
+      height={400}
+      // fullContent="true"
       bgTransparent="true"
     />
   );

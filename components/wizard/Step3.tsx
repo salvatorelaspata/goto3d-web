@@ -3,6 +3,7 @@ import { RadioCard } from "../forms/RadioCard";
 import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
+import Accordion from "../ui/Accordion";
 
 const fields = [
   {
@@ -71,6 +72,23 @@ const fields = [
   },
 ];
 
+const accordionLegend = [
+  {
+    title: "Ordinamento",
+    content:
+      "L'ordine dei campioni. Se si forniscono le immagini in ordine, con immagini adiacenti una accanto all'altra si possono ottenere prestazioni migliori. Questa impostazione non ha alcun impatto sulla qualità dell'oggetto prodotto.",
+  },
+  {
+    title: "Features",
+    content:
+      "La precisione del rilevamento dei punti di riferimento. Il processo di fotogrammetria si basa sulla ricerca di punti di riferimento identificabili nella sovrapposizione delle immagini. I punti di riferimento possono essere difficili da identificare se le immagini non hanno un contrasto sufficiente, non sono a fuoco o se l'oggetto è di un solo colore e manca di dettagli superficiali.",
+  },
+  {
+    title: "Details",
+    content: "The level of detail of the project",
+  },
+];
+
 export const Step3: React.FC = () => {
   // const { detail, order, feature } = useStore();
   const { setDetail, setOrder, setFeature } = actions;
@@ -124,6 +142,7 @@ export const Step3: React.FC = () => {
   const spiegone = (
     <Legend step={3}>
       <p>Step 3</p>
+      <Accordion items={accordionLegend} />
     </Legend>
   );
 

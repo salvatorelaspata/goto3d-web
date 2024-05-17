@@ -57,10 +57,15 @@ export const Step1: React.FC = () => {
   const spiegone = (
     <Legend step={1}>
       <div className="flex flex-col">
-        <img src="" />
-        <p className="py-4">
+        <h3 className="p-4 text-lg font-bold">
+          Step 1: Scegli un nome al progetto.
+        </h3>
+        <img src="/capturing-photographs-for-realitykit-object-capture-1@2x.png" />
+        <br />
+        <p className="py-4 ">
           Il primo passo per creare un nuovo progetto è inserire il nome.
         </p>
+        <br />
         <p className="py-4">
           Puoi scegliere di impostare una descrizione al tuo progetto.
         </p>

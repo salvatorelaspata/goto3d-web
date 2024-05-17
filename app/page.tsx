@@ -67,8 +67,11 @@ export default async function Home({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 dark:bg-gray-400 dark:text-gray-100 rounded-xl h-full">
-        <div className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
+        <div
+          className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100"
+          style={{ height: "400px", width: "400px" }}
+        >
           <ViewerLoader />
         </div>
         {!user ? (
@@ -82,7 +85,9 @@ export default async function Home({
             )}
           </div>
         ) : (
-          <Dashboard />
+          <div>
+            <Dashboard />
+          </div>
         )}
       </div>
     </div>
