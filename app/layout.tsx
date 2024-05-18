@@ -1,8 +1,5 @@
-import { Loader } from "@/components/Loader";
 import Header from "@/components/layout/Header";
-import { Modal } from "@/components/ui/Modal";
 import "@/styles/globals.css";
-import { ToastContainer } from "react-toastify";
 
 const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`
@@ -20,16 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-screen">
-      <body className="h-full">
-        <div className="flex flex-col h-full">
+    <html lang="en">
+      <body>
+        <div className="flex flex-col">
           <Header />
-          <main className="p-4 rounded-md h-full">
-            <Loader />
-            {children}
-          </main>
-          <ToastContainer />
-          <Modal />
+          <main className="p-4 rounded-md">{children}</main>
         </div>
       </body>
     </html>

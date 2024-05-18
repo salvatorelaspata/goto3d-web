@@ -7,18 +7,16 @@ import { actions, useStore } from "@/store/wizardStore";
 export const Step2: React.FC = () => {
   const form = (
     <Form stretch={false}>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col">
         <ImagesUpload />
       </div>
+      <div className="flex-grow"></div>
     </Form>
   );
 
   const spiegone = (
-    <Legend step={2}>
+    <Legend step={2} title="Step 2: Carica le foto del tuo progetto">
       <>
-        <h3 className="p-4 text-lg font-bold">
-          Step 2: Carica le foto del tuo progetto.
-        </h3>
         <div className="grid grid-cols-2 gap-4">
           <img
             src="/capturing-photographs-for-realitykit-object-capture-1@2x.png"
@@ -31,7 +29,9 @@ export const Step2: React.FC = () => {
         </div>
 
         {/* https://developer.apple.com/documentation/realitykit/capturing-photographs-for-realitykit-object-capture/#Select-an-object-to-photograph */}
-        <div className="overflow-y-auto h-96">
+        {/* i want to create a overflow scrollbar to the section */}
+
+        <div className="overflow-y-scroll h-96 p-4">
           <p className="text-lg font-bold py-2">
             📸 Quale oggetto fotografare:
           </p>
@@ -83,10 +83,13 @@ export const Step2: React.FC = () => {
 
           <p className="text-lg font-bold py-2">🤳 Come fare le foto:</p>
           <p>
-            Posizionare l'oggetto in modo che riempia la maggior parte possibile
+            Posiziona l'oggetto in modo che riempia la maggior parte possibile
             dell'inquadratura della fotocamera senza escludere o tagliare alcuna
-            parte. Utilizzare un'apertura di diaframma sufficientemente stretta
-            per mantenere una messa a fuoco nitida. Scattare alla massima
+            parte.
+          </p>
+          <p>
+            Utilizza un'apertura di diaframma sufficientemente stretta per
+            mantenere una messa a fuoco nitida. Scattare alla massima
             risoluzione supportata dalla fotocamera e utilizzare il formato RAW,
             se possibile.
           </p>

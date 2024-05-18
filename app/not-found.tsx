@@ -1,4 +1,3 @@
-import BaseLayout from "@/components/layout/BaseLayout";
 import Link from "next/link";
 
 const fourOhFour = () => {

@@ -1,7 +1,7 @@
 "use client";
 import { proxy, useSnapshot } from "valtio";
 
-export interface ConfigState {
+export interface WizardProps {
   error: string;
   currentStep: number;
   // step1
@@ -27,7 +27,7 @@ export interface ConfigState {
   process_id: number;
 }
 
-const state = proxy<ConfigState>({
+const state = proxy<WizardProps>({
   error: "",
   currentStep: 1,
   name: "asd",
@@ -52,10 +52,10 @@ export const useStore = () => useSnapshot(state);
 const checks = [
   () => state.name.length > 0,
   () => state.files.length > 0,
-  () =>
-    state.detail.length > 0 &&
-    state.order.length > 0 &&
-    state.feature.length > 0,
+  () => {
+    console.log(state.detail, state.order, state.feature);
+    return true;
+  },
   () => true, // state.status.length > 0,
 ];
 

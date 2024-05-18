@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 interface AccordionProps {
   items: {
     title: string;
@@ -10,6 +12,7 @@ export default function Accordion({ items }: AccordionProps) {
       {items &&
         items.map((item, index) => (
           <div
+            key={index}
             className="accordion py-4 px-6 mb-7 transition-all duration-500 bg-gray-50 rounded-2xl hover:bg-indigo-50 accordion-active:bg-indigo-50"
             id={`${"basic-heading-one-with-arrow" + index}`}
           >
@@ -29,9 +32,9 @@ export default function Accordion({ items }: AccordionProps) {
                 <path
                   d="M16.5 8.25L12.4142 12.3358C11.7475 13.0025 11.4142 13.3358 11 13.3358C10.5858 13.3358 10.2525 13.0025 9.58579 12.3358L5.5 8.25"
                   stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></path>
               </svg>
             </button>

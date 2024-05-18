@@ -11,7 +11,7 @@ const composeGallery = (files: FileList) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const li = document.createElement("li");
-        li.className = "flex flex-col items-center m-2 mx-auto w-64";
+        li.className = "flex flex-col items-center m-2 mx-auto";
         const img = document.createElement("img");
         const base64 = e.target?.result as string;
         // check if the file is .png or .jpg
@@ -27,7 +27,7 @@ const composeGallery = (files: FileList) => {
         img.className = "rounded-md max-h-20 max-w-20 m-1 text-black";
         const p = document.createElement("p");
         p.className =
-          "text-sm text-gray-900 text-center truncate w-full hover:text-wrap";
+          "text-sm text-gray-900 text-center truncate w-32 hover:text-wrap";
         p.textContent = file.name;
 
         li.appendChild(img);
@@ -85,7 +85,7 @@ export const ImagesUpload: React.FC = () => {
         Upload Images
         <span className="text-red-600 mx-1 font-bold">*</span>
       </label>
-      <section className="h-full w-full overflow-auto p-8 flex flex-col bg-white shadow-xl rounded-md mx-auto sm:px-8 md:px-16 sm:py-8">
+      <section className="h-full w-full overflow-auto p-4 flex flex-col bg-white shadow-xl rounded-md mx-auto">
         <header
           onDrop={handleDrop}
           onDragLeave={handleDragLeave}
@@ -99,6 +99,7 @@ export const ImagesUpload: React.FC = () => {
           <input
             ref={hiddenInput}
             type="file"
+            name="files"
             multiple
             className="hidden"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,13 +118,13 @@ export const ImagesUpload: React.FC = () => {
           </button>
         </header>
 
-        <h1 className="pt-8 pb-3 font-semibold sm:text-lg text-gray-900">
+        <h1 className="py-4 font-semibold sm:text-lg text-gray-900">
           File Selezionati ({files?.length || 0})
         </h1>
-        <ul id="gallery" className="flex flex-wrap -m-1 overflow-y-auto h-72">
+        <ul id="gallery" className="grid grid-cols-4 overflow-y-auto h-60">
           <li
             id="empty"
-            className="h-full w-full text-center flex flex-col justify-center items-center"
+            className="text-center flex flex-col justify-center items-center"
           >
             <svg
               className="w-12 h-12 text-violet-400"

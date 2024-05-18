@@ -12,10 +12,6 @@ export const wizardSteps = [
     step: 2,
     title: "Configura i Dettagli",
   },
-  {
-    step: 3,
-    title: "Completa il Progetto",
-  },
 ];
 export const Stepper: React.FC = () => {
   return (

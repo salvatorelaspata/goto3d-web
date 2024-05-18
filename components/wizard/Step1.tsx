@@ -5,7 +5,7 @@ import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
-import { gsap } from "gsap";
+// import { gsap } from "gsap";
 // import { useGSAP } from "@gsap/react";
 // gsap.registerPlugin(useGSAP);
 
@@ -55,11 +55,8 @@ export const Step1: React.FC = () => {
   );
 
   const spiegone = (
-    <Legend step={1}>
+    <Legend step={1} title="Step 1: Scegli un nome al progetto">
       <div className="flex flex-col">
-        <h3 className="p-4 text-lg font-bold">
-          Step 1: Scegli un nome al progetto.
-        </h3>
         <img src="/capturing-photographs-for-realitykit-object-capture-1@2x.png" />
         <br />
         <p className="py-4 ">

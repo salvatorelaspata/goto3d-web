@@ -1,4 +1,3 @@
-import BaseLayout from "@/components/layout/BaseLayout";
 import { Database } from "@/types/supabase";
 import { createPagesServerClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps } from "next";
@@ -10,7 +9,6 @@ const Catalogs: React.FC<{
   count: number;
 }> = ({ catalogs, count }) => {
   return (
-    // <BaseLayout title={`Catalogs(${count})`}>
     <>
       <Link
         href="/catalogs/new"
@@ -22,7 +20,6 @@ const Catalogs: React.FC<{
         <CatalogCard key={catalog.id} {...catalog} />
       ))}
     </>
-    //  </BaseLayout>
   );
 };
 
