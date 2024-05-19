@@ -3,14 +3,14 @@ import { createClient } from "@/utils/supabase/server";
 async function fetchData() {
   const supabase = createClient();
   const { data: projects, error: errorProject } = await supabase
-    .from("Project")
+    .from("project")
     .select("id, name, description")
     .order("created_at", { ascending: false });
   if (errorProject) {
     throw new Error(errorProject.message);
   }
   const { data: catalogs, error: errorCatalogs } = await supabase
-    .from("Catalog")
+    .from("catalog")
     .select("id, title, description")
     .order("created_at", { ascending: false });
 

@@ -1,5 +1,6 @@
 "use client";
 import { proxy, useSnapshot } from "valtio";
+import { Database } from "@/types/supabase";
 
 export interface WizardProps {
   error: string;
@@ -9,17 +10,13 @@ export interface WizardProps {
   description: string;
 
   // step2
-  file_location: string;
   files: FileList | [];
   files_url: string[];
 
   // step3
-  detail: string;
-  order: string;
-  feature: string;
-
-  // step4
-  preview: boolean;
+  detail: Database["public"]["Enums"]["details"];
+  order: Database["public"]["Enums"]["orders"];
+  feature: Database["public"]["Enums"]["features"];
 
   status: string;
   catalog_id: number | null;
@@ -30,18 +27,18 @@ export interface WizardProps {
 const state = proxy<WizardProps>({
   error: "",
   currentStep: 1,
+
   name: "asd",
   description: "",
-  file_location: "",
+
   files: [],
   files_url: [],
+
   detail: "reduced",
   order: "sequential",
   feature: "normal",
-  status: "draft",
 
-  preview: false,
-
+  status: "in queue",
   catalog_id: null,
   project_id: 0,
   process_id: 0,
@@ -83,8 +80,6 @@ export const actions = {
   setDescription: (description: string) => (state.description = description),
 
   // step2
-  setFileLocation: (file_location: string) =>
-    (state.file_location = file_location),
   setFiles: (files: FileList | []) => {
     state.files = files;
     // iterate files and get the filename
@@ -96,9 +91,12 @@ export const actions = {
   },
 
   // step3
-  setDetail: (detail: string) => (state.detail = detail),
-  setOrder: (order: string) => (state.order = order),
-  setFeature: (feature: string) => (state.feature = feature),
+  setDetail: (detail: Database["public"]["Enums"]["details"]) =>
+    (state.detail = detail),
+  setOrder: (order: Database["public"]["Enums"]["orders"]) =>
+    (state.order = order),
+  setFeature: (feature: Database["public"]["Enums"]["features"]) =>
+    (state.feature = feature),
 
   // step4
   setStatus: (status: string) => (state.status = status),

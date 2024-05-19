@@ -15,7 +15,7 @@ const statusColor = (status: string) => {
 };
 
 export const ProjectCard: React.FC<
-  Partial<Database["public"]["Tables"]["Project"]["Row"]> & { isNew?: boolean }
+  Partial<Database["public"]["Tables"]["project"]["Row"]> & { isNew?: boolean }
 > = ({ id, name, description, status, isNew = false }) => {
   if (isNew)
     return (

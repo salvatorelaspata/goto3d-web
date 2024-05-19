@@ -1,5 +1,8 @@
 import Header from "@/components/layout/Header";
+import { Modal } from "@/components/ui/Modal";
 import "@/styles/globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`
@@ -23,6 +26,8 @@ export default function RootLayout({
           <Header />
           <main className="p-4 rounded-md">{children}</main>
         </div>
+        <ToastContainer />
+        <Modal />
       </body>
     </html>
   );

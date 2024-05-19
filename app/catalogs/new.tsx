@@ -18,7 +18,7 @@ const NewCatalog: React.FC<NewCatalogProps> = ({ fields }) => {
   }: any) => {
     // save project
     const { data: _dataCatalog, error: _errorCatalog } = await supabase
-      .from("Catalog")
+      .from("catalog")
       .insert({ title, description, public: _public === "public" })
       .select("id")
       .single();
@@ -28,7 +28,7 @@ const NewCatalog: React.FC<NewCatalogProps> = ({ fields }) => {
     }
     const { data: _dataCatalogUpdate, error: _errorCatalogUpdate } =
       await supabase
-        .from("Project")
+        .from("project")
         .update({ catalog_id: _dataCatalog.id })
         .eq("id", projects);
     if (_errorCatalogUpdate) {
@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     error,
     count,
   } = await supabase
-    .from("Project")
+    .from("project")
     .select("*", { count: "exact" })
     .order("created_at", { ascending: false });
 

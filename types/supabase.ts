@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      Catalog: {
+      catalog: {
         Row: {
           created_at: string
           description: string | null
@@ -36,135 +36,71 @@ export type Database = {
         }
         Relationships: []
       }
-      Process: {
-        Row: {
-          created_at: string
-          detail: Database["public"]["Enums"]["details"] | null
-          feature: Database["public"]["Enums"]["features"] | null
-          id: number
-          models_url: string[] | null
-          order: Database["public"]["Enums"]["orders"] | null
-          project_id: number | null
-          status: Database["public"]["Enums"]["process_status"] | null
-          user_id: string | null
-          uuid: string | null
-        }
-        Insert: {
-          created_at?: string
-          detail?: Database["public"]["Enums"]["details"] | null
-          feature?: Database["public"]["Enums"]["features"] | null
-          id?: number
-          models_url?: string[] | null
-          order?: Database["public"]["Enums"]["orders"] | null
-          project_id?: number | null
-          status?: Database["public"]["Enums"]["process_status"] | null
-          user_id?: string | null
-          uuid?: string | null
-        }
-        Update: {
-          created_at?: string
-          detail?: Database["public"]["Enums"]["details"] | null
-          feature?: Database["public"]["Enums"]["features"] | null
-          id?: number
-          models_url?: string[] | null
-          order?: Database["public"]["Enums"]["orders"] | null
-          project_id?: number | null
-          status?: Database["public"]["Enums"]["process_status"] | null
-          user_id?: string | null
-          uuid?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_Process_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "Project"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      Project: {
+      project: {
         Row: {
           catalog_id: number | null
-          created_at: string
+          created_at: string | null
           description: string | null
-          file_location: string | null
+          detail: Database["public"]["Enums"]["details"] | null
+          feature: Database["public"]["Enums"]["features"] | null
           files: string[] | null
           id: number
+          model_urls: string[] | null
           name: string | null
-          status: string | null
+          order: Database["public"]["Enums"]["orders"] | null
+          process_end: string | null
+          process_start: string | null
+          status: Database["public"]["Enums"]["status"] | null
+          telegram_user: number | null
           user_id: string | null
         }
         Insert: {
           catalog_id?: number | null
-          created_at?: string
+          created_at?: string | null
           description?: string | null
-          file_location?: string | null
+          detail?: Database["public"]["Enums"]["details"] | null
+          feature?: Database["public"]["Enums"]["features"] | null
           files?: string[] | null
           id?: number
+          model_urls?: string[] | null
           name?: string | null
-          status?: string | null
+          order?: Database["public"]["Enums"]["orders"] | null
+          process_end?: string | null
+          process_start?: string | null
+          status?: Database["public"]["Enums"]["status"] | null
+          telegram_user?: number | null
           user_id?: string | null
         }
         Update: {
           catalog_id?: number | null
-          created_at?: string
+          created_at?: string | null
           description?: string | null
-          file_location?: string | null
+          detail?: Database["public"]["Enums"]["details"] | null
+          feature?: Database["public"]["Enums"]["features"] | null
           files?: string[] | null
           id?: number
+          model_urls?: string[] | null
           name?: string | null
-          status?: string | null
+          order?: Database["public"]["Enums"]["orders"] | null
+          process_end?: string | null
+          process_start?: string | null
+          status?: Database["public"]["Enums"]["status"] | null
+          telegram_user?: number | null
           user_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_Project_catalog_id_fkey"
+            foreignKeyName: "public_project_catalog_id_fkey"
             columns: ["catalog_id"]
             isOneToOne: false
-            referencedRelation: "Catalog"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      Queue: {
-        Row: {
-          completed_timestamp: string | null
-          created_at: string
-          id: number
-          process_id: number | null
-          project_id: number | null
-          status: string | null
-        }
-        Insert: {
-          completed_timestamp?: string | null
-          created_at?: string
-          id?: number
-          process_id?: number | null
-          project_id?: number | null
-          status?: string | null
-        }
-        Update: {
-          completed_timestamp?: string | null
-          created_at?: string
-          id?: number
-          process_id?: number | null
-          project_id?: number | null
-          status?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_Queue_process_id_fkey"
-            columns: ["process_id"]
-            isOneToOne: false
-            referencedRelation: "Process"
+            referencedRelation: "catalog"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_Queue_project_id_fkey"
-            columns: ["project_id"]
+            foreignKeyName: "public_project_telegram_user_fkey"
+            columns: ["telegram_user"]
             isOneToOne: false
-            referencedRelation: "Project"
+            referencedRelation: "telegram_user"
             referencedColumns: ["id"]
           },
         ]
@@ -176,7 +112,6 @@ export type Database = {
           id: number
           language_code: string | null
           type: string | null
-          updated_at: string | null
           user_id: number | null
           username: string | null
         }
@@ -186,7 +121,6 @@ export type Database = {
           id?: number
           language_code?: string | null
           type?: string | null
-          updated_at?: string | null
           user_id?: number | null
           username?: string | null
         }
@@ -196,7 +130,6 @@ export type Database = {
           id?: number
           language_code?: string | null
           type?: string | null
-          updated_at?: string | null
           user_id?: number | null
           username?: string | null
         }
@@ -226,7 +159,7 @@ export type Database = {
       details: "preview" | "reduced" | "medium" | "full" | "raw"
       features: "normal" | "high"
       orders: "unordered" | "sequential"
-      process_status: "open" | "in progress" | "done" | "draft"
+      status: "error" | "in queue" | "processing" | "done"
     }
     CompositeTypes: {
       [_ in never]: never

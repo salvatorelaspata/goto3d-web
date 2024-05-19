@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 async function getProjects() {
   const supabase = createClient();
   const { data: projects, error } = await supabase
-    .from("Project")
+    .from("project")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) {

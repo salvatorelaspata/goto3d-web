@@ -8,12 +8,11 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
 const Project: React.FC<{
-  _project: Database["public"]["Tables"]["Project"]["Row"];
-  _process: Database["public"]["Tables"]["Process"]["Row"];
+  _project: Database["public"]["Tables"]["project"]["Row"];
   objUrl: string;
   textureUrl: string;
   backgroundUrl: string;
-}> = ({ _project, _process, objUrl, textureUrl, backgroundUrl }) => {
+}> = ({ _project, objUrl, textureUrl, backgroundUrl }) => {
   const {
     query: { id },
   } = useRouter();
@@ -27,11 +26,7 @@ const Project: React.FC<{
     <>
       <>
         {fields.length && (
-          <Form
-            fields={fields}
-            onSubmit={onSubmit}
-            _data={{ ..._project, ..._process }}
-          />
+          <Form fields={fields} onSubmit={onSubmit} _data={{ ..._project }} />
         )}
       </>
       <ModelLayout>
@@ -56,20 +51,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     // una sorta di innerjoin .-.
     const { data: _project } = await supabase
-      .from("Project")
-      .select("id, status, name, description, file_location")
+      .from("project")
+      .select("*")
       .eq("id", _id)
       .single();
-    const { data: _process } = await supabase
-      .from("Process")
-      .select("*")
-      .eq("project_id", _id)
-      .single();
     // console.log(_project, _process, _id)
-    // get list of models in a folder (file_location) & list of backgrounds
     const { data: models } = await supabase.storage
       .from("viewer3d-dev")
-      .list(`${_project?.file_location}`);
+      .list(`${_project?.id}`);
+
     const { data: backgrounds } = await supabase.storage
       .from("viewer3d-dev")
       .list("HDR");
@@ -90,11 +80,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
       const { data: _objUrl } = await supabase.storage
         .from("viewer3d-dev")
-        .createSignedUrl(`${_project?.file_location}${objName}`, 2);
+        .createSignedUrl(`${_project?.id}${objName}`, 2);
       objUrl = _objUrl?.signedUrl;
       const { data: _textureUrl } = await supabase.storage
         .from("viewer3d-dev")
-        .createSignedUrl(`${_project?.file_location}${textureName}`, 2);
+        .createSignedUrl(`${_project?.id}${textureName}`, 2);
       textureUrl = _textureUrl?.signedUrl;
       const { data: _backgroundUrl } = await supabase.storage
         .from("viewer3d-dev")
@@ -109,7 +99,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         _project,
-        _process,
         models,
         objUrl: objUrl || null,
         textureUrl: textureUrl || null,

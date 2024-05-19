@@ -1,6 +1,5 @@
 import { Card } from "../components/Card";
 import Auth from "@/components/Auth";
-import { ViewerLoader } from "@/components/ViewerLoader";
 import { createClient } from "@/utils/supabase/server";
 import { Dashboard } from "@/components/Dashboard";
 
@@ -68,12 +67,12 @@ export default async function Home({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
-        <div
+        {/* <div
           className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100"
           style={{ height: "400px", width: "400px" }}
         >
           <ViewerLoader />
-        </div>
+        </div> */}
         {!user ? (
           <div>
             <Auth />
