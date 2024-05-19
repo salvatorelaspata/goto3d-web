@@ -4,6 +4,7 @@ import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import Accordion from "../ui/Accordion";
+import { Database } from "@/types/supabase";
 
 const fields = [
   {
@@ -123,11 +124,18 @@ export const Step3: React.FC = () => {
                   disabled={option.pro}
                   onChange={(e) => {
                     if (field.name === "detail") {
-                      setDetail(e.target.value);
+                      const value: Database["public"]["Enums"]["details"] = e
+                        .target.value as Database["public"]["Enums"]["details"];
+                      setDetail(value);
                     } else if (field.name === "order") {
-                      setOrder(e.target.value);
+                      const value: Database["public"]["Enums"]["orders"] = e
+                        .target.value as Database["public"]["Enums"]["orders"];
+                      setOrder(value);
                     } else if (field.name === "feature") {
-                      setFeature(e.target.value);
+                      const value: Database["public"]["Enums"]["features"] = e
+                        .target
+                        .value as Database["public"]["Enums"]["features"];
+                      setFeature(value);
                     }
                   }}
                 />
