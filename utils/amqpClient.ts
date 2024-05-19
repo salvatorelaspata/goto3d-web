@@ -6,7 +6,7 @@ const connectionString =
   "amqp://localhost";
 
 export const sendToQueue = (message: number): Promise<void> => {
-  const queueName = "processing";
+  const queueName = "processing-dev";
   return new Promise((resolve, reject) => {
     amqp.connect(connectionString, (err, connection) => {
       console.log("connected");
@@ -22,8 +22,10 @@ export const sendToQueue = (message: number): Promise<void> => {
           return;
         }
 
-        channel.assertQueue(queueName, { durable: false });
-        channel.sendToQueue(queueName, Buffer.from(message.toString()), {});
+        channel.assertQueue(queueName, { durable: true });
+        channel.sendToQueue(queueName, Buffer.from(message.toString()), {
+          persistent: true,
+        });
         console.log(`Sent message '${message}' to queue '${queueName}'`);
         setTimeout(() => {
           connection.close();

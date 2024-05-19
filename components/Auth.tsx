@@ -6,6 +6,8 @@ export default function Auth() {
   const signIn = async (formData: FormData) => {
     "use server";
 
+    console.log("signIn");
+
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const supabase = createClient();
@@ -24,7 +26,7 @@ export default function Auth() {
 
   const signInWithGoogle = async () => {
     "use server";
-
+    console.log("signInWithGoogle");
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -39,7 +41,7 @@ export default function Auth() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl shadow-md">
-      <div className="my-11">
+      <div className="my-8">
         <h1 className="text-center text-2xl">Cosa Aspetti</h1>
         <h2 className="text-center text-xl">Accedi o Registrati</h2>
       </div>

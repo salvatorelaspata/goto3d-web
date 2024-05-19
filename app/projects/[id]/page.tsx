@@ -16,7 +16,7 @@ const fetchData = async ({ id }) => {
       .from("viewer3d-dev")
       .list(`${project?.id}/model`);
 
-    // console.log("models", models);
+    console.log("models", project?.id, models);
 
     const { data: backgrounds } = await supabase.storage
       .from("viewer3d-dev")
@@ -60,7 +60,7 @@ const fetchData = async ({ id }) => {
       console.error("error", error);
     }
 
-    // console.log(objUrl, textureUrl, backgroundUrl);
+    console.log(objUrl, textureUrl, backgroundUrl);
 
     return {
       objUrl: objUrl || "",

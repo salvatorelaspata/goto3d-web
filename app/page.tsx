@@ -14,27 +14,18 @@ export default async function Home({
   } = await supabase.auth.getUser();
 
   return (
-    <div className="m-4 h-full flex flex-col items-stretch">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
-        <div>
-          <span>
-            <strong className="text-3xl">Config.Reality</strong> ti permette di
-            creare il tuo modello 3d partendo da delle foto
-          </span>
-          <br />
-          <span className="text-xl">
-            <strong>crea</strong>
-          </span>{" "}
-          Il tuo progetto.
-          <br />
-          <strong>Scegli le tue foto </strong> per procedere alla creazione del
-          tuo modello <code>3D</code>. <br />
-          <strong>Genera</strong> il tuo modello <strong>3D</strong> e{" "}
-          <strong>scaricalo</strong> in formato <code>.obj</code>. <br />
-          <strong>Pubblica</strong> il tuo catalogo <code>privato</code> o{" "}
-          <code>pubblico</code> per condividerlo con chi hai voglia.
+    <div className="m-4 flex flex-col items-stretch">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
+        <div className="flex flex-col space-y-1">
+          <h1 className="text-3xl">Config.Reality</h1>
+          <p>La piattaforma per creare e condividere modelli 3D</p>
+          <p>Senza installare nulla</p>
+          <p>
+            Accedi con il tuo account Google ed inizia subito a creare il tuo
+            modello <strong>3D</strong>
+          </p>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between col-span-2">
           <Card
             href="#"
             title="Crea il Progetto"
@@ -66,13 +57,7 @@ export default async function Home({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
-        {/* <div
-          className="shower text-center rounded-xl dark:bg-gray-600 dark:text-gray-100"
-          style={{ height: "400px", width: "400px" }}
-        >
-          <ViewerLoader />
-        </div> */}
+      <div className="w-full p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
         {!user ? (
           <div>
             <Auth />
