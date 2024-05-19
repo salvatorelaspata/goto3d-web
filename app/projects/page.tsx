@@ -1,12 +1,12 @@
 import PageTitle from "@/components/PageTitle";
-import { ProjectCard } from "@/components/ProjectCard";
+import ProjectCard from "@/components/ProjectCard";
 import { createClient } from "@/utils/supabase/server";
 
 async function getProjects() {
   const supabase = createClient();
   const { data: projects, error } = await supabase
     .from("project")
-    .select("*")
+    .select("id, name, description, status")
     .order("created_at", { ascending: false });
   if (error) {
     throw new Error(error.message);

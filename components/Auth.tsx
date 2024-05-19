@@ -20,7 +20,6 @@ export default function Auth() {
     if (error) {
       return redirect("/?message=Could not authenticate user");
     }
-
     return redirect("/");
   };
 

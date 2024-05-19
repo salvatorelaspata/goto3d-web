@@ -1,8 +1,7 @@
+import ToastComponent from "@/components/ToastComponent";
 import Header from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
-import { ToastContainer } from "react-toastify";
 import "@/styles/globals.css";
-import "react-toastify/dist/ReactToastify.css";
 
 const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`
@@ -25,8 +24,8 @@ export default function RootLayout({
         <div className="flex flex-col">
           <Header />
           <main className="rounded-md">{children}</main>
+          <ToastComponent />
         </div>
-        <ToastContainer />
         <Modal />
       </body>
     </html>

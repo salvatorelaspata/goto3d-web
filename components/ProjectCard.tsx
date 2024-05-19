@@ -1,5 +1,8 @@
+"use client";
 import { Database } from "@/types/supabase";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const statusColor = (status: string) => {
   switch (status) {
@@ -14,9 +17,46 @@ const statusColor = (status: string) => {
   }
 };
 
-export const ProjectCard: React.FC<
-  Partial<Database["public"]["Tables"]["project"]["Row"]> & { isNew?: boolean }
-> = ({ id, name, description, status, isNew = false }) => {
+export default function ProjectCard({
+  id,
+  name,
+  description,
+  status,
+  isNew = false,
+}: Partial<Database["public"]["Tables"]["project"]["Row"]> & {
+  isNew?: boolean;
+}) {
+  const [project, setProject] = useState<Partial<
+    Database["public"]["Tables"]["project"]["Row"]
+  > | null>({
+    id,
+    name,
+    description,
+    status,
+  });
+
+  useEffect(() => {
+    const supabase = createClient();
+    if (!id) return;
+    const filter = `id=eq.${id}`;
+    console.log("[ProjectCard] subscribing to changes", filter);
+    supabase
+      .channel(`realtime project card ${id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "project",
+          filter,
+        },
+        (payload) => {
+          setProject({ ...payload.new });
+        }
+      )
+      .subscribe();
+  }, []);
+
   if (isNew)
     return (
       <Link
@@ -33,11 +73,11 @@ export const ProjectCard: React.FC<
       className="p-4 flex flex-col bg-white border border-x-2 border-y-2 border-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       href={`/projects/${id}`}
     >
-      <h2 className="text-black text-xl font-bold">{name}</h2>
-      <p className="text-sm text-black mb-4">{description}</p>
-      <span className={`text-sm ${statusColor(status || "")} mb-4`}>
-        {status}
+      <h2 className="text-black text-xl font-bold">{project?.name}</h2>
+      <p className="text-sm text-black mb-4">{project?.description}</p>
+      <span className={`text-sm ${statusColor(project?.status || "")} mb-4`}>
+        {project?.status}
       </span>
     </Link>
   );
-};
+}
