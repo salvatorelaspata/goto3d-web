@@ -17,7 +17,7 @@ async function getProjects() {
 export default async function Project() {
   const projects = await getProjects();
   return (
-    <>
+    <div className="m-4">
       <PageTitle title="Progetti" />
       <div
         className={`grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2`}
@@ -28,6 +28,6 @@ export default async function Project() {
             <ProjectCard key={project.id} {...project} />
           ))}
       </div>
-    </>
+    </div>
   );
 }

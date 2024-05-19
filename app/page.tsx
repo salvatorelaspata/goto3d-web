@@ -14,7 +14,7 @@ export default async function Home({
   } = await supabase.auth.getUser();
 
   return (
-    <div className="h-full flex flex-col items-stretch">
+    <div className="m-4 h-full flex flex-col items-stretch">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
         <div>
           <span>

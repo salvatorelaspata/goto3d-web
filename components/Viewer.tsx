@@ -1,7 +1,7 @@
 "use client";
 
 // import { useStore } from '@/store/main'
-import React, { DOMAttributes, lazy, useEffect } from "react";
+import React, { DOMAttributes, useEffect } from "react";
 
 // dynamic(
 // const DynamicComponentWithNoSSR = lazy(() => import('node_modules/viewer-3d-lit/dist/viewer-3d-lit'))
@@ -11,11 +11,8 @@ interface ViewerProps {
   textureUrl: string;
   backgroundUrl: string;
 }
-export const Viewer: React.FC<ViewerProps> = ({
-  objUrl,
-  textureUrl,
-  backgroundUrl,
-}) => {
+
+export const Viewer = ({ objUrl, textureUrl, backgroundUrl }: ViewerProps) => {
   // const {objUrl,textureUrl,backgroundUrl} = useStore()
 
   useEffect(() => {
