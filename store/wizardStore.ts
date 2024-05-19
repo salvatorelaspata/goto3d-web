@@ -1,7 +1,8 @@
 "use client";
 import { proxy, useSnapshot } from "valtio";
 import { Database } from "@/types/supabase";
-
+import { createClient } from "@/utils/supabase/client";
+import { actions as mainActions } from "@/store/main";
 export interface WizardProps {
   error: string;
   currentStep: number;
@@ -28,7 +29,7 @@ const state = proxy<WizardProps>({
   error: "",
   currentStep: 1,
 
-  name: "asd",
+  name: "",
   description: "",
 
   files: [],
@@ -46,7 +47,7 @@ const state = proxy<WizardProps>({
 
 export const useStore = () => useSnapshot(state);
 
-const checks = [
+const checksMandatory = [
   () => state.name.length > 0,
   () => state.files.length > 0,
   () => {
@@ -56,11 +57,34 @@ const checks = [
   () => true, // state.status.length > 0,
 ];
 
+const checkNameExists = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("project")
+    .select("name")
+    .eq("name", state.name);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
 export const actions = {
-  nextStep: () => {
+  nextStep: async () => {
+    mainActions.showLoading();
     if (state.currentStep === 4) return;
-    if (!checks[state.currentStep - 1]())
+    if (!checksMandatory[state.currentStep - 1]()) {
+      setTimeout(() => mainActions.hideLoading(), 100);
       return (state.error = "Compila tutti i campi obbligatori");
+    }
+    if (state.currentStep === 1) {
+      const data = await checkNameExists();
+      if (data.length > 0) {
+        mainActions.hideLoading();
+        return (state.error = "Nome progetto già esistente");
+      }
+    }
+    mainActions.hideLoading();
     state.error = "";
     return (state.currentStep += 1);
   },

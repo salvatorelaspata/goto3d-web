@@ -1,3 +1,4 @@
+import { Loader } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
 import Header from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body>
         <div className="flex flex-col">
           <Header />
+          <Loader />
           <main className="rounded-md">{children}</main>
           <ToastComponent />
         </div>
