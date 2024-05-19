@@ -98,6 +98,21 @@ export const actions = {
   resetStep: () => {
     return (state.currentStep = 0);
   },
+  resetState: () => {
+    state.error = "";
+    state.currentStep = 1;
+    state.name = "";
+    state.description = "";
+    state.files = [];
+    state.files_url = [];
+    state.detail = "reduced";
+    state.order = "sequential";
+    state.feature = "normal";
+    state.status = "in queue";
+    state.catalog_id = null;
+    state.project_id = 0;
+    state.process_id = 0;
+  },
 
   // step1
   setName: (name: string) => (state.name = name),

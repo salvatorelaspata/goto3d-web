@@ -1,14 +1,17 @@
 import { actions } from "@/store/main";
+import { actions as wizardAction } from "@/store/wizardStore";
 import { useStore } from "@/store/wizardStore";
 import { useStore as useMainStore } from "@/store/main";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "react-toastify";
 import { sendProjectToQueue, createProject } from "@/app/projects/new/actions";
+import { useRouter } from "next/navigation";
 
 export default function CompleteButton() {
   const { name, description, files, detail, order, feature } = useStore();
   const { loading } = useMainStore();
   const supabase = createClient();
+  const navigation = useRouter();
   const onSubmit = async () => {
     actions.showLoading();
     const filesArray = Array.from(files).map((f) => f.name);
@@ -30,6 +33,10 @@ export default function CompleteButton() {
     sendProjectToQueue(_dataProject?.id);
     toast.success("Project sent to queue");
     actions.hideLoading();
+
+    wizardAction.resetState();
+
+    navigation.push("/projects");
   };
 
   const _sendFile = async (files: FileList, projectId: number) => {
