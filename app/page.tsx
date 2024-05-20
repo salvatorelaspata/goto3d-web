@@ -56,7 +56,6 @@ export default async function Home({
           />
         </div>
       </div>
-
       <div className="w-full p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
         {!user ? (
           <div>

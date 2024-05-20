@@ -6,17 +6,26 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function ToastComponent() {
+  // const sendNotification = (title: string, body: string) => {
+  //   if (Notification.permission === "granted") {
+  //     const n = new Notification(title, { body, icon: "/favicon.ico" })
+  //   }
+  // };
   useEffect(() => {
+    // request permission for notifications
+    // if (Notification.permission !== "granted") Notification.requestPermission();
+    // else console.log("Notifications are already granted");
+
     const supabase = createClient();
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN") {
-        toast.success("Signed in");
-      }
-      if (event === "SIGNED_OUT") {
-        toast.success("Signed out");
-      }
-    });
-    console.log("[ToastComponent] subscribing to changes");
+    // supabase.auth.onAuthStateChange((event, session) => {
+    //   if (event === "SIGNED_IN") {
+    //     toast.success("Signed in");
+    //   }
+    //   if (event === "SIGNED_OUT") {
+    //     toast.success("Signed out");
+    //   }
+    // });
+    // console.log("[ToastComponent] subscribing to changes");
     supabase
       .channel("realtime project")
       .on(
@@ -33,5 +42,10 @@ export default function ToastComponent() {
       )
       .subscribe();
   }, []);
-  return <ToastContainer />;
+  return (
+    <>
+      <ToastContainer />
+      {/* <button onClick={() => sendNotification("Hello", "World")}>Notify</button> */}
+    </>
+  );
 }

@@ -1,8 +1,19 @@
 import { Viewer } from "@/components/Viewer";
-import { ModelLayout } from "@/components/layout/ModelLayout";
 import { createClient } from "@/utils/supabase/server";
+import { Database } from "@/types/supabase";
 
-const fetchData = async ({ id }) => {
+type ProjectDetail = {
+  project: Database["public"]["Tables"]["project"]["Row"];
+  objUrl: string;
+  textureUrl: string;
+  backgroundUrl: string;
+};
+
+const fetchData: ({
+  id,
+}: {
+  id: string;
+}) => Promise<ProjectDetail | undefined> = async ({ id }) => {
   const _id: number = parseInt(id as string);
   const supabase = createClient();
   try {
@@ -57,12 +68,13 @@ const fetchData = async ({ id }) => {
       // console.log("_backgroundUrl", _backgroundError);
       backgroundUrl = _backgroundUrl?.signedUrl;
     } catch (error) {
-      console.error("error", error);
+      console.error("error supabase", error);
     }
 
     console.log(objUrl, textureUrl, backgroundUrl);
 
     return {
+      project,
       objUrl: objUrl || "",
       textureUrl: textureUrl || "",
       backgroundUrl: backgroundUrl || "",
@@ -79,12 +91,25 @@ export default async function Project({
   params: { id: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  // console.log("params", params);
-  // console.log("searchParams", searchParams);
-
   const p = await fetchData({ id: params.id });
-  if (!p) {
-    return <div>loading...</div>;
+
+  const bigTextCentered = (text: string) => {
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <h1 className="text-4xl font-bold">{text}</h1>
+      </div>
+    );
+  };
+  if (!p) return bigTextCentered("loading...");
+  const { status } = p?.project;
+  if (status === "error") {
+    return bigTextCentered("Errore");
+  } else if (status === "in queue") {
+    return bigTextCentered("Progetto in coda");
+  } else if (status === "processing") {
+    return bigTextCentered("Progetto in lavorazione");
+  } else if (!p || !p.objUrl || !p.textureUrl || !p.backgroundUrl) {
+    return bigTextCentered("loading...");
   }
 
   return (

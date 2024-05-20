@@ -11,6 +11,8 @@ div#__next > div {
   height: 100%;
 }
 
+/* THEMING */
+
 @layer base {
   :root {
     --color-neutral-50: theme("colors.gray.50");
@@ -66,4 +68,25 @@ div#__next > div {
   --primaryBg: var(--color-primary-900);
   --onPrimaryBg: var(--color-primary-50);
   --primary: var(--color-primary-400);
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar#css_scrollbar_selectors */
+::-webkit-scrollbar {
+  color: var(--color-neutral-500);
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-neutral-200);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  color: var(--color-neutral-800);
+  background-color: var(--color-neutral-400);
+  height: 20px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-neutral-600);
+  border-radius: 10px;
 }

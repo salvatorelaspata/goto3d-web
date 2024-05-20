@@ -22,10 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex flex-col">
+        <div className="h-full flex flex-col flex-1">
           <Header />
           <Loader />
-          <main className="rounded-md">{children}</main>
+          <main className="h-full rounded-md">{children}</main>
           <ToastComponent />
         </div>
         <Modal />

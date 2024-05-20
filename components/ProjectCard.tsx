@@ -39,7 +39,7 @@ export default function ProjectCard({
     const supabase = createClient();
     if (!id) return;
     const filter = `id=eq.${id}`;
-    console.log("[ProjectCard] subscribing to changes", filter);
+    // console.log("[ProjectCard] subscribing to changes", filter);
     supabase
       .channel(`realtime project card ${id}`)
       .on(
