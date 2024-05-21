@@ -27,15 +27,15 @@ export default function Auth() {
     "use server";
     console.log("signInWithGoogle");
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
-
+    console.log({ data, error });
     if (error) {
       return redirect("/?message=Could not authenticate user");
     }
 
-    return redirect("/");
+    return redirect(data.url);
   };
 
   return (
