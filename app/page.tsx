@@ -1,7 +1,6 @@
+import { createClient } from "@/utils/supabase/server";
 import { Card } from "../components/Card";
 import Auth from "@/components/Auth";
-import { createClient } from "@/utils/supabase/server";
-import { Dashboard } from "@/components/Dashboard";
 
 export default async function Home({
   searchParams,
@@ -57,21 +56,15 @@ export default async function Home({
         </div>
       </div>
       <div className="w-full p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
-        {!user ? (
-          <div>
-            <Auth />
+        <div>
+          {!user && <Auth />}
 
-            {searchParams?.message && (
-              <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-                {searchParams.message}
-              </p>
-            )}
-          </div>
-        ) : (
-          <div>
-            <Dashboard />
-          </div>
-        )}
+          {searchParams?.message && (
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+              {searchParams.message}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

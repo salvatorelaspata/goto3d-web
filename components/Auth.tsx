@@ -1,6 +1,7 @@
 import { Input } from "./forms/Input";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
 export default function Auth() {
   const signIn = async (formData: FormData) => {
@@ -27,8 +28,12 @@ export default function Auth() {
     "use server";
     console.log("signInWithGoogle");
     const supabase = createClient();
+    const origin = headers().get("origin");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${origin}/auth/callback`,
+      },
     });
     console.log({ data, error });
     if (error) {

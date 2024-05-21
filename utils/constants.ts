@@ -21,7 +21,7 @@ export const privateRoutes: itemHeaderProps[] = [
 export const publicRoutes: itemHeaderProps[] = [
   {
     name: "Dashboard",
-    url: "/",
+    url: "/dashboard",
   },
 ];
 
