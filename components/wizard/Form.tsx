@@ -34,9 +34,9 @@ export const Form: React.FC<FormProps> = ({
 };
 
 const mandatory = (
-  <p className="text-end mb-4">
+  <p className="text-end mb-4 text-palette1">
     <span className="text-red-600 mr-1 font-bold">*</span>Campi obbligatori
   </p>
 );
 
-const divider = <hr className="bg-color-violet my-4" />;
+const divider = <hr className="bg-palette1 my-4" />;

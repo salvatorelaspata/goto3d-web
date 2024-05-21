@@ -11,20 +11,11 @@ export const StepLegend: React.FC<StepLegendProps> = ({ title, step }) => {
 
   const isCurrent = (step: number) => {
     if (step === currentStep) {
-      return [
-        "text-white dark:text-white fond-bold scale-120",
-        "border-white dark:border-white scale-120",
-      ];
+      return ["text-palette1 fond-bold scale-120", "border-palette1 scale-120"];
     } else if (step < currentStep) {
-      return [
-        "text-gray-500 dark:text-gray-400 hover:cursor-pointer",
-        "border-gray-500 dark:border-gray-400",
-      ];
+      return ["text-palette5 hover:cursor-pointer", "border-palette5"];
     } else {
-      return [
-        "text-violet-400 dark:text-violet-300 fond-bold opacity-50",
-        "border-violet-400 dark:border-violet-300",
-      ];
+      return ["text-palette2 fond-bold opacity-50", "border-palette2"];
     }
   };
 

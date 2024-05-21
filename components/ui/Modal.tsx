@@ -24,7 +24,7 @@ export const Modal: React.FC = () => {
           </div>
           <div className="flex justify-end p-4">
             <button
-              className="px-4 py-2 text-white bg-violet-500 hover:bg-violet-600 rounded-md"
+              className="px-4 py-2 text-white bg-palette3 rounded-md"
               onClick={() => {}}
             >
               Close

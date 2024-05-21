@@ -10,7 +10,11 @@ export const Textarea: React.FC<Partial<FieldProps>> = ({
 }) => {
   return (
     <>
-      <label id={`${id}--label`} htmlFor={id} className="my-2 text-lg">
+      <label
+        id={`${id}--label`}
+        htmlFor={id}
+        className="my-2 text-lg text-palette1"
+      >
         {label}
       </label>
       <textarea
@@ -19,7 +23,7 @@ export const Textarea: React.FC<Partial<FieldProps>> = ({
         value={value}
         name={name}
         onChange={onChange}
-        className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100 text-black"
+        className="border border-palette1 bg-white rounded-md p-2 text-palette5"
       />
     </>
   );

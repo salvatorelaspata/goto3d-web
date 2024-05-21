@@ -133,14 +133,14 @@ export const FormProject: React.FC<FormProjectProp> = ({
             <button
               type="submit"
               disabled={disabled}
-              className="rounded-md disabled:hover:scale-100 hover:scale-110 transition duration-300 ease-in-out shadow-md bg-violet-400 text-white font-bold p-4 m-2 w-full"
+              className="rounded-md disabled:hover:scale-100 hover:scale-110 transition duration-300 ease-in-out shadow-md bg-palette1 text-white font-bold p-4 m-2 w-full"
             >
               Submit
             </button>
             <button
               type="reset"
               disabled={disabled}
-              className="rounded-md shadow-md bg-violet-200 p-4 m-2 w-full"
+              className="rounded-md shadow-md bg-palette3 p-4 m-2 w-full"
             >
               Reset
             </button>

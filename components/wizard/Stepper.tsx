@@ -15,7 +15,7 @@ export const wizardSteps = [
 ];
 export const Stepper: React.FC = () => {
   return (
-    <ol className="w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse dark:bg-gray-600 dark:text-gray-100 p-4 rounded-xl">
+    <ol className="w-full space-y-4 sm:flex sm:space-x-8 sm:space-y-0 rtl:space-x-reverse bg-palette4 text-palette2 p-4 rounded-xl">
       {wizardSteps.map((step, index) => (
         <StepLegend key={index} title={step.title} step={index + 1} />
       ))}

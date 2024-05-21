@@ -81,9 +81,9 @@ export const ImagesUpload: React.FC = () => {
 
   return (
     <>
-      <label className="my-2 text-lg">
+      <label className="my-2 text-lg text-palette1">
         Upload Images
-        <span className="text-red-600 mx-1 font-bold">*</span>
+        <span className="text-red-600 mx-1">*</span>
       </label>
       <section className="h-full w-full overflow-auto p-4 flex flex-col bg-white shadow-xl rounded-md mx-auto">
         <header
@@ -91,9 +91,9 @@ export const ImagesUpload: React.FC = () => {
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDragEnter={handleDragEnter}
-          className={`${dragActive ? "bg-blue-400" : "bg-blue-100"} rounded-md border-dashed border-2 border-gray-400 py-12 flex flex-col justify-center items-center`}
+          className={`${dragActive ? "bg-palette1" : "bg-palette4"} rounded-md border-dashed border-2 border-palette1 py-12 flex flex-col justify-center items-center`}
         >
-          <p className="flexmb-3 font-semibold text-gray-900 flex flex-wrap justify-center">
+          <p className="flexmb-3 font-semibold text-palette1 flex flex-wrap justify-center">
             <span>Trascina e rilascia le tue foto</span>
           </p>
           <input
@@ -112,13 +112,13 @@ export const ImagesUpload: React.FC = () => {
           />
           <button
             onClick={onclick}
-            className="mt-4 rounded-sm px-3 py-1 bg-violet-500 hover:bg-violet-300 focus:shadow-outline focus:outline-none"
+            className="mt-4 rounded-sm px-3 py-1 bg-palette1 hover:bg-palette1 focus:shadow-outline focus:outline-none"
           >
             Oppure seleziona
           </button>
         </header>
 
-        <h1 className="py-4 font-semibold sm:text-lg text-gray-900">
+        <h1 className="py-4 font-semibold sm:text-lg text-palette1">
           File Selezionati ({files?.length || 0})
         </h1>
         <ul id="gallery" className="grid grid-cols-4 overflow-y-auto h-60">
@@ -127,7 +127,7 @@ export const ImagesUpload: React.FC = () => {
             className="text-center flex flex-col justify-center items-center"
           >
             <svg
-              className="w-12 h-12 text-violet-400"
+              className="w-12 h-12 text-palette5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

@@ -23,7 +23,7 @@ export async function Dashboard() {
   const { projects, catalogs } = await fetchData();
   return (
     <div>
-      <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
+      <div className="flex flex-col bg-palette2 text-palette3 shadow-xl rounded-xl p-4">
         {/* Griglia dei progetti */}
         <h2 className="text-3xl font-bold">Progetti</h2>
         {projects && projects.length !== 0 && (
@@ -46,7 +46,7 @@ export async function Dashboard() {
 
       <div className="h-4" />
 
-      <div className="flex flex-col dark:bg-gray-800 dark:text-gray-100 shadow-xl rounded-xl p-4">
+      <div className="flex flex-col bg-palette2 text-palette3 shadow-xl rounded-xl p-4">
         <h2 className="text-3xl font-bold">Cataloghi (Coming Soon...)</h2>
         {catalogs && catalogs.length !== 0 && (
           <div className="flex overflow-x-scroll">

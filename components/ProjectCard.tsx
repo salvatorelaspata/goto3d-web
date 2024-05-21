@@ -60,21 +60,21 @@ export default function ProjectCard({
   if (isNew)
     return (
       <Link
-        className="p-4 flex flex-col border border-x-2 border-y-2 bg-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+        className="p-4 flex flex-col border border-x-2 border-y-2 bg-palette1 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
         href={`/projects/new`}
       >
-        <h2 className="text-white text-xl font-bold">+ Nuovo Progetto</h2>
-        <p className="text-sm text-white mb-4">Crea un nuovo Progetto</p>
+        <h2 className="text-palette3 text-xl font-bold">+ Nuovo Progetto</h2>
+        <p className="text-sm text-palette3 mb-4">Crea un nuovo Progetto</p>
       </Link>
     );
   return (
     <Link
       key={id}
-      className="p-4 flex flex-col bg-white border border-x-2 border-y-2 border-violet-400 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+      className="p-4 flex flex-col bg-palette3 border border-x-2 border-y-2 border-palette1 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       href={`/projects/${id}`}
     >
-      <h2 className="text-black text-xl font-bold">{project?.name}</h2>
-      <p className="text-sm text-black mb-4">{project?.description}</p>
+      <h2 className="text-palette1 text-xl font-bold">{project?.name}</h2>
+      <p className="text-sm text-palette5 mb-4">{project?.description}</p>
       <span className={`text-sm ${statusColor(project?.status || "")} mb-4`}>
         {project?.status}
       </span>

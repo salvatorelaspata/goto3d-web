@@ -26,7 +26,7 @@ export const RadioCard: React.FC<RadioCardInputProps> = ({
   onChange,
 }) => {
   const checked =
-    selected && "peer-checked:bg-violet-600 peer-checked:text-white";
+    selected && "peer-checked:bg-palette1 peer-checked:text-white";
   return (
     <>
       <input
@@ -43,7 +43,7 @@ export const RadioCard: React.FC<RadioCardInputProps> = ({
       />
       <label
         htmlFor={`${id}--${value}`}
-        className={`h-full ${selected === value && checked} shadow-md ${!disabled ? "hover:scale-105" : "bg-gray-200"} transition duration-300 ease-in-out justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg ${!disabled && "cursor-pointer hover:bg-violet-200"} hover:text-gray-600`}
+        className={`h-full ${selected === value && checked} shadow-md ${!disabled ? "hover:scale-105" : "bg-palette3"} transition duration-300 ease-in-out justify-between w-full p-2 text-palette1 bg-palette3 border border-palette4 rounded-lg ${!disabled && "cursor-pointer hover:bg-palette1"} hover:text-palette5`}
       >
         <div className="relative p-4">
           {pro && (

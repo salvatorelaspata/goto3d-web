@@ -12,9 +12,13 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
 }) => {
   return (
     <>
-      <label id={`${id}--label`} htmlFor={id} className="my-2 text-lg w-full">
+      <label
+        id={`${id}--label`}
+        htmlFor={id}
+        className="my-2 text-lg w-full text-palette1"
+      >
         {label}
-        {required && <span className="text-red-600 mx-1 font-bold">*</span>}
+        {required && <span className="text-red-500 mx-1 italic">*</span>}
       </label>
       <input
         id={id}
@@ -23,7 +27,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
         name={name}
         type={type}
         onChange={onChange}
-        className="border w-full border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100 text-black"
+        className="border w-full border-palette1 bg-white rounded-md p-2 text-palette5"
       />
     </>
   );

@@ -11,82 +11,23 @@ div#__next > div {
   height: 100%;
 }
 
-/* THEMING */
-
-@layer base {
-  :root {
-    --color-neutral-50: theme("colors.gray.50");
-    --color-neutral-100: theme("colors.gray.100");
-    --color-neutral-200: theme("colors.gray.200");
-    --color-neutral-300: theme("colors.gray.300");
-    --color-neutral-400: theme("colors.gray.400");
-    --color-neutral-500: theme("colors.gray.500");
-    --color-neutral-600: theme("colors.gray.600");
-    --color-neutral-700: theme("colors.gray.700");
-    --color-neutral-800: theme("colors.gray.800");
-    --color-neutral-900: theme("colors.gray.900");
-  }
-}
-
-.theme-blue {
-  --color-primary-50: theme("colors.blue.50");
-  --color-primary-100: theme("colors.blue.100");
-  --color-primary-200: theme("colors.blue.200");
-  --color-primary-300: theme("colors.blue.300");
-  --color-primary-400: theme("colors.blue.400");
-  --color-primary-500: theme("colors.blue.500");
-  --color-primary-600: theme("colors.blue.600");
-  --color-primary-700: theme("colors.blue.700");
-  --color-primary-800: theme("colors.blue.800");
-  --color-primary-900: theme("colors.blue.900");
-}
-
-.theme-purple {
-  --color-primary-50: theme("colors.purple.50");
-  --color-primary-100: theme("colors.purple.100");
-  --color-primary-200: theme("colors.purple.200");
-  --color-primary-300: theme("colors.purple.300");
-  --color-primary-400: theme("colors.purple.400");
-  --color-primary-500: theme("colors.purple.500");
-  --color-primary-600: theme("colors.purple.600");
-  --color-primary-700: theme("colors.purple.700");
-  --color-primary-800: theme("colors.purple.800");
-  --color-primary-900: theme("colors.purple.900");
-}
-
-.theme-light {
-  --neutralBg: theme("colors.white");
-  --onNeutralBg: var(--color-neutral-900);
-  --primaryBg: var(--color-primary-100);
-  --onPrimaryBg: var(--color-primary-900);
-  --primary: var(--color-primary-500);
-}
-
-.theme-light {
-  --neutralBg: var(--color-neutral-900);
-  --onNeutralBg: theme("colors.white");
-  --primaryBg: var(--color-primary-900);
-  --onPrimaryBg: var(--color-primary-50);
-  --primary: var(--color-primary-400);
-}
-
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar#css_scrollbar_selectors */
 ::-webkit-scrollbar {
-  color: var(--color-neutral-500);
+  color: white;
   width: 10px;
   height: 10px;
-  background-color: var(--color-neutral-200);
+  background-color: white;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  color: var(--color-neutral-800);
-  background-color: var(--color-neutral-400);
+  color: darkgray;
+  background-color: darkgray;
   height: 20px;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-neutral-600);
+  background-color: lightgray;
   border-radius: 10px;
 }

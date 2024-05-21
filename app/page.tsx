@@ -14,7 +14,7 @@ export default async function Home({
 
   return (
     <div className="m-4 flex flex-col items-stretch">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mb-4 bg-palette5 dark:text-gray-100 rounded-xl">
         <div className="flex flex-col space-y-1">
           <h1 className="text-3xl">Config.Reality</h1>
           <p>La piattaforma per creare e condividere modelli 3D</p>
@@ -55,7 +55,7 @@ export default async function Home({
           />
         </div>
       </div>
-      <div className="w-full p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
+      <div className="w-full p-4 mb-4 bg-palette5 dark:text-gray-100 rounded-xl">
         <div>
           {!user && <Auth />}
 

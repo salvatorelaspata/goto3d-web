@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-palette3">
         <div className="h-full flex flex-col flex-1">
           <Header />
           <Loader />

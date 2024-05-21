@@ -19,7 +19,7 @@ export const Select: React.FC<FieldProps> = ({
         id={id}
         name={name}
         onChange={onChange}
-        className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100"
+        className="border border-palette1 bg-white rounded-md p-2 disabled:bg-palette3"
       >
         {options?.map(({ label, value, default: d }) => (
           <option key={value} value={value}>

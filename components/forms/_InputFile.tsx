@@ -21,7 +21,7 @@ export const InputFile: React.FC<FieldProps> = ({
         type={type}
         multiple={multiple}
         onChange={onFileChange}
-        className="border border-violet-600 bg-white rounded-md p-2 disabled:bg-violet-100"
+        className="border border-palette1 bg-white rounded-md p-2 disabled:bg-palette3"
       />
     </>
   ) : null;

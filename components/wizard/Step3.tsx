@@ -101,9 +101,9 @@ export const Step3: React.FC = () => {
       {/* create card radio group to select the detail, order and features */}
       {fields.map((field) => (
         <div key={field.id} className="flex flex-col">
-          <label className="text-lg my-2">
+          <label className="text-lg my-2 text-palette1">
             {field.label}
-            <span className="text-red-600 ml-1 font-bold">*</span>
+            <span className="text-red-500 ml-1">*</span>
           </label>
           {/* <label className="my-2 text-sm">{field.description}</label> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

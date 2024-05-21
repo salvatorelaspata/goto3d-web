@@ -25,7 +25,7 @@ export default async function Header() {
 
   return (
     <>
-      <header className="dark:bg-gray-800 dark:text-gray-100">
+      <header className="bg-palette4 text-palette1 font-bold">
         <div className="flex justify-between h-10 ">
           <div className="flex items-center">
             <Link
