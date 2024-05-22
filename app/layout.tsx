@@ -2,7 +2,26 @@ import { Loader } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
 import Header from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
+import localFont from "@next/font/local";
 import "@/styles/globals.css";
+
+const poppins = localFont({
+  src: [
+    {
+      path: "../public/fonts/Inter-Light.ttf",
+      weight: "200",
+    },
+    {
+      path: "../public/fonts/Inter-Medium.ttf",
+      weight: "400",
+    },
+    {
+      path: "../public/fonts/Inter-Bold.ttf",
+      weight: "700",
+    },
+  ],
+  variable: "--font-poppins",
+});
 
 const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`
@@ -14,13 +33,13 @@ export const metadata = {
   description: "From image to 3D model in seconds",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.variable} font-sans m-0`}>
       <body className="bg-palette3">
         <div className="h-full flex flex-col flex-1">
           <Header />

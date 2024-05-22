@@ -66,10 +66,15 @@ export const updateSession = async (request: NextRequest) => {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      return NextResponse.redirect("/login");
+    if (
+      !user &&
+      request.nextUrl.pathname !== "/login" &&
+      request.nextUrl.pathname !== "/"
+    ) {
+      return NextResponse.redirect(new URL("login", request.url));
     }
 
+    request.headers.set("x-next-pathname", request.nextUrl.pathname);
     return response;
   } catch (e) {
     // If you are here, a Supabase client could not be created!

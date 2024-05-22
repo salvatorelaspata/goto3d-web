@@ -1,5 +1,6 @@
 import { privateRoutes, publicRoutes } from "@/utils/constants";
 import { createClient } from "@/utils/supabase/server";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -23,9 +24,10 @@ export default async function Header() {
     return redirect("/");
   };
 
+  if (!user) return null;
   return (
     <>
-      <header className="bg-palette4 text-palette1 font-bold">
+      <header className="bg-palette4 text-palette1">
         <div className="flex justify-between h-10 ">
           <div className="flex items-center">
             <Link
@@ -34,11 +36,7 @@ export default async function Header() {
               aria-label="Back to homepage"
               className="flex items-center"
             >
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="h-10 dark:filter dark:invert"
-              />
+              <Image src="/logo.png" alt="Logo" width={40} height={40} />
             </Link>
             <p className="text-sm ml-2">Hey {user?.email}</p>
           </div>

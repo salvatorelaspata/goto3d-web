@@ -16,19 +16,16 @@ module.exports = {
         palette4: "#FFDDD2",
         palette5: "#E29578",
 
-        // 770a00 // dark:
-        // c5838a // dark:
-        // f9f0ed // dark:
-        // d2f4ff // dark:
-        // 78c5e2 // dark:
+        // darkpalette1: "#770A00",
+        // darkpalette2: "#C5838A",
+        // darkpalette3: "#F9F0ED",
+        // darkpalette4: "#D2F4FF",
+        // darkpalette5: "#78C5E2",
       },
       fontFamily: {
-        body: ["Nunito"],
+        sans: ["var(--font-poppins)"],
       },
-      backgroundImage: (theme) => ({
-        "hero-pattern": "url('/images/hero-pattern.svg')",
-        "footer-texture": "url('/images/footer-texture.svg')",
-      }),
+      backgroundImage: (theme) => ({}),
     },
   },
   plugins: [],

@@ -46,13 +46,11 @@ export default function Auth() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-4 bg-palette2 text-gray-100 rounded-xl shadow-md">
       <div className="my-8">
-        <h1 className="text-center text-2xl text-palette1">Cosa Aspetti</h1>
-
-        <h2 className="text-center text-xl text-palette3">
+        <h1 className="text-center text-2xl font-bold text-palette1">
           Accedi o Registrati
-        </h2>
+        </h1>
       </div>
-      <form className="flex flex-col w-full px-4 pb-4" action={signIn}>
+      <form className="flex flex-col w-full" action={signIn}>
         <Input id="email" type="text" label="email" name="email" required />
         <Input
           id="password"
@@ -76,9 +74,9 @@ export default function Auth() {
       </form>
 
       <div className="relative flex p-4 items-center w-full">
-        <div className="flex-grow border-t border-palette4"></div>
+        <div className="flex-grow border-t border-palette3"></div>
         <span className="flex-shrink mx-4 text-palette3">Oppure</span>
-        <div className="flex-grow border-t border-palette4"></div>
+        <div className="flex-grow border-t border-palette3"></div>
       </div>
 
       <form

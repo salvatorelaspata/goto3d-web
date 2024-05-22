@@ -1,11 +1,20 @@
 import Auth from "@/components/Auth";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
+export default async function Login() {
+  const onBack = async () => {
+    "use server";
+    redirect("/");
+  };
   return (
-    <div className="m-4 flex flex-col items-stretch">
-      <div className="w-full p-4 mb-4 dark:bg-gray-600 dark:text-gray-100 rounded-xl">
-        <Auth />
-      </div>
+    <div className="h-full flex flex-col items-stretch p-4">
+      {/* back button */}
+      <form action={onBack}>
+        <button className="absolute  left-8 top-8 bg-palette1 text-palette5 rounded-md p-2">
+          🏚️
+        </button>
+      </form>
+      <Auth />
     </div>
   );
 }

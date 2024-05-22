@@ -6,6 +6,10 @@ export type itemHeaderProps = {
 
 export const privateRoutes: itemHeaderProps[] = [
   {
+    name: "Dashboard",
+    url: "/dashboard",
+  },
+  {
     name: "Cataloghi (Coming Soon)",
     url: "",
   },
@@ -18,12 +22,7 @@ export const privateRoutes: itemHeaderProps[] = [
     url: "/profile",
   },
 ];
-export const publicRoutes: itemHeaderProps[] = [
-  {
-    name: "Dashboard",
-    url: "/dashboard",
-  },
-];
+export const publicRoutes: itemHeaderProps[] = [];
 
 export const formFields: FieldProps[] = [
   {
