@@ -81,7 +81,7 @@ export const ImagesUpload: React.FC = () => {
 
   return (
     <>
-      <label className="my-2 text-lg text-palette1">
+      <label className="my-2 text-lg text-palette1 font-light">
         Upload Images
         <span className="text-red-600 mx-1">*</span>
       </label>
@@ -93,7 +93,7 @@ export const ImagesUpload: React.FC = () => {
           onDragEnter={handleDragEnter}
           className={`${dragActive ? "bg-palette1" : "bg-palette4"} rounded-md border-dashed border-2 border-palette1 py-12 flex flex-col justify-center items-center`}
         >
-          <p className="flexmb-3 font-semibold text-palette1 flex flex-wrap justify-center">
+          <p className="flexmb-3 text-palette1 flex flex-wrap justify-center font-light">
             <span>Trascina e rilascia le tue foto</span>
           </p>
           <input
@@ -112,13 +112,13 @@ export const ImagesUpload: React.FC = () => {
           />
           <button
             onClick={onclick}
-            className="mt-4 rounded-sm px-3 py-1 bg-palette1 hover:bg-palette1 focus:shadow-outline focus:outline-none"
+            className="mt-4 rounded-sm px-3 py-1 bg-palette1 text-palette3 focus:shadow-outline focus:outline-none font-light"
           >
             Oppure seleziona
           </button>
         </header>
 
-        <h1 className="py-4 font-semibold sm:text-lg text-palette1">
+        <h1 className="py-4 font-light sm:text-lg text-palette1">
           File Selezionati ({files?.length || 0})
         </h1>
         <ul id="gallery" className="grid grid-cols-4 overflow-y-auto h-60">
@@ -139,7 +139,7 @@ export const ImagesUpload: React.FC = () => {
                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
               ></path>
             </svg>
-            <span className="text-small text-gray-500">
+            <span className="text-small font-light text-gray-500">
               Nessun file selezionati
             </span>
           </li>

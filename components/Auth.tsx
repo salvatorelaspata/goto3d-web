@@ -2,6 +2,7 @@ import { Input } from "./forms/Input";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import Image from "next/image";
 
 export default function Auth() {
   const signIn = async (formData: FormData) => {
@@ -49,6 +50,7 @@ export default function Auth() {
         <h1 className="text-center text-2xl font-bold text-palette1">
           Accedi o Registrati
         </h1>
+        <Image src="/logo.png" alt="Config.Reality" width={200} height={200} />
       </div>
       <form className="flex flex-col w-full" action={signIn}>
         <Input id="email" type="text" label="email" name="email" required />

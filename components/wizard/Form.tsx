@@ -15,7 +15,7 @@ export const Form: React.FC<FormProps> = ({
 }) => {
   const { error } = useStore();
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full p-4 rounded-l-xl border-palette1 border shadow-lg">
       {children}
 
       {stretch && <div className="flex-grow" />}

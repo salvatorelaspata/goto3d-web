@@ -1,4 +1,5 @@
 // import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { Input } from "../forms/Input";
 import { Textarea } from "../forms/Textarea";
 import { Form } from "./Form";
@@ -56,8 +57,14 @@ export const Step1: React.FC = () => {
 
   const spiegone = (
     <Legend step={1} title="Step 1: Scegli un nome al progetto">
-      <div className="flex flex-col">
-        <img src="/capturing-photographs-for-realitykit-object-capture-1@2x.png" />
+      <div className="flex flex-col center">
+        <Image
+          className="self-center"
+          alt="Step 1: Scegli un nome al progetto"
+          width={400}
+          height={400}
+          src="/capturing-photographs-for-realitykit-object-capture-1@2x.png"
+        />
         <br />
         <p className="py-4 ">
           Il primo passo per creare un nuovo progetto è inserire il nome.

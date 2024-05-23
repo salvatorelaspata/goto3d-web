@@ -1,13 +1,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { Card } from "../components/Card";
-import Auth from "@/components/Auth";
 import { redirect } from "next/navigation";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+export default async function Home() {
   const supabase = createClient();
   const {
     data: { user },
@@ -16,6 +11,11 @@ export default async function Home({
   const goToLogin = async () => {
     "use server";
     redirect("/login");
+  };
+
+  const goToProfile = async () => {
+    "use server";
+    redirect("/profile");
   };
 
   return (
@@ -37,12 +37,20 @@ export default async function Home({
           <Card title="Condividi con chi vuoi" icon="❤️" number="⒋" />
         </div>
       </div>
-      {/*  GOT TO LOGIN️ */}
-      <form action="goToLogin">
-        <button className="w-full bg-palette1 text-palette3 rounded-md p-8 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
-          LOGIN
-        </button>
-      </form>
+
+      {user ? (
+        <form action={goToProfile}>
+          <button className="w-full bg-palette1 text-palette3 rounded-md p-8 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
+            PROFILE
+          </button>
+        </form>
+      ) : (
+        <form action={goToLogin}>
+          <button className="w-full bg-palette1 text-palette3 rounded-md p-8 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
+            LOGIN
+          </button>
+        </form>
+      )}
       {/* 
       <div className="w-full rounded-xl">
         {!user && <Auth />}

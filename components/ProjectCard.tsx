@@ -89,7 +89,7 @@ export default function ProjectCard({
 
       {/* <div className="max-w-xs rounded overflow-hidden shadow-lg"> */}
       <img
-        className="h-40 w-full object-cover"
+        className="h-52 w-full object-cover"
         src="/placeholder-image.png"
         alt="Sunset in the mountains"
       />

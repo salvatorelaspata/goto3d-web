@@ -9,7 +9,7 @@ export const Card: React.FC<Props> = ({ title, icon, number }) => {
   const [key, ...rest] = title.split(" ");
   return (
     <a
-      className={` group w-full flex flex-col bg-palette3 p-3 m-3 shadow-lg rounded-md hover:bg-palette1 hover:shadow-2xl`}
+      className={`group w-full flex flex-col bg-palette3 p-3 m-3 shadow-lg rounded-md hover:bg-palette1 hover:shadow-2xl`}
     >
       <div className="flex justify-between">
         <h2 className="text-2xl text-palette1 group-hover:text-palette3">
