@@ -17,7 +17,10 @@ export default async function Home() {
     "use server";
     redirect("/profile");
   };
-
+  const goToCreateProject = async () => {
+    "use server";
+    redirect("/projects/new");
+  };
   return (
     <div className="m-4 flex flex-col items-stretch">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 mb-4 bg-palette2 text-palette1 rounded-xl h-full">
@@ -39,14 +42,17 @@ export default async function Home() {
       </div>
 
       {user ? (
-        <form action={goToProfile}>
-          <button className="w-full bg-palette1 text-palette3 rounded-md p-8 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
-            PROFILE
+        <form
+          className="w-full rounded-xl p-4 text-foreground text-center hover:scale-105 transition duration-300 ease-in-out"
+          action={goToCreateProject}
+        >
+          <button className="w-full bg-palette1 text-palette2 rounded-md p-6 text-3xl hover:bg-palette2 hover:text-palette1">
+            CREA UN NUOVO PROGETTO
           </button>
         </form>
       ) : (
         <form action={goToLogin}>
-          <button className="w-full bg-palette1 text-palette3 rounded-md p-8 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
+          <button className="w-full bg-palette1 text-palette3 rounded-md p-6 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
             LOGIN
           </button>
         </form>

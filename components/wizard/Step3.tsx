@@ -120,8 +120,8 @@ export const Step3: React.FC = () => {
                   selected={
                     store[field.name] === option.value ? option.value : ""
                   }
-                  pro={option.pro}
-                  disabled={option.pro}
+                  pro={false}
+                  disabled={false}
                   onChange={(e) => {
                     if (field.name === "detail") {
                       const value: Database["public"]["Enums"]["details"] = e

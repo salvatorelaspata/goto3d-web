@@ -10,16 +10,12 @@ export const privateRoutes: itemHeaderProps[] = [
     url: "/dashboard",
   },
   {
-    name: "Cataloghi (Coming Soon)",
-    url: "",
-  },
-  {
     name: "Progetti",
     url: "/projects",
   },
   {
-    name: "Profile",
-    url: "/profile",
+    name: "Cataloghi (Coming Soon)",
+    url: "#",
   },
 ];
 export const publicRoutes: itemHeaderProps[] = [];
