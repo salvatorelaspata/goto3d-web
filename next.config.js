@@ -13,6 +13,16 @@ const nextConfig = {
     //   permanent: false,
     // },
   ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "supabase.salvatorelaspata.net",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

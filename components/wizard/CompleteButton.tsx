@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/client";
 import { toast } from "react-toastify";
 import { sendProjectToQueue, createProject } from "@/app/projects/new/actions";
 import { useRouter } from "next/navigation";
+// import convert from "heic-convert/browser";
 
 export default function CompleteButton() {
   const { name, description, files, detail, order, feature } = useStore();
@@ -26,6 +27,10 @@ export default function CompleteButton() {
 
     toast.success("Project created");
 
+    // console.time("thumbnail");
+    // await _createThumbnail(_dataProject?.id);
+    // console.timeEnd("thumbnail");
+
     console.time("upload");
     await _sendFile(files as FileList, _dataProject?.id);
     console.timeEnd("upload");
@@ -38,6 +43,36 @@ export default function CompleteButton() {
 
     navigation.push("/projects");
   };
+
+  // const _createThumbnail = async (projectId: number) => {
+  //   // convert heic to jpg
+  //   if (!files || files.length === 0) return;
+  //   let thumbnail = files[0];
+  //   try {
+  //     if (thumbnail.type === "image/heic") {
+  //       const outputBuffer = await convert({
+  //         buffer: thumbnail, // the HEIC file buffer
+  //         format: "PNG", // output format
+  //       });
+
+  //       thumbnail = new File([outputBuffer], "thumbnail.jpg", {
+  //         type: "image/jpg",
+  //       });
+  //     }
+  //     // create thumbnail
+  //     const { data: _dataThumbnail, error: _errorThumbnail } =
+  //       await supabase.storage
+  //         .from("viewer3d-dev")
+  //         .upload(projectId + thumbnail.name, thumbnail, {
+  //           upsert: true,
+  //         });
+  //     if (_errorThumbnail) return toast.error("Error: thumbnail");
+  //     return toast.info("Thumbnail created");
+  //   } catch (error) {
+  //     console.error("Error creating thumbnail", error);
+  //     toast.error("Error: thumbnail");
+  //   }
+  // };
 
   const _sendFile = async (files: FileList, projectId: number) => {
     // upload file in supabase storage

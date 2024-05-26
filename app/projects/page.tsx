@@ -6,7 +6,7 @@ async function getProjects() {
   const supabase = createClient();
   const { data: projects, error } = await supabase
     .from("project")
-    .select("id, name, description, status")
+    .select("id, name, description, files, status")
     .order("created_at", { ascending: false });
   if (error) {
     throw new Error(error.message);

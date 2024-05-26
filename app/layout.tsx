@@ -2,7 +2,7 @@ import { Loader } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
 import Header from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
-import localFont from "@next/font/local";
+import localFont from "next/font/local";
 import "@/styles/globals.css";
 
 const poppins = localFont({

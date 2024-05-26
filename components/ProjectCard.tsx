@@ -1,6 +1,7 @@
 "use client";
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -22,10 +23,12 @@ export default function ProjectCard({
   name,
   description,
   status,
+  files,
   isNew = false,
 }: Partial<Database["public"]["Tables"]["project"]["Row"]> & {
   isNew?: boolean;
 }) {
+  const [image, setImage] = useState<string>("/placeholder-image.png");
   const [project, setProject] = useState<Partial<
     Database["public"]["Tables"]["project"]["Row"]
   > | null>({
@@ -33,6 +36,7 @@ export default function ProjectCard({
     name,
     description,
     status,
+    files,
   });
 
   useEffect(() => {
@@ -55,6 +59,25 @@ export default function ProjectCard({
         }
       )
       .subscribe();
+
+    // get image from storage
+
+    console.log("files", files);
+    if (!files || files.length === 0) return;
+    const img = files[0];
+    const fetchImage = async () => {
+      const { data, error } = await supabase.storage
+        .from("viewer3d-dev")
+        .createSignedUrl(`${id}/images/${img}`, 10, {
+          download: true,
+        });
+      if (error) {
+        console.error("error getting signed url", error);
+        return;
+      }
+      setImage(data.signedUrl);
+    };
+    fetchImage();
   }, []);
 
   if (isNew)
@@ -90,7 +113,9 @@ export default function ProjectCard({
       {/* <div className="max-w-xs rounded overflow-hidden shadow-lg"> */}
       <img
         className="h-52 w-full object-cover"
-        src="/placeholder-image.png"
+        height={208}
+        width={320}
+        src={image}
         alt="Sunset in the mountains"
       />
       <div className="px-6 py-4">
