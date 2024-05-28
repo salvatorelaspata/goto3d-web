@@ -52,7 +52,8 @@ export type Database = {
           process_start: string | null
           status: Database["public"]["Enums"]["status"] | null
           telegram_user: number | null
-          user_id: string | null
+          thumbnail: string | null
+          user_id: string
         }
         Insert: {
           catalog_id?: number | null
@@ -69,7 +70,8 @@ export type Database = {
           process_start?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           telegram_user?: number | null
-          user_id?: string | null
+          thumbnail?: string | null
+          user_id?: string
         }
         Update: {
           catalog_id?: number | null
@@ -86,7 +88,8 @@ export type Database = {
           process_start?: string | null
           status?: Database["public"]["Enums"]["status"] | null
           telegram_user?: number | null
-          user_id?: string | null
+          thumbnail?: string | null
+          user_id?: string
         }
         Relationships: [
           {

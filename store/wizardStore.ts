@@ -51,7 +51,7 @@ const checksMandatory = [
   () => state.name.length > 0,
   () => state.files.length > 0,
   () => {
-    console.log(state.detail, state.order, state.feature);
+    // console.log(state.detail, state.order, state.feature);
     return true;
   },
   () => true, // state.status.length > 0,

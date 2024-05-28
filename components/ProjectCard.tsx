@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BlurImage } from "./BlurImage";
 
 const statusColor = (status: string) => {
   switch (status) {
@@ -25,10 +26,10 @@ export default function ProjectCard({
   status,
   files,
   isNew = false,
+  thumbnail,
 }: Partial<Database["public"]["Tables"]["project"]["Row"]> & {
   isNew?: boolean;
 }) {
-  const [image, setImage] = useState<string>("/placeholder-image.png");
   const [project, setProject] = useState<Partial<
     Database["public"]["Tables"]["project"]["Row"]
   > | null>({
@@ -37,6 +38,7 @@ export default function ProjectCard({
     description,
     status,
     files,
+    thumbnail,
   });
 
   useEffect(() => {
@@ -59,25 +61,6 @@ export default function ProjectCard({
         }
       )
       .subscribe();
-
-    // get image from storage
-
-    console.log("files", files);
-    if (!files || files.length === 0) return;
-    const img = files[0];
-    const fetchImage = async () => {
-      const { data, error } = await supabase.storage
-        .from("viewer3d-dev")
-        .createSignedUrl(`${id}/images/${img}`, 10, {
-          download: true,
-        });
-      if (error) {
-        console.error("error getting signed url", error);
-        return;
-      }
-      setImage(data.signedUrl);
-    };
-    fetchImage();
   }, []);
 
   if (isNew)
@@ -106,22 +89,24 @@ export default function ProjectCard({
     >
       {/* <h2 className="text-xl font-bold">{project?.name}</h2>
       <p className="text-sm text-palette5 mb-4">{project?.description}</p>
-      <span className={`text-sm ${statusColor(project?.status || "")} mb-4`}>
-        {project?.status}
-      </span> */}
+       */}
 
       {/* <div className="max-w-xs rounded overflow-hidden shadow-lg"> */}
-      <img
-        className="h-52 w-full object-cover"
-        height={208}
-        width={320}
-        src={image}
-        alt="Sunset in the mountains"
-      />
+      <div className="flex justify-center">
+        <BlurImage
+          name={project?.name || ""}
+          imageSrc={project?.thumbnail || ""}
+        />
+      </div>
       <div className="px-6 py-4">
         <div className="text-xl mb-2">{project?.name}</div>
         <p className="text-palette1 text-base">
           {project?.description || `...`}
+        </p>
+        <p
+          className={`text-right text-sm ${statusColor(project?.status || "")} mb-4`}
+        >
+          {project?.status}
         </p>
       </div>
       <span className="absolute top-0 left-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>

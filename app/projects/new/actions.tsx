@@ -24,7 +24,7 @@ export async function createProject({
   files: Database["public"]["Tables"]["project"]["Row"]["files"];
 }) {
   const supabase = createClient();
-  return await supabase
+  const { data, error } = await supabase
     .from("project")
     .insert({
       name,
@@ -37,4 +37,20 @@ export async function createProject({
     })
     .select("id")
     .single();
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+}
+
+export async function updateThumbnail(id: number, thumbnail: string) {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("project").upsert({
+    id: id,
+    thumbnail: thumbnail,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
 }

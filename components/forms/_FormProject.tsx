@@ -63,7 +63,7 @@ export const FormProject: React.FC<FormProjectProp> = ({
               icon="detail"
               options={formFields[3].options}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                console.log(e.target.value)
+                // console.log(e.target.value)
               }
               iValue="low"
               disabled={disabled}
@@ -89,7 +89,7 @@ export const FormProject: React.FC<FormProjectProp> = ({
               icon="order"
               options={formFields[4].options}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                console.log(e.target.value)
+                // console.log(e.target.value)
               }
               iValue="asc"
               disabled={disabled}
@@ -115,7 +115,7 @@ export const FormProject: React.FC<FormProjectProp> = ({
               icon="feature"
               options={formFields[5].options}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                console.log(e.target.value)
+                // console.log(e.target.value)
               }
               iValue="all"
               disabled={disabled}

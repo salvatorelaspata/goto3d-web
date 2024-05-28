@@ -27,7 +27,7 @@ const fetchData: ({
       .from("viewer3d-dev")
       .list(`${project?.id}/model`);
 
-    console.log("models", project?.id, models);
+    // console.log("models", project?.id, models);
 
     const { data: backgrounds } = await supabase.storage
       .from("viewer3d-dev")

@@ -4,8 +4,13 @@ import { useStore } from "@/store/wizardStore";
 import { useStore as useMainStore } from "@/store/main";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "react-toastify";
-import { sendProjectToQueue, createProject } from "@/app/projects/new/actions";
+import {
+  sendProjectToQueue,
+  createProject,
+  updateThumbnail,
+} from "@/app/projects/new/actions";
 import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 // import convert from "heic-convert/browser";
 
 export default function CompleteButton() {
@@ -16,7 +21,7 @@ export default function CompleteButton() {
   const onSubmit = async () => {
     actions.showLoading();
     const filesArray = Array.from(files).map((f) => f.name);
-    const { data: _dataProject, error: _errorProject } = await createProject({
+    const { id } = await createProject({
       name,
       description,
       detail,
@@ -27,15 +32,15 @@ export default function CompleteButton() {
 
     toast.success("Project created");
 
-    // console.time("thumbnail");
-    // await _createThumbnail(_dataProject?.id);
-    // console.timeEnd("thumbnail");
+    console.time("thumbnail");
+    await _createThumbnail(id, files[0]);
+    console.timeEnd("thumbnail");
 
     console.time("upload");
-    await _sendFile(files as FileList, _dataProject?.id);
+    await _sendFile(files as FileList, id);
     console.timeEnd("upload");
 
-    sendProjectToQueue(_dataProject?.id);
+    sendProjectToQueue(id);
     toast.success("Project sent to queue");
     actions.hideLoading();
 
@@ -44,35 +49,40 @@ export default function CompleteButton() {
     navigation.push("/projects");
   };
 
-  // const _createThumbnail = async (projectId: number) => {
-  //   // convert heic to jpg
-  //   if (!files || files.length === 0) return;
-  //   let thumbnail = files[0];
-  //   try {
-  //     if (thumbnail.type === "image/heic") {
-  //       const outputBuffer = await convert({
-  //         buffer: thumbnail, // the HEIC file buffer
-  //         format: "PNG", // output format
-  //       });
+  const _createThumbnail = async (projectId: number, file: File) => {
+    // convert heic to jpg;
+    try {
+      // if (file.type === "image/heic") {
+      //   const outputBuffer = await convert({
+      //     buffer: file, // the HEIC file buffer
+      //     format: "PNG", // output format
+      //   });
 
-  //       thumbnail = new File([outputBuffer], "thumbnail.jpg", {
-  //         type: "image/jpg",
-  //       });
-  //     }
-  //     // create thumbnail
-  //     const { data: _dataThumbnail, error: _errorThumbnail } =
-  //       await supabase.storage
-  //         .from("viewer3d-dev")
-  //         .upload(projectId + thumbnail.name, thumbnail, {
-  //           upsert: true,
-  //         });
-  //     if (_errorThumbnail) return toast.error("Error: thumbnail");
-  //     return toast.info("Thumbnail created");
-  //   } catch (error) {
-  //     console.error("Error creating thumbnail", error);
-  //     toast.error("Error: thumbnail");
-  //   }
-  // };
+      //   file = new File([outputBuffer], "file.jpg", {
+      //     type: "image/jpg",
+      //   });
+      // }
+      const id = uuidv4();
+      const ext = file.name.split(".").pop();
+
+      const { data: _dataThumbnail, error: _errorThumbnail } =
+        await supabase.storage.from("public-dev").upload(`${id}.${ext}`, file);
+      if (_errorThumbnail)
+        return toast.error(
+          "Error: thumbnail" + JSON.stringify(_errorThumbnail, null, 2)
+        );
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("public-dev").getPublicUrl(id);
+
+      await updateThumbnail(projectId, `${publicUrl}.${ext}`);
+      return toast.info("Thumbnail created");
+    } catch (error) {
+      console.error("Error creating thumbnail", error);
+      toast.error("Error: thumbnail");
+    }
+  };
 
   const _sendFile = async (files: FileList, projectId: number) => {
     // upload file in supabase storage
