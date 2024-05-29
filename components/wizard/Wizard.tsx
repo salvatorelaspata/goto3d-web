@@ -9,9 +9,15 @@ export const Wizard: React.FC = () => {
 
   return (
     <>
-      {currentStep === 1 && <Step1 />}
-      {currentStep === 2 && <Step2 />}
-      {currentStep === 3 && <Step3 />}
+      <div className={currentStep === 1 ? "block" : "hidden"}>
+        <Step1 />
+      </div>
+      <div className={currentStep === 2 ? "block" : "hidden"}>
+        <Step2 />
+      </div>
+      <div className={currentStep === 3 ? "block" : "hidden"}>
+        <Step3 />
+      </div>
     </>
   );
 };

@@ -44,7 +44,8 @@ export const ImagesUpload: React.FC = () => {
   const { files } = useStore();
   const { setFiles } = actions;
   const hiddenInput = useRef<HTMLInputElement>(null);
-  const onclick = () => {
+  const onclick = (e) => {
+    e.preventDefault();
     hiddenInput.current?.click();
   };
   useEffect(() => {
