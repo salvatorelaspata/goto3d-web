@@ -43,7 +43,7 @@ export default async function Profile() {
         <div className="h-16 w-16 rounded-full bg-palette1 m-4 border-gray-500 border-dashed border" />
         <div className="h-16 w-16 rounded-full bg-palette2 m-4 border-gray-500 border-dashed border" />
         <div className="h-16 w-16 rounded-full bg-palette3 m-4 border-gray-500 border-dashed border" />
-        <div className="h-16 w-16 rounded-full bg-palette4 m-4 border-gray-500 border-dashed border" />
+        {/* <div className="h-16 w-16 rounded-full bg-palette4 m-4 border-gray-500 border-dashed border" /> */}
         <div className="h-16 w-16 rounded-full bg-palette5 m-4 border-gray-500 border-dashed border" />
       </div>
     </div>

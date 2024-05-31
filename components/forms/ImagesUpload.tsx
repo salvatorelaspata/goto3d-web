@@ -92,7 +92,7 @@ export const ImagesUpload: React.FC = () => {
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDragEnter={handleDragEnter}
-          className={`${dragActive ? "bg-palette1" : "bg-palette4"} rounded-md border-dashed border-2 border-palette1 py-12 flex flex-col justify-center items-center`}
+          className={`${dragActive ? "bg-palette1" : "bg-palette5"} rounded-md border-dashed border-2 border-palette1 py-12 flex flex-col justify-center items-center`}
         >
           <p className="flexmb-3 text-palette1 flex flex-wrap justify-center font-light">
             <span>Trascina e rilascia le tue foto</span>

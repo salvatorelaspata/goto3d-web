@@ -83,7 +83,6 @@ export default function ProjectCard({
   return (
     <Link
       key={id}
-      // className="p-4 flex flex-col bg-palette3 border border-x-2 border-y-2 border-palette5 text-palette1 hover:bg-palette4 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       className="relative group w-full mx-auto bg-palette3 rounded overflow-hidden shadow-lg hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       href={`/projects/${id}`}
     >

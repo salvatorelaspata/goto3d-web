@@ -43,7 +43,7 @@ export const RadioCard: React.FC<RadioCardInputProps> = ({
       />
       <label
         htmlFor={`${id}--${value}`}
-        className={`h-full ${selected === value && checked} shadow-md ${!disabled ? "hover:scale-105" : "bg-palette3"} transition duration-300 ease-in-out justify-between w-full p-2 text-palette1 bg-palette3 border border-palette4 rounded-lg ${!disabled && "cursor-pointer hover:bg-palette1"} hover:text-palette5`}
+        className={`h-full ${selected === value && checked} shadow-md ${!disabled ? "hover:scale-105" : "bg-palette3"} transition duration-300 ease-in-out justify-between w-full p-2 text-palette1 bg-palette3 border border-palette5 rounded-lg ${!disabled && "cursor-pointer hover:bg-palette1"} hover:text-palette5`}
       >
         <div className="relative p-4">
           {pro && (

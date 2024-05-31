@@ -15,7 +15,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
       <label
         id={`${id}--label`}
         htmlFor={id}
-        className="my-2 text-lg font-light w-full text-palette1"
+        className="my-2 text-lg font-bold w-full [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] text-palette3"
       >
         {label}
         {required && <span className="text-red-500 mx-1 italic">*</span>}
