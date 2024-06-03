@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CatalogCard } from "@/components/CatalogCard";
 import { createClient } from "@/utils/supabase/server";
+import { protectedRoute } from "../actions";
 
 const fetchCatalogs = async () => {
   const supabase = createClient();
@@ -12,6 +13,7 @@ const fetchCatalogs = async () => {
 };
 
 export default async function Catalogs() {
+  await protectedRoute();
   const { catalogs } = await fetchCatalogs();
   return (
     <>

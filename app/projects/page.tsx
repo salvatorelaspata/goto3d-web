@@ -1,6 +1,7 @@
 import PageTitle from "@/components/PageTitle";
 import ProjectCard from "@/components/ProjectCard";
 import { createClient } from "@/utils/supabase/server";
+import { protectedRoute } from "../actions";
 
 async function getProjects() {
   const supabase = createClient();
@@ -16,6 +17,7 @@ async function getProjects() {
 }
 
 export default async function Project() {
+  await protectedRoute();
   const projects = await getProjects();
   return (
     <div className="m-4 bg-palette2 rounded-lg">

@@ -1,6 +1,7 @@
 import { Viewer } from "@/components/Viewer";
 import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/types/supabase";
+import { protectedRoute } from "@/app/actions";
 
 type ProjectDetail = {
   project: Database["public"]["Tables"]["project"]["Row"];
@@ -84,13 +85,8 @@ const fetchData: ({
   }
 };
 
-export default async function Project({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
+export default async function Project({ params }: { params: { id: string } }) {
+  await protectedRoute();
   const p = await fetchData({ id: params.id });
 
   const bigTextCentered = (text: string) => {

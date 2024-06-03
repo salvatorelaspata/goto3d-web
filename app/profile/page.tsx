@@ -1,6 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
+import { protectedRoute } from "../actions";
 
 export default async function Profile() {
+  await protectedRoute();
+
   const supabase = createClient();
   const {
     data: { user },

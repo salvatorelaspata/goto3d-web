@@ -3,6 +3,8 @@
 // import { createClient } from "@/utils/supabase/server";
 // import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
+import { protectedRoute } from "@/app/actions";
+
 // const fetchData = async () => {
 //   const supabase = createClient();
 //   const {
@@ -62,6 +64,7 @@
 // };
 
 export default async function NewCatalog() {
+  await protectedRoute();
   return <h1>New Catalog</h1>;
   // const { fields } = await fetchData();
   // const supabase = createClient();
