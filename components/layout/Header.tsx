@@ -21,7 +21,7 @@ export default async function Header() {
     <>
       <header className="bg-palette3 text-palette1 mt-4 mx-4">
         <div className="flex justify-between h-10 ">
-          <div className="flex items-center">
+          <li className="flex items-center">
             <Link
               rel="noopener noreferrer"
               href="/"
@@ -31,11 +31,11 @@ export default async function Header() {
               <Image src="/logo.png" alt="Logo" width={40} height={40} />
             </Link>
             <p className="text-sm ml-2">Hey {user?.email}</p>
-          </div>
+          </li>
 
-          <ul className="items-stretch space-x-3 hidden md:flex">
+          <ul className="items-stretch space-x-3 flex">
             {items.map((item) => (
-              <li key={item.name} className="flex">
+              <li key={item.name} className="hidden md:flex">
                 <Link
                   rel="noopener noreferrer"
                   href={item.url}
@@ -45,8 +45,8 @@ export default async function Header() {
                 </Link>
               </li>
             ))}
+            <li>{user && <Menu />}</li>
           </ul>
-          <div>{user && <Menu />}</div>
         </div>
       </header>
     </>

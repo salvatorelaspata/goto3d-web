@@ -1,7 +1,6 @@
 "use client";
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BlurImage } from "./BlurImage";
@@ -86,11 +85,6 @@ export default function ProjectCard({
       className="relative group w-full mx-auto bg-palette3 rounded overflow-hidden shadow-lg hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       href={`/projects/${id}`}
     >
-      {/* <h2 className="text-xl font-bold">{project?.name}</h2>
-      <p className="text-sm text-palette5 mb-4">{project?.description}</p>
-       */}
-
-      {/* <div className="max-w-xs rounded overflow-hidden shadow-lg"> */}
       <div className="flex justify-center">
         <BlurImage
           name={project?.name || ""}
@@ -112,15 +106,6 @@ export default function ProjectCard({
       <span className="absolute bottom-0 right-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 left-0 h-1 w-0 bg-palette1 group-hover:w-full group-hover:transition-all"></span>
       <span className="absolute top-0 right-0 h-1 w-0 bg-palette1 group-hover:w-full group-hover:transition-all"></span>
-
-      {/*
-      <div className="px-6 pt-4 pb-2">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-      </div> 
-      */}
-      {/* </div> */}
     </Link>
   );
 }

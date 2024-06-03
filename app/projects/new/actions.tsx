@@ -60,10 +60,7 @@ export async function updateThumbnail(id: number, thumbnail: string) {
   return data;
 }
 
-// create action to submit the form
 export async function doCreate(formData: FormData) {
-  // do something
-  debugger;
   const files = formData.getAll("files") as File[];
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;

@@ -15,7 +15,7 @@ const ItemMenu: React.FC<{
   const link = (
     <Link
       href={href || "#"}
-      className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+      className="block px-4 py-3 text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
     >
       {text}
     </Link>
@@ -27,7 +27,7 @@ const ItemMenuLogout: React.FC = () => {
   return (
     <form
       action={logout}
-      className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
+      className="block px-4 py-3 text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
     >
       <button>Logout</button>
     </form>
@@ -59,14 +59,12 @@ export const Menu: React.FC = () => {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute right-0 z-20 w-48 mt-2 origin-top-right bg-palette1 rounded">
+        <div className="absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border">
           <ItemMenu href="/profile" text="Profilo" />
           <ItemMenu href="/projects" text="Progetti" />
           <ItemMenu href="/catalogs" text="Cataloghi" />
           <ItemMenu href="/faq" text="Help (FAQ)" />
-          {/* <ItemMenu href="#" text="Impostazioni" /> */}
           <ItemMenuLogout />
-          {/* <ItemMenu href="#" text="Logout" logout /> */}
         </div>
       )}
     </div>

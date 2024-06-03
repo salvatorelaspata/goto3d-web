@@ -1,7 +1,8 @@
-import { Viewer } from "@/components/Viewer";
+// import { Viewer } from "@/components/Viewer";
 import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/types/supabase";
-import { protectedRoute } from "@/app/actions";
+import { protectedRoute } from "@/app/projects/actions";
+import { Viewer3d } from "@/components/Viewer3d";
 
 type ProjectDetail = {
   project: Database["public"]["Tables"]["project"]["Row"];
@@ -53,20 +54,20 @@ const fetchData: ({
       const { data: _objUrl, error: _objError } = await supabase.storage
         .from("viewer3d-dev")
         .createSignedUrl(`${project?.id}/model/${objName}`, 20);
-      // console.log("_objUrl", objName, _objError);
+
       objUrl = _objUrl?.signedUrl;
       // texture
       const { data: _textureUrl, error: _textureError } = await supabase.storage
         .from("viewer3d-dev")
         .createSignedUrl(`${project?.id}/model/${textureName}`, 20);
-      // console.log("_textureUrl", textureName, _textureError);
+
       textureUrl = _textureUrl?.signedUrl;
-      // background
+
       const { data: _backgroundUrl, error: _backgroundError } =
         await supabase.storage
           .from("viewer3d-dev")
           .createSignedUrl(`HDR/${backgroundName}`, 20);
-      // console.log("_backgroundUrl", _backgroundError);
+
       backgroundUrl = _backgroundUrl?.signedUrl;
     } catch (error) {
       console.error("error supabase", error);
@@ -109,21 +110,9 @@ export default async function Project({ params }: { params: { id: string } }) {
   }
 
   return (
-    <>
-      {/* <>
-        {fields.length && (
-          <Form fields={fields} onSubmit={onSubmit} _data={{ ...project }} />
-        )}
-      </> */}
-      {/* <ModelLayout> */}
-      {p && (
-        <Viewer
-          objUrl={p.objUrl}
-          textureUrl={p.textureUrl}
-          backgroundUrl={p.backgroundUrl}
-        />
-      )}
-      {/* </ModelLayout> */}
-    </>
+    <div className="h-full w-full grid grid-cols-3">
+      <div className="col-span-2">{p && <Viewer3d />}</div>
+      <div></div>
+    </div>
   );
 }

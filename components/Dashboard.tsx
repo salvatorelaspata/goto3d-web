@@ -47,7 +47,7 @@ export async function Dashboard() {
       <div className="h-4" />
 
       <div className="flex flex-col bg-palette2 text-palette3 shadow-xl rounded-xl p-4">
-        <h2 className="text-3xl font-bold">Cataloghi (Coming Soon...)</h2>
+        <h2 className="text-3xl font-bold">Cataloghi</h2>
         {catalogs && catalogs.length !== 0 && (
           <div className="flex overflow-x-scroll">
             <DashboardCard isNew isProject={false} />

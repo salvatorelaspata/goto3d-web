@@ -1,7 +1,7 @@
 import PageTitle from "@/components/PageTitle";
 import ProjectCard from "@/components/ProjectCard";
 import { createClient } from "@/utils/supabase/server";
-import { protectedRoute } from "../actions";
+import { protectedRoute } from "./actions";
 
 async function getProjects() {
   const supabase = createClient();
@@ -21,21 +21,20 @@ export default async function Project() {
   const projects = await getProjects();
   return (
     <>
-      <section className="m-4 bg-palette2 rounded-lg h-[80vh] bg-gradient-to-b from-[#006D77] to-[#83C5BE] flex items-center justify-center">
-        <div className="max-w-2xl px-4 md:px-6 text-center space-y-6 text-white">
+      <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b from-[#006D77] to-[#83C5BE] flex items-center justify-center">
+        <div className="max-w-2xl px-4 md:px-6 text-center space-y-6 text-palette3">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Crea il tuo prossimo progetto 3D
+            Crea il tuo progetto 3D
           </h1>
           <p className="text-lg md:text-xl">
-            Inizia a lavorare su un nuovo progetto così da poterlo visualizzare
-            in 3D e condividerlo con il mondo.
+            Hai un'oggetto che vuoi trasformare in 3D? Inizia subito!
           </p>
           <form action="/projects/new">
             <button
               type="submit"
-              className="w-full max-w-2xl bg-palette3 p-6 rounded-sm text-palette1 hover:bg-palette1 hover:text-palette3"
+              className="w-full max-w-2xl bg-palette3 p-6 rounded-sm text-palette1 hover:bg-palette1 hover:text-palette3 text-3xl"
             >
-              Crea nuovo
+              CREA
             </button>
           </form>
         </div>

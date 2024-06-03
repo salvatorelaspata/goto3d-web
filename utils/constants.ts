@@ -14,8 +14,8 @@ export const privateRoutes: itemHeaderProps[] = [
     url: "/projects",
   },
   {
-    name: "Cataloghi (Coming Soon)",
-    url: "#",
+    name: "Cataloghi",
+    url: "/catalogs",
   },
 ];
 export const publicRoutes: itemHeaderProps[] = [];
