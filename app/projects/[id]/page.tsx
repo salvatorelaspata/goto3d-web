@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { Database } from "@/types/supabase";
 import { protectedRoute } from "@/app/projects/actions";
 import { Viewer3d } from "@/components/Viewer3d";
+import PageTitle from "@/components/PageTitle";
 
 type ProjectDetail = {
   project: Database["public"]["Tables"]["project"]["Row"];
@@ -110,9 +111,16 @@ export default async function Project({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="h-full w-full grid grid-cols-3">
-      <div className="col-span-2">{p && <Viewer3d />}</div>
-      <div></div>
-    </div>
+    <>
+      <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b from-[#006D77] to-[#83C5BE] flex items-center justify-center">
+        <Viewer3d />
+      </section>
+      <section className="m-4 bg-palette2 rounded-lg">
+        <PageTitle title="Dettagli" />
+        <div>
+          <pre>{JSON.stringify(p, null, 2)}</pre>
+        </div>
+      </section>
+    </>
   );
 }
