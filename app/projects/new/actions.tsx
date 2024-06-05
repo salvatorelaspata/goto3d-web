@@ -3,7 +3,7 @@
 import { Database } from "@/types/supabase";
 import { sendToQueue } from "@/utils/amqpClient";
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 // import convert from "heic-convert";
 // import heic2any from "heic2any";
 
@@ -50,10 +50,12 @@ export async function createProject({
 
 export async function updateThumbnail(id: number, thumbnail: string) {
   const supabase = createClient();
-  const { data, error } = await supabase.from("project").upsert({
-    id: id,
-    thumbnail: thumbnail,
-  });
+  const { data, error } = await supabase
+    .from("project")
+    .update({
+      thumbnail: thumbnail,
+    })
+    .eq("id", id);
   if (error) {
     throw new Error(error.message);
   }
@@ -93,7 +95,7 @@ export async function doCreate(formData: FormData) {
 
   sendProjectToQueue(id);
 
-  redirect("/projects");
+  // redirect("/projects");
   // toast.success("Project sent to queue");
 }
 

@@ -110,3 +110,8 @@ export const filesToTable = (files: FileList, project_id?: number) => {
     };
   });
 };
+
+export const formatSupabaseDate = (date?: string) => {
+  if (!date) return "";
+  return new Date(date).toLocaleString();
+};

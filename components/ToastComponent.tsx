@@ -3,7 +3,6 @@
 import { createClient } from "@/utils/supabase/client";
 import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function ToastComponent() {
   // const sendNotification = (title: string, body: string) => {

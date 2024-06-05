@@ -2,7 +2,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useTexture } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
 import { useLoader } from "@react-three/fiber";
 import { Suspense, useMemo } from "react";
 import type { Mesh } from "three";
@@ -16,25 +15,17 @@ function Box() {
   );
 }
 
-// function Object() {
-//   const obj = useLoader(
-//     OBJLoader,
-//     "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/DEMO/model.obj"
-//   );
-//   return <primitive object={obj} />;
-// }
+function Object({
+  object,
+  texture: textureUrl,
+}: {
+  object: string;
+  texture: string;
+}) {
+  console.log("object", object, "texture", textureUrl);
+  const obj = useLoader(OBJLoader, object);
+  const texture = useTexture(textureUrl);
 
-function Object() {
-  const obj = useLoader(
-    OBJLoader,
-    "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/DEMO/model.obj"
-  );
-  const texture = useTexture(
-    // TextureLoader,
-    "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/DEMO/baked_mesh_tex0.png?t=2024-06-05T10%3A45%3A22.744Z"
-    // "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/DEMO/baked_mesh_ao0.png"
-    // "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/DEMO/baked_mesh_norm0.png?t=2024-06-05T10%3A59%3A41.096Z"
-  );
   const geometry = useMemo(() => {
     let g;
     obj.traverse((c) => {
@@ -53,14 +44,14 @@ function Object() {
   );
 }
 
-function Scene() {
+function Scene({ object, texture }: { object: string; texture: string }) {
   return (
     <>
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
       <Suspense fallback={<Box />}>
         <mesh>
-          <Object />
+          <Object object={object} texture={texture} />
         </mesh>
       </Suspense>
 
@@ -77,11 +68,17 @@ function Scene() {
   );
 }
 
-export const Viewer3d = () => {
+export const Viewer3d = ({
+  object,
+  texture,
+}: {
+  object: string;
+  texture: string;
+}) => {
   return (
     <Canvas>
       <OrbitControls />
-      <Scene />
+      <Scene object={object} texture={texture} />
     </Canvas>
   );
 };
