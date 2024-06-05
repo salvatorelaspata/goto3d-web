@@ -33,9 +33,7 @@
     "react-toastify": "^10.0.5",
     "three": "^0.165.0",
     "typescript": "^5.4.5",
-    "valtio": "^1.13.2",
-    "viewer-3d-lit": "^0.0.34",
-    "viewer-3d-lit-loader": "^0.0.7"
+    "valtio": "^1.13.2"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.5",
