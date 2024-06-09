@@ -1,11 +1,9 @@
 "use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useState } from "react";
-import Link from "next/link";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { logout } from "./MenuActions";
+import { useEffect, useRef, useState } from "react";
+import { logout, navTo } from "./MenuActions";
+import { privateRoutes } from "@/utils/constants";
 gsap.registerPlugin(useGSAP);
 
 const ItemMenu: React.FC<{
@@ -13,12 +11,13 @@ const ItemMenu: React.FC<{
   text: string;
 }> = ({ href, text }) => {
   const link = (
-    <Link
-      href={href || "#"}
-      className="block px-4 py-3 text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
+    <form
+      action={navTo}
+      className="block text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
     >
-      {text}
-    </Link>
+      <input type="hidden" name="url" value={href} />
+      <button className="w-full px-4 py-3">{text}</button>
+    </form>
   );
   return link;
 };
@@ -27,25 +26,29 @@ const ItemMenuLogout: React.FC = () => {
   return (
     <form
       action={logout}
-      className="block px-4 py-3 text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
+      className="block text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
     >
-      <button>Logout</button>
+      <button className="w-full px-4 py-3">Logout</button>
     </form>
   );
 };
 
 export const Menu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  useGSAP(() => {
-    gsap.to(".avatar-menu", {
-      opacity: 1,
-      scale: 1,
-    });
-  });
+  const ref = useRef(null);
 
   const toggleButton = () => {
     setIsOpen(!isOpen);
+    const tm = gsap.timeline();
+    tm.to(ref.current, {
+      duration: 0.5,
+      opacity: !isOpen ? 0 : 1,
+      display: !isOpen ? "none" : "block",
+      visibility: !isOpen ? "" : "visible",
+    });
+    tm.to(ref.current, {
+      visibility: !isOpen ? "hidden" : "",
+    });
   };
   return (
     <div className="relative inline-block">
@@ -58,15 +61,16 @@ export const Menu: React.FC = () => {
       </button>
 
       {/* Dropdown menu */}
-      {isOpen && (
-        <div className="absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border">
-          <ItemMenu href="/profile" text="Profilo" />
-          <ItemMenu href="/projects" text="Progetti" />
-          <ItemMenu href="/catalogs" text="Cataloghi" />
-          <ItemMenu href="/faq" text="Help (FAQ)" />
-          <ItemMenuLogout />
-        </div>
-      )}
+
+      <div
+        ref={ref}
+        className="hidden absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border"
+      >
+        {privateRoutes.map((item) => (
+          <ItemMenu key={item.name} href={item.url} text={item.name} />
+        ))}
+        <ItemMenuLogout />
+      </div>
     </div>
   );
 };

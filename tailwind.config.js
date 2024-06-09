@@ -13,7 +13,7 @@ module.exports = {
         palette1: "#006D77",
         palette2: "#83C5BE",
         palette3: "#EDF6F9",
-        // palette4: "#FFDDD2",
+        palette4: "#FFDDD2",
         palette5: "#E29578",
 
         // darkpalette1: "#770A00",

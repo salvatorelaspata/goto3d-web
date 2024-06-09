@@ -17,6 +17,10 @@ export const privateRoutes: itemHeaderProps[] = [
     name: "Cataloghi",
     url: "/catalogs",
   },
+  {
+    name: "Configurator",
+    url: "/configurator",
+  },
 ];
 export const publicRoutes: itemHeaderProps[] = [];
 

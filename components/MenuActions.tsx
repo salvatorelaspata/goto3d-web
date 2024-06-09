@@ -8,3 +8,8 @@ export const logout = async () => {
   await supabase.auth.signOut();
   return redirect("/");
 };
+
+export const navTo = (e: FormData) => {
+  const url = (e.get("url") as string) || "/";
+  return redirect(url);
+};

@@ -1,22 +1,10 @@
 "use client";
+
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BlurImage } from "./BlurImage";
-
-const statusColor = (status: string) => {
-  switch (status) {
-    case "In Progress":
-      return "text-yellow-500";
-    case "Completed":
-      return "text-green-500";
-    case "Pending":
-      return "text-red-500";
-    default:
-      return "text-gray-500";
-  }
-};
+import { BlurImage } from "../BlurImage";
 
 export default function ProjectCard({
   id,
@@ -65,7 +53,6 @@ export default function ProjectCard({
   if (isNew)
     return (
       <Link
-        // className="p-4 flex flex-col border border-x-2 border-y-2 bg-palette5 rounded-xl shadow-2xl hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
         className="relative group w-full mx-auto border-palette3 border p-4 rounded overflow-hidden shadow-lg hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
         href={`/projects/new`}
       >
@@ -96,11 +83,7 @@ export default function ProjectCard({
         <p className="text-palette1 text-base">
           {project?.description || `...`}
         </p>
-        <p
-          className={`text-right text-sm ${statusColor(project?.status || "")} mb-4`}
-        >
-          {project?.status}
-        </p>
+        <p className={`text-right text-sm mb-4`}>{project?.status}</p>
       </div>
       <span className="absolute top-0 left-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 right-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
