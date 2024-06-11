@@ -6,6 +6,9 @@ import { useLoader } from "@react-three/fiber";
 import { RefObject, Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { Mesh } from "three";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+gsap.registerPlugin(useGSAP);
 
 function Box() {
   return (
@@ -16,14 +19,15 @@ function Box() {
   );
 }
 
-function Object({
+function Model3D({
   object,
   texture: textureUrl,
+  camera,
 }: {
   object: string;
   texture: string;
+  camera: THREE.PerspectiveCamera;
 }) {
-  console.log("object", object, "texture", textureUrl);
   const obj = useLoader(OBJLoader, object);
   const texture = useTexture(textureUrl);
 
@@ -38,48 +42,90 @@ function Object({
     return g;
   }, [obj]);
 
+  // create box around the object
+  const geometryBox = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(obj);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+    geometry.translate(center.x, center.y, center.z);
+    return geometry;
+  }, [obj]);
+
+  const box = new THREE.Box3().setFromObject(obj);
+  const size = box.getSize(new THREE.Vector3());
+  console.log("size", size);
+  const center = box.getCenter(new THREE.Vector3());
+  console.log("center", center);
+  camera.position.z = size.z * 2;
+  camera.position.y = size.y * 2;
+  camera.position.x = size.x * 2;
+  // useGSAP(() => {
+  //   gsap.to(camera.position, {
+  //     duration: 1,
+  //     x: camera.position.x,
+  //     y: camera.position.y,
+  //     z: camera.position.z * 2,
+  //   });
+  // });
+
+  // zoom in the camera to fit the object
+
   return (
-    <mesh geometry={geometry} scale={1}>
-      <meshPhysicalMaterial map={texture} />
-    </mesh>
+    <>
+      <mesh geometry={geometry} position={[-center.x, -center.y, -center.z]}>
+        <meshPhysicalMaterial map={texture} />
+      </mesh>
+      <mesh geometry={geometryBox} position={[-center.x, -center.y, -center.z]}>
+        <meshBasicMaterial color="black" wireframe />
+      </mesh>
+    </>
   );
 }
 
-function Scene({ object, texture }: { object: string; texture: string }) {
+function Scene({
+  object,
+  texture,
+  camera,
+}: {
+  object: string;
+  texture: string;
+  camera: THREE.PerspectiveCamera;
+}) {
   return (
     <>
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
       <Suspense fallback={<Box />}>
-        <mesh>
-          <Object object={object} texture={texture} />
+        <mesh position={[0, 0, 0]}>
+          <Model3D object={object} texture={texture} camera={camera} />
         </mesh>
       </Suspense>
     </>
   );
 }
 
-export const Viewer3d = ({
-  object,
-  texture,
-}: {
+interface Viewer3dProps {
   object: string;
   texture: string;
-}) => {
-  const container = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
-  const width = canvas.current?.clientWidth || 1;
-  const height = canvas.current?.clientHeight || 1;
+}
+
+export const Viewer3d: React.FC<Viewer3dProps> = ({ object, texture }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const width = canvasRef.current?.clientWidth || 1;
+  const height = canvasRef.current?.clientHeight || 1;
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
   camera.position.z = 5;
+  camera.lookAt(0, 0, 0);
   return (
-    <div ref={container} className="w-full h-full relative">
+    <div ref={containerRef} className="w-full h-full relative">
       <div className="absolute top-4 right-4 z-20">
-        {FullScreenSvg(container)}
+        {FullScreenSvg(containerRef)}
       </div>
-      <Canvas camera={camera} ref={canvas}>
+      <Canvas camera={camera} ref={canvasRef}>
         <OrbitControls />
-        <Scene object={object} texture={texture} />
+        <Scene object={object} texture={texture} camera={camera} />
       </Canvas>
     </div>
   );

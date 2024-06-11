@@ -1,9 +1,9 @@
-import { protectedRoute } from "@/app/projects/actions";
 import { Viewer3d } from "@/components/Viewer3d";
 import PageTitle from "@/components/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import Image from "next/image";
 import { fetchData } from "./actions";
+import { protectedRoute } from "@/app/configurator/actions";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();

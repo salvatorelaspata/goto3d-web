@@ -1,20 +1,6 @@
 import PageTitle from "@/components/PageTitle";
-import { createClient } from "@/utils/supabase/server";
-import { protectedRoute } from "./actions";
-import ProjectCard from "@/components/projects/ProjectCard";
+import { getProjects, protectedRoute } from "./actions";
 import { Projects } from "@/components/projects/Projects";
-async function getProjects() {
-  const supabase = createClient();
-  const { data: projects, error } = await supabase
-    .from("project")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-  return projects;
-}
 
 export default async function Project() {
   await protectedRoute();

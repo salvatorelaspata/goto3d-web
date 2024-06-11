@@ -1,9 +1,11 @@
 "use client";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { logout, navTo } from "./MenuActions";
 import { privateRoutes } from "@/utils/constants";
+
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
 gsap.registerPlugin(useGSAP);
 
 const ItemMenu: React.FC<{
@@ -34,14 +36,18 @@ const ItemMenuLogout: React.FC = () => {
 };
 
 export const Menu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const container = useRef(null);
+  const { contextSafe } = useGSAP({ scope: container }); // we can pass in a config object as the 1st parameter to make scoping simple
   const ref = useRef(null);
 
-  const toggleButton = () => {
+  const toggleButton = contextSafe(() => {
     setIsOpen(!isOpen);
     const tm = gsap.timeline();
     tm.to(ref.current, {
       duration: 0.5,
+      animation: "ease-in-out",
       opacity: !isOpen ? 0 : 1,
       display: !isOpen ? "none" : "block",
       visibility: !isOpen ? "" : "visible",
@@ -49,7 +55,7 @@ export const Menu: React.FC = () => {
     tm.to(ref.current, {
       visibility: !isOpen ? "hidden" : "",
     });
-  };
+  });
   return (
     <div className="relative inline-block">
       {/* Dropdown toggle button */}
@@ -61,15 +67,16 @@ export const Menu: React.FC = () => {
       </button>
 
       {/* Dropdown menu */}
-
-      <div
-        ref={ref}
-        className="hidden absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border"
-      >
-        {privateRoutes.map((item) => (
-          <ItemMenu key={item.name} href={item.url} text={item.name} />
-        ))}
-        <ItemMenuLogout />
+      <div ref={container}>
+        <div
+          ref={ref}
+          className="hidden absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border"
+        >
+          {privateRoutes.map((item) => (
+            <ItemMenu key={item.name} href={item.url} text={item.name} />
+          ))}
+          <ItemMenuLogout />
+        </div>
       </div>
     </div>
   );
