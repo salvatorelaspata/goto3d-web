@@ -28,7 +28,13 @@ export default async function Header() {
               aria-label="Back to homepage"
               className="flex items-center"
             >
-              <Image src="/logo.png" alt="Logo" width={40} height={40} />
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                width={40}
+                height={40}
+                className="w-auto h-auto"
+              />
             </Link>
             <p className="text-sm ml-2">Hey {user?.email}</p>
           </li>

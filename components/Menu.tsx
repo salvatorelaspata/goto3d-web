@@ -13,10 +13,7 @@ const ItemMenu: React.FC<{
   text: string;
 }> = ({ href, text }) => {
   const link = (
-    <form
-      action={navTo}
-      className="block text-sm text-palette3 capitalize transition-colors duration-300 transform hover:bg-palette2"
-    >
+    <form action={navTo} className="block text-sm text-palette3">
       <input type="hidden" name="url" value={href} />
       <button className="w-full px-4 py-3">{text}</button>
     </form>
@@ -42,26 +39,55 @@ export const Menu: React.FC = () => {
   const { contextSafe } = useGSAP({ scope: container }); // we can pass in a config object as the 1st parameter to make scoping simple
   const ref = useRef(null);
 
-  const toggleButton = contextSafe(() => {
-    setIsOpen(!isOpen);
+  const showMenu = contextSafe(() => {
+    console.count("showMenu");
     const tm = gsap.timeline();
     tm.to(ref.current, {
       duration: 0.5,
       animation: "ease-in-out",
-      opacity: !isOpen ? 0 : 1,
-      display: !isOpen ? "none" : "block",
-      visibility: !isOpen ? "" : "visible",
+      opacity: 1,
+      display: "block",
+      visibility: "visible",
     });
+  });
+  const hideMenu = contextSafe(() => {
+    console.count("hideMenu");
+    // hide menu with animation and set display to none
+    const tm = gsap.timeline();
     tm.to(ref.current, {
-      visibility: !isOpen ? "hidden" : "",
+      duration: 0.5,
+      animation: "ease-in-out",
+      opacity: 0,
+      display: "none",
+      visibility: "hidden",
     });
+  });
+  const toggleButton = contextSafe(() => {
+    console.count("toggleButton");
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      hideMenu();
+    } else {
+      showMenu();
+    }
+    // const tm = gsap.timeline();
+    // tm.to(ref.current, {
+    //   duration: 0.5,
+    //   animation: "ease-in-out",
+    //   opacity: !isOpen ? 0 : 1,
+    //   display: !isOpen ? "none" : "block",
+    //   visibility: !isOpen ? "" : "visible",
+    // });
+    // tm.to(ref.current, {
+    //   visibility: !isOpen ? "hidden" : "",
+    // });
   });
   return (
     <div className="relative inline-block">
       {/* Dropdown toggle button */}
       <button
         onClick={toggleButton}
-        className="relative z-10 block p-2 text-palette1 bg-palette2 border border-transparent rounded-md focus:border-primary1 focus:ring-opacity-40  focus:ring-palette1 focus:ring focus:outline-none"
+        className="relative z-30 block p-2 text-palette1 bg-palette2 border border-transparent rounded-md focus:border-primary1 focus:ring-opacity-40  focus:ring-palette1 focus:ring focus:outline-none"
       >
         {icon}
       </button>
@@ -70,7 +96,7 @@ export const Menu: React.FC = () => {
       <div ref={container}>
         <div
           ref={ref}
-          className="hidden absolute right-0 z-20 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border"
+          className="hidden absolute right-0 z-30 w-48 mt-4 origin-top-right bg-palette1 rounded-lg border-palette5 border"
         >
           {privateRoutes.map((item) => (
             <ItemMenu key={item.name} href={item.url} text={item.name} />

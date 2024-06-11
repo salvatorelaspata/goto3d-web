@@ -34,6 +34,7 @@ function Model3D({
   const geometry = useMemo(() => {
     let g;
     obj.traverse((c) => {
+      console.log("c", c.name, c.type);
       if (c.type === "Mesh") {
         const _c = c as Mesh;
         g = _c.geometry;
@@ -43,31 +44,33 @@ function Model3D({
   }, [obj]);
 
   // create box around the object
-  const geometryBox = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(obj);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    geometry.translate(center.x, center.y, center.z);
-    return geometry;
-  }, [obj]);
+  // const geometryBox = useMemo(() => {
+  //   const box = new THREE.Box3().setFromObject(obj);
+  //   const size = box.getSize(new THREE.Vector3());
+  //   const center = box.getCenter(new THREE.Vector3());
+  //   const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+  //   geometry.translate(center.x, center.y, center.z);
+  //   return geometry;
+  // }, [obj]);
 
   const box = new THREE.Box3().setFromObject(obj);
   const size = box.getSize(new THREE.Vector3());
   console.log("size", size);
   const center = box.getCenter(new THREE.Vector3());
   console.log("center", center);
-  camera.position.z = size.z * 2;
-  camera.position.y = size.y * 2;
-  camera.position.x = size.x * 2;
-  // useGSAP(() => {
-  //   gsap.to(camera.position, {
-  //     duration: 1,
-  //     x: camera.position.x,
-  //     y: camera.position.y,
-  //     z: camera.position.z * 2,
-  //   });
-  // });
+
+  console.log(size.x, size.y, size.z);
+  useGSAP(() => {
+    // zoom the camera to fit the object in the screen size of the canvas element
+    // const tm = gsap.timeline();
+    console.log("camera", camera.position);
+    gsap.to(camera.position, {
+      duration: 1,
+      x: center.x,
+      y: center.y,
+      z: center.z + size.z * 2,
+    });
+  });
 
   // zoom in the camera to fit the object
 
@@ -76,9 +79,9 @@ function Model3D({
       <mesh geometry={geometry} position={[-center.x, -center.y, -center.z]}>
         <meshPhysicalMaterial map={texture} />
       </mesh>
-      <mesh geometry={geometryBox} position={[-center.x, -center.y, -center.z]}>
+      {/* <mesh geometry={geometryBox} position={[-center.x, -center.y, -center.z]}>
         <meshBasicMaterial color="black" wireframe />
-      </mesh>
+      </mesh> */}
     </>
   );
 }
@@ -124,7 +127,13 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ object, texture }) => {
         {FullScreenSvg(containerRef)}
       </div>
       <Canvas camera={camera} ref={canvasRef}>
-        <OrbitControls />
+        <OrbitControls
+          minDistance={0}
+          maxDistance={20}
+          enablePan={false}
+          enableDamping={true}
+          dampingFactor={0.25}
+        />
         <Scene object={object} texture={texture} camera={camera} />
       </Canvas>
     </div>
@@ -137,6 +146,7 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
     onClick={() => {
       console.log("fullscreen", container.current);
       container.current?.requestFullscreen();
+      // add bg color
     }}
     height="24px"
     width="24px"

@@ -39,7 +39,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} font-sans m-0`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} font-sans m-0`}
+      suppressHydrationWarning={true}
+    >
       <body className="bg-palette3">
         <div className="h-full flex flex-col flex-1">
           <Header />
