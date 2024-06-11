@@ -58,25 +58,40 @@ function Model3D({
   console.log("size", size);
   const center = box.getCenter(new THREE.Vector3());
   console.log("center", center);
-
+  const mesh = useRef<THREE.Mesh>(null);
   console.log(size.x, size.y, size.z);
   useGSAP(() => {
     // zoom the camera to fit the object in the screen size of the canvas element
-    // const tm = gsap.timeline();
-    console.log("camera", camera.position);
-    gsap.to(camera.position, {
-      duration: 1,
-      x: center.x,
-      y: center.y,
-      z: center.z + size.z * 2,
-    });
+    const tm = gsap.timeline();
+    if (mesh?.current)
+      tm.to(
+        camera.position,
+        {
+          duration: 0.8,
+          x: center.x,
+          y: center.y,
+          z: center.z + size.z * 2,
+        },
+        0
+      ).to(
+        mesh?.current?.rotation,
+        {
+          duration: 1.2,
+          y: Math.PI * 2,
+        },
+        0
+      );
   });
 
   // zoom in the camera to fit the object
 
   return (
     <>
-      <mesh geometry={geometry} position={[-center.x, -center.y, -center.z]}>
+      <mesh
+        ref={mesh}
+        geometry={geometry}
+        position={[-center.x, -center.y, -center.z]}
+      >
         <meshPhysicalMaterial map={texture} />
       </mesh>
       {/* <mesh geometry={geometryBox} position={[-center.x, -center.y, -center.z]}>
