@@ -15,8 +15,8 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
   const [p, setP] =
     useState<Database["public"]["Tables"]["project"]["Row"][]>(projects);
 
-  const onFilter = (status: Database["public"]["Enums"]["status"]) => {
-    if (!status) {
+  const onFilter = (status: Database["public"]["Enums"]["status"] | "all") => {
+    if (!status || status === "all") {
       setP(projects);
       return;
     }
@@ -41,6 +41,12 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
               {status || "_"}
             </button>
           ))}
+          <button
+            className="bg-palette3 hover:bg-palette1 text-palette1 hover:text-palette3 p-2 rounded-sm w-32"
+            onClick={() => onFilter("all")}
+          >
+            All
+          </button>
         </div>
       )}
 
