@@ -8,7 +8,7 @@ interface TagsProps {
     | "warning"
     | "danger";
 }
-export default function Tags({ text, type = "default" }: TagsProps) {
+export default function Tags({ text, type = "primary" }: TagsProps) {
   const colors = {
     primary: "bg-palette1 text-palette2",
     secondary: "bg-palette2 text-palette1",
