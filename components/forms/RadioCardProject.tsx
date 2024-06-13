@@ -1,4 +1,4 @@
-interface RadioCardInputProps {
+interface RadioCardProjectProps {
   label: string;
   name: string;
   description?: string;
@@ -12,7 +12,7 @@ interface RadioCardInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const RadioCard: React.FC<RadioCardInputProps> = ({
+export const RadioCardProject: React.FC<RadioCardProjectProps> = ({
   id,
   name,
   disabled,

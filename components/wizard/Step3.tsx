@@ -1,5 +1,5 @@
 import { actions, useStore } from "@/store/wizardStore";
-import { RadioCard } from "../forms/RadioCard";
+import { RadioCardProject } from "../forms/RadioCardProject";
 import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
@@ -109,7 +109,7 @@ export const Step3: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {field.options.map((option) => (
               <div key={option.value} className="flex flex-col">
-                <RadioCard
+                <RadioCardProject
                   id={field.id}
                   name={field.name}
                   icon={field.icon}

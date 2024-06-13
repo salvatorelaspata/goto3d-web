@@ -5,6 +5,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
   label,
   name,
   type,
+  placeholder,
   onChange,
   disabled = false,
   value,
@@ -23,6 +24,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
       <input
         id={id}
         disabled={disabled}
+        placeholder={placeholder}
         value={value}
         name={name}
         type={type}

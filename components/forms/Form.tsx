@@ -9,6 +9,7 @@ export interface FieldProps {
   id: string;
   label: string;
   description?: string;
+  placeholder?: string;
   name: string;
   type: "text" | "textarea" | "select" | "file" | "radio" | "password";
   disabled?: boolean;

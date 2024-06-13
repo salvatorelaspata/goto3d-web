@@ -13,7 +13,7 @@ export const Textarea: React.FC<Partial<FieldProps>> = ({
       <label
         id={`${id}--label`}
         htmlFor={id}
-        className="my-2 text-lg text-palette1 font-light"
+        className="my-2 text-lg font-bold w-full [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] text-palette3"
       >
         {label}
       </label>
