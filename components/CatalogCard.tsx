@@ -18,9 +18,7 @@ export default function ProjectCard({
       <div className="px-6 py-4">
         <div className="text-xl mb-2">{title}</div>
         <p className="text-palette1 text-base">{description || `...`}</p>
-        <p className="text-lg font-bold">
-          {!_public ? "🙈" : "🤩"} {title}
-        </p>
+        <p className="text-right text-lg font-bold">{!_public ? "🙈" : "🤩"}</p>
       </div>
       <span className="absolute top-0 left-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 right-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>

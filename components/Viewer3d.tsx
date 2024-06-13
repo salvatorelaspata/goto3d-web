@@ -170,13 +170,15 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
     className="cursor-pointer rounded-sm"
     onClick={() => {
       console.log("fullscreen", container.current);
-      // check requestFullscreen is available
       try {
-        container.current?.requestFullscreen();
+        if (!document.fullscreenElement) {
+          container.current?.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
       } catch (error) {
-        console.log("container", error);
+        console.log("fullScreenError", error);
       }
-      // add bg color
     }}
     height="24px"
     width="24px"

@@ -1,12 +1,16 @@
 interface SectionTitleProps {
   title: string;
+  borderBottom?: boolean;
 }
-export default function SectionTitle({ title }: SectionTitleProps) {
+export default function SectionTitle({
+  title,
+  borderBottom = false,
+}: SectionTitleProps) {
   return (
-    <div className="flex justify-center w-full">
-      <h1 className="text-xl font-extrabold [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] m-4 text-palette3">
-        {title}
-      </h1>
-    </div>
+    <h3
+      className={`text-xl h-8 font-extrabold [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] my-4 text-palette3 text-center ${borderBottom && "border-b border-palette3"}`}
+    >
+      {title}
+    </h3>
   );
 }

@@ -45,7 +45,7 @@ export default async function Header() {
                 <Link
                   rel="noopener noreferrer"
                   href={item.url}
-                  className="py-2 px-4 rounded-md bg-palette2 text-palette3 hover:bg-palette4 hover:text-palette1"
+                  className="py-2 px-4 rounded-md bg-palette2 text-palette3 hover:bg-palette1 hover:text-palette3"
                 >
                   {item.name || ""}
                 </Link>

@@ -5,7 +5,7 @@ export async function doCreate(formData: FormData) {
   const supabase = createClient();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const _public = formData.get("public") === "true";
+  const _public = formData.get("visibility") === "public";
   const { data, error } = await supabase
     .from("catalog")
     .insert({
@@ -18,4 +18,5 @@ export async function doCreate(formData: FormData) {
   if (error) {
     throw new Error(error.message);
   }
+  return data;
 }

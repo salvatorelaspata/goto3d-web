@@ -1,9 +1,11 @@
 import { Viewer3d } from "@/components/Viewer3d";
 import PageTitle from "@/components/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
-import Image from "next/image";
 import { fetchData } from "./actions";
 import { protectedRoute } from "@/app/configurator/actions";
+import { BlurImage } from "@/components/BlurImage";
+import SectionTitle from "@/components/SectionTitle";
+import { StatusText } from "@/components/StatusText";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
@@ -36,95 +38,65 @@ export default async function Project({ params }: { params: { id: string } }) {
       </section>
       <section className="flex flex-col justify-center m-4 bg-palette2 rounded-lg">
         <PageTitle title="Dettagli" />
-        <div className="max-w-2xl mx-auto my-4 py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8 w-full bg-palette5 rounded-lg">
-          <div className="col-span-2 md:col-span-1 py-2">
-            <h3 className="text-xl font-bold mb-2 border-b border-palette3 text-palette1 font-mono">
-              General Info
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-palette3 text-lg font-mono">Name</p>
-                <p className="font-mono">{p.project.name}</p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Description</p>
-                <p className="font-mono">{p.project.description}</p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Status</p>
-                <p className="font-mono">{p.project.status}</p>
-              </div>
+        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* GENERAL INFO */}
+          <div className="p-4  m-4 bg-palette1 rounded-lg">
+            <SectionTitle title="General Info" />
+            <div className="grid">
+              <StatusText label="Name" text={p.project.name as string} />
+              <StatusText
+                label="Description"
+                text={p.project.description as string}
+              />
+              <StatusText label="Status" text={p.project.status as string} />
             </div>
           </div>
-          <div className="col-span-2 md:col-span-1 py-2">
-            <h3 className="text-xl font-bold mb-2 border-b border-palette3 text-palette1 font-mono">
-              Details
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-palette3 text-lg font-mono">Detail</p>
-                <p className="font-mono">{p.project.detail}</p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Feature</p>
-                <p className="font-mono">{p.project.feature}</p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Order</p>
-                <p className="font-mono">{p.project.order}</p>
-              </div>
+          {/* DETAILS */}
+          <div className="p-4  m-4 bg-palette1 rounded-lg">
+            <SectionTitle title="Details" />
+            <div className="grid">
+              <StatusText label="Detail" text={p.project.detail as string} />
+              <StatusText label="Feature" text={p.project.feature as string} />
+              <StatusText label="Order" text={p.project.order as string} />
             </div>
           </div>
-          <div className="col-span-2 md:col-span-1 py-2">
-            <h3 className="text-xl font-bold mb-2 border-b border-palette3 text-palette1 font-mono">
-              Timestamps
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-palette3 text-lg font-mono">Created at</p>
-                <p className="font-mono">
-                  {formatSupabaseDate(p.project.created_at || "")}
-                </p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Process start</p>
-                <p className="font-mono">
-                  {formatSupabaseDate(p.project.process_start || "")}
-                </p>
-              </div>
-              <div>
-                <p className="text-palette3 text-lg font-mono">Process end</p>
-                <p className="font-mono">
-                  {formatSupabaseDate(p.project.process_end || "")}
-                </p>
-              </div>
+          {/* TIMESTAMPS */}
+          <div className="p-4  m-4 bg-palette1 rounded-lg">
+            <SectionTitle title="Timestamps" />
+            <div className="grid">
+              <StatusText
+                label="Created at"
+                text={formatSupabaseDate(p.project.created_at || "")}
+              />
+              <StatusText
+                label="Process start"
+                text={formatSupabaseDate(p.project.process_start || "")}
+              />
+              <StatusText
+                label="Process end"
+                text={formatSupabaseDate(p.project.process_end || "")}
+              />
             </div>
           </div>
-          <div className="col-span-2 md:col-span-1 py-2">
-            <h3 className="text-xl font-bold mb-2 border-b border-palette3 text-palette1 font-mono">
-              Additional Info
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-palette3 text-lg font-mono">Catalog ID</p>
-                <p className="font-mono">{p.project.catalog_id || "N/A"}</p>
-              </div>
+          {/* ADDITIONAL INFO */}
+          <div className="p-4  m-4 bg-palette1 rounded-lg">
+            <SectionTitle title="Additional Info" />
+            <div className="grid">
+              <StatusText
+                label="Catalogs"
+                text={p.project.catalog_id || "N/A"}
+              />
             </div>
           </div>
-          <div className="flex items-center justify-center">
-            <Image
-              src={
-                !p.project.thumbnail &&
-                !p.project.thumbnail?.endsWith("HEIC") &&
-                !p.project.thumbnail?.endsWith("heic")
-                  ? "/placeholder-image.png"
-                  : p.project.thumbnail
-              }
-              alt="Thumbnail"
-              width={200}
-              height={200}
-              className="rounded-lg"
-            />
+          {/* THUMBNAIL */}
+          <div className="p-4 col-span-4 bg-palette1 rounded-lg m-4">
+            <SectionTitle title="Thumbnail" />
+            <div className="p-4">
+              <BlurImage
+                name={p?.project?.name || ""}
+                imageSrc={p?.project?.thumbnail || ""}
+              />
+            </div>
           </div>
         </div>
       </section>
