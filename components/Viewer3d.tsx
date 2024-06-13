@@ -29,8 +29,14 @@ function Model3D({
   camera: THREE.PerspectiveCamera;
 }) {
   const obj = useLoader(OBJLoader, object);
-  const texture = useTexture(textureUrl);
-
+  let texture;
+  if (!textureUrl) {
+    texture = new THREE.TextureLoader().load(
+      "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/placeholder.jpeg"
+    );
+  } else {
+    texture = useTexture(textureUrl);
+  }
   const geometry = useMemo(() => {
     let g;
     obj.traverse((c) => {
@@ -44,14 +50,14 @@ function Model3D({
   }, [obj]);
 
   // create box around the object
-  // const geometryBox = useMemo(() => {
-  //   const box = new THREE.Box3().setFromObject(obj);
-  //   const size = box.getSize(new THREE.Vector3());
-  //   const center = box.getCenter(new THREE.Vector3());
-  //   const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-  //   geometry.translate(center.x, center.y, center.z);
-  //   return geometry;
-  // }, [obj]);
+  const geometryBox = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(obj);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+    geometry.translate(center.x, center.y, center.z);
+    return geometry;
+  }, [obj]);
 
   const box = new THREE.Box3().setFromObject(obj);
   const size = box.getSize(new THREE.Vector3());
@@ -94,7 +100,11 @@ function Model3D({
       >
         <meshPhysicalMaterial map={texture} />
       </mesh>
-      {/* <mesh geometry={geometryBox} position={[-center.x, -center.y, -center.z]}>
+
+      {/* <mesh
+        geometry={geometryBox}
+        position={[-center.x, -center.y - size.y, -center.z]}
+      >
         <meshBasicMaterial color="black" wireframe />
       </mesh> */}
     </>
@@ -160,7 +170,12 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
     className="cursor-pointer rounded-sm"
     onClick={() => {
       console.log("fullscreen", container.current);
-      container.current?.requestFullscreen();
+      // check requestFullscreen is available
+      try {
+        container.current?.requestFullscreen();
+      } catch (error) {
+        console.log("container", error);
+      }
       // add bg color
     }}
     height="24px"

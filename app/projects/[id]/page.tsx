@@ -24,13 +24,14 @@ export default async function Project({ params }: { params: { id: string } }) {
     return bigTextCentered("Progetto in coda");
   } else if (status === "processing") {
     return bigTextCentered("Progetto in lavorazione");
-  } else if (!p || !p.objUrl || !p.textureUrl || !p.backgroundUrl) {
+  } else if (!p || !p.objUrl) {
+    // || !p.textureUrl || !p.backgroundUrl) {
     return bigTextCentered("loading...");
   }
 
   return (
     <>
-      <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b from-[#006D77] to-[#83C5BE] flex items-center justify-center">
+      <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b zfrom-[#006D77] to-[#83C5BE] flex items-center justify-center">
         <Viewer3d object={p.objUrl} texture={p.textureUrl} />
       </section>
       <section className="flex flex-col justify-center m-4 bg-palette2 rounded-lg">
