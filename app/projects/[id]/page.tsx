@@ -6,6 +6,7 @@ import { protectedRoute } from "@/app/configurator/actions";
 import { BlurImage } from "@/components/BlurImage";
 import SectionTitle from "@/components/SectionTitle";
 import { StatusText } from "@/components/StatusText";
+import { DownloadAsset } from "@/components/DownloadAsset";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
@@ -27,7 +28,6 @@ export default async function Project({ params }: { params: { id: string } }) {
   } else if (status === "processing") {
     return bigTextCentered("Progetto in lavorazione");
   } else if (!p || !p.objUrl) {
-    // || !p.textureUrl || !p.backgroundUrl) {
     return bigTextCentered("loading...");
   }
 
@@ -92,13 +92,22 @@ export default async function Project({ params }: { params: { id: string } }) {
           </div>
         </div>
         {/* THUMBNAIL */}
-        <div className="p-4 bg-palette1 rounded-lg m-4">
+        <div className="p-4 bg-palette1 rounded-lg mx-4 mt-4">
           <SectionTitle title="Thumbnail" />
           <div className="p-4">
             <BlurImage
               name={p?.project?.name || ""}
               imageSrc={p?.project?.thumbnail || ""}
             />
+          </div>
+        </div>
+        {/* DOWNLOAD */}
+        <div className="p-4 bg-palette1 rounded-lg mx-4 my-4">
+          <SectionTitle title="Download" />
+          <div className="flex justify-between">
+            {/* <DownloadAsset id={p.project.id} type="usdz" /> */}
+            <DownloadAsset id={p.project.id} type="obj" />
+            <DownloadAsset id={p.project.id} type="png" />
           </div>
         </div>
       </section>

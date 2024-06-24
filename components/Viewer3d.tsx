@@ -247,18 +247,18 @@ export const ARSvg = ({ id }: { id: number }) => {
 
           usdzUrl = _usdzUrl?.signedUrl;
           if (!usdzUrl) return;
-          const instance = ref.current,
-            a = document.createElement("a");
+          // const instance = ref.current,
+          const a = document.createElement("a");
           a.setAttribute("href", usdzUrl);
           a.setAttribute("rel", "ar");
           a.click();
           // if (instance && instance.parentNode) {
-          //   alert("instance");
+          //   console.log("instance");
           //   instance.parentNode.insertBefore(a, instance);
           //   a.appendChild(instance);
           // }
         } catch (error) {
-          alert(error);
+          console.log(error);
         }
       }}
       height="24px"
@@ -271,7 +271,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="256"
@@ -282,7 +282,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="310.86 448 256 480 201.14 448"
@@ -290,7 +290,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="256"
@@ -301,7 +301,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="64 207.51 64 144 117.15 112.49"
@@ -309,7 +309,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="64"
@@ -320,7 +320,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="448 304.49 448 368 394.85 399.51"
@@ -328,7 +328,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="448"
@@ -339,7 +339,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="117.15 400 64 368 64 304.49"
@@ -347,7 +347,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="64"
@@ -358,7 +358,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="394.85 112.49 448 144 448 207.51"
@@ -366,7 +366,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="448"
@@ -377,7 +377,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <polyline
         points="256 320 256 256 310.86 224"
@@ -385,7 +385,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
       <line
         x1="256"
@@ -396,7 +396,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeMiterlimit="10"
-        strokeWidth="32"
+        strokeWidth="24"
       />
     </svg>
   );

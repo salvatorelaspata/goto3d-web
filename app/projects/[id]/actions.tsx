@@ -1,48 +1,5 @@
 "use server";
-
-// import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
-
-// type ProjectDetail = {
-//   project: Database["public"]["Tables"]["project"]["Row"];
-//   objUrl: string;
-//   textureUrl: string;
-//   backgroundUrl: string;
-// };
-
-// export const fetchUsdzUrl = async ({ id }) => {
-//   const _id: number = parseInt(id as string);
-//   const supabase = createClient();
-//   try {
-//     const { data: project } = await supabase
-//       .from("project")
-//       .select("*")
-//       .eq("id", _id)
-//       .single();
-
-//     const { data: models } = await supabase.storage
-//       .from("viewer3d-dev")
-//       .list(`${project?.id}/model`);
-
-//     const usdzName: string =
-//       models?.find((m) => m.name.endsWith(".usdz"))?.name || "";
-
-//     let usdzUrl: string | undefined = "";
-//     // get the signed url for the obj file
-//     try {
-//       // obj
-//       const { data: _usdzUrl, error: _usdzError } = await supabase.storage
-//         .from("viewer3d-dev")
-//         .createSignedUrl(`${project?.id}/model/${usdzName}`, 20);
-
-//       usdzUrl = _usdzUrl?.signedUrl;
-//     } catch (error) {
-//       console.error("error supabase", error);
-//     }
-//   } catch (error) {
-//     console.error("error", error);
-//   }
-// };
 
 export const fetchData = async ({ id }) => {
   const _id: number = parseInt(id as string);
