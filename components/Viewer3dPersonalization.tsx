@@ -5,25 +5,25 @@ import { PresetsType } from "@react-three/drei/helpers/environment-assets";
 export const Viewer3dPersonalization: React.FC = () => {
   const { setEnvironment } = actions;
   return (
-    <div className="absolute bottom-4 left-4 z-20  grid grid-flow-col gap-2 rounded-lg">
+    <div className="flex flex-wrap gap-2 absolute bottom-4 left-4">
+      {/* None */}
+      <div
+        onClick={() => setEnvironment(null)}
+        className="z-20 bg-palette1 text-palette5 p-1 text-sm rounded-lg cursor-pointer hover:bg-palette2 hover:text-palette3"
+      >
+        <span>None</span>
+      </div>
       {Object.keys(environmentViewer).map((key) => {
         return (
           <div
             key={key}
             onClick={() => setEnvironment(key as PresetsType)}
-            className="bg-palette1 text-palette5 p-1 text-sm rounded-lg cursor-pointer hover:bg-palette2 hover:text-palette3"
+            className="z-20 bg-palette1 text-palette5 p-1 text-sm rounded-lg cursor-pointer hover:bg-palette2 hover:text-palette3"
           >
-            <p>{environmentViewer[key]}</p>
+            <span>{environmentViewer[key]}</span>
           </div>
         );
       })}
-      {/* None */}
-      <div
-        onClick={() => setEnvironment(null)}
-        className="bg-palette1 text-palette5 p-1 text-sm rounded-lg cursor-pointer hover:bg-palette2 hover:text-palette3"
-      >
-        <p>None</p>
-      </div>
     </div>
   );
 };
