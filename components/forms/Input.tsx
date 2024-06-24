@@ -4,6 +4,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
   id,
   label,
   name,
+  ref,
   type,
   placeholder,
   onChange,
@@ -23,6 +24,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
       </label>
       <input
         id={id}
+        ref={ref as React.RefObject<HTMLInputElement>}
         disabled={disabled}
         placeholder={placeholder}
         value={value}

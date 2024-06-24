@@ -68,7 +68,7 @@ export const fetchData = async ({ id }) => {
       console.error("error supabase", error);
     }
 
-    console.log(objUrl, textureUrl, backgroundUrl);
+    // console.log(objUrl, textureUrl, backgroundUrl);
 
     return {
       project,

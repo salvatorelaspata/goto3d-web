@@ -8,7 +8,7 @@ export default function Auth() {
   const signIn = async (formData: FormData) => {
     "use server";
 
-    console.log("signIn");
+    // console.log("signIn");
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -27,7 +27,7 @@ export default function Auth() {
 
   const signInWithGoogle = async () => {
     "use server";
-    console.log("signInWithGoogle");
+    // console.log("signInWithGoogle");
     const supabase = createClient();
     const origin = headers().get("origin");
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -36,7 +36,7 @@ export default function Auth() {
         redirectTo: `${origin}/auth/callback`,
       },
     });
-    console.log({ data, error });
+    // console.log({ data, error });
     if (error) {
       return redirect("/?message=Could not authenticate user");
     }

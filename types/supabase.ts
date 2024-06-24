@@ -108,6 +108,45 @@ export type Database = {
           },
         ]
       }
+      project_catalog: {
+        Row: {
+          catalog_id: number | null
+          created_at: string
+          id: number
+          project_id: number | null
+          user_id: string | null
+        }
+        Insert: {
+          catalog_id?: number | null
+          created_at?: string
+          id?: number
+          project_id?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          catalog_id?: number | null
+          created_at?: string
+          id?: number
+          project_id?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_product_catalog_catalog_id_fkey"
+            columns: ["catalog_id"]
+            isOneToOne: false
+            referencedRelation: "catalog"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_product_catalog_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "project"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       telegram_user: {
         Row: {
           created_at: string

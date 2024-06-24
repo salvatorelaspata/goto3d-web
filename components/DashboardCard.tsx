@@ -4,6 +4,8 @@ interface DashboardCardProps {
   id: string;
   name: string;
   description: string;
+  checked?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   navTo: string;
   selectable?: boolean;
   multiple?: boolean;
@@ -18,6 +20,8 @@ export const DashboardCard: React.FC<
   id,
   name,
   description,
+  checked = false,
+  onChange,
   navTo,
   isNew,
   isProject = true,
@@ -48,8 +52,11 @@ export const DashboardCard: React.FC<
           <input
             className="peer hidden"
             id={id}
+            checked={checked}
+            onChange={onChange}
             multiple={multiple}
             type="checkbox"
+            value={id}
             name={radioGroup}
           />
           <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-md border-4 border-palette3 bg-white peer-checked:border-palette1"></span>

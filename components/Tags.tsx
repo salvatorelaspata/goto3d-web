@@ -10,8 +10,8 @@ interface TagsProps {
 }
 export default function Tags({ text, type = "primary" }: TagsProps) {
   const colors = {
-    primary: "bg-palette1 text-palette2",
-    secondary: "bg-palette2 text-palette1",
+    primary: "bg-palette1 text-palette3",
+    secondary: "bg-palette2 text-palette3",
     tertiary: "bg-palette5 text-palette4 border border-palette4",
     success: "bg-green-900 text-green-200",
     warning: "bg-yellow-900 text-yellow-200",

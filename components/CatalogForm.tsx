@@ -10,21 +10,44 @@ import SubmitButton from "./SubmitButton";
 import { toast } from "react-toastify";
 import { actions } from "@/store/main";
 import { redirect } from "next/navigation";
-import { useEffect, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Tags from "./Tags";
-
+type Catalog = Database["public"]["Tables"]["catalog"]["Row"] & {
+  projects: Database["public"]["Tables"]["project_catalog"]["Row"][];
+};
 interface DashboardCardProps {
   projects: Database["public"]["Tables"]["project"]["Row"][];
+  catalog?: Catalog | null;
 }
-export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
+export const CatalogForm: React.FC<DashboardCardProps> = ({
+  projects,
+  catalog,
+}) => {
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [_public, setPublic] = useState<boolean>(true);
+  const [_private, setPrivate] = useState<boolean>(false);
+  const [project, setProject] = useState<number[]>([]);
+
   let [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (isPending) return;
   }, [isPending]);
 
+  useEffect(() => {
+    if (catalog) {
+      setTitle(catalog.title as string);
+      setDescription(catalog.description as string);
+      setPublic(catalog.public as boolean);
+      setPrivate(!catalog.public as boolean);
+
+      const p = catalog.projects.map((p) => p.project_id);
+      setProject(p as number[]);
+    }
+  }, []);
+
   const onSubmit = async (formData: FormData) => {
-    // RUN SOME VALIDATION HERE
     actions.showLoading();
 
     startTransition(async () => {
@@ -51,6 +74,8 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
             <Input
               id="title"
               label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               name="title"
               type="text"
               placeholder="Enter a title"
@@ -58,6 +83,8 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
             <Textarea
               id="description"
               label="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               name="description"
               type="textarea"
               placeholder="Enter a title"
@@ -71,6 +98,12 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
                     <input
                       className="peer hidden"
                       id="public"
+                      value={"public"}
+                      checked={_public}
+                      onChange={() => {
+                        setPublic(false);
+                        setPrivate(true);
+                      }}
                       type="radio"
                       name="visibility"
                     />
@@ -81,7 +114,7 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
                       htmlFor="public"
                     >
                       <span className="text-lg font-semibold uppercase">
-                        🐵
+                        🤩
                       </span>
                       <span className="mt-2 text-xl font-bold text-palette3">
                         Pubblico
@@ -92,6 +125,13 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
                     <input
                       className="peer hidden"
                       id="private"
+                      value={"private"}
+                      checked={_private}
+                      onChange={() => {
+                        setPublic(false);
+                        setPrivate(true);
+                      }}
+                      // value={_private ? "private" : ""}
                       type="radio"
                       name="visibility"
                     />
@@ -110,38 +150,8 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
                     </label>
                   </div>
                 </div>
-                {/* <div className="flex justify-between m-2">
-                    <label
-                      htmlFor="public"
-                      className="border-b w-full cursor-pointer text-palette3"
-                    >
-                      Public
-                    </label>
-                    <input
-                      radioGroup="visibility"
-                      type="radio"
-                      id="public"
-                      name="visibility"
-                      value="public"
-                    />
-                  </div> */}
-                {/* <div className="flex justify-between my-2">                  
-                    <label
-                      htmlFor="private"
-                      className="border-b w-full cursor-pointer text-palette3"
-                    >
-                      Private
-                    </label>
-                    <input
-                      radioGroup="visibility"
-                      type="radio"
-                      id="private"
-                      name="visibility"
-                      value="private"
-                    />
-                  </div> */}
               </div>
-              <div className="">
+              <div>
                 <SectionTitle title="Tags" borderBottom />
                 <div className="grid grid-cols-4 gap-2">
                   <Tags text="Tag 1" />
@@ -165,6 +175,15 @@ export const NewCatalogForm: React.FC<DashboardCardProps> = ({ projects }) => {
                   selectable={true}
                   multiple={true}
                   radioGroup="project"
+                  checked={project.includes(option.id)}
+                  onChange={(e) => {
+                    const id = parseInt(e.target.value);
+                    if (e.target.checked) {
+                      setProject([...project, id]);
+                    } else {
+                      setProject(project.filter((p) => p !== id));
+                    }
+                  }}
                   key={option.id}
                   navTo="#"
                   id={option.id + ""}

@@ -47,19 +47,22 @@ export async function Dashboard() {
       <div className="h-4" />
 
       <div className="flex flex-col bg-palette2 text-palette3 shadow-xl rounded-xl p-4">
+        {/* Griglia dei progetti */}
         <h2 className="text-3xl font-bold">Cataloghi</h2>
-        {catalogs && catalogs.length !== 0 && (
-          <div className="flex overflow-x-scroll">
-            <DashboardCard isNew isProject={false} />
-            {catalogs.map((catalog) => (
-              <DashboardCard
-                key={catalog.id}
-                id={catalog.id + ""}
-                name={catalog.title || ""}
-                description={catalog.description || ""}
-                navTo={`/catalogs/${catalog.id}`}
-              />
-            ))}
+        {projects && projects.length !== 0 && (
+          <div className="flex overflow-x-scroll hide-scroll-bar">
+            <div className="flex flex-nowrap py-4">
+              <DashboardCard isNew isProject={false} />
+              {catalogs.map((catalog) => (
+                <DashboardCard
+                  key={catalog.id}
+                  id={catalog.id + ""}
+                  name={catalog.title || ""}
+                  description={catalog.description || ""}
+                  navTo={`/catalogs/${catalog.id}`}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -40,7 +40,7 @@ function Model3D({
   const geometry = useMemo(() => {
     let g;
     obj.traverse((c) => {
-      console.log("c", c.name, c.type);
+      // console.log("c", c.name, c.type);
       if (c.type === "Mesh") {
         const _c = c as Mesh;
         g = _c.geometry;
@@ -61,11 +61,11 @@ function Model3D({
 
   const box = new THREE.Box3().setFromObject(obj);
   const size = box.getSize(new THREE.Vector3());
-  console.log("size", size);
+  // console.log("size", size);
   const center = box.getCenter(new THREE.Vector3());
-  console.log("center", center);
+  // console.log("center", center);
   const mesh = useRef<THREE.Mesh>(null);
-  console.log(size.x, size.y, size.z);
+  // console.log(size.x, size.y, size.z);
   useGSAP(() => {
     // zoom the camera to fit the object in the screen size of the canvas element
     const tm = gsap.timeline();
@@ -169,7 +169,7 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
   <svg
     className="cursor-pointer rounded-sm"
     onClick={() => {
-      console.log("fullscreen", container.current);
+      // console.log("fullscreen", container.current);
       try {
         if (!document.fullscreenElement) {
           container.current?.requestFullscreen();
@@ -177,7 +177,7 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
           document.exitFullscreen();
         }
       } catch (error) {
-        console.log("fullScreenError", error);
+        // console.log("fullScreenError", error);
       }
     }}
     height="24px"

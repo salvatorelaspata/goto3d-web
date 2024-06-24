@@ -2,6 +2,7 @@ import { FieldProps } from "./Form";
 
 export const Textarea: React.FC<Partial<FieldProps>> = ({
   id,
+  ref,
   label,
   name,
   onChange,
@@ -19,6 +20,7 @@ export const Textarea: React.FC<Partial<FieldProps>> = ({
       </label>
       <textarea
         id={id}
+        ref={ref as React.RefObject<HTMLTextAreaElement>}
         disabled={disabled}
         value={value}
         name={name}

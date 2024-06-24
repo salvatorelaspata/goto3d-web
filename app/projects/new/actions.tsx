@@ -101,7 +101,7 @@ export async function doCreate(formData: FormData) {
 
 const _createThumbnail = async (projectId: number, file: File) => {
   const supabase = createClient();
-  console.log("Creating thumbnail" + file.name);
+  // console.log("Creating thumbnail" + file.name);
   // convert heic to jpg;
   try {
     // if (file.type === "image/heic") {
@@ -144,7 +144,7 @@ const _createThumbnail = async (projectId: number, file: File) => {
     } = supabase.storage.from("public-dev").getPublicUrl(id);
 
     await updateThumbnail(projectId, `${publicUrl}.${ext}`);
-    console.log("Thumbnail created" + `${publicUrl}.${ext}`);
+    // console.log("Thumbnail created" + `${publicUrl}.${ext}`);
     // return toast.info("Thumbnail created");
   } catch (error) {
     console.error("Error creating thumbnail", error);
@@ -172,6 +172,6 @@ const _sendFile = async (files: File[], projectId: number) => {
     }
 
     // toast.info("File upload " + files[i].name);
-    console.log("File upload " + files[i].name);
+    // console.log("File upload " + files[i].name);
   }
 };
