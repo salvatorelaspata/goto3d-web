@@ -34,13 +34,15 @@ export default async function Project({ params }: { params: { id: string } }) {
   return (
     <>
       <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b zfrom-[#006D77] to-[#83C5BE] flex items-center justify-center">
-        <Viewer3d object={p.objUrl} texture={p.textureUrl} />
+        <Viewer3d id={p.project.id} object={p.objUrl} texture={p.textureUrl} />
       </section>
       <section className="flex flex-col justify-center m-4 bg-palette2 rounded-lg">
         <PageTitle title="Dettagli" />
-        <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* GENERAL INFO */}
-          <div className="p-4  m-4 bg-palette1 rounded-lg">
+
+        {/* GENERAL INFO */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-4 mx-4 bg-palette1 rounded-lg">
             <SectionTitle title="General Info" />
             <div className="grid">
               <StatusText label="Name" text={p.project.name as string} />
@@ -52,7 +54,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             </div>
           </div>
           {/* DETAILS */}
-          <div className="p-4  m-4 bg-palette1 rounded-lg">
+          <div className="p-4 mx-4 bg-palette1 rounded-lg">
             <SectionTitle title="Details" />
             <div className="grid">
               <StatusText label="Detail" text={p.project.detail as string} />
@@ -61,7 +63,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             </div>
           </div>
           {/* TIMESTAMPS */}
-          <div className="p-4  m-4 bg-palette1 rounded-lg">
+          <div className="p-4 mx-4 bg-palette1 rounded-lg">
             <SectionTitle title="Timestamps" />
             <div className="grid">
               <StatusText
@@ -79,7 +81,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             </div>
           </div>
           {/* ADDITIONAL INFO */}
-          <div className="p-4  m-4 bg-palette1 rounded-lg">
+          <div className="p-4 mx-4 bg-palette1 rounded-lg">
             <SectionTitle title="Additional Info" />
             <div className="grid">
               <StatusText
@@ -88,15 +90,15 @@ export default async function Project({ params }: { params: { id: string } }) {
               />
             </div>
           </div>
-          {/* THUMBNAIL */}
-          <div className="p-4 col-span-4 bg-palette1 rounded-lg m-4">
-            <SectionTitle title="Thumbnail" />
-            <div className="p-4">
-              <BlurImage
-                name={p?.project?.name || ""}
-                imageSrc={p?.project?.thumbnail || ""}
-              />
-            </div>
+        </div>
+        {/* THUMBNAIL */}
+        <div className="p-4 bg-palette1 rounded-lg m-4">
+          <SectionTitle title="Thumbnail" />
+          <div className="p-4">
+            <BlurImage
+              name={p?.project?.name || ""}
+              imageSrc={p?.project?.thumbnail || ""}
+            />
           </div>
         </div>
       </section>
