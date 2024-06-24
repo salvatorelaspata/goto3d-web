@@ -1,14 +1,17 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useTexture } from "@react-three/drei";
+import { Environment, OrbitControls, useTexture } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { useLoader } from "@react-three/fiber";
-import { RefObject, Suspense, useMemo, useRef } from "react";
+import { RefObject, Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { Mesh } from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { createClient } from "@/utils/supabase/client";
+import { Viewer3dPersonalization } from "./Viewer3dPersonalization";
+import { useStore } from "@/store/viewerStore";
+
 gsap.registerPlugin(useGSAP);
 
 function Box() {
@@ -51,14 +54,14 @@ function Model3D({
   }, [obj]);
 
   // create box around the object
-  const geometryBox = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(obj);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
-    geometry.translate(center.x, center.y, center.z);
-    return geometry;
-  }, [obj]);
+  // const geometryBox = useMemo(() => {
+  //   const box = new THREE.Box3().setFromObject(obj);
+  //   const size = box.getSize(new THREE.Vector3());
+  //   const center = box.getCenter(new THREE.Vector3());
+  //   const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+  //   geometry.translate(center.x, center.y, center.z);
+  //   return geometry;
+  // }, [obj]);
 
   const box = new THREE.Box3().setFromObject(obj);
   const size = box.getSize(new THREE.Vector3());
@@ -88,7 +91,7 @@ function Model3D({
         },
         0
       );
-  });
+  }, []);
 
   // zoom in the camera to fit the object
 
@@ -141,19 +144,20 @@ interface Viewer3dProps {
 }
 
 export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
+  const { environment } = useStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const width = canvasRef.current?.clientWidth || 1;
   const height = canvasRef.current?.clientHeight || 1;
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+  // useEffect(() => {
   camera.position.z = 5;
   camera.lookAt(0, 0, 0);
-
+  // }, []);
   // check if is in iphone or ipad
   const isIphone = /iPhone/.test(navigator.userAgent);
   const isIpad = /iPad/.test(navigator.userAgent);
   const isIOS = isIphone || isIpad;
-  console.log("isIOS", isIOS);
 
   return (
     <div ref={containerRef} className="w-full h-full relative">
@@ -163,7 +167,9 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
       <div className="absolute bottom-4 right-4 z-20">
         {isIOS && ARSvg({ id })}
       </div>
+      <Viewer3dPersonalization />
       <Canvas camera={camera} ref={canvasRef}>
+        {environment && <Environment preset={environment} background />}
         <OrbitControls
           minDistance={0}
           maxDistance={20}
@@ -215,7 +221,6 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
 );
 
 export const ARSvg = ({ id }: { id: number }) => {
-  const ref = useRef<HTMLAnchorElement>(null);
   return (
     // <form action={fetchUsdzUrl}>
     <svg

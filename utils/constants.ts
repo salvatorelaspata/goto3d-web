@@ -119,3 +119,16 @@ export const formatSupabaseDate = (date?: string) => {
   if (!date) return "";
   return new Date(date).toLocaleString();
 };
+// environmentViewer: PresetsType
+export const environmentViewer = {
+  apartment: "Apartment",
+  city: "City",
+  dawn: "Dawn",
+  forest: "Forest",
+  lobby: "Lobby",
+  night: "Night",
+  park: "Park",
+  studio: "Studio",
+  sunset: "Sunset",
+  warehouse: "Warehouse",
+};
