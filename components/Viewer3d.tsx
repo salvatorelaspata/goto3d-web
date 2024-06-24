@@ -164,7 +164,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
       <div className="absolute top-4 right-4 z-20">
         {FullScreenSvg(containerRef)}
       </div>
-      <div className="absolute bottom-4 right-4 z-20">
+      <div className="absolute top-4 left-4 z-20">
         {isIOS && ARSvg({ id })}
       </div>
       <Viewer3dPersonalization />
