@@ -1,5 +1,7 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const fetchData = async ({ id }) => {
   const _id: number = parseInt(id as string);
@@ -67,6 +69,31 @@ export const fetchData = async ({ id }) => {
       textureUrl: textureUrl || "",
       backgroundUrl: backgroundUrl || "",
     };
+  } catch (error) {
+    console.error("error", error);
+  }
+};
+
+export const deleteProject = async ({ id }: { id: number }) => {
+  console.log("delete project", id);
+  const supabase = createClient();
+  try {
+    await supabase.from("project").delete().eq("id", id);
+
+    // retrive list of objects in the model folder
+    const { data: models } = await supabase.storage
+      .from("viewer3d-dev")
+      .list(`${id.toString()}/model`);
+    // delete all the objects in the model folder
+    if (models) {
+      await supabase.storage
+        .from("viewer3d-dev")
+        .remove(models.map((m) => `${id.toString()}/model/${m.name}`));
+    }
+    // delete the project folder
+    console.log("delete project folder", id.toString());
+    revalidatePath("/projects"); // Update cached posts
+    redirect("/projects");
   } catch (error) {
     console.error("error", error);
   }
