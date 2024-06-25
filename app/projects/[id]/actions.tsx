@@ -19,23 +19,22 @@ export const fetchData = async ({ id }) => {
 
     // console.log("models", project?.id, models);
 
-    const { data: backgrounds } = await supabase.storage
-      .from("viewer3d-dev")
-      .list("HDR");
+    // const { data: backgrounds } = await supabase.storage
+    //   .from("viewer3d-dev")
+    //   .list("HDR");
 
     // get the obj file name, the texture file name and a random background
     const objName: string =
       models?.find((m) => m.name.endsWith(".obj"))?.name || "";
     const textureName: string =
-      models?.find((m) => m.name === "baked_mesh_tex0.pngbaked_mesh_tex0.png")
-        ?.name || "";
-    const backgroundName: string =
-      backgrounds && backgrounds.length > 0
-        ? backgrounds[Math.floor(Math.random() * backgrounds.length)]?.name
-        : "";
+      models?.find((m) => m.name === "baked_mesh_tex0.png")?.name || "";
+    // const backgroundName: string =
+    //   backgrounds && backgrounds.length > 0
+    //     ? backgrounds[Math.floor(Math.random() * backgrounds.length)]?.name
+    //     : "";
     let objUrl: string | undefined = "";
     let textureUrl: string | undefined = "";
-    let backgroundUrl: string | undefined = "";
+    // let backgroundUrl: string | undefined = "";
     // get the signed url for the obj file
     try {
       // obj
@@ -51,12 +50,12 @@ export const fetchData = async ({ id }) => {
 
       textureUrl = _textureUrl?.signedUrl;
 
-      const { data: _backgroundUrl, error: _backgroundError } =
-        await supabase.storage
-          .from("viewer3d-dev")
-          .createSignedUrl(`HDR/${backgroundName}`, 20);
+      // const { data: _backgroundUrl, error: _backgroundError } =
+      //   await supabase.storage
+      //     .from("viewer3d-dev")
+      //     .createSignedUrl(`HDR/${backgroundName}`, 20);
 
-      backgroundUrl = _backgroundUrl?.signedUrl;
+      // backgroundUrl = _backgroundUrl?.signedUrl;
     } catch (error) {
       console.error("error supabase", error);
     }
@@ -67,14 +66,20 @@ export const fetchData = async ({ id }) => {
       project,
       objUrl: objUrl || "",
       textureUrl: textureUrl || "",
-      backgroundUrl: backgroundUrl || "",
+      // backgroundUrl: backgroundUrl || "",
     };
   } catch (error) {
     console.error("error", error);
   }
 };
 
-export const deleteProject = async ({ id }: { id: number }) => {
+export const deleteProject = async ({
+  id,
+  thumbnail,
+}: {
+  id: number;
+  thumbnail: string;
+}) => {
   console.log("delete project", id);
   const supabase = createClient();
   try {
@@ -90,6 +95,10 @@ export const deleteProject = async ({ id }: { id: number }) => {
         .from("viewer3d-dev")
         .remove(models.map((m) => `${id.toString()}/model/${m.name}`));
     }
+
+    // delete the thumbnail
+    await supabase.storage.from("public-dev").remove([thumbnail]);
+
     // delete the project folder
     console.log("delete project folder", id.toString());
     revalidatePath("/projects"); // Update cached posts
