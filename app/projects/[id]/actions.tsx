@@ -1,7 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 export const fetchData = async ({ id }) => {
   const _id: number = parseInt(id as string);
@@ -16,8 +15,6 @@ export const fetchData = async ({ id }) => {
     const { data: models } = await supabase.storage
       .from("viewer3d-dev")
       .list(`${project?.id}/model`);
-
-    // console.log("models", project?.id, models);
 
     // const { data: backgrounds } = await supabase.storage
     //   .from("viewer3d-dev")
@@ -60,8 +57,6 @@ export const fetchData = async ({ id }) => {
       console.error("error supabase", error);
     }
 
-    // console.log(objUrl, textureUrl, backgroundUrl);
-
     return {
       project,
       objUrl: objUrl || "",
@@ -73,17 +68,25 @@ export const fetchData = async ({ id }) => {
   }
 };
 
-export const deleteProject = async ({
-  id,
-  thumbnail,
-}: {
-  id: number;
-  thumbnail: string;
-}) => {
-  console.log("delete project", id);
+export const deleteProject = async ({ id }: { id: number }) => {
   const supabase = createClient();
   try {
-    await supabase.from("project").delete().eq("id", id);
+    // get the thumbnail
+    const { data } = await supabase
+      .from("project")
+      .select("thumbnail")
+      .eq("id", id)
+      .single();
+
+    // delete the project_catalog entry
+    const { data: dataDep, error: errorDep } = await supabase
+      .from("project_catalog")
+      .update({ project_id: null })
+      .eq("project_id", id);
+    if (errorDep) throw new Error(errorDep.message);
+    // delete the project entry
+    const { error } = await supabase.from("project").delete().eq("id", id);
+    if (error) throw new Error(error.message);
 
     // retrive list of objects in the model folder
     const { data: models } = await supabase.storage
@@ -97,12 +100,12 @@ export const deleteProject = async ({
     }
 
     // delete the thumbnail
-    await supabase.storage.from("public-dev").remove([thumbnail]);
-
-    // delete the project folder
-    console.log("delete project folder", id.toString());
-    revalidatePath("/projects"); // Update cached posts
-    redirect("/projects");
+    if (data?.thumbnail) {
+      const t = data.thumbnail.split("/").pop();
+      await supabase.storage.from("public-dev").remove([t as string]);
+    }
+    // return redirect("/projects");
+    revalidatePath("/projects");
   } catch (error) {
     console.error("error", error);
   }

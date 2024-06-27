@@ -1,7 +1,7 @@
 import { Viewer3d } from "@/components/Viewer3d";
 import PageTitle from "@/components/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
-import { deleteProject, fetchData } from "./actions";
+import { fetchData } from "./actions";
 import { protectedRoute } from "@/app/configurator/actions";
 import { BlurImage } from "@/components/BlurImage";
 import SectionTitle from "@/components/SectionTitle";
@@ -12,11 +12,11 @@ import { DangerZone } from "@/components/DangerZone";
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
   const p = await fetchData({ id: params.id });
-
+  const id = parseInt(params.id);
   const bigTextCentered = (text: string) => {
     return (
       <div className="h-full w-full flex items-center justify-center">
-        {params.id && <DangerZone id={params.id} />}
+        {id && <DangerZone id={id} />}
         <h1 className="text-4xl font-bold">{text}</h1>
       </div>
     );

@@ -13,7 +13,7 @@ gsap.registerPlugin(useGSAP);
 interface Model3DProps {
   object: string;
   texture: string;
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 }
 
 export const Model3D: React.FC<Model3DProps> = ({
@@ -23,7 +23,7 @@ export const Model3D: React.FC<Model3DProps> = ({
 }: {
   object: string;
   texture: string;
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 }) => {
   console.log("Model3D");
   const { setCenter, setSize, setMesh } = actions;

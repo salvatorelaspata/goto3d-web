@@ -172,6 +172,6 @@ const _sendFile = async (files: File[], projectId: number) => {
     }
 
     // toast.info("File upload " + files[i].name);
-    // console.log("File upload " + files[i].name);
+    console.log("File upload " + files[i].name);
   }
 };

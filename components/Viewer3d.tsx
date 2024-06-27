@@ -30,7 +30,7 @@ function Scene({
 }: {
   object: string;
   texture: string;
-  camera: THREE.PerspectiveCamera;
+  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 }) {
   console.log("Scene");
   return (
