@@ -30,7 +30,7 @@ export default async function Project() {
           <p className="text-lg md:text-xl">
             Hai un'oggetto che vuoi configurare? Utilizza il configuratore
           </p>
-          <form action="/projects/new">
+          <form action="/configurator/new">
             <button
               type="submit"
               className="w-full max-w-2xl bg-palette3 p-6 rounded-sm text-palette1 hover:bg-palette1 hover:text-palette3 text-3xl"

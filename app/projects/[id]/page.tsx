@@ -15,9 +15,15 @@ export default async function Project({ params }: { params: { id: string } }) {
   const id = parseInt(params.id);
   const bigTextCentered = (text: string) => {
     return (
-      <div className="h-full w-full flex items-center justify-center">
-        {id && <DangerZone id={id} />}
-        <h1 className="text-4xl font-bold">{text}</h1>
+      <div className="h-full w-full flex flex-col items-center justify-center">
+        {id && (
+          <div className="absolute bottom-4 right-4">
+            <DangerZone id={id} />
+          </div>
+        )}
+        <h1 className="w-full text-center text-4xl font-bold">{text}</h1>
+        <h2>{p?.project?.name}</h2>
+        <p>{p?.project?.description || "..."}</p>
       </div>
     );
   };

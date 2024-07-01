@@ -1,4 +1,3 @@
-"use client";
 import { proxy, useSnapshot } from "valtio";
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
@@ -22,10 +21,11 @@ export interface WizardProps {
   status: string;
   catalog_id: number | null;
   project_id: number;
-  process_id: number;
+
+  progress: string[];
 }
 
-const state = proxy<WizardProps>({
+export const wizardStore = proxy<WizardProps>({
   error: "",
   currentStep: 1,
 
@@ -42,19 +42,20 @@ const state = proxy<WizardProps>({
   status: "in queue",
   catalog_id: null,
   project_id: 0,
-  process_id: 0,
+
+  progress: [],
 });
 
-export const useStore = () => useSnapshot(state);
+export const useStore = () => useSnapshot(wizardStore);
 
 const checksMandatory = [
-  () => state.name.length > 0,
-  () => state.files.length > 0,
+  () => wizardStore.name.length > 0,
+  () => wizardStore.files.length > 0,
   () => {
-    // console.log(state.detail, state.order, state.feature);
+    // console.log(wizardStore.detail, wizardStore.order, wizardStore.feature);
     return true;
   },
-  () => true, // state.status.length > 0,
+  () => true, // wizardStore.status.length > 0,
 ];
 
 const checkNameExists = async () => {
@@ -62,7 +63,7 @@ const checkNameExists = async () => {
   const { data, error } = await supabase
     .from("project")
     .select("name")
-    .eq("name", state.name);
+    .eq("name", wizardStore.name);
   if (error) {
     throw new Error(error.message);
   }
@@ -72,74 +73,73 @@ const checkNameExists = async () => {
 export const actions = {
   nextStep: async () => {
     mainActions.showLoading();
-    if (state.currentStep === 4) return;
-    if (!checksMandatory[state.currentStep - 1]()) {
+    if (wizardStore.currentStep === 4) return;
+    if (!checksMandatory[wizardStore.currentStep - 1]()) {
       setTimeout(() => mainActions.hideLoading(), 100);
-      return (state.error = "Compila tutti i campi obbligatori");
+      return (wizardStore.error = "Compila tutti i campi obbligatori");
     }
-    if (state.currentStep === 1) {
+    if (wizardStore.currentStep === 1) {
       const data = await checkNameExists();
       if (data.length > 0) {
         mainActions.hideLoading();
-        return (state.error = "Nome progetto già esistente");
+        return (wizardStore.error = "Nome progetto già esistente");
       }
     }
     mainActions.hideLoading();
-    state.error = "";
-    return (state.currentStep += 1);
+    wizardStore.error = "";
+    return (wizardStore.currentStep += 1);
   },
   prevStep: () => {
-    if (state.currentStep === 0) return;
-    return (state.currentStep -= 1);
+    if (wizardStore.currentStep === 0) return;
+    return (wizardStore.currentStep -= 1);
   },
   goStep: (step: number) => {
-    return (state.currentStep = step);
+    return (wizardStore.currentStep = step);
   },
   resetStep: () => {
-    return (state.currentStep = 0);
+    return (wizardStore.currentStep = 0);
   },
-  resetState: () => {
-    state.error = "";
-    state.currentStep = 1;
-    state.name = "";
-    state.description = "";
-    state.files = [];
-    state.files_url = [];
-    state.detail = "reduced";
-    state.order = "sequential";
-    state.feature = "normal";
-    state.status = "in queue";
-    state.catalog_id = null;
-    state.project_id = 0;
-    state.process_id = 0;
+  resetwizardStore: () => {
+    wizardStore.error = "";
+    wizardStore.currentStep = 1;
+    wizardStore.name = "";
+    wizardStore.description = "";
+    wizardStore.files = [];
+    wizardStore.files_url = [];
+    wizardStore.detail = "reduced";
+    wizardStore.order = "sequential";
+    wizardStore.feature = "normal";
+    wizardStore.status = "in queue";
+    // wizardStore.catalog_id = null;
+    // wizardStore.project_id = 0;
   },
 
   // step1
-  setName: (name: string) => (state.name = name),
-  setDescription: (description: string) => (state.description = description),
+  setName: (name: string) => (wizardStore.name = name),
+  setDescription: (description: string) =>
+    (wizardStore.description = description),
 
   // step2
   setFiles: (files: FileList | []) => {
-    state.files = files;
+    wizardStore.files = files;
     // iterate files and get the filename
     const files_url: string[] = [];
     for (let i = 0; i < files.length; i++) {
       files_url.push(files[i].name);
     }
-    state.files_url = files_url;
+    wizardStore.files_url = files_url;
   },
 
   // step3
   setDetail: (detail: Database["public"]["Enums"]["details"]) =>
-    (state.detail = detail),
+    (wizardStore.detail = detail),
   setOrder: (order: Database["public"]["Enums"]["orders"]) =>
-    (state.order = order),
+    (wizardStore.order = order),
   setFeature: (feature: Database["public"]["Enums"]["features"]) =>
-    (state.feature = feature),
-
-  // step4
-  setStatus: (status: string) => (state.status = status),
-  setCatalogId: (catalog_id: number | null) => (state.catalog_id = catalog_id),
-  setProjectId: (project_id: number) => (state.project_id = project_id),
-  setProcessId: (process_id: number) => (state.process_id = process_id),
+    (wizardStore.feature = feature),
+  addProgress: (file: string) => wizardStore.progress.push(file),
+  // step4 - coming soon
+  // setStatus: (status: string) => (wizardStore.status = status),
+  // setCatalogId: (catalog_id: number | null) => (wizardStore.catalog_id = catalog_id),
+  // setProjectId: (project_id: number) => (wizardStore.project_id = project_id),
 };

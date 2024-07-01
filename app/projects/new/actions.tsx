@@ -1,5 +1,6 @@
 "use server";
 
+import { wizardStore } from "@/store/wizardStore";
 import { Database } from "@/types/supabase";
 import { sendToQueue } from "@/utils/amqpClient";
 import { createClient } from "@/utils/supabase/server";
@@ -10,7 +11,11 @@ import { createClient } from "@/utils/supabase/server";
 import { v4 as uuidv4 } from "uuid";
 
 export async function sendProjectToQueue(id: number) {
-  sendToQueue(id);
+  try {
+    await sendToQueue(id);
+  } catch (error) {
+    console.error("Error sending project to queue", error);
+  }
 }
 
 export async function createProject({
@@ -63,6 +68,7 @@ export async function updateThumbnail(id: number, thumbnail: string) {
 }
 
 export async function doCreate(formData: FormData) {
+  console.log("Creating project...");
   const files = formData.getAll("files") as File[];
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
@@ -84,59 +90,57 @@ export async function doCreate(formData: FormData) {
     feature,
     files: filesArray,
   });
+  console.log("Project created");
+  return { id };
 
-  console.time("thumbnail");
-  await _createThumbnail(id, formData.get("files") as File);
-  console.timeEnd("thumbnail");
+  // console.time("thumbnail");
+  // await createThumbnail(id, formData.get("files") as File);
+  // console.timeEnd("thumbnail");
 
-  console.time("upload");
-  await _sendFile(files as File[], id);
-  console.timeEnd("upload");
+  // console.time("upload");
+  // await sendFiles(files as File[], id);
+  // console.timeEnd("upload");
 
-  sendProjectToQueue(id);
+  // sendProjectToQueue(id);
 
   // redirect("/projects");
   // toast.success("Project sent to queue");
 }
 
-const _createThumbnail = async (projectId: number, file: File) => {
-  const supabase = createClient();
-  // console.log("Creating thumbnail" + file.name);
-  // convert heic to jpg;
+const _getLatestProject = async () => {
   try {
-    // if (file.type === "image/heic") {
-    //   const buffer = Buffer.from(await file.arrayBuffer());
-    //   const outputBuffer = await convert({
-    //     buffer: buffer, // the HEIC file buffer
-    //     format: "PNG", // output format
-    //   });
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("project")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+    if (error) {
+      throw new Error(error.message);
+    }
+    return data[0].id;
+  } catch (error) {
+    console.error("Error: getLatestProject", error);
+  }
+};
 
-    //   file = new File([outputBuffer], "file.jpg", {
-    //     type: "image/jpg",
-    //   });
-    // }
+export const createThumbnail = async (formData: FormData) => {
+  const supabase = createClient();
+  const file = formData.get("files") as File;
+  try {
+    const projectId = await _getLatestProject();
+    if (!projectId) {
+      throw new Error("Project not found");
+    }
 
     const id = uuidv4();
 
-    // if (file.type === "image/heic") {
-    //   const t = await heic2any({
-    //     blob: file,
-    //     toType: "image/jpeg",
-    //     quality: 0.5,
-    //   });
-    //   file = new File(t, `${id}.jpeg`, {
-    //     type: "image/jpg",
-    //   });
-    // }
     const ext = file.name.split(".").pop();
 
     const { data: _dataThumbnail, error: _errorThumbnail } =
       await supabase.storage.from("public-dev").upload(`${id}.${ext}`, file);
     if (_errorThumbnail) {
-      console.error(_errorThumbnail);
-      // return toast.error(
-      //   "Error: thumbnail" + JSON.stringify(_errorThumbnail, null, 2)
-      // );
+      throw new Error(_errorThumbnail.message);
     }
 
     const {
@@ -147,16 +151,41 @@ const _createThumbnail = async (projectId: number, file: File) => {
     // console.log("Thumbnail created" + `${publicUrl}.${ext}`);
     // return toast.info("Thumbnail created");
   } catch (error) {
-    console.error("Error creating thumbnail", error);
+    console.error("Error: thumbnail", error);
     // toast.error("Error: thumbnail");
   }
 };
 
-const _sendFile = async (files: File[], projectId: number) => {
+export const sendFile = async (formData: FormData) => {
   const supabase = createClient();
+  const projectId = await _getLatestProject();
+  const file = formData.get("files") as File;
+  const { data: _dataStorage, error: _errorStorage } = await supabase.storage
+    .from("viewer3d-dev")
+    .upload(projectId + "/images/" + file.name, file, {
+      upsert: true,
+    });
+
+  if (_errorStorage) {
+    return console.log(_errorStorage); // return toast.error("Error: " + files[i].name);
+  }
+
+  // toast.info("File upload " + files[i].name);
+  const up = [...wizardStore.progress];
+  up.push(file.name);
+
+  wizardStore.progress = up;
+  console.log(wizardStore.progress);
+  console.log("File upload " + file.name);
+};
+
+export const sendFiles = async (formData: FormData) => {
+  const supabase = createClient();
+  const projectId = await _getLatestProject();
+  const files = formData.getAll("files") as File[];
   // upload file in supabase storage
   // eseguo sequenzialmente l'upload per dare evidenza all'utente del caricamento
-  let percentage = 0;
+  // let percentage = 0;
   if (!files || files.length === 0) return;
   for (let i = 0; i < files.length; i++) {
     const { data: _dataStorage, error: _errorStorage } = await supabase.storage
@@ -165,13 +194,10 @@ const _sendFile = async (files: File[], projectId: number) => {
         upsert: true,
       });
 
-    percentage = ((i + 1) / files.length) * 100;
+    // percentage = ((i + 1) / files.length) * 100;
 
     if (_errorStorage) {
       return console.log(_errorStorage); // return toast.error("Error: " + files[i].name);
     }
-
-    // toast.info("File upload " + files[i].name);
-    console.log("File upload " + files[i].name);
   }
 };

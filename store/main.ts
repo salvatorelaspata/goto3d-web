@@ -1,4 +1,5 @@
 "use client";
+
 import { proxy, useSnapshot } from "valtio";
 
 export interface ConfigState {
@@ -8,18 +9,18 @@ export interface ConfigState {
   // Loading
   loading: boolean;
   // Model
-  objUrl: string;
-  textureUrl: string;
-  backgroundUrl: string;
+  // objUrl: string;
+  // textureUrl: string;
+  // backgroundUrl: string;
 }
 
 const state = proxy<ConfigState>({
   modalContent: "",
   showModal: false,
   loading: false,
-  objUrl: "",
-  textureUrl: "",
-  backgroundUrl: "",
+  // objUrl: "",
+  // textureUrl: "",
+  // backgroundUrl: "",
 });
 
 export const useStore = () => useSnapshot(state);
@@ -39,7 +40,7 @@ export const actions = {
   hideLoading: () => (state.loading = false),
 
   // Model
-  setObjUrl: (url: string) => (state.objUrl = url),
-  setTextureUrl: (url: string) => (state.textureUrl = url),
-  setBackgroundUrl: (url: string) => (state.backgroundUrl = url),
+  // setObjUrl: (url: string) => (state.objUrl = url),
+  // setTextureUrl: (url: string) => (state.textureUrl = url),
+  // setBackgroundUrl: (url: string) => (state.backgroundUrl = url),
 };
