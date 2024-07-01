@@ -1,6 +1,6 @@
 import PageTitle from "@/components/PageTitle";
 import { protectedRoute } from "../actions";
-import { Form } from "@/components/configurator/Form";
+import { Configurator3d } from "@/components/Configurator3d";
 
 export default async function NewProject() {
   await protectedRoute();
@@ -8,7 +8,7 @@ export default async function NewProject() {
   return (
     <div className="m-4 bg-palette2 rounded-lg">
       <PageTitle title="NUOVO CONFIGURATORE" />
-      <Form />
+      <Configurator3d />
     </div>
   );
 }

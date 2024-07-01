@@ -85,11 +85,7 @@ export const Model3D: React.FC<Model3DProps> = ({
   }, []);
   return (
     <>
-      <mesh
-        ref={mesh}
-        geometry={geometry}
-        position={[-center.x, -center.y, -center.z]}
-      >
+      <mesh geometry={geometry} position={[-center.x, -center.y, -center.z]}>
         <meshPhysicalMaterial map={texture} />
       </mesh>
     </>
