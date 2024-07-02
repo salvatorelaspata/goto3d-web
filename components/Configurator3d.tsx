@@ -3,9 +3,11 @@
 import * as THREE from "three";
 import { OrbitControls, useFBX, useGLTF, useTexture } from "@react-three/drei";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { useMemo, useState } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import { GUI } from "dat.gui";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
+import { use } from "chai";
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export const Configurator3d: React.FC = () => {
@@ -14,6 +16,7 @@ export const Configurator3d: React.FC = () => {
   const [texture, setTexture] = useState<File | null>(null);
   const [textureName, setTextureName] = useState<string | null>(null);
   console.log("File:", file);
+
   return (
     <div className="h-full">
       <FileUpload
@@ -53,42 +56,28 @@ function Model({ file, fileName, texture }) {
   type Tipo = THREE.Mesh | THREE.LineSegments;
 
   const meshs: Tipo[] = [];
+  const gui = new GUI();
 
-  // const geometry = useMemo(() => {
-  //   let g: THREE.BufferGeometry | undefined = undefined;
   obj.traverse((c: Tipo) => {
     console.log("c", c.name, c.type);
     if (c.type === "Group") return;
     const _c = c;
-    // g = _c.geometry;
-
-    // create a new mesh from LineSegments
     if (_c.geometry.type === "LineSegmented") {
       const mesh = new THREE.Mesh(_c.geometry);
       meshs.push(mesh);
       return;
     }
-
+    // create refence to the mesh
     meshs.push(_c);
   });
-  //   return g;
-  // }, [obj]);
+
+  console.log("meshs", meshs);
 
   const ui = meshs.map((mesh, index) => {
-    console.log("mesh", mesh, mesh.geometry, mesh.type);
-    return (
-      <mesh key={index} geometry={mesh.geometry} position={[0, 0, 0]}>
-        {mesh instanceof THREE.Mesh && (
-          <meshPhysicalMaterial map={textureObj} attach={"material"} />
-        )}
-        {mesh instanceof THREE.LineSegments && (
-          <lineBasicMaterial color={"white"} attach={"material"} />
-        )}
-      </mesh>
-    );
+    return <Mesh mesh={mesh} index={index} textureObj={textureObj} gui={gui} />;
   });
 
-  return ui;
+  return <group>{ui}</group>;
 
   // return (
   //   <mesh geometry={geometry} position={[0, 0, 0]}>
@@ -96,6 +85,78 @@ function Model({ file, fileName, texture }) {
   //     <meshBasicMaterial color="orange" />
   //   </mesh>
   // );
+}
+
+function Mesh({ mesh, index, textureObj, gui }) {
+  const ref = useRef(mesh as THREE.Mesh);
+  const refMaterial: MutableRefObject<
+    THREE.MeshPhysicalMaterial | THREE.LineBasicMaterial | undefined
+  > = useRef();
+  useEffect(() => {
+    // add folder
+    const folder = gui.addFolder(ref.current.name || "Mesh");
+    // position
+    folder.add(ref.current.position, "x", -10, 10);
+    folder.add(ref.current.position, "y", -10, 10);
+    folder.add(ref.current.position, "z", -10, 10);
+    // rotation
+    folder.add(ref.current.rotation, "x", -Math.PI, Math.PI);
+    folder.add(ref.current.rotation, "y", -Math.PI, Math.PI);
+    folder.add(ref.current.rotation, "z", -Math.PI, Math.PI);
+    // scale
+    folder.add(ref.current.scale, "x", 0, 10);
+    folder.add(ref.current.scale, "y", 0, 10);
+    folder.add(ref.current.scale, "z", 0, 10);
+    // color
+    // if (mesh instanceof THREE.Mesh) {
+    // if (refMaterial.current) {
+    //   folder
+    //     .addColor(
+    //       { color: refMaterial.current.material.color.getHex() },
+    //       "color"
+    //     )
+    //     .onChange((value) => {
+    //       refMaterial.current.material.color.setHex(value);
+    //     });
+    // }
+    // }
+    // material properties
+    // if (mesh instanceof THREE.Mesh) {
+    //   folder.add(mesh.material, "metalness", 0, 1);
+    //   folder.add(mesh.material, "roughness", 0, 1);
+    //   folder.add(mesh.material, "reflectivity", 0, 1);
+    //   folder.add(mesh.material, "clearcoat", 0, 1);
+    //   folder.add(mesh.material, "clearcoatRoughness", 0, 1);
+    //   folder.add(mesh.material, "transmission", 0, 1);
+    //   folder.add(mesh.material, "emissiveIntensity", 0, 1);
+    //   folder.add(mesh.material, "displacementScale", 0, 1);
+    // }
+    // opacity
+    // folder.add(mesh, "opacity", 0, 1);
+    // visible
+    folder.add(mesh, "visible");
+
+    // open the folder
+    folder.open();
+  }, []);
+  return (
+    <mesh ref={ref} key={index} geometry={mesh.geometry} position={[0, 0, 0]}>
+      {mesh instanceof THREE.Mesh && (
+        <meshPhysicalMaterial
+          ref={refMaterial}
+          map={textureObj}
+          attach={"material"}
+        />
+      )}
+      {mesh instanceof THREE.LineSegments && (
+        <lineBasicMaterial
+          ref={refMaterial}
+          color={"white"}
+          attach={"material"}
+        />
+      )}
+    </mesh>
+  );
 }
 
 function FileUpload({ setFileName, setFile, setTextureName, setTexture }) {
