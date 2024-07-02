@@ -114,8 +114,9 @@ export default async function Project({ params }: { params: { id: string } }) {
           <SectionTitle title="Download" />
           <div className="flex justify-between">
             {/* <DownloadAsset id={p.project.id} type="usdz" /> */}
-            <DownloadAsset id={p.project.id} type="obj" />
-            <DownloadAsset id={p.project.id} type="png" />
+            <DownloadAsset id={p.project.id} type=".obj" />
+            <DownloadAsset id={p.project.id} type=".usdz" />
+            <DownloadAsset id={p.project.id} type="tex0.png" />
           </div>
         </div>
         {/* DANGER */}
