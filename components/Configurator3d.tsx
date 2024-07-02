@@ -142,18 +142,10 @@ function Mesh({ mesh, index, textureObj, gui }) {
   return (
     <mesh ref={ref} key={index} geometry={mesh.geometry} position={[0, 0, 0]}>
       {mesh instanceof THREE.Mesh && (
-        <meshPhysicalMaterial
-          ref={refMaterial}
-          map={textureObj}
-          attach={"material"}
-        />
+        <meshPhysicalMaterial map={textureObj} attach={"material"} />
       )}
       {mesh instanceof THREE.LineSegments && (
-        <lineBasicMaterial
-          ref={refMaterial}
-          color={"white"}
-          attach={"material"}
-        />
+        <lineBasicMaterial color={"white"} attach={"material"} />
       )}
     </mesh>
   );
