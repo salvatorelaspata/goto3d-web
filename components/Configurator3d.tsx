@@ -8,6 +8,7 @@ import { GUI } from "dat.gui";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { use } from "chai";
+import { actions } from "@/store/main";
 // import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export const Configurator3d: React.FC = () => {

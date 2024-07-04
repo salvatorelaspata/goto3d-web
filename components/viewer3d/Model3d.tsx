@@ -14,6 +14,7 @@ interface Model3DProps {
   object: string;
   texture: string;
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
+  play: boolean;
 }
 
 export const Model3D: React.FC<Model3DProps> = ({
@@ -26,7 +27,9 @@ export const Model3D: React.FC<Model3DProps> = ({
   camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
 }) => {
   console.log("Model3D");
-  const { setCenter, setSize, setMesh } = actions;
+
+  const { setCenter, setSize, setMesh } = actions; // store?!
+
   const { center } = useStore();
   const obj = useLoader(OBJLoader, object);
   let texture: THREE.Texture;
@@ -50,9 +53,7 @@ export const Model3D: React.FC<Model3DProps> = ({
   }, [obj]);
 
   const mesh = useRef<THREE.Mesh>(null);
-  // if (mesh.current) {
-  //   setMesh(mesh.current);
-  // }
+
   useGSAP(() => {
     console.log("useGSAP");
     const box = new THREE.Box3().setFromObject(obj);

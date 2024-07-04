@@ -1,50 +1,13 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { RefObject, Suspense, useEffect, useMemo, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import { createClient } from "@/utils/supabase/client";
 import { Viewer3dPersonalization } from "./Viewer3dPersonalization";
 import { actions, useStore } from "@/store/viewerStore";
-import { Model3D } from "./Model3d";
-
-function Box() {
-  console.log("Box");
-  const box = useMemo(() => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: "orange" });
-    return new THREE.Mesh(geometry, material);
-  }, []);
-  // <mesh>
-  //   <boxGeometry args={[1, 1, 1]} />
-  //   <meshStandardMaterial color="orange" />
-  // </mesh>
-  return <primitive object={box} />;
-}
-
-function Scene({
-  object,
-  texture,
-  camera,
-}: {
-  object: string;
-  texture: string;
-  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
-}) {
-  console.log("Scene");
-  return (
-    <>
-      <ambientLight intensity={1.5} />
-      <directionalLight position={[3, 10, 7]} intensity={1.5} />
-      <Suspense fallback={<Box />}>
-        <mesh position={[0, 0, 0]}>
-          <Model3D object={object} texture={texture} camera={camera} />
-        </mesh>
-      </Suspense>
-    </>
-  );
-}
+import { Scene } from "./Scene";
 
 interface Viewer3dProps {
   id: number;
