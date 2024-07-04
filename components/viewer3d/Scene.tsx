@@ -2,7 +2,7 @@
 import * as THREE from "three";
 
 import { Suspense, useMemo } from "react";
-import { Model3D } from "../Model3d";
+import { Model3D } from "./Model3d";
 
 function Box() {
   const box = useMemo(() => {
@@ -28,7 +28,12 @@ export function Scene({
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
       <Suspense fallback={<Box />}>
         <mesh position={[0, 0, 0]}>
-          <Model3D object={object} texture={texture} camera={camera} />
+          <Model3D
+            object={object}
+            texture={texture}
+            camera={camera}
+            play={false}
+          />
         </mesh>
       </Suspense>
     </>

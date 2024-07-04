@@ -1,4 +1,3 @@
-import { Viewer3d } from "@/components/Viewer3d";
 import PageTitle from "@/components/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import { fetchData } from "./actions";
@@ -8,6 +7,7 @@ import SectionTitle from "@/components/SectionTitle";
 import { StatusText } from "@/components/StatusText";
 import { DownloadAsset } from "@/components/DownloadAsset";
 import { DangerZone } from "@/components/DangerZone";
+import { Viewer3d } from "@/components/viewer3d/Viewer3d";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
