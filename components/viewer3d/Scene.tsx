@@ -1,9 +1,11 @@
 "use client";
 import * as THREE from "three";
 
-import { Suspense, useMemo, useRef, useState } from "react";
+import { Suspense } from "react";
 import { Model3D } from "./Model3d";
 import { BoxLoader } from "./BoxLoader";
+
+import { OrbitControls } from "@react-three/drei";
 
 export function Scene({
   object,
@@ -17,17 +19,17 @@ export function Scene({
   console.log("Scene");
   return (
     <>
+      <OrbitControls
+        minDistance={0}
+        maxDistance={20}
+        enablePan={false}
+        enableDamping={true}
+        dampingFactor={0.25}
+      />
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
       <Suspense fallback={<BoxLoader />}>
-        <mesh position={[0, 0, 0]}>
-          <Model3D
-            object={object}
-            texture={texture}
-            camera={camera}
-            play={false}
-          />
-        </mesh>
+        <Model3D object={object} texture={texture} camera={camera} />
       </Suspense>
     </>
   );

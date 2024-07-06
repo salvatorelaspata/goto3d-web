@@ -10,6 +10,7 @@ export interface ConfigState {
   mesh: THREE.Mesh | null;
   center: THREE.Vector3;
   size: THREE.Vector3;
+  animate: boolean;
 }
 
 const state = proxy<ConfigState>({
@@ -18,6 +19,7 @@ const state = proxy<ConfigState>({
   mesh: null,
   center: new THREE.Vector3(0, 0, 0),
   size: new THREE.Vector3(0, 0, 0),
+  animate: false,
 });
 
 export const useStore = () => useSnapshot(state);
@@ -30,4 +32,5 @@ export const actions = {
   setCamera: (camera: THREE.PerspectiveCamera | THREE.OrthographicCamera) =>
     (state.camera = camera),
   setMesh: (mesh: RefObject<THREE.Mesh>) => (state.mesh = mesh.current),
+  setAnimation: (animate: boolean) => (state.animate = animate),
 };

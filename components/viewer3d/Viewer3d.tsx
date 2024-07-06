@@ -17,7 +17,6 @@ interface Viewer3dProps {
 
 export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
   console.log("Viewer3d");
-  const { environment } = useStore();
   const { setCamera } = actions;
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -44,14 +43,6 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
       <div className="absolute top-4 left-4 z-20">{isIOS && ARSvg({ id })}</div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
-        {environment && <Environment preset={environment} background />}
-        <OrbitControls
-          minDistance={0}
-          maxDistance={20}
-          enablePan={false}
-          enableDamping={true}
-          dampingFactor={0.25}
-        />
         <Scene object={object} texture={texture} camera={camera} />
       </Canvas>
     </div>
