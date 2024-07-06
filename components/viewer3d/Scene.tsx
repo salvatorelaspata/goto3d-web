@@ -1,17 +1,10 @@
 "use client";
 import * as THREE from "three";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import { Model3D } from "./Model3d";
+import { BoxLoader } from "./BoxLoader";
 
-function Box() {
-  const box = useMemo(() => {
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: "orange" });
-    return new THREE.Mesh(geometry, material);
-  }, []);
-  return <primitive object={box} />;
-}
 export function Scene({
   object,
   texture,
@@ -26,7 +19,7 @@ export function Scene({
     <>
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
-      <Suspense fallback={<Box />}>
+      <Suspense fallback={<BoxLoader />}>
         <mesh position={[0, 0, 0]}>
           <Model3D
             object={object}

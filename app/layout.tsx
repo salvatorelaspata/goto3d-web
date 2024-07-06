@@ -1,9 +1,10 @@
-import { Loader } from "@/components/Loader";
+import { Loader, Loading } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
 import Header from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
+import { Suspense } from "react";
 
 const poppins = localFont({
   src: [
@@ -46,10 +47,12 @@ export default async function RootLayout({
     >
       <body className="bg-palette3">
         <div className="h-full flex flex-col flex-1">
-          <Header />
-          <Loader />
-          <main className="h-full rounded-md">{children}</main>
-          <ToastComponent />
+          <Suspense fallback={<Loading />}>
+            <Header />
+            <Loader />
+            <main className="h-full rounded-md">{children}</main>
+            <ToastComponent />
+          </Suspense>
         </div>
         <Modal />
       </body>

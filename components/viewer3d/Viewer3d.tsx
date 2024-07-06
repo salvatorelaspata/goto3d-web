@@ -5,7 +5,7 @@ import { RefObject, useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import { createClient } from "@/utils/supabase/client";
-import { Viewer3dPersonalization } from "./Viewer3dPersonalization";
+import { Personalization } from "./Personalization";
 import { actions, useStore } from "@/store/viewerStore";
 import { Scene } from "./Scene";
 
@@ -39,10 +39,10 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
   return (
     <div ref={containerRef} className="w-full h-full relative">
       <div className="absolute top-4 right-4 z-20">
-        {FullScreenSvg(containerRef)}
+        {!isIphone && FullScreenSvg(containerRef)}
       </div>
       <div className="absolute top-4 left-4 z-20">{isIOS && ARSvg({ id })}</div>
-      <Viewer3dPersonalization />
+      <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
         {environment && <Environment preset={environment} background />}
         <OrbitControls

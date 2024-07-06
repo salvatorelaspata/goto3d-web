@@ -2,15 +2,21 @@
 
 import { useStore } from "@/store/main";
 
-export const Loader = () => {
-  const store = useStore();
+export const Loading: React.FC = () => {
+  console.log("Loading");
   return (
     <div
-      className={`fixed top-0 left-0 w-screen h-screen z-50 overflow-hidden bg-gray-800 opacity-75 flex flex-col items-center justify-center ${store.loading ? "visible" : "hidden"}`}
+      className={`fixed top-0 left-0 w-screen h-screen z-50 overflow-hidden bg-gray-800 opacity-75 flex flex-col items-center justify-center`}
     >
       <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
     </div>
   );
+};
+
+export const Loader = () => {
+  const store = useStore();
+  console.log("Loader", store.loading);
+  return store.loading ? <Loading /> : null;
 };
 
 // import { Canvas, useFrame } from "@react-three/fiber";

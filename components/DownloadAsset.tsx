@@ -4,8 +4,9 @@ import { createClient } from "@/utils/supabase/client";
 
 export const DownloadAsset: React.FC<{
   id: number;
-  type: ".usdz" | ".obj" | "tex0.png";
-}> = ({ id, type }) => {
+  type?: ".usdz" | ".obj" | "tex0.png";
+  name?: string;
+}> = ({ id, type, name }) => {
   const download = async (e) => {
     e.preventDefault();
     const supabase = createClient();
@@ -21,9 +22,15 @@ export const DownloadAsset: React.FC<{
         .from("viewer3d-dev")
         .list(`${project?.id}/model`);
 
-      console.log("filename", models);
-      const filename: string =
-        models?.find((m) => m.name.endsWith(`${type}`))?.name || "";
+      let filename: string;
+      if (name) {
+        filename = models?.find((m) => m.name === name)?.name || "";
+      } else if (type) {
+        filename = models?.find((m) => m.name.endsWith(`${type}`))?.name || "";
+      } else {
+        filename = models?.find((m) => m.name.endsWith(".usdz"))?.name || "";
+      }
+
       let usdzUrl: string | undefined = "";
       // get the signed url for the obj file
       // obj
@@ -48,7 +55,7 @@ export const DownloadAsset: React.FC<{
       onClick={download}
       className="text-palette5 underline underline-offset-2 hover:text-palette3"
     >
-      {type.toUpperCase()}
+      {type || name}
     </button>
   );
 };

@@ -2,7 +2,7 @@ import { actions, useStore } from "@/store/viewerStore";
 import { environmentViewer } from "@/utils/constants";
 import { PresetsType } from "@react-three/drei/helpers/environment-assets";
 
-export const Viewer3dPersonalization: React.FC = () => {
+export const Personalization: React.FC = () => {
   const { environment } = useStore();
   const { setEnvironment } = actions;
   const selectedColor = (b: boolean) =>

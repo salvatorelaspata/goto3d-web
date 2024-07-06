@@ -46,13 +46,6 @@ export const fetchData = async ({ id }) => {
         .createSignedUrl(`${project?.id}/model/${textureName}`, 20);
 
       textureUrl = _textureUrl?.signedUrl;
-
-      // const { data: _backgroundUrl, error: _backgroundError } =
-      //   await supabase.storage
-      //     .from("viewer3d-dev")
-      //     .createSignedUrl(`HDR/${backgroundName}`, 20);
-
-      // backgroundUrl = _backgroundUrl?.signedUrl;
     } catch (error) {
       console.error("error supabase", error);
     }
@@ -61,7 +54,7 @@ export const fetchData = async ({ id }) => {
       project,
       objUrl: objUrl || "",
       textureUrl: textureUrl || "",
-      // backgroundUrl: backgroundUrl || "",
+      models,
     };
   } catch (error) {
     console.error("error", error);

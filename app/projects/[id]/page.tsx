@@ -113,10 +113,14 @@ export default async function Project({ params }: { params: { id: string } }) {
         <div className="p-4 bg-palette1 rounded-lg mx-4 my-4">
           <SectionTitle title="Download" />
           <div className="flex justify-between">
-            {/* <DownloadAsset id={p.project.id} type="usdz" /> */}
-            <DownloadAsset id={p.project.id} type=".obj" />
-            <DownloadAsset id={p.project.id} type=".usdz" />
-            <DownloadAsset id={p.project.id} type="tex0.png" />
+            {p.models &&
+              p.models.map((model, index) => (
+                <DownloadAsset
+                  key={index}
+                  id={p.project?.id || 0}
+                  name={model.name}
+                />
+              ))}
           </div>
         </div>
         {/* DANGER */}
