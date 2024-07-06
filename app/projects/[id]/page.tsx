@@ -112,7 +112,7 @@ export default async function Project({ params }: { params: { id: string } }) {
         {/* DOWNLOAD */}
         <div className="p-4 bg-palette1 rounded-lg mx-4 my-4">
           <SectionTitle title="Download" />
-          <div className="flex justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-3">
             {p.models &&
               p.models.map((model, index) => (
                 <DownloadAsset
