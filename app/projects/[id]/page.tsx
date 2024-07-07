@@ -1,15 +1,16 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import { fetchData } from "./actions";
 import { protectedRoute } from "@/app/configurator/actions";
 import { BlurImage } from "@/components/BlurImage";
-import SectionTitle from "@/components/SectionTitle";
+import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
-import { DownloadAsset } from "@/components/DownloadAsset";
-import { DangerZone } from "@/components/DangerZone";
+import { DownloadAsset } from "@/components/projects/DownloadAsset";
+
 import { Viewer3d } from "@/components/viewer3d/Viewer3d";
 import { BigTextCentered } from "@/components/projects/BigText";
 import { GeneralInfo } from "@/components/projects/GeneralInfo";
+import { DangerZone } from "@/components/projects/DangerZone";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();

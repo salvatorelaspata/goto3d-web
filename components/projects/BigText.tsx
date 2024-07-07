@@ -1,4 +1,4 @@
-import { DangerZone } from "../DangerZone";
+import { DangerZone } from "./DangerZone";
 
 interface BigTextCenteredProps {
   id: number;

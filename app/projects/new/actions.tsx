@@ -1,14 +1,15 @@
 "use server";
 
-import { wizardStore } from "@/store/wizardStore";
 import { Database } from "@/types/supabase";
 import { sendToQueue } from "@/utils/amqpClient";
 import { createClient } from "@/utils/supabase/server";
-// import { redirect } from "next/navigation";
-// import convert from "heic-convert";
-// import heic2any from "heic2any";
 
 import { v4 as uuidv4 } from "uuid";
+
+type detail = Database["public"]["Enums"]["details"];
+type order = Database["public"]["Enums"]["orders"];
+type feature = Database["public"]["Enums"]["features"];
+type files = Database["public"]["Tables"]["project"]["Row"]["files"];
 
 export async function sendProjectToQueue(id: number) {
   try {
@@ -18,7 +19,7 @@ export async function sendProjectToQueue(id: number) {
   }
 }
 
-export async function createProject({
+async function createProject({
   name,
   description,
   detail,
@@ -28,10 +29,10 @@ export async function createProject({
 }: {
   name: string;
   description: string;
-  detail: Database["public"]["Enums"]["details"];
-  order: Database["public"]["Enums"]["orders"];
-  feature: Database["public"]["Enums"]["features"];
-  files: Database["public"]["Tables"]["project"]["Row"]["files"];
+  detail: detail;
+  order: order;
+  feature: feature;
+  files: files;
 }) {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -66,19 +67,13 @@ export async function updateThumbnail(id: number, thumbnail: string) {
   }
   return data;
 }
-
 export async function doCreate(formData: FormData) {
-  console.log("Creating project...");
   const files = formData.getAll("files") as File[];
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  const detail = formData.get(
-    "detail"
-  ) as Database["public"]["Enums"]["details"];
-  const order = formData.get("order") as Database["public"]["Enums"]["orders"];
-  const feature = formData.get(
-    "feature"
-  ) as Database["public"]["Enums"]["features"];
+  const detail = formData.get("detail") as detail;
+  const order = formData.get("order") as order;
+  const feature = formData.get("feature") as feature;
 
   const filesArray = Array.from(files).map((f) => f.name) as string[];
 
@@ -90,99 +85,38 @@ export async function doCreate(formData: FormData) {
     feature,
     files: filesArray,
   });
-  console.log("Project created");
+
   return { id };
-
-  // console.time("thumbnail");
-  // await createThumbnail(id, formData.get("files") as File);
-  // console.timeEnd("thumbnail");
-
-  // console.time("upload");
-  // await sendFiles(files as File[], id);
-  // console.timeEnd("upload");
-
-  // sendProjectToQueue(id);
-
-  // redirect("/projects");
-  // toast.success("Project sent to queue");
 }
-
-const _getLatestProject = async () => {
-  try {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from("project")
-      .select("id")
-      .order("id", { ascending: false })
-      .limit(1);
-    if (error) {
-      throw new Error(error.message);
-    }
-    return data[0].id;
-  } catch (error) {
-    console.error("Error: getLatestProject", error);
-  }
-};
 
 export const createThumbnail = async (formData: FormData) => {
   const supabase = createClient();
   const file = formData.get("files") as File;
+  const projectId = formData.get("id") as string;
+  const id = uuidv4();
+
+  if (!projectId) throw new Error("Project not found");
+
   try {
-    const projectId = await _getLatestProject();
-    if (!projectId) {
-      throw new Error("Project not found");
-    }
-
-    const id = uuidv4();
-
     const ext = file.name.split(".").pop();
-
-    const { data: _dataThumbnail, error: _errorThumbnail } =
-      await supabase.storage.from("public-dev").upload(`${id}.${ext}`, file);
-    if (_errorThumbnail) {
-      throw new Error(_errorThumbnail.message);
-    }
+    const { error } = await supabase.storage
+      .from("public-dev")
+      .upload(`${id}.${ext}`, file);
+    if (error) throw new Error(error.message);
 
     const {
       data: { publicUrl },
     } = supabase.storage.from("public-dev").getPublicUrl(id);
 
-    await updateThumbnail(projectId, `${publicUrl}.${ext}`);
-    // console.log("Thumbnail created" + `${publicUrl}.${ext}`);
-    // return toast.info("Thumbnail created");
+    await updateThumbnail(parseInt(projectId), `${publicUrl}.${ext}`);
   } catch (error) {
     console.error("Error: thumbnail", error);
-    // toast.error("Error: thumbnail");
   }
-};
-
-export const sendFile = async (formData: FormData) => {
-  const supabase = createClient();
-  const projectId = await _getLatestProject();
-  const file = formData.get("files") as File;
-  const { data: _dataStorage, error: _errorStorage } = await supabase.storage
-    .from("viewer3d-dev")
-    .upload(projectId + "/images/" + file.name, file, {
-      upsert: true,
-    });
-
-  if (_errorStorage) {
-    return console.log(_errorStorage); // return toast.error("Error: " + files[i].name);
-  }
-
-  // toast.info("File upload " + files[i].name);
-  const up = [...wizardStore.progress];
-  up.push(file.name);
-
-  wizardStore.progress = up;
-  console.log(wizardStore.progress);
-  console.log("File upload " + file.name);
 };
 
 export const pSendFiles = async (formData: FormData) => {
   const supabase = createClient();
-  const projectId = await _getLatestProject();
-  // create promise all uploader
+  const projectId = formData.get("id") as string;
   const files = formData.getAll("files") as File[];
   return files.map((f) =>
     supabase.storage
@@ -193,9 +127,27 @@ export const pSendFiles = async (formData: FormData) => {
   );
 };
 
+// deprecated
+export const sendFile = async (formData: FormData) => {
+  const supabase = createClient();
+  const projectId = formData.get("id") as string;
+  const file = formData.get("files") as File;
+  const { data: _dataStorage, error: _errorStorage } = await supabase.storage
+    .from("viewer3d-dev")
+    .upload(projectId + "/images/" + file.name, file, {
+      upsert: true,
+    });
+
+  if (_errorStorage) {
+    return console.log(_errorStorage);
+  }
+  console.log("File upload " + file.name);
+};
+
+// deprecated
 export const sendFiles = async (formData: FormData) => {
   const supabase = createClient();
-  const projectId = await _getLatestProject();
+  const projectId = formData.get("id") as string;
   const files = formData.getAll("files") as File[];
 
   if (!files || files.length === 0) return;

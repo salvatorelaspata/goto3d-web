@@ -1,6 +1,4 @@
 "use client";
-import { useState } from "react";
-
 interface StatusTextProps {
   label: string;
   text: string | number | undefined;

@@ -1,6 +1,6 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { protectedRoute } from "../../projects/actions";
-import { CatalogForm } from "@/components/CatalogForm";
+import { Form } from "@/components/catalogs/Form";
 import { getProjects } from "./actions";
 
 export default async function NewCatalog() {
@@ -9,7 +9,7 @@ export default async function NewCatalog() {
   return (
     <div className="m-4 bg-palette5 rounded-lg">
       <PageTitle title="NUOVO CATALOGO" />
-      <CatalogForm projects={projects} />
+      <Form projects={projects} />
     </div>
   );
 }

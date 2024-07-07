@@ -2,27 +2,24 @@
 
 import { doCreate } from "@/app/catalogs/new/actions";
 import type { Database } from "@/types/supabase";
-import { Input } from "./forms/Input";
-import { Textarea } from "./forms/Textarea";
-import SectionTitle from "./SectionTitle";
-import { DashboardCard } from "./DashboardCard";
-import SubmitButton from "./SubmitButton";
+import { Input } from "../forms/Input";
+import { Textarea } from "../forms/Textarea";
+import SectionTitle from "../ui/SectionTitle";
+import { DashboardCard } from "../DashboardCard";
+import SaveButton from "../wizard/SaveButton";
 import { toast } from "react-toastify";
 import { actions } from "@/store/main";
 import { redirect } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import Tags from "./Tags";
+import Tags from "../Tags";
 type Catalog = Database["public"]["Tables"]["catalog"]["Row"] & {
   projects: Database["public"]["Tables"]["project_catalog"]["Row"][];
 };
-interface DashboardCardProps {
+interface FormProps {
   projects: Database["public"]["Tables"]["project"]["Row"][];
   catalog?: Catalog | null;
 }
-export const CatalogForm: React.FC<DashboardCardProps> = ({
-  projects,
-  catalog,
-}) => {
+export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [_public, setPublic] = useState<boolean>(true);
@@ -195,7 +192,7 @@ export const CatalogForm: React.FC<DashboardCardProps> = ({
           </div>
         </div>
       </div>
-      <SubmitButton />
+      <SaveButton />
     </form>
   );
 };

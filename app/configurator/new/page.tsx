@@ -1,4 +1,4 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { protectedRoute } from "../actions";
 import { Configurator3d } from "@/components/Configurator3d";
 

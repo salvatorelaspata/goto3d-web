@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import SectionTitle from "../SectionTitle";
+import SectionTitle from "../ui/SectionTitle";
 import { StatusText } from "../StatusText";
 import { updateProject } from "@/app/projects/[id]/actions";
 import { toast } from "react-toastify";

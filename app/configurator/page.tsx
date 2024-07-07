@@ -1,4 +1,4 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { createClient } from "@/utils/supabase/server";
 import { protectedRoute } from "./actions";
 import ProjectCard from "@/components/projects/ProjectCard";

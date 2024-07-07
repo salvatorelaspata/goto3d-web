@@ -22,7 +22,7 @@ export interface WizardProps {
   catalog_id: number | null;
   project_id: number;
 
-  progress: string[];
+  // progress: string[];
 }
 
 export const wizardStore = proxy<WizardProps>({
@@ -43,7 +43,7 @@ export const wizardStore = proxy<WizardProps>({
   catalog_id: null,
   project_id: 0,
 
-  progress: [],
+  // progress: [],
 });
 
 export const useStore = () => useSnapshot(wizardStore);
@@ -137,7 +137,7 @@ export const actions = {
     (wizardStore.order = order),
   setFeature: (feature: Database["public"]["Enums"]["features"]) =>
     (wizardStore.feature = feature),
-  addProgress: (file: string) => wizardStore.progress.push(file),
+  // addProgress: (file: string) => wizardStore.progress.push(file),
   // step4 - coming soon
   // setStatus: (status: string) => (wizardStore.status = status),
   // setCatalogId: (catalog_id: number | null) => (wizardStore.catalog_id = catalog_id),

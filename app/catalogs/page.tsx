@@ -1,16 +1,26 @@
-import PageTitle from "@/components/PageTitle";
-import CatalogCard from "@/components/CatalogCard";
 import { createClient } from "@/utils/supabase/server";
 import { protectedRoute } from "../projects/actions";
+import Card from "@/components/catalogs/Card";
+import PageTitle from "@/components/ui/PageTitle";
 
 async function getCatalogs() {
   const supabase = createClient();
+  // extract the catalogs from the database and the count of project in each catalog
   const { data: catalogs, error } = await supabase
     .from("catalog")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .select(
+      `
+      id,
+      title,
+      description,
+      public,
+      projects: project_catalog(project_id)
+    `
+    )
+    .order("id", { ascending: false });
 
   if (error) {
+    console.log(error.message);
     throw new Error(error.message);
   }
   return catalogs;
@@ -41,10 +51,16 @@ export default async function Catalogs() {
         <PageTitle title="I Tuoi Cataloghi" />
         <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {/* <CatalogCard isNew /> */}
+            {/* <Card isNew /> */}
             {catalogs &&
               catalogs.map((catalog) => (
-                <CatalogCard key={catalog.id} {...catalog} />
+                <Card
+                  key={catalog.id}
+                  title={catalog.title || `Catalogo ${catalog.id}`}
+                  number={catalog.projects.length}
+                  public={catalog.public}
+                  id={catalog.id}
+                />
               ))}
           </div>
         </div>

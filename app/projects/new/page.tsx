@@ -1,4 +1,4 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { Wizard } from "@/components/wizard/Wizard";
 import { protectedRoute } from "../actions";
 

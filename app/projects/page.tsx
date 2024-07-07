@@ -1,4 +1,4 @@
-import PageTitle from "@/components/PageTitle";
+import PageTitle from "@/components/ui/PageTitle";
 import { getProjects, protectedRoute } from "./actions";
 import { Projects } from "@/components/projects/Projects";
 

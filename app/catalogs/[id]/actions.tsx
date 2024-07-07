@@ -1,42 +1,44 @@
 "use server";
 
-import { Database } from "@/types/supabase";
-// import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 
-// type ProjectDetail = {
-//   project: Database["public"]["Tables"]["project"]["Row"];
-//   objUrl: string;
-//   textureUrl: string;
-//   backgroundUrl: string;
-// };
-
 export const fetchData = async ({ id }) => {
-  const _id: number = parseInt(id as string);
+  const _id: number = parseInt(id);
   const supabase = createClient();
-  type Catalog = Database["public"]["Tables"]["catalog"]["Row"] & {
-    projects: Database["public"]["Tables"]["project_catalog"]["Row"][];
-  };
-  let catalog: Catalog;
   try {
-    const [{ data: project_catalog }, { data: _catalog }] = await Promise.all([
-      supabase
-        .from("project_catalog")
-        .select("project_id")
-        .eq("catalog_id", _id),
-      supabase.from("catalog").select("*").eq("id", _id).single(),
-    ]);
-
-    if (!_catalog || !project_catalog) {
-      throw new Error("Catalog not found");
+    const { data: catalog, error } = await supabase
+      .from("catalog")
+      .select(
+        `
+      id,
+      title,
+      description,
+      public,
+      projects: project_catalog(project_id)
+    `
+      )
+      .eq("id", _id)
+      .single();
+    if (error) {
+      console.log(error.message);
+      throw new Error(error.message);
     }
-    catalog = {
-      ..._catalog,
-      projects:
-        project_catalog as Database["public"]["Tables"]["project_catalog"]["Row"][],
-    };
+
     return catalog;
   } catch (error) {
     console.error("error", error);
   }
 };
+
+export async function getProjects() {
+  const supabase = createClient();
+  const { data: projects, error } = await supabase
+    .from("project")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return projects;
+}
