@@ -8,35 +8,60 @@ import { StatusText } from "@/components/StatusText";
 import { DownloadAsset } from "@/components/DownloadAsset";
 import { DangerZone } from "@/components/DangerZone";
 import { Viewer3d } from "@/components/viewer3d/Viewer3d";
+import { BigTextCentered } from "@/components/projects/BigText";
+import { GeneralInfo } from "@/components/projects/GeneralInfo";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
   const p = await fetchData({ id: params.id });
   const id = parseInt(params.id);
-  const bigTextCentered = (text: string) => {
+
+  if (!p || !p.project)
     return (
-      <div className="h-full w-full flex flex-col items-center justify-center">
-        {id && (
-          <div className="absolute bottom-4 right-4">
-            <DangerZone id={id} />
-          </div>
-        )}
-        <h1 className="w-full text-center text-4xl font-bold">{text}</h1>
-        <h2>{p?.project?.name}</h2>
-        <p>{p?.project?.description || "..."}</p>
-      </div>
+      <BigTextCentered
+        id={id}
+        text="loading..."
+        name={p?.project?.name}
+        description={p?.project?.description}
+      />
     );
-  };
-  if (!p || !p.project) return bigTextCentered("loading...");
   const status = p?.project.status;
   if (status === "error") {
-    return bigTextCentered("Errore");
+    return (
+      <BigTextCentered
+        text="Errore"
+        id={id}
+        name={p?.project?.name}
+        description={p?.project?.description}
+      />
+    );
   } else if (status === "in queue") {
-    return bigTextCentered("Progetto in coda");
+    return (
+      <BigTextCentered
+        text="Progetto in coda"
+        id={id}
+        name={p?.project?.name}
+        description={p?.project?.description}
+      />
+    );
   } else if (status === "processing") {
-    return bigTextCentered("Progetto in lavorazione");
+    return (
+      <BigTextCentered
+        text="Progetto in lavorazione"
+        id={id}
+        name={p?.project?.name}
+        description={p?.project?.description}
+      />
+    );
   } else if (!p || !p.objUrl) {
-    return bigTextCentered("loading...");
+    return (
+      <BigTextCentered
+        text="loading..."
+        id={id}
+        name={p?.project?.name}
+        description={p?.project?.description}
+      />
+    );
   }
 
   return (
@@ -47,20 +72,15 @@ export default async function Project({ params }: { params: { id: string } }) {
       <section className="flex flex-col justify-center m-4 bg-palette2 rounded-lg">
         <PageTitle title="Dettagli" />
 
-        {/* GENERAL INFO */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* GENERAL INFO */}
+          <GeneralInfo
+            id={p.project.id}
+            name={p.project.name}
+            description={p.project.description}
+            status={p.project.status}
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 mx-4 bg-palette1 rounded-lg">
-            <SectionTitle title="General Info" />
-            <div className="grid">
-              <StatusText label="Name" text={p.project.name as string} />
-              <StatusText
-                label="Description"
-                text={p.project.description as string}
-              />
-              <StatusText label="Status" text={p.project.status as string} />
-            </div>
-          </div>
           {/* DETAILS */}
           <div className="p-4 mx-4 bg-palette1 rounded-lg">
             <SectionTitle title="Details" />
@@ -95,6 +115,10 @@ export default async function Project({ params }: { params: { id: string } }) {
               <StatusText
                 label="Catalogs"
                 text={p.project.catalog_id || "N/A"}
+              />
+              <StatusText
+                label="Images"
+                text={p.project.files?.length || "N/A"}
               />
             </div>
           </div>

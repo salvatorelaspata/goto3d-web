@@ -103,3 +103,22 @@ export const deleteProject = async ({ id }: { id: number }) => {
     console.error("error", error);
   }
 };
+
+export const updateProject = async (formData: FormData) => {
+  const supabase = createClient();
+  const id = parseInt(formData.get("id") as string);
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  console.log("formData", formData, id, name, description);
+  try {
+    const { error } = await supabase
+      .from("project")
+      .update({ name, description })
+      .eq("id", id);
+
+    revalidatePath(`/projects/${id}`);
+    return error;
+  } catch (error) {
+    console.error("error", error);
+  }
+};

@@ -7,7 +7,8 @@ import {
   createThumbnail,
   doCreate,
   sendFile,
-  sendFiles,
+  // sendFiles,
+  pSendFiles,
   sendProjectToQueue,
 } from "@/app/projects/new/actions";
 import { useEffect, useTransition } from "react";
@@ -48,26 +49,26 @@ export const Wizard: React.FC = () => {
         const { id } = await doCreate(formData);
         console.log("Project created");
 
-        toast.success(`${id}`);
+        toast.success(`Project created: ${id}`);
         // 2. create thumbnail
         await createThumbnail(formData);
         toast.info("Thumbnail creato con successo");
         // 3. upload files
         console.time("upload");
         // await sendFiles(formData.getAll("files") as File[], id);
-        const files = formData.getAll("files") as File[];
-        // const pAll = files.map((f) => sendFile(formData));
-        // await Promise.all(pAll);
-        for (let i = 0; i < files.length; i++) {
-          try {
-            await sendFile(formData);
-            // remove file from form data
-            formData.delete(files[i].name);
-            toast.info(`File ${files[i].name} caricato con successo`);
-          } catch (error: any) {
-            throw new Error(error.message);
-          }
-        }
+        // const files = formData.getAll("files") as File[];
+        // for (let i = 0; i < files.length; i++) {
+        //   try {
+        //     await sendFile(formData);
+        //     // remove file from form data
+        //     formData.delete(files[i].name);
+        //     toast.info(`File ${files[i].name} caricato con successo`);
+        //   } catch (error: any) {
+        //     throw new Error(error.message);
+        //   }
+        // }
+        await Promise.all(await pSendFiles(formData));
+        console.log("Files uploaded");
         console.timeEnd("upload");
         toast.success("File caricati con successo");
         // 4. send project to queue

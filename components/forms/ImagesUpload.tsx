@@ -13,14 +13,15 @@ const composeGallery = (files: FileList) => {
         const li = document.createElement("li");
         li.className = "flex flex-col items-center m-2 mx-auto";
         const img = document.createElement("img");
-        const base64 = e.target?.result as string;
+        // const base64 = e.target?.result as string;
         // check if the file is .png or .jpg
-        if (file.type === "image/png" || file.type === "image/jpeg") {
-          img.src = base64;
-        } else {
-          // if not, use the default image
-          img.src = "/placeholder-image.png";
-        }
+        // if (file.type === "image/png" || file.type === "image/jpeg") {
+        img.src = URL.createObjectURL(file); // base64;
+        // } else {
+        //   // if not, use the default image
+        //   img.src = "/placeholder-image.png";
+        // }
+        img.loading = "lazy";
         img.alt = file.name;
         // use background image instead of src
 
@@ -100,6 +101,7 @@ export const ImagesUpload: React.FC = () => {
           <input
             ref={hiddenInput}
             type="file"
+            // accept="image/*"
             name="files"
             multiple
             className="hidden"

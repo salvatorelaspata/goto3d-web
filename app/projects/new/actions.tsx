@@ -179,22 +179,33 @@ export const sendFile = async (formData: FormData) => {
   console.log("File upload " + file.name);
 };
 
+export const pSendFiles = async (formData: FormData) => {
+  const supabase = createClient();
+  const projectId = await _getLatestProject();
+  // create promise all uploader
+  const files = formData.getAll("files") as File[];
+  return files.map((f) =>
+    supabase.storage
+      .from("viewer3d-dev")
+      .upload(projectId + "/images/" + f.name, f, {
+        upsert: true,
+      })
+  );
+};
+
 export const sendFiles = async (formData: FormData) => {
   const supabase = createClient();
   const projectId = await _getLatestProject();
   const files = formData.getAll("files") as File[];
-  // upload file in supabase storage
-  // eseguo sequenzialmente l'upload per dare evidenza all'utente del caricamento
-  // let percentage = 0;
+
   if (!files || files.length === 0) return;
+
   for (let i = 0; i < files.length; i++) {
     const { data: _dataStorage, error: _errorStorage } = await supabase.storage
       .from("viewer3d-dev")
       .upload(projectId + "/images/" + files[i].name, files[i], {
         upsert: true,
       });
-
-    // percentage = ((i + 1) / files.length) * 100;
 
     if (_errorStorage) {
       return console.log(_errorStorage); // return toast.error("Error: " + files[i].name);

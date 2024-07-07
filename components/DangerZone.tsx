@@ -1,7 +1,6 @@
 "use client";
 import { deleteProject } from "@/app/projects/[id]/actions";
 import { actions } from "@/store/main";
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { toast } from "react-toastify";
