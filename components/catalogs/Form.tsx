@@ -1,30 +1,155 @@
 "use client";
 
+import { Database } from "@/types/supabase";
+
+import React, { useEffect, useState, useTransition } from "react";
+import { ProjectToggle } from "./ProjectToggle";
 import { doCreate } from "@/app/catalogs/new/actions";
-import type { Database } from "@/types/supabase";
-import { Input } from "../forms/Input";
-import { Textarea } from "../forms/Textarea";
-import SectionTitle from "../ui/SectionTitle";
-import { DashboardCard } from "../DashboardCard";
-import SaveButton from "../wizard/SaveButton";
-import { toast } from "react-toastify";
 import { actions } from "@/store/main";
+import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import Tags from "../Tags";
-type Catalog = Database["public"]["Tables"]["catalog"]["Row"] & {
-  projects: Database["public"]["Tables"]["project_catalog"]["Row"][];
-};
+
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Card: React.FC<CardProps> = ({ children, className }) => (
+  <div
+    className={`bg-palette2 shadow-md rounded-lg overflow-hidden ${className || ""}`}
+  >
+    {children}
+  </div>
+);
+
+interface CardHeaderProps {
+  title: string;
+  children?: React.ReactNode;
+}
+
+const CardHeader: React.FC<CardHeaderProps> = ({ title, children }) => (
+  <div className="px-6 py-4 border-b border-palette3">
+    {/* add effect text border */}
+    <h2 className="text-xl font-semibold text-palette1">{title}</h2>
+    {children}
+  </div>
+);
+
+interface CardContentProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const CardContent: React.FC<CardContentProps> = ({ children, className }) => (
+  <div className={`px-6 py-4 ${className || ""}`}>{children}</div>
+);
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  placeholder: string;
+  className?: string;
+}
+
+const Input: React.FC<InputProps> = ({
+  id,
+  placeholder,
+  className,
+  ...props
+}) => (
+  <input
+    id={id}
+    type="text"
+    name={id}
+    placeholder={placeholder}
+    className={`w-full px-3 py-2 border border-palette3 rounded-md focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
+    {...props}
+  />
+);
+
+interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  id: string;
+  placeholder: string;
+  className?: string;
+}
+
+const Textarea: React.FC<TextareaProps> = ({
+  id,
+  placeholder,
+  className,
+  ...props
+}) => (
+  <textarea
+    id={id}
+    name={id}
+    placeholder={placeholder}
+    className={`w-full px-3 py-2 border border-palette3 rounded-md focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
+    rows={4}
+    {...props}
+  />
+);
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => (
+  <button
+    className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${className || ""}`}
+    {...props}
+  >
+    {children}
+  </button>
+);
+
+interface ToggleProps {
+  children: React.ReactNode;
+  active: boolean;
+  onClick?: () => void;
+  side?: "left" | "right"; // determinate rounded
+}
+
+const Toggle: React.FC<ToggleProps> = ({ children, active, onClick, side }) => (
+  <button
+    onClick={onClick}
+    className={`px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+      active
+        ? "bg-palette1 text-palette3 scale-105"
+        : "bg-palette3 text-palette1 scale-95"
+    } ${side === "left" && "rounded-r-none"} ${side === "right" && "rounded-l-none"} rounded-md`}
+  >
+    {children}
+  </button>
+);
+
+export type FormCatalogExtra =
+  Database["public"]["Tables"]["catalog"]["Row"] & {
+    projects: {
+      project_id: number;
+    }[];
+  };
+
 interface FormProps {
   projects: Database["public"]["Tables"]["project"]["Row"][];
-  catalog?: Catalog | null;
+  catalog?: FormCatalogExtra;
 }
+
 export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [_public, setPublic] = useState<boolean>(true);
-  const [_private, setPrivate] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(catalog?.title || "");
+  const [description, setDescription] = useState<string>(
+    catalog?.description || ""
+  );
+  const [visibility, setVisibility] = useState<"public" | "private">(
+    catalog?.public ? "public" : "private"
+  );
   const [project, setProject] = useState<number[]>([]);
+
+  const handleReset = () => {
+    setTitle(catalog?.title || "");
+    setDescription(catalog?.description || "");
+    setVisibility(catalog?.public ? "public" : "private");
+  };
 
   let [isPending, startTransition] = useTransition();
 
@@ -32,167 +157,141 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     if (isPending) return;
   }, [isPending]);
 
-  useEffect(() => {
-    if (catalog) {
-      setTitle(catalog.title as string);
-      setDescription(catalog.description as string);
-      setPublic(catalog.public as boolean);
-      setPrivate(!catalog.public as boolean);
-
-      const p = catalog.projects.map((p) => p.project_id);
-      setProject(p as number[]);
-    }
-  }, []);
-
   const onSubmit = async (formData: FormData) => {
+    // RUN SOME VALIDATION HERE
     actions.showLoading();
 
     startTransition(async () => {
       try {
-        toast.info("Creazione catalogo in corso...");
-        await doCreate(formData);
-        toast.success("Catalogo creato con successo");
+        // 1. create project
+        const { id } = await doCreate(formData);
+        toast.success(`Catalog created: ${id}`);
       } catch (error: any) {
         actions.hideLoading();
         toast.error(error.message);
         return;
       }
       actions.hideLoading();
-      redirect("/catalogs");
+      redirect("/catalog");
     });
   };
 
   return (
-    <form action={onSubmit}>
-      <div className="grid gap-4 h-full p-4">
-        <div className="w-full max-w-2xl mx-auto p-4 sm:px-4 lg:max-w-7xl lg:px-4">
-          <SectionTitle title="General Info" />
-          <div className="grid grid-cols-1">
-            <Input
-              id="title"
-              label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              name="title"
-              type="text"
-              placeholder="Enter a title"
-            />
-            <Textarea
-              id="description"
-              label="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              name="description"
-              type="textarea"
-              placeholder="Enter a title"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <SectionTitle title="Visibility" borderBottom />
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <input
-                      className="peer hidden"
-                      id="public"
-                      value={"public"}
-                      checked={_public}
-                      onChange={() => {
-                        setPublic(false);
-                        setPrivate(true);
-                      }}
-                      type="radio"
-                      name="visibility"
-                    />
-                    <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-palette3 bg-white peer-checked:bg-palette1"></span>
-
-                    <label
-                      className="flex cursor-pointer flex-col rounded-lg border border-palette3 p-4 peer-checked:border-4 peer-checked:bg-palette1"
-                      htmlFor="public"
-                    >
-                      <span className="text-lg font-semibold uppercase">
-                        🤩
-                      </span>
-                      <span className="mt-2 text-xl font-bold text-palette3">
-                        Pubblico
-                      </span>
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      className="peer hidden"
-                      id="private"
-                      value={"private"}
-                      checked={_private}
-                      onChange={() => {
-                        setPublic(false);
-                        setPrivate(true);
-                      }}
-                      // value={_private ? "private" : ""}
-                      type="radio"
-                      name="visibility"
-                    />
-                    <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-palette3 bg-white peer-checked:bg-palette1"></span>
-
-                    <label
-                      className="flex cursor-pointer flex-col rounded-lg border border-palette3 p-4 peer-checked:border-4 peer-checked:bg-palette1"
-                      htmlFor="private"
-                    >
-                      <span className="text-lg font-semibold uppercase">
-                        🙈
-                      </span>
-                      <span className="mt-2 text-xl font-bold text-palette3">
-                        Private
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <SectionTitle title="Tags" borderBottom />
-                <div className="grid grid-cols-4 gap-2">
-                  <Tags text="Tag 1" />
-                  <Tags text="Tag 2" type="secondary" />
-                  <Tags text="Tag 3" type="tertiary" />
-                  <Tags text="Tag 4" type="success" />
-                  <Tags text="Tag 5" type="warning" />
-                  <Tags text="Tag 6" type="danger" />
-                </div>
-              </div>
+    <form action={onSubmit} className="max-w-6xl mx-auto p-4 space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="md:col-span-2">
+          <CardHeader title="General Info" />
+          <CardContent className="space-y-4">
+            <div>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Title
+              </label>
+              <Input
+                id="title"
+                placeholder="Enter a title"
+                className="mt-1"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </div>
-          </div>
-        </div>
-        <div className="mx-auto px-4 sm:px-4 lg:max-w-7xl lg:px-4">
-          <SectionTitle title="Projects" borderBottom />
-
-          <div className="max-w-2xl max-h-[350px] overflow-auto mx-auto px-4 sm:px-4 lg:max-w-7xl lg:px-4">
-            <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-4">
-              {projects.map((option) => (
-                <DashboardCard
-                  selectable={true}
-                  multiple={true}
-                  radioGroup="project"
-                  checked={project.includes(option.id)}
-                  onChange={(e) => {
-                    const id = parseInt(e.target.value);
-                    if (e.target.checked) {
-                      setProject([...project, id]);
-                    } else {
-                      setProject(project.filter((p) => p !== id));
-                    }
-                  }}
-                  key={option.id}
-                  navTo="#"
-                  id={option.id + ""}
-                  name={option.name || ""}
-                  description={option.description || ""}
-                />
-              ))}
+            <div>
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <Textarea
+                id="description"
+                placeholder="Enter a description"
+                className="mt-1"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader title="Visibility" />
+          <CardContent className="grid grid-cols-2">
+            <Toggle
+              side="left"
+              active={visibility === "public"}
+              onClick={() => setVisibility("public")}
+            >
+              <span className="flex items-center">
+                <span className="m-2">🌍</span>
+                Pubblico
+              </span>
+            </Toggle>
+            <Toggle
+              side="right"
+              active={visibility === "private"}
+              onClick={() => setVisibility("private")}
+            >
+              <span className="flex items-center">
+                <span className="m-2">🔒</span>
+                Private
+              </span>
+            </Toggle>
+            {/* descrizione della visibilità  */}
+            <p className="col-span-2 my-4 text-sm text-gray-700">
+              {visibility === "public"
+                ? "Tutti possono visualizzare questo catalogo"
+                : "Solo tu puoi visualizzare questo catalogo"}
+            </p>
+          </CardContent>
+        </Card>
       </div>
-      <SaveButton />
+
+      <Card>
+        <CardHeader title="Projects" />
+        <CardContent className="">
+          {/* create scroll container */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-y-auto h-64">
+            {projects.map((option) => (
+              <ProjectToggle
+                selectable={true}
+                multiple={true}
+                radioGroup="project"
+                checked={projects.map((_) => _.id).includes(option.id)}
+                onChange={(e) => {
+                  const id = parseInt(e.target.value);
+                  if (e.target.checked) {
+                    setProject([...project, id]);
+                  } else {
+                    setProject(project.filter((p) => p !== id));
+                  }
+                }}
+                key={option.id}
+                id={option.id + 0}
+                name={option.name || ""}
+                description={option.description || ""}
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="flex justify-end space-x-4">
+        <Button
+          type="button"
+          onClick={handleReset}
+          className="px-6 py-2 w-64 bg-palette3 text-palette1 hover:bg-palette3 transition-colors duration-200"
+        >
+          Reset
+        </Button>
+        <Button
+          type="submit"
+          className="px-6 py-2 w-64 bg-palette1 text-palette3 hover:bg-palette2 transition-colors duration-200 shadow-lg hover:shadow-xl"
+        >
+          Salva
+        </Button>
+      </div>
     </form>
   );
 };

@@ -1,6 +1,6 @@
 import PageTitle from "@/components/ui/PageTitle";
 import { protectedRoute } from "../../projects/actions";
-import { Form } from "@/components/catalogs/Form";
+import { Form, FormCatalogExtra } from "@/components/catalogs/Form";
 import { fetchData, getProjects } from "./actions";
 
 export default async function NewCatalog({
@@ -15,7 +15,9 @@ export default async function NewCatalog({
   return (
     <div className="m-4 bg-palette5 rounded-lg">
       <PageTitle title="DETTAGLIO CATALOGO" />
-      <Form projects={projects} catalog={catalog} />
+      {catalog && (
+        <Form projects={projects} catalog={catalog as FormCatalogExtra} />
+      )}
     </div>
   );
 }

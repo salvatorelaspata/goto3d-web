@@ -33,8 +33,6 @@ export async function doCreate(formData: FormData) {
     throw new Error(error.message);
   }
 
-  // create many to many relationship
-  // logg all formdata
   const projectIds = formData.getAll("project");
   if (projectIds.length > 0) {
     const catalogId = data.id;
@@ -49,5 +47,6 @@ export async function doCreate(formData: FormData) {
       throw new Error(errorManyToMany.message);
     }
   }
-  return { data };
+
+  return { id: data.id };
 }

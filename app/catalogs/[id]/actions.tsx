@@ -10,10 +10,7 @@ export const fetchData = async ({ id }) => {
       .from("catalog")
       .select(
         `
-      id,
-      title,
-      description,
-      public,
+      *,
       projects: project_catalog(project_id)
     `
       )
