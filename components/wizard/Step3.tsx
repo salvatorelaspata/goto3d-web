@@ -4,7 +4,7 @@ import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import Accordion from "../ui/Accordion";
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 
 const fields = [
   {

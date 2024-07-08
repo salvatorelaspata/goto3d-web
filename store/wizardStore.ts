@@ -1,5 +1,5 @@
 import { proxy, useSnapshot } from "valtio";
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
 import { actions as mainActions } from "@/store/main";
 export interface WizardProps {

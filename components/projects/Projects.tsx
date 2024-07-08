@@ -1,6 +1,6 @@
 "use client";
 
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 import ProjectCard from "./ProjectCard";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 import { sendToQueue } from "@/utils/amqpClient";
 import { createClient } from "@/utils/supabase/server";
 

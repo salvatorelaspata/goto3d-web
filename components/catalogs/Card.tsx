@@ -28,7 +28,7 @@ export default function Card({
         </span>
       </div>
       <p className="text-xl text-palette1 group-hover:text-palette3 font-bold">
-        {!_public ? "🙈" : "🤩"}
+        {!_public ? "🙈" : "🌍"}
       </p>
       <span className="absolute top-0 left-0 h-0 w-1 bg-palette3 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 right-0 h-0 w-1 bg-palette3 group-hover:h-full group-hover:transition-all"></span>

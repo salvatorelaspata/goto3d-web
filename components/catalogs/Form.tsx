@@ -1,13 +1,15 @@
 "use client";
 
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useTransition } from "react";
 import { ProjectToggle } from "./ProjectToggle";
-import { doCreate } from "@/app/catalogs/new/actions";
+import { deleteCatalog, doCreate } from "@/app/catalogs/new/actions";
 import { actions } from "@/store/main";
+import { actions as catalogActions } from "@/store/catalogStore";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
+import { useStore } from "@/store/catalogStore";
 
 interface CardProps {
   children: React.ReactNode;
@@ -112,7 +114,11 @@ interface ToggleProps {
 
 const Toggle: React.FC<ToggleProps> = ({ children, active, onClick, side }) => (
   <button
-    onClick={onClick}
+    onClick={(e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onClick && onClick();
+    }}
     className={`px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
       active
         ? "bg-palette1 text-palette3 scale-105"
@@ -136,20 +142,19 @@ interface FormProps {
 }
 
 export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
-  const [title, setTitle] = useState<string>(catalog?.title || "");
-  const [description, setDescription] = useState<string>(
-    catalog?.description || ""
-  );
-  const [visibility, setVisibility] = useState<"public" | "private">(
-    catalog?.public ? "public" : "private"
-  );
-  const [project, setProject] = useState<number[]>([]);
+  const { id, title, description, public: visibility } = useStore();
+  const { setTitle, setDescription, setPublic, reset } = catalogActions;
 
-  const handleReset = () => {
-    setTitle(catalog?.title || "");
-    setDescription(catalog?.description || "");
-    setVisibility(catalog?.public ? "public" : "private");
-  };
+  useEffect(() => {
+    if (catalog) {
+      setTitle(catalog.title || "");
+      setDescription(catalog.description || "");
+      setPublic(catalog.public || false);
+      catalog.projects.forEach((project) => {
+        catalogActions.addProject(project.project_id);
+      });
+    }
+  }, [catalog]);
 
   let [isPending, startTransition] = useTransition();
 
@@ -163,7 +168,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
 
     startTransition(async () => {
       try {
-        // 1. create project
+        formData.append("visibility", visibility ? "true" : "false");
         const { id } = await doCreate(formData);
         toast.success(`Catalog created: ${id}`);
       } catch (error: any) {
@@ -172,28 +177,51 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         return;
       }
       actions.hideLoading();
-      redirect("/catalog");
+      redirect("/catalogs");
     });
+  };
+
+  const onDelete = async (formData: FormData) => {
+    if (
+      confirm(
+        "Are you sure you want to delete this catalog? This action is irreversible."
+      )
+    ) {
+      actions.showLoading();
+      startTransition(async () => {
+        try {
+          toast.info("Deleting catalog...");
+          await deleteCatalog(formData);
+          toast.success("Catalog deleted successfully");
+        } catch (error: any) {
+          actions.hideLoading();
+          toast.error(error.message);
+          return;
+        }
+        actions.hideLoading();
+        redirect("/catalogs");
+      });
+    }
   };
 
   return (
     <form action={onSubmit} className="max-w-6xl mx-auto p-4 space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="md:col-span-2">
-          <CardHeader title="General Info" />
+          <CardHeader title="Informazioni generali" />
           <CardContent className="space-y-4">
             <div>
               <label
                 htmlFor="title"
                 className="block text-sm font-medium text-gray-700"
               >
-                Title
+                Titolo
               </label>
               <Input
                 id="title"
-                placeholder="Enter a title"
+                placeholder="Inserisci un titolo"
                 className="mt-1"
-                value={title}
+                value={title as string}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
@@ -202,13 +230,13 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
                 htmlFor="description"
                 className="block text-sm font-medium text-gray-700"
               >
-                Description
+                Descrizione del catalogo (facoltativa)
               </label>
               <Textarea
                 id="description"
-                placeholder="Enter a description"
+                placeholder="Inserisci una descrizione"
                 className="mt-1"
-                value={description}
+                value={description as string}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
@@ -216,22 +244,22 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         </Card>
 
         <Card>
-          <CardHeader title="Visibility" />
+          <CardHeader title="Visibilità" />
           <CardContent className="grid grid-cols-2">
             <Toggle
               side="left"
-              active={visibility === "public"}
-              onClick={() => setVisibility("public")}
+              active={visibility as boolean}
+              onClick={() => setPublic(true)}
             >
-              <span className="flex items-center">
+              <span className="flex items-center justify-center sm:justify-start">
                 <span className="m-2">🌍</span>
-                Pubblico
+                <span className="">Pubblico</span>
               </span>
             </Toggle>
             <Toggle
               side="right"
-              active={visibility === "private"}
-              onClick={() => setVisibility("private")}
+              active={!visibility as boolean}
+              onClick={() => setPublic(false)}
             >
               <span className="flex items-center">
                 <span className="m-2">🔒</span>
@@ -240,7 +268,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             </Toggle>
             {/* descrizione della visibilità  */}
             <p className="col-span-2 my-4 text-sm text-gray-700">
-              {visibility === "public"
+              {visibility
                 ? "Tutti possono visualizzare questo catalogo"
                 : "Solo tu puoi visualizzare questo catalogo"}
             </p>
@@ -249,28 +277,17 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
       </div>
 
       <Card>
-        <CardHeader title="Projects" />
+        <CardHeader title="Aggiungi i progetti al tuo catalogo" />
         <CardContent className="">
           {/* create scroll container */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-y-auto h-64">
             {projects.map((option) => (
               <ProjectToggle
-                selectable={true}
-                multiple={true}
-                radioGroup="project"
-                checked={projects.map((_) => _.id).includes(option.id)}
-                onChange={(e) => {
-                  const id = parseInt(e.target.value);
-                  if (e.target.checked) {
-                    setProject([...project, id]);
-                  } else {
-                    setProject(project.filter((p) => p !== id));
-                  }
-                }}
                 key={option.id}
-                id={option.id + 0}
+                id={option.id}
                 name={option.name || ""}
                 description={option.description || ""}
+                radioGroup="project"
               />
             ))}
           </div>
@@ -278,18 +295,34 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
       </Card>
 
       <div className="flex justify-end space-x-4">
-        <Button
-          type="button"
-          onClick={handleReset}
-          className="px-6 py-2 w-64 bg-palette3 text-palette1 hover:bg-palette3 transition-colors duration-200"
-        >
-          Reset
-        </Button>
+        {!catalog ? (
+          <Button
+            type="button"
+            onClick={reset}
+            className="px-6 py-2 w-64 bg-palette3 text-palette1 hover:bg-palette3 transition-colors duration-200"
+          >
+            Reset
+          </Button>
+        ) : (
+          <button
+            onClick={() => {
+              e.preventDefault();
+              e.stopPropagation();
+              const formData = new FormData();
+              if (id) formData.append("id", id.toString());
+              onDelete(formData);
+            }}
+            type="submit"
+            className="bg-red-500 text-white rounded-lg p-2"
+          >
+            Delete project
+          </button>
+        )}
         <Button
           type="submit"
           className="px-6 py-2 w-64 bg-palette1 text-palette3 hover:bg-palette2 transition-colors duration-200 shadow-lg hover:shadow-xl"
         >
-          Salva
+          {catalog ? "Salva" : "Crea"}
         </Button>
       </div>
     </form>

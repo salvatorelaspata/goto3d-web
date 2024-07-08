@@ -20,12 +20,11 @@ export const StatusText = ({
       <label className="text-palette3 text-lg w-full">{label}</label>
       {/* color input if in editable mode */}
       <input
-        className="text-palette5 bg-transparent text-end w-full border-b read-only:border-b-0"
+        className="text-palette5 bg-transparent text-end w-full border-b read-only:border-b-0 read-only:rounded-sm rounded-none"
         value={text || ""}
         onChange={(e) => setValue && setValue(e.target.value)}
         name={name || label}
         readOnly={!editable}
-        disabled={!editable}
       />
     </div>
   );

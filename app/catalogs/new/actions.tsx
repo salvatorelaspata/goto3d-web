@@ -1,6 +1,7 @@
 "use server";
-import { Database } from "@/types/supabase";
+import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export const getProjects = async () => {
   const supabase = createClient();
@@ -19,13 +20,14 @@ export async function doCreate(formData: FormData) {
   const supabase = createClient();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const _public = formData.get("visibility") === "public";
+  const _public = formData.get("visibility") as string;
+  console.log(formData);
   const { data, error } = await supabase
     .from("catalog")
     .insert({
       title,
       description,
-      public: _public,
+      public: _public === "true" ? true : false,
     })
     .select("id")
     .single();
@@ -48,5 +50,21 @@ export async function doCreate(formData: FormData) {
     }
   }
 
+  revalidatePath("/catalogs");
+
   return { id: data.id };
+}
+
+export async function deleteCatalog(formData: FormData) {
+  const supabase = createClient();
+  const id = formData.get("id") as string;
+  console.log("id", id);
+  const { error } = await supabase
+    .from("catalog")
+    .delete()
+    .eq("id", parseInt(id));
+  if (error) {
+    throw new Error(error.message);
+  }
+  revalidatePath("/catalogs");
 }

@@ -23,7 +23,7 @@ export default async function Home() {
     redirect("/projects/new");
   };
   return (
-    <div className="h-full m-4 flex flex-col items-stretch">
+    <div className="h-full md:h-[50%] m-4 flex flex-col items-stretch">
       <div className="h-full grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mb-4 bg-palette2 text-palette1 rounded-xl">
         <div className="w-full flex flex-col bg-palette3 p-3 m-3 shadow-lg rounded-md ">
           <h1 className="text-3xl">Config.Reality</h1>
