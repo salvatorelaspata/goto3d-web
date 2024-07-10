@@ -177,31 +177,33 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         return;
       }
       actions.hideLoading();
+
       redirect("/catalogs");
     });
   };
 
-  const onDelete = async (formData: FormData) => {
-    if (
-      confirm(
-        "Are you sure you want to delete this catalog? This action is irreversible."
-      )
-    ) {
-      actions.showLoading();
-      startTransition(async () => {
-        try {
-          toast.info("Deleting catalog...");
-          await deleteCatalog(formData);
-          toast.success("Catalog deleted successfully");
-        } catch (error: any) {
-          actions.hideLoading();
-          toast.error(error.message);
-          return;
-        }
+  const onDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const id = catalog?.id;
+    if (!id) return;
+    const formData = new FormData();
+    formData.append("id", id.toString());
+
+    actions.showLoading();
+    startTransition(async () => {
+      try {
+        toast.info("Deleting catalog...");
+        const { id } = await deleteCatalog(formData);
+        toast.success("Catalog deleted successfully " + id);
+      } catch (error: any) {
         actions.hideLoading();
-        redirect("/catalogs");
-      });
-    }
+        toast.error(error.message);
+        return;
+      }
+      actions.hideLoading();
+
+      redirect("/catalogs");
+    });
   };
 
   return (
@@ -305,13 +307,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
           </Button>
         ) : (
           <button
-            onClick={() => {
-              e.preventDefault();
-              e.stopPropagation();
-              const formData = new FormData();
-              if (id) formData.append("id", id.toString());
-              onDelete(formData);
-            }}
+            onClick={onDelete}
             type="submit"
             className="bg-red-500 text-white rounded-lg p-2"
           >

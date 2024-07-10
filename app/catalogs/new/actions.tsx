@@ -58,13 +58,23 @@ export async function doCreate(formData: FormData) {
 export async function deleteCatalog(formData: FormData) {
   const supabase = createClient();
   const id = formData.get("id") as string;
-  console.log("id", id);
+
+  const { error: errorManyToMany } = await supabase
+    .from("project_catalog")
+    .delete()
+    .eq("catalog_id", parseInt(id));
+  if (errorManyToMany) {
+    throw new Error(errorManyToMany.message);
+  }
+
   const { error } = await supabase
     .from("catalog")
     .delete()
     .eq("id", parseInt(id));
+
   if (error) {
     throw new Error(error.message);
   }
   revalidatePath("/catalogs");
+  return { id };
 }

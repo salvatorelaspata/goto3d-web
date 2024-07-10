@@ -25,7 +25,7 @@ export const ProjectToggle: React.FC<ProjectToggleProps> = ({
         multiple={true}
         type="checkbox"
         name={radioGroup}
-        checked={projects.includes(id)}
+        defaultChecked={projects.includes(id)}
         value={id?.toString()}
         onClick={(e) => {
           e.stopPropagation();
