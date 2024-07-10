@@ -72,7 +72,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
       .single();
 
     // delete the project_catalog entry
-    const { data: dataDep, error: errorDep } = await supabase
+    const { error: errorDep } = await supabase
       .from("project_catalog")
       .update({ project_id: null })
       .eq("project_id", id);
@@ -97,7 +97,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
       const t = data.thumbnail.split("/").pop();
       await supabase.storage.from("public-dev").remove([t as string]);
     }
-    // return redirect("/projects");
+
     revalidatePath("/projects");
   } catch (error) {
     console.error("error", error);

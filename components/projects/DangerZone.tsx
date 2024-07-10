@@ -43,11 +43,7 @@ export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
   return (
     <form action={onSubmit} className="flex justify-end">
       <input type="hidden" name="id" value={id} />
-      <button
-        onClick={() => {}}
-        type="submit"
-        className="bg-red-500 text-white rounded-lg p-2"
-      >
+      <button type="submit" className="bg-red-500 text-white rounded-lg p-2">
         Delete project
       </button>
     </form>

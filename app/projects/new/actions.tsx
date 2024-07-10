@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 type detail = Database["public"]["Enums"]["details"];
 type order = Database["public"]["Enums"]["orders"];
 type feature = Database["public"]["Enums"]["features"];
-type files = Database["public"]["Tables"]["project"]["Row"]["files"];
+// type files = Database["public"]["Tables"]["project"]["Row"]["files"];
 
 export async function sendProjectToQueue(id: number) {
   try {
