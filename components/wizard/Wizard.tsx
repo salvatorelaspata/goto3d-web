@@ -29,7 +29,9 @@ export const Wizard: React.FC = () => {
     startTransition(async () => {
       try {
         // 1. create project
+        console.log("Creating project...");
         const { id } = await doCreate(formData);
+        console.log("Project created: ", id);
         formData.set("id", id.toString());
         toast.success(`Project created: ${id}`);
         // 2. create thumbnail
