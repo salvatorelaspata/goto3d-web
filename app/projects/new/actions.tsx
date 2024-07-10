@@ -19,22 +19,6 @@ export async function sendProjectToQueue(id: number) {
   }
 }
 
-async function createProject({
-  name,
-  description,
-  detail,
-  order,
-  feature,
-  files,
-}: {
-  name: string;
-  description: string;
-  detail: detail;
-  order: order;
-  feature: feature;
-  files: files;
-}) {}
-
 export async function updateThumbnail(id: number, thumbnail: string) {
   const supabase = createClient();
   const { data, error } = await supabase
@@ -57,15 +41,6 @@ export async function doCreate(formData: FormData) {
   const feature = formData.get("feature") as feature;
 
   const filesArray = Array.from(files).map((f) => f.name) as string[];
-
-  const { id } = await createProject({
-    name,
-    description,
-    detail,
-    order,
-    feature,
-    files: filesArray,
-  });
 
   const supabase = createClient();
   const { data, error } = await supabase
