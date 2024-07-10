@@ -16,7 +16,7 @@ export default function Card({
   return (
     <Link
       key={id}
-      className="relative group w-full p-3 m-3 bg-palette3 shadow-lg rounded-md hover:bg-palette1 hover:shadow-2xl overflow-hidden hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
+      className="relative group p-3 m-3 bg-palette3 shadow-lg rounded-md hover:bg-palette1 hover:shadow-2xl overflow-hidden hover:scale-105 transition duration-300 ease-in-out cursor-pointer"
       href={`/catalogs/${id}`}
     >
       <div className="flex justify-between">

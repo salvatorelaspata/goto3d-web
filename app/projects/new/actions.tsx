@@ -33,26 +33,7 @@ async function createProject({
   order: order;
   feature: feature;
   files: files;
-}) {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("project")
-    .insert({
-      name,
-      description,
-      detail,
-      order,
-      feature,
-      files,
-      status: "in queue",
-    })
-    .select("id")
-    .single();
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
-}
+}) {}
 
 export async function updateThumbnail(id: number, thumbnail: string) {
   const supabase = createClient();
@@ -86,7 +67,25 @@ export async function doCreate(formData: FormData) {
     files: filesArray,
   });
 
-  return { id };
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("project")
+    .insert({
+      name,
+      description,
+      detail,
+      order,
+      feature,
+      files: filesArray,
+      status: "in queue",
+    })
+    .select("id")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data?.id;
 }
 
 export const createThumbnail = async (formData: FormData) => {

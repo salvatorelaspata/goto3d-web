@@ -30,20 +30,27 @@ export const Wizard: React.FC = () => {
       try {
         // 1. create project
         console.log("Creating project...");
-        const { id } = await doCreate(formData);
-        console.log("Project created: ", id);
+        const id = await doCreate(formData);
+        console.log("Project createdd: ", id);
         formData.set("id", id.toString());
+        console.log("Project created: ", formData.get("id"));
         toast.success(`Project created: ${id}`);
         // 2. create thumbnail
         console.log("Creating thumbnail...");
+        console.log("Creating thumbnail: ");
         await createThumbnail(formData);
+        console.log("Thumbnail created");
         toast.success("Thumbnail creato con successo");
         // 3. upload files
         toast.info("Caricamento di tutti file in corso...");
+        console.log("Uploading files...");
         await Promise.all(await pSendFiles(formData));
+        console.log("Files uploaded");
         toast.success("File caricati con successo");
         // 4. send project to queue
+        console.log("Sending project to queue...");
         await sendProjectToQueue(id);
+        console.log("Project sent to queue");
         toast.success("Progetto inviato alla coda");
       } catch (error: any) {
         actions.hideLoading();
