@@ -4,7 +4,7 @@ export type itemHeaderProps = {
   url: string;
 };
 
-export const privateRoutes: itemHeaderProps[] = [
+export const routes: itemHeaderProps[] = [
   {
     name: "Dashboard",
     url: "/dashboard",
@@ -22,8 +22,6 @@ export const privateRoutes: itemHeaderProps[] = [
     url: "/configurator",
   },
 ];
-export const publicRoutes: itemHeaderProps[] = [];
-
 export const formFields: FieldProps[] = [
   {
     id: "formName",

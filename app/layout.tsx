@@ -1,10 +1,11 @@
 import { Loader, Loading } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
-import Header from "@/components/layout/Header";
+import { Header } from "@/components/layout/Header";
 import { Modal } from "@/components/ui/Modal";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
 import { Suspense } from "react";
+import { createClient } from "@/utils/supabase/server";
 
 const poppins = localFont({
   src: [
@@ -39,16 +40,23 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = createClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  const isError = error || !user;
   return (
     <html
       lang="en"
-      className={`${poppins.variable} font-sans m-0`}
+      className={`${poppins.variable} m-0 font-sans`}
       suppressHydrationWarning={true}
     >
       <body className="bg-palette3">
-        <div className="h-full flex flex-col flex-1">
+        <div className="flex h-full flex-1 flex-col">
           <Suspense fallback={<Loading />}>
-            <Header />
+            {!isError && <Header name={user.email} />}
             <Loader />
             <main className="h-full rounded-md">{children}</main>
             <ToastComponent />

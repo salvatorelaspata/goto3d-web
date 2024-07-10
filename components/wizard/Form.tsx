@@ -15,13 +15,13 @@ export const Form: React.FC<FormProps> = ({
 }) => {
   const { error } = useStore();
   return (
-    <div className="flex flex-col h-full p-4 rounded-l-xl border-palette1 border shadow-lg">
+    <div className="flex h-full flex-col border border-palette1 p-4 shadow-lg lg:rounded-l-xl">
       {children}
 
       {stretch && <div className="flex-grow" />}
       {error && (
         <p className="text-white">
-          <span className="text-red-600 text-xl pr-1">Errore:</span>
+          <span className="pr-1 text-xl text-red-600">Errore:</span>
           {error}
         </p>
       )}
@@ -34,9 +34,9 @@ export const Form: React.FC<FormProps> = ({
 };
 
 const mandatory = (
-  <p className="text-end mb-4 text-palette1">
-    <span className="text-red-600 mr-1 font-bold">*</span>Campi obbligatori
+  <p className="mb-4 text-end text-palette1">
+    <span className="mr-1 font-bold text-red-600">*</span>Campi obbligatori
   </p>
 );
 
-const divider = <hr className="bg-palette1 my-4" />;
+const divider = <hr className="my-4 bg-palette1" />;

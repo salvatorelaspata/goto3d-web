@@ -9,8 +9,8 @@ export const WizardStep: React.FC<WizardStepProps> = ({ form, spiegone }) => {
   return (
     <div className="p-4">
       <Stepper />
-      <div className="grid grid-cols-1 lg:grid-cols-3 h-full w-full">
-        <div className="col-span-2  flex flex-col h-full">{form}</div>
+      <div className="grid h-full w-full grid-cols-1 lg:grid-cols-3">
+        <div className="col-span-2 flex h-full flex-col">{form}</div>
         <div>{spiegone}</div>
       </div>
     </div>

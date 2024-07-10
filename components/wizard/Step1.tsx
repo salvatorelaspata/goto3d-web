@@ -13,23 +13,6 @@ import { actions, useStore } from "@/store/wizardStore";
 export const Step1: React.FC = () => {
   const { name, description } = useStore();
   const { setName, setDescription } = actions;
-  // const formElement = useRef<HTMLDivElement>(null);
-  // animate form on mount and the spiegone
-  // useGSAP(
-  //   () => {
-  //     const nameLabel = "#name--label";
-  //     const nameInput = "#name";
-  //     const descriptionLabel = "#description--label";
-  //     const descriptionInput = "#description";
-
-  //     const tl = gsap.timeline();
-  //     tl.from(nameLabel, { opacity: 0, x: -50, duration: 0.5 });
-  //     tl.from(nameInput, { opacity: 0, x: -50, duration: 0.5 });
-  //     tl.from(descriptionLabel, { opacity: 0, x: -50, duration: 0.5 });
-  //     tl.from(descriptionInput, { opacity: 0, x: -50, duration: 0.5 });
-  //   },
-  //   { scope: formElement }
-  // );
 
   const form = (
     <Form>
@@ -57,7 +40,7 @@ export const Step1: React.FC = () => {
 
   const spiegone = (
     <Legend step={1} title="Step 1: Scegli un nome al progetto">
-      <div className="flex flex-col center">
+      <div className="center flex flex-col">
         <Image
           className="self-center"
           alt="Step 1: Scegli un nome al progetto"
@@ -66,7 +49,7 @@ export const Step1: React.FC = () => {
           src="/capturing-photographs-for-realitykit-object-capture-1@2x.png"
         />
         <br />
-        <p className="py-4 ">
+        <p className="py-4">
           Il primo passo per creare un nuovo progetto è inserire il nome.
         </p>
         <br />
