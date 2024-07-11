@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       catalog: {
         Row: {
+          artifact: string | null
           created_at: string
           description: string | null
           id: number
@@ -19,6 +20,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          artifact?: string | null
           created_at?: string
           description?: string | null
           id?: number
@@ -27,6 +29,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          artifact?: string | null
           created_at?: string
           description?: string | null
           id?: number
@@ -38,7 +41,6 @@ export type Database = {
       }
       project: {
         Row: {
-          catalog_id: number | null
           created_at: string | null
           description: string | null
           detail: Database["public"]["Enums"]["details"] | null
@@ -56,7 +58,6 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          catalog_id?: number | null
           created_at?: string | null
           description?: string | null
           detail?: Database["public"]["Enums"]["details"] | null
@@ -74,7 +75,6 @@ export type Database = {
           user_id?: string
         }
         Update: {
-          catalog_id?: number | null
           created_at?: string | null
           description?: string | null
           detail?: Database["public"]["Enums"]["details"] | null
@@ -92,13 +92,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "public_project_catalog_id_fkey"
-            columns: ["catalog_id"]
-            isOneToOne: false
-            referencedRelation: "catalog"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_project_telegram_user_fkey"
             columns: ["telegram_user"]

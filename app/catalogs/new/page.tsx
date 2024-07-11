@@ -1,7 +1,8 @@
 import PageTitle from "@/components/ui/PageTitle";
-import { protectedRoute } from "../../projects/actions";
+
 import { Form } from "@/components/catalogs/Form";
 import { getProjects } from "./actions";
+import { protectedRoute } from "@/app/actions";
 
 export default async function NewCatalog() {
   await protectedRoute();

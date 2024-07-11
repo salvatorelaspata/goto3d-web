@@ -23,6 +23,7 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
   let color = "bg-palette1 text-palette3 hover:bg-palette2 hover:text-palette3";
   if (path.startsWith("/catalogs"))
     color = "bg-palette4 text-palette1 hover:bg-palette1 hover:text-palette4";
+  if (path.startsWith("/artifact")) return null;
   return (
     <>
       <header className="mx-4 mt-4">

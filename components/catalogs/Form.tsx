@@ -10,6 +10,8 @@ import { actions as catalogActions } from "@/store/catalogStore";
 import { toast } from "react-toastify";
 import { useStore } from "@/store/catalogStore";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { updateCatalog } from "@/app/catalogs/[id]/actions";
 
 interface CardProps {
   children: React.ReactNode;
@@ -169,7 +171,6 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     const action = formData.get("btn") as string;
     startTransition(async () => {
       try {
-        toast.info("Deleting catalog...");
         if (action === "delete") {
           const c = confirm("Are you sure you want to delete this catalog?");
           if (!c) {
@@ -179,6 +180,8 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
           await onDelete(formData);
         } else if (action === "create") {
           await onCreate(formData);
+        } else if (action === "update") {
+          await onUpdate(formData);
         }
         router.push("/catalogs");
       } catch (error: any) {
@@ -199,7 +202,13 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     if (!id) return;
     await deleteCatalog(formData);
     toast.success("Catalog deleted successfully " + id);
-    actions.hideLoading();
+  };
+
+  const onUpdate = async (formData: FormData) => {
+    const id = formData.get("id");
+    if (!id) return;
+    await updateCatalog(formData);
+    toast.success("Catalog updated successfully " + id);
   };
 
   return (
@@ -241,38 +250,53 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             </div>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader title="Visibilità" />
-          <CardContent className="grid grid-cols-2">
-            <Toggle
-              side="left"
-              active={visibility as boolean}
-              onClick={() => setPublic(true)}
-            >
-              <span className="flex items-center justify-center sm:justify-start">
-                <span className="m-2">🌍</span>
-                <span className="">Pubblico</span>
-              </span>
-            </Toggle>
-            <Toggle
-              side="right"
-              active={!visibility as boolean}
-              onClick={() => setPublic(false)}
-            >
-              <span className="flex items-center">
-                <span className="m-2">🔒</span>
-                Private
-              </span>
-            </Toggle>
-            {/* descrizione della visibilità  */}
-            <p className="col-span-2 my-4 text-sm text-gray-700">
-              {visibility
-                ? "Tutti possono visualizzare questo catalogo"
-                : "Solo tu puoi visualizzare questo catalogo"}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="space-y-4 md:col-span-1">
+          <Card>
+            <CardHeader title="Visibilità" />
+            <CardContent className="grid grid-cols-2">
+              <Toggle
+                side="left"
+                active={visibility as boolean}
+                onClick={() => setPublic(true)}
+              >
+                <span className="flex items-center justify-center sm:justify-start">
+                  <span className="m-2">🌍</span>
+                  <span className="">Pubblico</span>
+                </span>
+              </Toggle>
+              <Toggle
+                side="right"
+                active={!visibility as boolean}
+                onClick={() => setPublic(false)}
+              >
+                <span className="flex items-center">
+                  <span className="m-2">🔒</span>
+                  Private
+                </span>
+              </Toggle>
+              {/* descrizione della visibilità  */}
+              <p className="col-span-2 my-4 text-sm text-gray-700">
+                {visibility
+                  ? "Tutti possono visualizzare questo catalogo"
+                  : "Solo tu puoi visualizzare questo catalogo"}
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader title="Preview" />
+            <CardContent className="flex items-center justify-center">
+              <Link
+                href={`/artifact/${catalog?.artifact}`}
+                className="w-full"
+                target="_blank"
+              >
+                <p className="text-palette3 underline-offset-1 hover:underline hover:underline-offset-2">
+                  Visualizza il catalogo
+                </p>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Card>
@@ -315,11 +339,11 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         )}
         <Button
           type="submit"
-          value={"create"}
+          value={catalog ? "update" : "create"}
           name="btn"
           className="w-64 bg-palette1 px-6 py-2 text-palette3 shadow-lg transition-colors duration-200 hover:bg-palette2 hover:shadow-xl"
         >
-          {catalog ? "Salva" : "Crea"}
+          {catalog ? "Aggiorna" : "Crea"}
         </Button>
       </div>
     </form>

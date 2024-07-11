@@ -1,7 +1,7 @@
 import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import { fetchData } from "./actions";
-import { protectedRoute } from "@/app/configurator/actions";
+
 import { BlurImage } from "@/components/BlurImage";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
@@ -11,6 +11,7 @@ import { Viewer3d } from "@/components/viewer3d/Viewer3d";
 import { BigTextCentered } from "@/components/projects/BigText";
 import { GeneralInfo } from "@/components/projects/GeneralInfo";
 import { DangerZone } from "@/components/projects/DangerZone";
+import { protectedRoute } from "@/app/actions";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
@@ -67,13 +68,13 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <section className="m-4 bg-palette2 rounded-lg h-[77vh] bg-gradient-to-b zfrom-[#006D77] to-[#83C5BE] flex items-center justify-center">
+      <section className="zfrom-[#006D77] m-4 flex h-[77vh] items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b to-[#83C5BE]">
         <Viewer3d id={p.project.id} object={p.objUrl} texture={p.textureUrl} />
       </section>
-      <section className="flex flex-col justify-center m-4 bg-palette2 rounded-lg">
+      <section className="m-4 flex flex-col justify-center rounded-lg bg-palette2">
         <PageTitle title="Dettagli" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
           {/* GENERAL INFO */}
           <GeneralInfo
             id={p.project.id}
@@ -83,7 +84,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           />
 
           {/* DETAILS */}
-          <div className="p-4 mx-4 bg-palette1 rounded-lg">
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
             <SectionTitle title="Details" />
             <div className="grid">
               <StatusText label="Detail" text={p.project.detail as string} />
@@ -92,7 +93,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             </div>
           </div>
           {/* TIMESTAMPS */}
-          <div className="p-4 mx-4 bg-palette1 rounded-lg">
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
             <SectionTitle title="Timestamps" />
             <div className="grid">
               <StatusText
@@ -110,7 +111,7 @@ export default async function Project({ params }: { params: { id: string } }) {
             </div>
           </div>
           {/* ADDITIONAL INFO */}
-          <div className="p-4 mx-4 bg-palette1 rounded-lg">
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
             <SectionTitle title="Additional Info" />
             <div className="grid">
               <StatusText
@@ -125,7 +126,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           </div>
         </div>
         {/* THUMBNAIL */}
-        <div className="p-4 bg-palette1 rounded-lg mx-4 mt-4">
+        <div className="mx-4 mt-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Thumbnail" />
           <div className="p-4">
             <BlurImage
@@ -135,7 +136,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           </div>
         </div>
         {/* DOWNLOAD */}
-        <div className="p-4 bg-palette1 rounded-lg mx-4 my-4">
+        <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Download" />
           <div className="grid grid-cols-1 md:grid-cols-3">
             {p.models &&
@@ -149,7 +150,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           </div>
         </div>
         {/* DANGER */}
-        <div className="p-4 bg-palette1 rounded-lg mx-4 my-4">
+        <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Danger Zone" />
           <DangerZone id={p.project.id} />
         </div>

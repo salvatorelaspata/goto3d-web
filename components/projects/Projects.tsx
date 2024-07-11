@@ -21,7 +21,7 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
       return;
     }
     const filteredProjects = projects.filter(
-      (project) => project.status === status
+      (project) => project.status === status,
     );
     setP(filteredProjects);
   };
@@ -33,7 +33,7 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
           {statusFilters.map((status) => (
             <button
               key={status}
-              className="bg-palette3 hover:bg-palette1 text-palette1 hover:text-palette3 p-2 rounded-sm w-32"
+              className="w-32 rounded-sm bg-palette3 p-2 text-palette1 hover:bg-palette1 hover:text-palette3"
               onClick={() =>
                 onFilter(status as Database["public"]["Enums"]["status"])
               }
@@ -42,7 +42,7 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
             </button>
           ))}
           <button
-            className="bg-palette3 hover:bg-palette1 text-palette1 hover:text-palette3 p-2 rounded-sm w-32"
+            className="w-32 rounded-sm bg-palette3 p-2 text-palette1 hover:bg-palette1 hover:text-palette3"
             onClick={() => onFilter("all")}
           >
             All
@@ -50,9 +50,8 @@ export const Projects: React.FC<ProjectProps> = ({ projects }) => {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-        <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {/* <ProjectCard isNew /> */}
+      <div className="mx-auto w-full max-w-2xl py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {p &&
             p.map((project) => <ProjectCard key={project.id} {...project} />)}
         </div>

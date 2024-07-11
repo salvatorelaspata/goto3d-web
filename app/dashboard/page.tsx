@@ -1,5 +1,5 @@
 import { Dashboard } from "@/components/Dashboard";
-import { protectedRoute } from "../projects/actions";
+import { protectedRoute } from "@/app/actions";
 
 export default async function Home() {
   await protectedRoute();

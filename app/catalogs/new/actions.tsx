@@ -21,7 +21,7 @@ export async function doCreate(formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const _public = formData.get("visibility") as string;
-  console.log(formData);
+  // insert in catalog
   const { data, error } = await supabase
     .from("catalog")
     .insert({
@@ -34,7 +34,7 @@ export async function doCreate(formData: FormData) {
   if (error) {
     throw new Error(error.message);
   }
-
+  // insert in project_catalog
   const projectIds = formData.getAll("project");
   if (projectIds.length > 0) {
     const catalogId = data.id;
