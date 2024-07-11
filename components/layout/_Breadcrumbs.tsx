@@ -1,11 +1,11 @@
-import { privateRoutes, publicRoutes } from "@/utils/constants";
+import { routes } from "@/utils/constants";
 import { useRouter } from "next/router";
 import React from "react";
 
 export const Breadcrumbs: React.FC = () => {
   const router = useRouter();
   const path = router.asPath;
-  const routes = publicRoutes.concat(privateRoutes);
+  // const routes = publicRoutes.concat(privateRoutes);
   // check current route and compose the breadcrumbs
   const crumbs = path.split("/").filter((crumb) => crumb);
   const breadcrumbs = () =>
@@ -13,7 +13,7 @@ export const Breadcrumbs: React.FC = () => {
       const url = `/${crumbs.slice(0, i + 1).join("/")}`;
       const route = routes.find((r) => r.url === url);
       return route ? (
-        <li key={i} className="flex items-center m-0">
+        <li key={i} className="m-0 flex items-center">
           <a href={route.url} className="text-palette1">
             {route.name}
           </a>
@@ -22,7 +22,7 @@ export const Breadcrumbs: React.FC = () => {
       ) : url.includes("new") ? (
         <li key={"new"}>New</li>
       ) : (
-        <li key={i} className="flex items-center m-0">
+        <li key={i} className="m-0 flex items-center">
           <span>{crumb}</span>
           {i < crumbs.length - 1 && <span className="mx-2">{`//`}</span>}
         </li>

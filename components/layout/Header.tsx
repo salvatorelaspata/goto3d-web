@@ -7,7 +7,7 @@ import { routes } from "@/utils/constants";
 import { usePathname } from "next/navigation";
 
 interface HeaderProps {
-  name: string;
+  name: string | undefined;
 }
 
 interface LiProps {
@@ -21,7 +21,7 @@ const Li: React.FC<LiProps> = ({ children }) => (
 export const Header: React.FC<HeaderProps> = ({ name }) => {
   const path = usePathname();
   let color = "bg-palette1 text-palette3 hover:bg-palette2 hover:text-palette3";
-  if (path === "/catalogs")
+  if (path.startsWith("/catalogs"))
     color = "bg-palette4 text-palette1 hover:bg-palette1 hover:text-palette4";
   return (
     <>

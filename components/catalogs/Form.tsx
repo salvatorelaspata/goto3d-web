@@ -8,8 +8,8 @@ import { deleteCatalog, doCreate } from "@/app/catalogs/new/actions";
 import { actions } from "@/store/main";
 import { actions as catalogActions } from "@/store/catalogStore";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
 import { useStore } from "@/store/catalogStore";
+import { useRouter } from "next/navigation";
 
 interface CardProps {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ children, className }) => (
   <div
-    className={`bg-palette2 shadow-md rounded-lg overflow-hidden ${className || ""}`}
+    className={`overflow-hidden rounded-lg bg-palette2 shadow-md ${className || ""}`}
   >
     {children}
   </div>
@@ -30,7 +30,7 @@ interface CardHeaderProps {
 }
 
 const CardHeader: React.FC<CardHeaderProps> = ({ title, children }) => (
-  <div className="px-6 py-4 border-b border-palette3">
+  <div className="border-b border-palette3 px-6 py-4">
     {/* add effect text border */}
     <h2 className="text-xl font-semibold text-palette1">{title}</h2>
     {children}
@@ -63,7 +63,7 @@ const Input: React.FC<InputProps> = ({
     type="text"
     name={id}
     placeholder={placeholder}
-    className={`w-full px-3 py-2 border border-palette3 rounded-md focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
+    className={`w-full rounded-md border border-palette3 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
     {...props}
   />
 );
@@ -85,7 +85,7 @@ const Textarea: React.FC<TextareaProps> = ({
     id={id}
     name={id}
     placeholder={placeholder}
-    className={`w-full px-3 py-2 border border-palette3 rounded-md focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
+    className={`w-full rounded-md border border-palette3 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
     rows={4}
     {...props}
   />
@@ -98,7 +98,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => (
   <button
-    className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${className || ""}`}
+    className={`rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${className || ""}`}
     {...props}
   >
     {children}
@@ -121,8 +121,8 @@ const Toggle: React.FC<ToggleProps> = ({ children, active, onClick, side }) => (
     }}
     className={`px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
       active
-        ? "bg-palette1 text-palette3 scale-105"
-        : "bg-palette3 text-palette1 scale-95"
+        ? "scale-105 bg-palette1 text-palette3"
+        : "scale-95 bg-palette3 text-palette1"
     } ${side === "left" && "rounded-r-none"} ${side === "right" && "rounded-l-none"} rounded-md`}
   >
     {children}
@@ -162,53 +162,50 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     if (isPending) return;
   }, [isPending]);
 
+  const router = useRouter();
+
   const onSubmit = async (formData: FormData) => {
-    // RUN SOME VALIDATION HERE
     actions.showLoading();
-
-    startTransition(async () => {
-      try {
-        formData.append("visibility", visibility ? "true" : "false");
-        const { id } = await doCreate(formData);
-        toast.success(`Catalog created: ${id}`);
-      } catch (error: any) {
-        actions.hideLoading();
-        toast.error(error.message);
-        return;
-      }
-      actions.hideLoading();
-
-      redirect("/catalogs");
-    });
-  };
-
-  const onDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const id = catalog?.id;
-    if (!id) return;
-    const formData = new FormData();
-    formData.append("id", id.toString());
-
-    actions.showLoading();
+    const action = formData.get("btn") as string;
     startTransition(async () => {
       try {
         toast.info("Deleting catalog...");
-        const { id } = await deleteCatalog(formData);
-        toast.success("Catalog deleted successfully " + id);
+        if (action === "delete") {
+          const c = confirm("Are you sure you want to delete this catalog?");
+          if (!c) {
+            actions.hideLoading();
+            return;
+          }
+          await onDelete(formData);
+        } else if (action === "create") {
+          await onCreate(formData);
+        }
+        router.push("/catalogs");
       } catch (error: any) {
-        actions.hideLoading();
         toast.error(error.message);
-        return;
       }
       actions.hideLoading();
-
-      redirect("/catalogs");
     });
   };
 
+  const onCreate = async (formData: FormData) => {
+    formData.append("visibility", visibility ? "true" : "false");
+    const { id } = await doCreate(formData);
+    toast.success(`Catalog created: ${id}`);
+  };
+
+  const onDelete = async (formData: FormData) => {
+    const id = formData.get("id");
+    if (!id) return;
+    await deleteCatalog(formData);
+    toast.success("Catalog deleted successfully " + id);
+    actions.hideLoading();
+  };
+
   return (
-    <form action={onSubmit} className="max-w-6xl mx-auto p-4 space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <form action={onSubmit} className="mx-auto max-w-6xl space-y-4 p-4">
+      <input type="hidden" name="id" value={catalog?.id} />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardHeader title="Informazioni generali" />
           <CardContent className="space-y-4">
@@ -282,7 +279,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         <CardHeader title="Aggiungi i progetti al tuo catalogo" />
         <CardContent className="">
           {/* create scroll container */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-y-auto h-64">
+          <div className="grid h-64 grid-cols-2 gap-4 overflow-y-auto lg:grid-cols-4">
             {projects.map((option) => (
               <ProjectToggle
                 key={option.id}
@@ -300,23 +297,27 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         {!catalog ? (
           <Button
             type="button"
+            name="btn"
             onClick={reset}
-            className="px-6 py-2 w-64 bg-palette3 text-palette1 hover:bg-palette3 transition-colors duration-200"
+            className="w-64 bg-palette3 px-6 py-2 text-palette1 transition-colors duration-200 hover:bg-palette3"
           >
             Reset
           </Button>
         ) : (
-          <button
-            onClick={onDelete}
+          <Button
             type="submit"
-            className="bg-red-500 text-white rounded-lg p-2"
+            value={"delete"}
+            name="btn"
+            className="w-64 bg-red-500 px-6 py-2 text-palette3 transition-colors duration-200"
           >
-            Delete project
-          </button>
+            Elimina
+          </Button>
         )}
         <Button
           type="submit"
-          className="px-6 py-2 w-64 bg-palette1 text-palette3 hover:bg-palette2 transition-colors duration-200 shadow-lg hover:shadow-xl"
+          value={"create"}
+          name="btn"
+          className="w-64 bg-palette1 px-6 py-2 text-palette3 shadow-lg transition-colors duration-200 hover:bg-palette2 hover:shadow-xl"
         >
           {catalog ? "Salva" : "Crea"}
         </Button>

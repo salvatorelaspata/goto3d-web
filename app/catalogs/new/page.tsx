@@ -8,7 +8,7 @@ export default async function NewCatalog() {
   const projects = await getProjects();
 
   return (
-    <div className="m-4 bg-palette5 rounded-lg">
+    <div className="m-4 rounded-lg bg-gradient-to-b from-[#FFDDD2] to-[#E29578]">
       <PageTitle title="NUOVO CATALOGO" />
       <Form projects={projects} />
     </div>
