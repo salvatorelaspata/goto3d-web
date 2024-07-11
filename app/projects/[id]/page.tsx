@@ -115,10 +115,6 @@ export default async function Project({ params }: { params: { id: string } }) {
             <SectionTitle title="Additional Info" />
             <div className="grid">
               <StatusText
-                label="Catalogs"
-                text={p.project.catalog_id || "N/A"}
-              />
-              <StatusText
                 label="Images"
                 text={p.project.files?.length || "N/A"}
               />
