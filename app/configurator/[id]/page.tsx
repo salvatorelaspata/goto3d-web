@@ -106,7 +106,6 @@ export default async function Project({ params }: { params: { id: string } }) {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="font-mono text-lg text-palette3">Catalog ID</p>
-                <p className="font-mono">{p.project.catalog_id || "N/A"}</p>
               </div>
             </div>
           </div>
