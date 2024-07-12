@@ -1,31 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
-import Card from "@/components/catalogs/Card";
 import PageTitle from "@/components/ui/PageTitle";
 import { protectedRoute } from "@/app/actions";
-
-async function getCatalogs() {
-  const supabase = createClient();
-  // extract the catalogs from the database and the count of project in each catalog
-  const { data: catalogs, error } = await supabase
-    .from("catalog")
-    .select(
-      `
-      id,
-      title,
-      description,
-      public,
-      artifact,
-      projects: project_catalog(project_id)
-    `,
-    )
-    .order("id", { ascending: false });
-
-  if (error) {
-    console.log(error.message);
-    throw new Error(error.message);
-  }
-  return catalogs;
-}
+import { getCatalogs } from "./actions";
+import CatalogCard from "@/components/catalogs/CatalogCard";
 
 export default async function Catalogs() {
   await protectedRoute();
@@ -52,11 +28,9 @@ export default async function Catalogs() {
         <PageTitle title="I Tuoi Cataloghi" />
         <div className="mx-auto max-w-2xl py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid w-full grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {/* <Card isNew /> */}
-
             {catalogs &&
               catalogs.map((catalog) => (
-                <Card
+                <CatalogCard
                   artifact={`/artifact/${catalog.artifact}`}
                   key={catalog.id}
                   title={catalog.title || `Catalogo ${catalog.id}`}

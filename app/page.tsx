@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { Card } from "../components/Card";
 import { redirect } from "next/navigation";
+import { Dashboard } from "@/components/Dashboard";
 
 export default async function Home() {
   const supabase = createClient();
@@ -18,24 +19,24 @@ export default async function Home() {
   //   redirect("/profile");
   // };
 
-  const goToCreateProject = async () => {
-    "use server";
-    redirect("/projects/new");
-  };
+  // const goToCreateProject = async () => {
+  //   "use server";
+  //   redirect("/projects/new");
+  // };
+
   return (
-    <div className="h-full md:h-[50%] m-4 flex flex-col items-stretch">
-      <div className="h-full grid grid-cols-1 md:grid-cols-3 gap-4 p-4 mb-4 bg-palette2 text-palette1 rounded-xl">
-        <div className="w-full flex flex-col bg-palette3 p-3 m-3 shadow-lg rounded-md ">
+    <div className="flex h-full flex-col items-stretch p-4">
+      <div className="mb-4 grid h-full grid-cols-1 rounded-xl bg-palette2 p-4 text-palette1 md:grid-cols-3 md:gap-4">
+        <div className="mb-4 flex w-full flex-col rounded-md bg-palette3 p-4 shadow-lg">
           <h1 className="text-3xl">Config.Reality</h1>
-          <p className="text-xl text-palette1 mt-4">
+          <p className="mt-4 text-xl text-palette1">
             La piattaforma per <strong>creare</strong> e{" "}
-            <strong>condividere</strong> modelli{" "}
-            <span className="underline">3D</span>
+            <strong>condividere</strong> modelli <strong>3D</strong>
           </p>
-          <p className="text-lg underline text-palette1 font-bold mt-4">
+          <p className="mt-4 text-right text-lg font-bold text-palette1 underline">
             Senza installare nulla
           </p>
-          <p className="text-lg font-mono text-palette5  mt-4">
+          <p className="mt-4 font-mono text-lg text-palette5">
             {!user && (
               <>
                 Accedi con il tuo account Google ed inizia subito a creare il
@@ -44,37 +45,29 @@ export default async function Home() {
             )}
           </p>
         </div>
-        <div className="h-full flex justify-between col-span-2 flex-wrap sm:flex-none">
+        <div className="col-span-2 grid h-full grid-cols-1 justify-between gap-4 sm:flex-none md:grid-cols-2 lg:grid-cols-4">
           <Card title="Crea il Progetto" icon="🫥" number="⒈" />
           <Card title="Genera il Modello" icon="♺" number="⒉" />
           <Card title="Organizza il catalogo" icon="📦" number="⒊" />
           <Card title="Condividi con chi vuoi" icon="❤️" number="⒋" />
         </div>
       </div>
-
       {user ? (
-        <form action={goToCreateProject}>
-          <button className="w-full bg-palette1 text-palette3 rounded-md p-6 mb-4 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
-            CREA UN NUOVO PROGETTO
-          </button>
-        </form>
+        <>
+          <Dashboard />
+          {/* <form action={goToCreateProject}>
+            <button className="mb-4 w-full rounded-md bg-palette1 p-6 text-3xl text-palette3 transition duration-300 ease-in-out hover:scale-105 hover:bg-palette2 hover:text-palette1">
+              CREA UN NUOVO PROGETTO
+            </button>
+          </form> */}
+        </>
       ) : (
         <form action={goToLogin}>
-          <button className="w-full bg-palette1 text-palette3 rounded-md p-6 mb-4 text-3xl hover:bg-palette2 hover:text-palette1 hover:scale-105 transition duration-300 ease-in-out">
+          <button className="mb-4 w-full rounded-md bg-palette1 p-6 text-3xl text-palette3 transition duration-300 ease-in-out hover:scale-105 hover:bg-palette2 hover:text-palette1">
             LOGIN
           </button>
         </form>
       )}
-      {/* 
-      <div className="w-full rounded-xl">
-        {!user && <Auth />}
-
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {searchParams.message}
-          </p>
-        )}
-      </div> */}
     </div>
   );
 }

@@ -12,31 +12,17 @@ import { BigTextCentered } from "@/components/projects/BigText";
 import { GeneralInfo } from "@/components/projects/GeneralInfo";
 import { DangerZone } from "@/components/projects/DangerZone";
 import { protectedRoute } from "@/app/actions";
+import { notFound } from "next/navigation";
 
 export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
   const p = await fetchData({ id: params.id });
   const id = parseInt(params.id);
 
-  if (!p || !p.project)
-    return (
-      <BigTextCentered
-        id={id}
-        text="loading..."
-        name={p?.project?.name}
-        description={p?.project?.description}
-      />
-    );
+  if (!p || !p.project) return notFound();
   const status = p?.project.status;
   if (status === "error") {
-    return (
-      <BigTextCentered
-        text="Errore"
-        id={id}
-        name={p?.project?.name}
-        description={p?.project?.description}
-      />
-    );
+    throw new Error("Progetto in errore. Riprova creando un nuovo progetto.");
   } else if (status === "in queue") {
     return (
       <BigTextCentered

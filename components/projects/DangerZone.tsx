@@ -1,7 +1,7 @@
 "use client";
 import { deleteProject } from "@/app/projects/[id]/actions";
 import { actions } from "@/store/main";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import { toast } from "react-toastify";
 interface DangerZoneProps {
@@ -9,6 +9,7 @@ interface DangerZoneProps {
 }
 
 export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
+  const router = useRouter();
   let [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
           return;
         }
         actions.hideLoading();
-        redirect("/projects");
+        router.push("/projects");
       });
     }
   };

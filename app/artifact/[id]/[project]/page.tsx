@@ -1,5 +1,4 @@
 import { Viewer3d } from "@/components/viewer3d/Viewer3d";
-import { fetchProject } from "./actions";
 import { fetchData } from "@/app/projects/[id]/actions";
 
 export default async function Artifact({

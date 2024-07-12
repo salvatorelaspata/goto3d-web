@@ -1,7 +1,19 @@
+"use client"; // Error components must be Client Components
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function () {
+import { useEffect } from "react";
+
+export default function Error({
+  error,
+}: {
+  error: Error & { digest?: string };
+}) {
+  useEffect(() => {
+    // Log the error to an error reporting service
+    console.error(error);
+  }, [error]);
+
   return (
     <div className="flex h-full flex-col items-stretch p-4">
       <div className="flex h-full justify-center rounded-xl bg-palette2 p-4 text-palette1">
@@ -9,15 +21,14 @@ export default async function () {
           <div className="flex justify-center">
             <Image
               className="text-center"
-              alt="404 error not found"
-              src="/404.png"
+              alt="500 internal error"
+              src="/500.png"
               width={200}
               height={200}
             />
           </div>
-          <h1 className="mb-4 text-center text-3xl">
-            404 - Risorsa non trovata
-          </h1>
+          <h1 className="mb-4 text-center text-3xl">500 - Errore</h1>
+          <p className="mb-4 text-center text-lg">{error.message}</p>
           <Link
             href={"/"}
             className="text-center text-lg underline underline-offset-1"

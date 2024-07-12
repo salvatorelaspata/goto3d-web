@@ -64,7 +64,7 @@ export default function ProjectCard({
   return (
     <Link
       key={id}
-      className="group relative mx-auto w-full cursor-pointer overflow-hidden rounded bg-palette3 shadow-lg transition duration-300 ease-in-out hover:scale-105"
+      className="group relative mx-auto w-64 cursor-pointer overflow-hidden rounded-lg bg-palette3 shadow-lg transition duration-300 ease-in-out hover:scale-105"
       href={href}
     >
       <div className="flex justify-center">
@@ -79,8 +79,8 @@ export default function ProjectCard({
           <Tags text={project?.order || ""} type="secondary" />
           <Tags text={project?.detail || ""} type="tertiary" />
         </div>
-        <div className="mb-2 text-xl">{project?.name}</div>
-        <p className="text-base text-palette1">
+        <div className="mb-2 text-xl text-palette1">{project?.name}</div>
+        <p className="text-base text-palette5">
           {project?.description || `...`}
         </p>
         <p className={`mb-4 text-right text-sm`}>{project?.status}</p>
