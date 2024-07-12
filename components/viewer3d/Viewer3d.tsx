@@ -1,12 +1,12 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+// import { Environment, OrbitControls } from "@react-three/drei";
 import { RefObject, useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import { createClient } from "@/utils/supabase/client";
 import { Personalization } from "./Personalization";
-import { actions, useStore } from "@/store/viewerStore";
+import { actions } from "@/store/viewerStore";
 import { Scene } from "./Scene";
 
 interface Viewer3dProps {
@@ -36,7 +36,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
   const isIOS = isIphone || isIpad;
 
   return (
-    <div ref={containerRef} className="w-full h-full relative">
+    <div ref={containerRef} className="relative h-full w-full">
       <div className="absolute top-4 right-4 z-20">
         {!isIphone && FullScreenSvg(containerRef)}
       </div>

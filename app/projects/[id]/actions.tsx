@@ -74,7 +74,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
     // delete the project_catalog entry
     const { error: errorDep } = await supabase
       .from("project_catalog")
-      .update({ project_id: null })
+      .delete()
       .eq("project_id", id);
     if (errorDep) throw new Error(errorDep.message);
     // delete the project entry
@@ -99,6 +99,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
     }
 
     revalidatePath("/projects");
+    revalidatePath("/catalogs");
   } catch (error) {
     console.error("error", error);
   }

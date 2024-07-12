@@ -9,47 +9,47 @@ import {
   pSendFiles,
   sendProjectToQueue,
 } from "@/app/projects/new/actions";
-import { useEffect, useTransition } from "react";
+// import { useEffect, useTransition } from "react";
 import { actions } from "@/store/main";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
-  let [isPending, startTransition] = useTransition();
+  // let [isPending, startTransition] = useTransition();
 
-  useEffect(() => {
-    if (isPending) return;
-  }, [isPending]);
+  // useEffect(() => {
+  //   if (isPending) return;
+  // }, [isPending]);
 
   const onSubmit = async (formData: FormData) => {
     // RUN SOME VALIDATION HERE
     actions.showLoading();
 
-    startTransition(async () => {
-      try {
-        // 1. create project
-        const id = await doCreate(formData);
-        formData.set("id", id.toString());
-        toast.success(`Project created: ${id}`);
-        // 2. create thumbnail
-        await createThumbnail(formData);
-        toast.success("Thumbnail creato con successo");
-        // 3. upload files
-        toast.info("Caricamento di tutti file in corso...");
-        await Promise.all(await pSendFiles(formData));
-        toast.success("File caricati con successo");
-        // 4. send project to queue
-        await sendProjectToQueue(id);
-        toast.success("Progetto inviato alla coda");
-      } catch (error: any) {
-        actions.hideLoading();
-        toast.error(error.message);
-        return;
-      }
+    // startTransition(async () => {
+    try {
+      // 1. create project
+      const id = await doCreate(formData);
+      formData.set("id", id.toString());
+      toast.success(`Project created: ${id}`);
+      // 2. create thumbnail
+      await createThumbnail(formData);
+      toast.success("Thumbnail creato con successo");
+      // 3. upload files
+      toast.info("Caricamento di tutti file in corso...");
+      await Promise.all(await pSendFiles(formData));
+      toast.success("File caricati con successo");
+      // 4. send project to queue
+      await sendProjectToQueue(id);
+      toast.success("Progetto inviato alla coda");
+    } catch (error: any) {
       actions.hideLoading();
-      redirect("/projects");
-    });
+      toast.error(error.message);
+      return;
+    }
+    actions.hideLoading();
+    redirect("/projects");
+    // });
   };
 
   return (

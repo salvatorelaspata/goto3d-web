@@ -83,19 +83,19 @@ export const ImagesUpload: React.FC = () => {
 
   return (
     <>
-      <label className="my-2 text-lg text-palette1 font-light">
+      <label className="my-2 text-lg font-light text-palette1">
         Upload Images
-        <span className="text-red-600 mx-1">*</span>
+        <span className="mx-1 text-red-600">*</span>
       </label>
-      <section className="h-full w-full overflow-auto p-4 flex flex-col bg-white shadow-xl rounded-md mx-auto">
+      <section className="mx-auto flex h-full w-full flex-col overflow-auto rounded-md bg-white p-4 shadow-xl">
         <header
           onDrop={handleDrop}
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
           onDragEnter={handleDragEnter}
-          className={`${dragActive ? "bg-palette1" : "bg-palette5"} rounded-md border-dashed border-2 border-palette1 py-12 flex flex-col justify-center items-center`}
+          className={`${dragActive ? "bg-palette1" : "bg-palette5"} flex flex-col items-center justify-center rounded-md border-2 border-dashed border-palette1 py-12`}
         >
-          <p className="flexmb-3 text-palette1 flex flex-wrap justify-center font-light">
+          <p className="flexmb-3 flex flex-wrap justify-center font-light text-palette1">
             <span>Trascina e rilascia le tue foto</span>
           </p>
           <input
@@ -115,22 +115,25 @@ export const ImagesUpload: React.FC = () => {
           />
           <button
             onClick={onclick}
-            className="mt-4 rounded-sm px-3 py-1 bg-palette1 text-palette3 focus:shadow-outline focus:outline-none font-light"
+            className="focus:shadow-outline mt-4 rounded-sm bg-palette1 px-3 py-1 font-light text-palette3 focus:outline-none"
           >
             Oppure seleziona
           </button>
         </header>
 
-        <h1 className="py-4 font-light sm:text-lg text-palette1">
+        <h1 className="py-4 font-light text-palette1 sm:text-lg">
           File Selezionati ({files?.length || 0})
         </h1>
-        <ul id="gallery" className="grid grid-cols-4 overflow-y-auto h-60">
+        <ul
+          id="gallery"
+          className="grid h-60 grid-cols-2 overflow-y-auto lg:grid-cols-4"
+        >
           <li
             id="empty"
-            className="text-center flex flex-col justify-center items-center"
+            className="flex flex-col items-center justify-center text-center"
           >
             <svg
-              className="w-12 h-12 text-palette5"
+              className="h-12 w-12 text-palette5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

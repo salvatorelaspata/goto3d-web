@@ -8,6 +8,7 @@ export const getProjects = async () => {
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")
+    .eq("status", "done")
     .order("created_at", { ascending: false });
 
   if (error) {

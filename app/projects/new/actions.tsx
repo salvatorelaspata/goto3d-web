@@ -32,6 +32,7 @@ export async function updateThumbnail(id: number, thumbnail: string) {
   }
   return data;
 }
+
 export async function doCreate(formData: FormData) {
   const files = formData.getAll("files") as File[];
   const name = formData.get("name") as string;
@@ -57,9 +58,8 @@ export async function doCreate(formData: FormData) {
     .select("id")
     .single();
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
+
   return data?.id;
 }
 
@@ -97,7 +97,7 @@ export const pSendFiles = async (formData: FormData) => {
       .from("viewer3d-dev")
       .upload(projectId + "/images/" + f.name, f, {
         upsert: true,
-      })
+      }),
   );
 };
 
