@@ -1,23 +1,31 @@
 "use client";
-import { Canvas } from "@react-three/fiber";
-// import { Environment, OrbitControls } from "@react-three/drei";
-import { RefObject, useEffect, useRef } from "react";
-import * as THREE from "three";
 
+import { RefObject, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import * as THREE from "three";
 import { createClient } from "@/utils/supabase/client";
 import { Personalization } from "./Personalization";
-import { actions } from "@/store/viewerStore";
 import { Scene } from "./Scene";
+import { getSignedUrl, listObjects } from "@/utils/s3/api";
+import type { _Object } from "@aws-sdk/client-s3";
+import { actions } from "@/store/viewerStore";
 
 interface Viewer3dProps {
   id: number;
-  object: string;
-  texture: string;
+  objectUrl: string;
+  textureUrl: string;
 }
 
-export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
-  console.log("Viewer3d");
-  const { setCamera } = actions;
+export const Viewer3d: React.FC<Viewer3dProps> = ({
+  id,
+  textureUrl,
+  objectUrl,
+}) => {
+  console.log("Viewer3d", textureUrl, objectUrl);
+  const { setTextureUrl, setObjectUrl } = actions;
+  setTextureUrl(textureUrl);
+  setObjectUrl(objectUrl);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const width = canvasRef.current?.clientWidth || 1;
@@ -26,13 +34,11 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
 
   camera.position.z = 5;
   camera.lookAt(0, 0, 0);
-  useEffect(() => {
-    setCamera(camera);
-  }, []);
-  // setCamera(camera);
   // check if is in iphone or ipad
-  const isIphone = /iPhone/.test(navigator.userAgent);
-  const isIpad = /iPad/.test(navigator.userAgent);
+  const isIphone = false;
+  // /iPhone/.test(navigator.userAgent);
+  const isIpad = false;
+  // /iPad/.test(navigator.userAgent);
   const isIOS = isIphone || isIpad;
 
   return (
@@ -43,19 +49,17 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({ id, object, texture }) => {
       <div className="absolute top-4 left-4 z-20">{isIOS && ARSvg({ id })}</div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
-        <Scene object={object} texture={texture} camera={camera} />
+        <Scene camera={camera} />
       </Canvas>
     </div>
   );
 };
 
 // ICONS
-
 export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
   <svg
     className="cursor-pointer rounded-sm"
     onClick={() => {
-      // console.log("fullscreen", container.current);
       try {
         if (!document.fullscreenElement) {
           container.current?.requestFullscreen();
@@ -63,7 +67,7 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
           document.exitFullscreen();
         }
       } catch (error) {
-        // console.log("fullScreenError", error);
+        console.log("fullScreenError", error);
       }
     }}
     height="24px"
@@ -104,21 +108,18 @@ export const ARSvg = ({ id }: { id: number }) => {
             .select("*")
             .eq("id", id)
             .single();
-
-          const { data: models } = await supabase.storage
-            .from("viewer3d-dev")
-            .list(`${project?.id}/model`);
+          // get the list of models
+          const models = await listObjects("dev", `${project?.id}/model`);
 
           const usdzName: string =
-            models?.find((m) => m.name.endsWith(".usdz"))?.name || "";
-          let usdzUrl: string | undefined = "";
-          // get the signed url for the obj file
-          // obj
-          const { data: _usdzUrl, error: _usdzError } = await supabase.storage
-            .from("viewer3d-dev")
-            .createSignedUrl(`${project?.id}/model/${usdzName}`, 20);
+            models?.find((m) => m?.Key?.endsWith(".usdz"))?.Key || "";
 
-          usdzUrl = _usdzUrl?.signedUrl;
+          // get the signed url for the obj file
+          const usdzUrl = await getSignedUrl(
+            "dev",
+            `${project?.id}/model/${usdzName}`,
+          );
+
           if (!usdzUrl) return;
           // const instance = ref.current,
           const a = document.createElement("a");

@@ -11,37 +11,37 @@ export type Database = {
     Tables: {
       catalog: {
         Row: {
-          artifact: string | null
+          artifact: string
           created_at: string
           description: string | null
           id: number
           public: boolean | null
           title: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
-          artifact?: string | null
+          artifact?: string
           created_at?: string
           description?: string | null
           id?: number
           public?: boolean | null
           title?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
-          artifact?: string | null
+          artifact?: string
           created_at?: string
           description?: string | null
           id?: number
           public?: boolean | null
           title?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }
       project: {
         Row: {
-          created_at: string | null
+          created_at: string
           description: string | null
           detail: Database["public"]["Enums"]["details"] | null
           feature: Database["public"]["Enums"]["features"] | null
@@ -58,7 +58,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           detail?: Database["public"]["Enums"]["details"] | null
           feature?: Database["public"]["Enums"]["features"] | null
@@ -75,7 +75,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           detail?: Database["public"]["Enums"]["details"] | null
           feature?: Database["public"]["Enums"]["features"] | null
@@ -93,7 +93,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_project_telegram_user_fkey"
+            foreignKeyName: "fk_project_telegram_user"
             columns: ["telegram_user"]
             isOneToOne: false
             referencedRelation: "telegram_user"
@@ -107,32 +107,32 @@ export type Database = {
           created_at: string
           id: number
           project_id: number | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           catalog_id?: number | null
           created_at?: string
           id?: number
           project_id?: number | null
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           catalog_id?: number | null
           created_at?: string
           id?: number
           project_id?: number | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_product_catalog_catalog_id_fkey"
+            foreignKeyName: "fk_project_catalog_catalog"
             columns: ["catalog_id"]
             isOneToOne: false
             referencedRelation: "catalog"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_product_catalog_project_id_fkey"
+            foreignKeyName: "fk_project_catalog_project"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "project"
@@ -175,20 +175,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      append_array: {
-        Args: {
-          new_element: string
-          id: number
-        }
-        Returns: undefined
-      }
-      remove_array: {
-        Args: {
-          new_element: string
-          id: number
-        }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       details: "preview" | "reduced" | "medium" | "full" | "raw"
@@ -283,4 +270,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-

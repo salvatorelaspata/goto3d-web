@@ -1,9 +1,12 @@
 "use server";
+
+import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
+import type { _Object } from "@aws-sdk/client-s3";
 import { revalidatePath } from "next/cache";
 
-export const fetchData = async ({ id }) => {
-  const _id: number = parseInt(id as string);
+export const fetchData = async ({ id }: { id: string }) => {
+  const _id: number = parseInt(id);
   const supabase = createClient();
   try {
     const { data: project } = await supabase
@@ -12,50 +15,32 @@ export const fetchData = async ({ id }) => {
       .eq("id", _id)
       .single();
 
-    const { data: models } = await supabase.storage
-      .from("viewer3d-dev")
-      .list(`${project?.id}/model`);
+    const models = await listObjects("dev", `${project?.id}/model`);
 
-    // const { data: backgrounds } = await supabase.storage
-    //   .from("viewer3d-dev")
-    //   .list("HDR");
-
-    // get the obj file name, the texture file name and a random background
-    const objName: string =
-      models?.find((m) => m.name.endsWith(".obj"))?.name || "";
-    const textureName: string =
-      models?.find((m) => m.name === "baked_mesh_tex0.png")?.name || "";
-    // const backgroundName: string =
-    //   backgrounds && backgrounds.length > 0
-    //     ? backgrounds[Math.floor(Math.random() * backgrounds.length)]?.name
-    //     : "";
-    let objUrl: string | undefined = "";
-    let textureUrl: string | undefined = "";
-    // let backgroundUrl: string | undefined = "";
-    // get the signed url for the obj file
-    try {
-      // obj
-      const { data: _objUrl, error: _objError } = await supabase.storage
-        .from("viewer3d-dev")
-        .createSignedUrl(`${project?.id}/model/${objName}`, 20);
-
-      objUrl = _objUrl?.signedUrl;
-      // texture
-      const { data: _textureUrl, error: _textureError } = await supabase.storage
-        .from("viewer3d-dev")
-        .createSignedUrl(`${project?.id}/model/${textureName}`, 20);
-
-      textureUrl = _textureUrl?.signedUrl;
-    } catch (error) {
-      console.error("error supabase", error);
-    }
+    if (!models) throw new Error("No models found");
 
     return {
       project,
-      objUrl: objUrl || "",
-      textureUrl: textureUrl || "",
       models,
     };
+  } catch (error) {
+    console.error("error", error);
+  }
+};
+
+export const retrieveSignedUrl = async ({
+  models,
+}: {
+  models: _Object[] | undefined;
+}) => {
+  if (!models) return;
+  try {
+    const o = models.find((m) => m?.Key?.endsWith(".obj"))?.Key || "";
+    const objectSignedUrl = await getSignedUrl("dev", o);
+    const t =
+      models.find((m) => m?.Key?.endsWith("baked_mesh_tex0.png"))?.Key || "";
+    const textureSignedUrl = await getSignedUrl("dev", t);
+    return { objectSignedUrl, textureSignedUrl };
   } catch (error) {
     console.error("error", error);
   }
@@ -77,25 +62,27 @@ export const deleteProject = async ({ id }: { id: number }) => {
       .delete()
       .eq("project_id", id);
     if (errorDep) throw new Error(errorDep.message);
+
     // delete the project entry
     const { error } = await supabase.from("project").delete().eq("id", id);
     if (error) throw new Error(error.message);
 
     // retrive list of objects in the model folder
-    const { data: models } = await supabase.storage
-      .from("viewer3d-dev")
-      .list(`${id.toString()}/model`);
+    const models = await listObjects("dev", `${id.toString()}/model`);
     // delete all the objects in the model folder
     if (models) {
-      await supabase.storage
-        .from("viewer3d-dev")
-        .remove(models.map((m) => `${id.toString()}/model/${m.name}`));
+      await Promise.all(
+        models.map((m) =>
+          deleteObject("dev", `${id.toString()}/model/${m.Key}`),
+        ),
+      );
     }
 
     // delete the thumbnail
     if (data?.thumbnail) {
       const t = data.thumbnail.split("/").pop();
-      await supabase.storage.from("public-dev").remove([t as string]);
+      // await supabase.storage.from("public-dev").remove([t as string]);
+      await deleteObject("public-dev", t as string);
     }
 
     revalidatePath("/projects");

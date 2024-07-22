@@ -1,46 +1,36 @@
-import { useStore } from "@/store/viewerStore";
+import { actions, useStore } from "@/store/viewerStore";
 import { Environment, useTexture } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { useFrame, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { Mesh } from "three";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { getSignedUrl } from "@/utils/s3/api";
 gsap.registerPlugin(useGSAP);
 
 interface Model3DProps {
-  object: string;
-  texture: string;
-  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
+  camera: THREE.PerspectiveCamera;
 }
 
-export const Model3D: React.FC<Model3DProps> = ({
-  object,
-  texture: textureUrl,
-  camera,
-}: {
-  object: string;
-  texture: string;
-  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
-}) => {
+export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   console.log("Model3D");
-  let texture: THREE.Texture;
+  const { objectUrl, textureUrl, environment, animate } = useStore();
+  const [object, setObject] = useState<THREE.Group | undefined>(undefined);
+  const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined);
+  if (!textureUrl)
+    setTexture(useLoader(THREE.TextureLoader, "/placeholder-image.png"));
+  else setTexture(useLoader(THREE.TextureLoader, textureUrl));
 
-  if (!textureUrl) {
-    texture = new THREE.TextureLoader().load(
-      "https://supabase.salvatorelaspata.net/storage/v1/object/public/public-dev/placeholder.jpeg"
-    );
-  } else {
-    texture = useTexture(textureUrl);
-  }
+  if (objectUrl) setObject(useLoader(OBJLoader, objectUrl));
+  else throw new Error("No object found");
 
-  const obj = useLoader(OBJLoader, object);
-
-  const geometry = useMemo(() => {
+  const geo = useMemo(() => {
     let g: THREE.BufferGeometry | undefined = undefined;
-    obj.traverse((c) => {
+    if (!object) return g;
+    object.traverse((c) => {
       // console.log("c", c.name, c.type);
       if (c.type === "Mesh") {
         const _c = c as Mesh;
@@ -48,20 +38,21 @@ export const Model3D: React.FC<Model3DProps> = ({
       }
     });
     return g;
-  }, [obj]);
-
+  }, [object]);
+  console.log("geo", geo);
   const mesh = useRef<THREE.Mesh>(null);
-  const { environment, animate } = useStore();
 
   useGSAP(() => {
     console.log("useGSAP");
-    const box = new THREE.Box3().setFromObject(obj);
+    if (!object) return;
+    const o = object;
+    console.log("o", o);
+    const box = new THREE.Box3().setFromObject(o);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     // zoom the camera to fit the object in the screen size of the canvas element
     const tm = gsap.timeline();
     if (mesh?.current) {
-      // setMesh(mesh);
       tm.to(
         camera.position,
         {
@@ -70,7 +61,7 @@ export const Model3D: React.FC<Model3DProps> = ({
           y: center.y,
           z: center.z + size.z * 2,
         },
-        0
+        0,
       )
         .to(
           mesh?.current?.position,
@@ -80,7 +71,7 @@ export const Model3D: React.FC<Model3DProps> = ({
             x: -center.x,
             z: -center.z,
           },
-          0
+          0,
         )
         .to(
           mesh?.current?.rotation,
@@ -88,7 +79,7 @@ export const Model3D: React.FC<Model3DProps> = ({
             duration: 1.2,
             y: Math.PI * 2,
           },
-          0
+          0,
         );
     }
   }, []);
@@ -102,9 +93,11 @@ export const Model3D: React.FC<Model3DProps> = ({
   return (
     <>
       {environment && <Environment preset={environment} background />}
-      <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>
-        <meshPhysicalMaterial map={texture} />
-      </mesh>
+      {texture && geo && (
+        <mesh ref={mesh} geometry={geo} position={[0, 0, 0]}>
+          <meshPhysicalMaterial map={texture as THREE.Texture} />
+        </mesh>
+      )}
     </>
   );
 };

@@ -16,17 +16,10 @@ import { toast } from "react-toastify";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
-  // let [isPending, startTransition] = useTransition();
-
-  // useEffect(() => {
-  //   if (isPending) return;
-  // }, [isPending]);
 
   const onSubmit = async (formData: FormData) => {
-    // RUN SOME VALIDATION HERE
     actions.showLoading();
 
-    // startTransition(async () => {
     try {
       // 1. create project
       const id = await doCreate(formData);
@@ -49,7 +42,6 @@ export const Wizard: React.FC = () => {
     }
     actions.hideLoading();
     redirect("/projects");
-    // });
   };
 
   return (

@@ -2,21 +2,30 @@ import ProjectCard from "./projects/ProjectCard";
 import { getProjects } from "@/app/projects/actions";
 import { getCatalogs } from "@/app/catalogs/actions";
 import CatalogCard from "./catalogs/CatalogCard";
+import Link from "next/link";
 async function fetchData() {
-  "use server";
   const projects = await getProjects();
   const catalogs = await getCatalogs();
   return { projects, catalogs };
 }
+
+const DashboardSection = ({ title, href, children }) => (
+  <div className="group flex cursor-pointer flex-col rounded-xl bg-palette2 p-4 text-palette1 shadow-xl">
+    <Link
+      href={href}
+      className="text-center text-3xl font-bold drop-shadow-[2px_1.2px_1.2px_rgba(255,255,255,0.8)] group-hover:underline"
+    >
+      {title}
+    </Link>
+    {children}
+  </div>
+);
+
 export async function Dashboard() {
   const { projects, catalogs } = await fetchData();
   return (
     <div>
-      <div className="flex flex-col rounded-xl bg-palette2 p-4 text-palette1 shadow-xl">
-        {/* Griglia dei progetti */}
-        <h2 className="text-center text-3xl font-bold drop-shadow-[2px_1.2px_1.2px_rgba(255,255,255,0.8)]">
-          Progetti
-        </h2>
+      <DashboardSection title="Progetti" href="/projects">
         {projects && projects.length !== 0 && (
           <div className="hide-scroll-bar flex overflow-x-scroll">
             <div className="flex space-x-4 p-4">
@@ -26,16 +35,12 @@ export async function Dashboard() {
             </div>
           </div>
         )}
-      </div>
+      </DashboardSection>
 
       <div className="h-4" />
 
-      <div className="flex flex-col rounded-xl bg-palette2 p-4 text-palette1 shadow-xl">
-        {/* Griglia dei progetti */}
-        <h2 className="text-center text-3xl font-bold drop-shadow-[2px_1.2px_1.2px_rgba(255,255,255,0.8)]">
-          Cataloghi
-        </h2>
-        {projects && projects.length !== 0 && (
+      <DashboardSection title="Cataloghi" href="/catalogs">
+        {catalogs && catalogs.length !== 0 && (
           <div className="hide-scroll-bar flex overflow-x-scroll">
             <div className="flex flex-nowrap py-4">
               {catalogs.map((catalog) => (
@@ -51,7 +56,7 @@ export async function Dashboard() {
             </div>
           </div>
         )}
-      </div>
+      </DashboardSection>
     </div>
   );
 }

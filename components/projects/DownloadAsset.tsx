@@ -1,5 +1,6 @@
 "use client";
 
+import { getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/client";
 
 export const DownloadAsset: React.FC<{
@@ -17,28 +18,26 @@ export const DownloadAsset: React.FC<{
         .select("*")
         .eq("id", id)
         .single();
-
-      const { data: models } = await supabase.storage
-        .from("viewer3d-dev")
-        .list(`${project?.id}/model`);
+      // get the list of models
+      const models = await listObjects("dev", `${project?.id}/model`);
 
       let filename: string;
       if (name) {
-        filename = models?.find((m) => m.name === name)?.name || "";
+        filename = models?.find((m) => m.Key === name)?.Key || "";
       } else if (type) {
-        filename = models?.find((m) => m.name.endsWith(`${type}`))?.name || "";
+        filename = models?.find((m) => m?.Key?.endsWith(`${type}`))?.Key || "";
       } else {
-        filename = models?.find((m) => m.name.endsWith(".usdz"))?.name || "";
+        filename = models?.find((m) => m?.Key?.endsWith(".usdz"))?.Key || "";
       }
 
       let usdzUrl: string | undefined = "";
-      // get the signed url for the obj file
-      // obj
-      const { data: _usdzUrl, error: _usdzError } = await supabase.storage
-        .from("viewer3d-dev")
-        .createSignedUrl(`${project?.id}/model/${filename}`, 20);
+      // get the signed url for the obj fil
+      const _usdzUrl = await getSignedUrl(
+        "dev",
+        `${project?.id}/model/${filename}`,
+      );
 
-      usdzUrl = _usdzUrl?.signedUrl;
+      usdzUrl = _usdzUrl;
       if (!usdzUrl) return;
       // const instance = ref.current,
       const a = document.createElement("a");

@@ -25,9 +25,9 @@ export default async function Home() {
   // };
 
   return (
-    <div className="flex h-full flex-col items-stretch p-4">
-      <div className="mb-4 grid h-full grid-cols-1 rounded-xl bg-palette2 p-4 text-palette1 md:grid-cols-3 md:gap-4">
-        <div className="mb-4 flex w-full flex-col rounded-md bg-palette3 p-4 shadow-lg">
+    <div className="flex flex-col items-stretch p-4">
+      <div className="mb-4 grid grid-cols-1 rounded-xl bg-palette2 p-4 text-palette1 md:grid-cols-3 md:gap-4">
+        <div className="mb-4 flex w-full flex-col rounded-md bg-palette3 p-4 shadow-lg md:mb-0">
           <h1 className="text-3xl">Config.Reality</h1>
           <p className="mt-4 text-xl text-palette1">
             La piattaforma per <strong>creare</strong> e{" "}
@@ -45,7 +45,7 @@ export default async function Home() {
             )}
           </p>
         </div>
-        <div className="col-span-2 grid h-full grid-cols-1 justify-between gap-4 sm:flex-none md:grid-cols-2 lg:grid-cols-4">
+        <div className="col-span-2 grid grid-cols-1 justify-between gap-4 sm:flex-none md:grid-cols-2 lg:grid-cols-4">
           <Card title="Crea il Progetto" icon="🫥" number="⒈" />
           <Card title="Genera il Modello" icon="♺" number="⒉" />
           <Card title="Organizza il catalogo" icon="📦" number="⒊" />

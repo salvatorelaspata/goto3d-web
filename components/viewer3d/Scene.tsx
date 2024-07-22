@@ -7,15 +7,7 @@ import { BoxLoader } from "./BoxLoader";
 
 import { OrbitControls } from "@react-three/drei";
 
-export function Scene({
-  object,
-  texture,
-  camera,
-}: {
-  object: string;
-  texture: string;
-  camera: THREE.PerspectiveCamera | THREE.OrthographicCamera;
-}) {
+export function Scene({ camera }: { camera: THREE.PerspectiveCamera }) {
   console.log("Scene");
   return (
     <>
@@ -29,7 +21,7 @@ export function Scene({
       <ambientLight intensity={1.5} />
       <directionalLight position={[3, 10, 7]} intensity={1.5} />
       <Suspense fallback={<BoxLoader />}>
-        <Model3D object={object} texture={texture} camera={camera} />
+        <Model3D camera={camera} />
       </Suspense>
     </>
   );

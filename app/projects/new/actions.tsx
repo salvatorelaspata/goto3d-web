@@ -2,6 +2,7 @@
 
 import type { Database } from "@/types/supabase";
 import { sendToQueue } from "@/utils/amqpClient";
+import { putObject } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 
 import { v4 as uuidv4 } from "uuid";
@@ -64,7 +65,6 @@ export async function doCreate(formData: FormData) {
 }
 
 export const createThumbnail = async (formData: FormData) => {
-  const supabase = createClient();
   const file = formData.get("files") as File;
   const projectId = formData.get("id") as string;
   const id = uuidv4();
@@ -73,68 +73,27 @@ export const createThumbnail = async (formData: FormData) => {
 
   try {
     const ext = file.name.split(".").pop();
-    const { error } = await supabase.storage
-      .from("public-dev")
-      .upload(`${id}.${ext}`, file);
-    if (error) throw new Error(error.message);
 
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from("public-dev").getPublicUrl(id);
+    const buffer = await file.arrayBuffer();
+    const reader = new Uint8Array(buffer);
 
-    await updateThumbnail(parseInt(projectId), `${publicUrl}.${ext}`);
+    const upload = await putObject("public-dev", `${id}.${ext}`, reader);
+
+    if (!upload) throw new Error("Error uploading file");
+
+    await updateThumbnail(parseInt(projectId), `${id}.${ext}`);
   } catch (error) {
     console.error("Error: thumbnail", error);
   }
 };
 
 export const pSendFiles = async (formData: FormData) => {
-  const supabase = createClient();
+  // const supabase = createClient();
   const projectId = formData.get("id") as string;
   const files = formData.getAll("files") as File[];
-  return files.map((f) =>
-    supabase.storage
-      .from("viewer3d-dev")
-      .upload(projectId + "/images/" + f.name, f, {
-        upsert: true,
-      }),
-  );
-};
-
-// deprecated
-export const sendFile = async (formData: FormData) => {
-  const supabase = createClient();
-  const projectId = formData.get("id") as string;
-  const file = formData.get("files") as File;
-  const { data: _dataStorage, error: _errorStorage } = await supabase.storage
-    .from("viewer3d-dev")
-    .upload(projectId + "/images/" + file.name, file, {
-      upsert: true,
-    });
-
-  if (_errorStorage) {
-    return console.log(_errorStorage);
-  }
-  console.log("File upload " + file.name);
-};
-
-// deprecated
-export const sendFiles = async (formData: FormData) => {
-  const supabase = createClient();
-  const projectId = formData.get("id") as string;
-  const files = formData.getAll("files") as File[];
-
-  if (!files || files.length === 0) return;
-
-  for (let i = 0; i < files.length; i++) {
-    const { data: _dataStorage, error: _errorStorage } = await supabase.storage
-      .from("viewer3d-dev")
-      .upload(projectId + "/images/" + files[i].name, files[i], {
-        upsert: true,
-      });
-
-    if (_errorStorage) {
-      return console.log(_errorStorage); // return toast.error("Error: " + files[i].name);
-    }
-  }
+  return files.map(async (f) => {
+    const buffer = await f.arrayBuffer();
+    const reader = new Uint8Array(buffer);
+    return putObject("dev", projectId + "/images/" + f.name, reader);
+  });
 };
