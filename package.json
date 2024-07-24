@@ -9,7 +9,11 @@
     "lint": "next lint",
     "update-types": "node ./scripts/update-types.js",
     "cypress": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.616.0",

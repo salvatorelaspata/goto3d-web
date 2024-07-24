@@ -21,7 +21,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   textureUrl,
   objectUrl,
 }) => {
-  console.log("Viewer3d", textureUrl, objectUrl);
+  console.log("Viewer3d");
   const { setTextureUrl, setObjectUrl } = actions;
   setTextureUrl(textureUrl);
   setObjectUrl(objectUrl);
@@ -43,10 +43,10 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
 
   return (
     <div ref={containerRef} className="relative h-full w-full">
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute right-4 top-4 z-20">
         {!isIphone && FullScreenSvg(containerRef)}
       </div>
-      <div className="absolute top-4 left-4 z-20">{isIOS && ARSvg({ id })}</div>
+      <div className="absolute left-4 top-4 z-20">{isIOS && ARSvg({ id })}</div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
         <Scene camera={camera} />

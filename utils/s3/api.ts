@@ -33,7 +33,6 @@ export const putObject = async (
 };
 
 export const getSignedUrl = async (Bucket: string, Key: string) => {
-  console.log("getSignedUrl", Bucket, Key);
   const signedUrl = await signUrl(
     clientS3,
     new GetObjectCommand({ Bucket, Key }),
