@@ -11,7 +11,7 @@ const s3ClientConfig: S3ClientConfig = {
   endpoint: `https://${NEXT_CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
     accessKeyId: NEXT_CLOUDFLARE_R2_ACCESS_KEY_ID || "",
-    secretAccessKey: NEXT_CLOUDFLARE_R2_SECRET_ACCESS_KEY || "",
+    secretAccessKey: NEXT_CLOUDFLARE_R2_SECRET_ACCESS_KEY || ""
   },
 };
 

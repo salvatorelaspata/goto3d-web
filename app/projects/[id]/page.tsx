@@ -15,11 +15,14 @@ import { protectedRoute } from "@/app/actions";
 import { notFound } from "next/navigation";
 import { _Object } from "@aws-sdk/client-s3";
 
-export default async function Project({ params }: { params: { id: string } }) {
+export default async function Project ({ params }: { params: { id: string } }) {
   await protectedRoute();
 
   const p = await fetchData({ id: params.id });
   const project = p?.project;
+
+  if (!project) return notFound();
+
   const models: _Object[] | undefined = p?.models;
   const r = await retrieveSignedUrl({ models });
   let objectUrl = "";
@@ -28,9 +31,8 @@ export default async function Project({ params }: { params: { id: string } }) {
     objectUrl = r.objectSignedUrl;
     textureUrl = r.textureSignedUrl;
   }
-  const id = parseInt(params.id);
 
-  if (!project) return notFound();
+  const id = parseInt(params.id);
   const status = project?.status;
   if (status === "error") {
     throw new Error("Progetto in errore. Riprova creando un nuovo progetto.");

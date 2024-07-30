@@ -15,16 +15,14 @@ export const fetchData = async ({ id }: { id: string }) => {
       .eq("id", _id)
       .single();
 
-    const models = await listObjects("dev", `${project?.id}/model`);
+    if (!project) throw new Error("No project found");
 
+    const models = await listObjects("dev", `${project?.id}/model`);
     if (!models) throw new Error("No models found");
 
-    return {
-      project,
-      models,
-    };
+    return { project, models };
   } catch (error) {
-    console.error("error", error);
+    console.error("[projects][id][actions] - fetchData Error:", error);
   }
 };
 
@@ -42,7 +40,7 @@ export const retrieveSignedUrl = async ({
     const textureSignedUrl = await getSignedUrl("dev", t);
     return { objectSignedUrl, textureSignedUrl };
   } catch (error) {
-    console.error("error", error);
+    console.error("[projects][id][actions] - retrieveSignedUrl Error:", error);
   }
 };
 
@@ -88,7 +86,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
     revalidatePath("/projects");
     revalidatePath("/catalogs");
   } catch (error) {
-    console.error("error", error);
+    console.error("[projects][id][actions] - deleteProject Error:", error);
   }
 };
 
@@ -97,7 +95,7 @@ export const updateProject = async (formData: FormData) => {
   const id = parseInt(formData.get("id") as string);
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  console.log("formData", formData, id, name, description);
+
   try {
     const { error } = await supabase
       .from("project")
@@ -107,6 +105,6 @@ export const updateProject = async (formData: FormData) => {
     revalidatePath(`/projects/${id}`);
     return error;
   } catch (error) {
-    console.error("error", error);
+    console.error("[projects][id][actions] - updateProject Error:", error);
   }
 };
