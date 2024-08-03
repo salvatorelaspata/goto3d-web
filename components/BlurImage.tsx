@@ -18,7 +18,6 @@ export function BlurImage({
     getSignedUrl("public-dev", imageSrc)
       .then((url) => {
         setImage(url);
-        console.log("url", url);
         return url;
       })
       .catch((e) => console.error(e));

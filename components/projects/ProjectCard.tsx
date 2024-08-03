@@ -41,21 +41,23 @@ export default function ProjectCard({
       if (!id) return;
       const filter = `id=eq.${id}`;
       // console.log("[ProjectCard] subscribing to changes", filter);
-      supabase
-        .channel(`realtime project card ${id}`)
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-            table: "project",
-            filter,
-          },
-          (payload) => {
-            setProject({ ...payload.new });
-          },
-        )
-        .subscribe();
+      const channel = supabase.channel(`realtime project card ${id}`).on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "project",
+          filter,
+        },
+        (payload) => {
+          setProject({ ...payload.new });
+        },
+      );
+      channel.subscribe();
+
+      return () => {
+        channel.unsubscribe();
+      };
     }, []);
   } else {
     href = `/artifact/${artifact}/${id}`;
@@ -83,13 +85,13 @@ export default function ProjectCard({
         <p className="text-base text-palette5">
           {project?.description || `...`}
         </p>
-        <p className={`mb-4 text-right text-sm`}>{project?.status}</p>
+        <p className={`text-right text-sm`}>{project?.status}</p>
       </div>
       {/* HOVER EFFECT */}
-      <span className="absolute top-0 left-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
+      <span className="absolute left-0 top-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 right-0 h-0 w-1 bg-palette1 group-hover:h-full group-hover:transition-all"></span>
       <span className="absolute bottom-0 left-0 h-1 w-0 bg-palette1 group-hover:w-full group-hover:transition-all"></span>
-      <span className="absolute top-0 right-0 h-1 w-0 bg-palette1 group-hover:w-full group-hover:transition-all"></span>
+      <span className="absolute right-0 top-0 h-1 w-0 bg-palette1 group-hover:w-full group-hover:transition-all"></span>
     </Link>
   );
 }

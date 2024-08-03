@@ -12,7 +12,7 @@ export const Configurator3d: React.FC = () => {
   const [fileName, setFileName] = useState<string | null>(null);
   const [texture, setTexture] = useState<File | null>(null);
   const [textureName, setTextureName] = useState<string | null>(null);
-  console.log("File:", file);
+  // console.log("File:", file);
 
   return (
     <div className="h-full">

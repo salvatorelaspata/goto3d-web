@@ -23,7 +23,7 @@ export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
       )
     ) {
       const id = formData.get("id");
-      console.log("id", id);
+      // console.log("id", id);
       actions.showLoading();
 
       startTransition(async () => {
