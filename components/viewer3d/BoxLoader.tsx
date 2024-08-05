@@ -8,7 +8,16 @@ import {
 import { useRef, useState } from "react";
 import type { Mesh } from "three";
 
+// import { Html } from "@react-three/drei";
+// import { Loader } from "../Loader";
+
 export function BoxLoader() {
+  // return (
+  //   <Html center>
+  //     <Loader />
+  //   </Html>
+  // );
+
   const ref = useRef<Mesh>(null);
   const [hovered, hover] = useState(false);
 

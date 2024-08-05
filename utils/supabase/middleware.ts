@@ -57,7 +57,7 @@ export const updateSession = async (request: NextRequest) => {
             });
           },
         },
-      }
+      },
     );
 
     // This will refresh session if expired - required for Server Components
@@ -65,7 +65,7 @@ export const updateSession = async (request: NextRequest) => {
     const { error } = await supabase.auth.getUser();
 
     if (request.nextUrl.pathname.startsWith("/dashboard") && error) {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
     // if (
     //   !user &&

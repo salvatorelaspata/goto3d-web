@@ -1,11 +1,10 @@
 "use client";
 import * as THREE from "three";
-
-import { Suspense } from "react";
 import { Model3D } from "./Model3d";
-import { BoxLoader } from "./BoxLoader";
 
 import { OrbitControls } from "@react-three/drei";
+import { BoxLoader } from "./BoxLoader";
+import { Suspense } from "react";
 
 export function Scene({ camera }: { camera: THREE.PerspectiveCamera }) {
   console.log("Scene");

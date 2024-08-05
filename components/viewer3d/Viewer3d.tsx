@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject, useRef } from "react";
+import { RefObject, Suspense, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { createClient } from "@/utils/supabase/client";
@@ -32,15 +32,17 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   const height = canvasRef.current?.clientHeight || 1;
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
+  const [isIphone, setIsIphone] = useState<boolean>(false);
+  const [isIpad, setIsIpad] = useState<boolean>(false);
+  const [isIOS, setIsIOS] = useState<boolean>(false);
   camera.position.z = 5;
   camera.lookAt(0, 0, 0);
   // check if is in iphone or ipad
-  const isIphone = false;
-  // /iPhone/.test(navigator.userAgent);
-  const isIpad = false;
-  // /iPad/.test(navigator.userAgent);
-  const isIOS = isIphone || isIpad;
-
+  useEffect(() => {
+    setIsIphone(/iPhone/.test(navigator.userAgent));
+    setIsIpad(/iPad/.test(navigator.userAgent));
+    setIsIOS(isIphone || isIpad);
+  }, []);
   return (
     <div ref={containerRef} className="relative h-full w-full">
       <div className="absolute right-4 top-4 z-20">

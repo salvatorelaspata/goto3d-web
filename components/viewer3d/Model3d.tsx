@@ -2,14 +2,15 @@
 import { useStore } from "@/store/viewerStore";
 import { Environment } from "@react-three/drei";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Mesh } from "three";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { actions } from "@/store/main";
 gsap.registerPlugin(useGSAP);
 
 interface Model3DProps {
@@ -17,7 +18,7 @@ interface Model3DProps {
 }
 
 export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
-  console.log("Model3D");
+  // console.log("Model3D");
   const { objectUrl, textureUrl, environment, animate } = useStore();
   const [object, setObject] = useState<
     THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined
@@ -31,58 +32,62 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   // create type to store array of promises type of Promise<Texture> or Promise<Object3D>
 
   useEffect(() => {
-    console.log("useEffect");
-    const aAll: Promise<THREE.Texture | THREE.Object3D>[] = [];
-    const textureLoader = new TextureLoader();
-    if (!textureUrl) {
-      textureLoader
-        .loadAsync("/placeholder-image.png")
-        .then((t) => setTexture(t));
-    } else {
-      aAll.push(textureLoader.loadAsync(textureUrl));
-    }
+    const load = async () => {
+      actions.showLoading();
+      const aAll: Promise<THREE.Texture | THREE.Object3D>[] = [];
+      const textureLoader = new TextureLoader();
+      const objectLoader = new OBJLoader();
 
-    const objectLoader = new OBJLoader();
-    if (objectUrl) aAll.push(objectLoader.loadAsync(objectUrl));
-    Promise.all(aAll).then((values) => {
-      const t = values[0] as THREE.Texture;
-      const o = values[1] as THREE.Object3D<THREE.Object3DEventMap>;
+      if (!textureUrl) {
+        const t = await textureLoader.loadAsync("/placeholder-image.png");
+        setTexture(t);
+      } else {
+        aAll.push(textureLoader.loadAsync(textureUrl));
+      }
 
-      if (o) console.log("object found");
-      else throw new Error("No object found");
-      setTexture(t);
-      setObject(o);
+      if (objectUrl) aAll.push(objectLoader.loadAsync(objectUrl));
+      try {
+        const values = await Promise.all(aAll);
 
-      console.log("geo start");
-      const geo = (
-        object:
-          | THREE.Group
-          | THREE.Object3D<THREE.Object3DEventMap>
-          | undefined,
-      ) => {
-        let g: THREE.BufferGeometry | undefined = undefined;
-        if (!object) return g;
-        object.traverse((c) => {
-          if (c.type === "Mesh") {
-            const _c = c as Mesh;
-            g = _c.geometry;
-          }
-        });
-        return g;
-      };
+        const t = values[0] as THREE.Texture;
+        const o = values[1] as THREE.Object3D<THREE.Object3DEventMap>;
 
-      setGeometry(geo(o));
-      console.log("geo end");
-    });
+        if (o) console.log("object found");
+        else throw new Error("No object found");
+
+        setTexture(t);
+        setObject(o);
+
+        const geo = (object: THREE.Object3D<THREE.Object3DEventMap>) => {
+          let g: THREE.BufferGeometry | undefined = undefined;
+          if (!object) return g;
+          object.traverse((c) => {
+            if (c.type === "Mesh") {
+              const _c = c as Mesh;
+              g = _c.geometry;
+            }
+          });
+          return g;
+        };
+
+        setGeometry(geo(o));
+      } catch (e) {
+        console.error(e);
+      } finally {
+        actions.hideLoading();
+        console.log("finally");
+      }
+    };
+
+    load();
   }, [objectUrl, textureUrl]);
 
   useGSAP(() => {
-    console.log("useGSAP");
     if (!object) return;
     const box = new THREE.Box3().setFromObject(object);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
-    // zoom the camera to fit the object in the screen size of the canvas element
+
     const tm = gsap.timeline();
     if (mesh?.current) {
       tm.to(
@@ -121,6 +126,7 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
       mesh.current.rotation.y += 0.01;
     }
   });
+
   return (
     <>
       {environment && <Environment preset={environment} background />}
