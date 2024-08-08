@@ -1,8 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-// import { Card } from "../components/Card";
 import { redirect } from "next/navigation";
-// import { Dashboard } from "@/components/Dashboard";
-// import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Dashboard } from "@/components/Dashboard";
