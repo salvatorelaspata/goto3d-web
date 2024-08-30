@@ -23,7 +23,22 @@ export const Configurator3d: React.FC = () => {
       (meshRef.material as THREE.MeshPhysicalMaterial).color.set(
         Math.random() * 0xffffff,
       );
+
+      updateMaterialProperty(
+        meshRefs.current.indexOf(meshRef),
+        "color",
+        new THREE.Color(Math.random() * 0xffffff),
+      );
     });
+  };
+
+  const updateMaterialProperty = (index, property, value) => {
+    if (meshRefs.current[index]) {
+      meshRefs.current[index].material[property] = value;
+      (
+        meshRefs.current[index].material as THREE.MeshPhysicalMaterial
+      ).needsUpdate = true;
+    }
   };
 
   return (
@@ -62,6 +77,7 @@ export const Configurator3d: React.FC = () => {
               index={index}
               meshes={meshes}
               meshRefs={meshRefs}
+              updateMaterialProperty={updateMaterialProperty}
             />
           ))}
         </div>

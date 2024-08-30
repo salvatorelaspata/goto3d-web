@@ -1,6 +1,11 @@
 import { useState } from "react";
 import * as THREE from "three";
-export const MaterialControls = ({ index, meshRefs, meshes }) => {
+export const MaterialControls = ({
+  index,
+  meshRefs,
+  meshes,
+  updateMaterialProperty,
+}) => {
   const [color, setColor] = useState("#ffffff");
   const [metalness, setMetalness] = useState(0.5);
   const [roughness, setRoughness] = useState(0.5);
@@ -13,15 +18,6 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
       color,
     );
     setColor(`#${color.toString(16)}`);
-  };
-
-  const updateMaterialProperty = (index, property, value) => {
-    if (meshRefs.current[index]) {
-      meshRefs.current[index].material[property] = value;
-      (
-        meshRefs.current[index].material as THREE.MeshPhysicalMaterial
-      ).needsUpdate = true;
-    }
   };
 
   return (

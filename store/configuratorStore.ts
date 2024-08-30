@@ -15,12 +15,6 @@ export interface ConfigState {
   filename: string;
   texture: string;
   textureName: string;
-
-  object: any;
-  textureObj: any;
-
-  meshs: THREE.Mesh[];
-  meshsRef: RefObject<THREE.Mesh>[];
 }
 
 const state = proxy<ConfigState>({
@@ -28,12 +22,6 @@ const state = proxy<ConfigState>({
   filename: "",
   texture: "",
   textureName: "",
-
-  object: null,
-  textureObj: null,
-
-  meshs: [],
-  meshsRef: [],
 });
 
 export const useStore = () => useSnapshot(state);
@@ -48,38 +36,5 @@ export const actions = {
     const url = URL.createObjectURL(file);
     state.texture = url;
     state.textureName = file.name;
-  },
-  setObject: (object: THREE.Object3D) => {
-    state.object = object;
-  },
-  setTextureObj: (textureObj: THREE.Texture) => {
-    state.textureObj = textureObj;
-  },
-  addMesh: (mesh: THREE.Mesh) => {
-    state.meshs.push(mesh);
-  },
-  addMeshRef: (meshRef: RefObject<THREE.Mesh>) => {
-    console.log("addMeshRef", meshRef);
-    if (meshRef && meshRef.current) {
-      try {
-        state.meshsRef.push(meshRef);
-        console.log("addMeshRef", state.meshsRef);
-      } catch (error) {
-        console.log("addMeshRef error", error);
-      }
-    } else {
-      console.log("addMeshRef error: meshRef is undefined or null");
-    }
-  },
-  removeMesh: (index: number) => {
-    state.meshs.splice(index, 1);
-  },
-  randomizeColor: () => {
-    state.meshsRef.forEach((mesh) => {
-      if (!mesh.current) return;
-      (mesh.current.material as THREE.MeshPhysicalMaterial).color.set(
-        Math.random() * 0xffffff,
-      );
-    });
   },
 };

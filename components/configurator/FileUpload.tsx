@@ -5,43 +5,42 @@ import { actions } from "@/store/configuratorStore";
 
 export const FileUpload: React.FC = () => {
   const { setFile, setTexture } = actions;
-  const handleObjChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    if (!event.target.files) return;
-    const file = event.target.files[0];
+  const handleObjChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
     if (!file) return;
     setFile(file);
   };
 
-  const handleTextureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files) return;
-    const file = event.target.files[0];
+  const handleTextureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
     if (!file) return;
     setTexture(file);
   };
 
   return (
-    <>
-      <button
-        onClick={() => {
-          actions.randomizeColor();
-        }}
-      >
-        change
-      </button>
-      <input
-        type="file"
-        placeholder="3d model file"
-        onChange={handleObjChange}
-        accept=".obj,.gltf,.glb,.fbx"
-      />
-      <input
-        type="file"
-        placeholder="3d texture file"
-        onChange={handleTextureChange}
-        accept=".png,.jpg,.jpeg"
-      />
-    </>
+    <div className="flex flex-row justify-between p-4">
+      <div className="flex flex-row content-center align-middle">
+        <label className="mr-4 p-1">3d model file:</label>
+        <input
+          className="content-center align-middle"
+          type="file"
+          placeholder="3d model file"
+          onChange={handleObjChange}
+          accept=".obj,.gltf,.glb,.fbx"
+        />
+      </div>
+      <div className="flex flex-row content-center align-middle">
+        <label className="mr-4 p-1">3d texture file:</label>
+        <input
+          className="content-center align-middle"
+          type="file"
+          placeholder="3d texture file"
+          onChange={handleTextureChange}
+          accept=".png,.jpg,.jpeg"
+        />
+      </div>
+    </div>
   );
 };

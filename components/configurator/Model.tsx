@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import * as THREE from "three";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
-import { actions } from "@/store/configuratorStore";
 import { Mesh } from "./Mesh";
+import { isFbx, isGlb, isGltf, isMtl, isObj } from "@/utils/utils";
 
 interface ModelProps {
   file: string;
@@ -24,40 +24,28 @@ export const Model: React.FC<ModelProps> = ({
   meshRefs,
 }) => {
   console.log("Model", file, filename, texture);
-  const { setObject, setTextureObj } = actions;
-  // start
   if (!file) return;
 
-  let obj;
-  const isObj = filename?.endsWith(".obj");
-  const isGltf = filename?.endsWith(".gltf");
-  const isGlb = filename?.endsWith(".glb");
-  const isFbx = filename?.endsWith(".fbx");
-  const isMtl = filename?.endsWith(".mtl");
+  const [_meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 
-  if (isObj) {
+  let obj;
+  if (isObj(filename)) {
     obj = useLoader(OBJLoader, file);
-  } else if (isGltf || isGlb) {
+  } else if (isGltf(filename) || isGlb(filename)) {
     obj = useGLTF(file);
-  } else if (isFbx) {
+  } else if (isFbx(filename)) {
     obj = useFBX(file);
-  } else if (isMtl) {
+  } else if (isMtl(filename)) {
     obj = useLoader(MTLLoader, file);
   } else {
     console.log("Unknown file format");
   }
 
-  setObject(obj);
-
   let textureObj;
   if (texture) {
     textureObj = useTexture(texture);
-    setTextureObj(textureObj);
   }
 
-  // end
-  const { addMesh } = actions;
-  const [_meshs, setMeshs] = useState<THREE.Mesh[]>([]);
   useEffect(() => {
     const loadedMeshes: any[] = [];
     obj.traverse((c: any) => {
@@ -66,7 +54,6 @@ export const Model: React.FC<ModelProps> = ({
       const _c = c;
       // create refence to the mesh
       if (c.type === "Mesh") {
-        addMesh(_c);
         setMeshs((prev) => [...prev, _c]);
         loadedMeshes.push(c);
       }
