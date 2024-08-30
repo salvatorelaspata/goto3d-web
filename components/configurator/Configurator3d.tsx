@@ -61,7 +61,7 @@ export const Configurator3d: React.FC = () => {
               <MaterialControls
                 key={index}
                 index={index}
-                meshes={meshes}
+                meshes={meshes as THREE.Mesh[]}
                 updateMaterialProperty={updateMaterialProperty}
               />
             ))}

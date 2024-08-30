@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import * as THREE from "three";
-import { actions, initConfigState } from "@/store/configuratorStore";
+import { actions, initConfigState, useStore } from "@/store/configuratorStore";
 
 interface GlobalMaterialControlsProps {
   meshes: THREE.Mesh[];
@@ -12,14 +13,22 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
   updateMaterialProperty,
 }) => {
   const { setMeshesConfig } = actions;
-  const [config, setConfig] = useState(initConfigState);
+  const [globalConfig, setGlobalConfig] = useState(initConfigState);
+  const store = useStore();
+
+  useEffect(() => {
+    // Sincronizza lo stato globale con lo stato del primo materiale quando le mesh cambiano
+    if (meshes.length > 0 && store.meshesConfig[0]) {
+      setGlobalConfig(store.meshesConfig[0]);
+    }
+  }, [meshes, store.meshesConfig]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let _value: THREE.Color | number =
       name === "color" ? new THREE.Color(value) : parseFloat(value);
 
-    setConfig((prev) => ({ ...prev, [name]: _value }));
+    setGlobalConfig((prev) => ({ ...prev, [name]: _value }));
 
     meshes.forEach((_, index) => {
       updateMaterialProperty(index, name, _value);
@@ -29,7 +38,7 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
 
   const randomizeAllColors = () => {
     const newColor = new THREE.Color(Math.random() * 0xffffff);
-    setConfig((prev) => ({ ...prev, color: newColor }));
+    setGlobalConfig((prev) => ({ ...prev, color: newColor }));
 
     meshes.forEach((_, index) => {
       updateMaterialProperty(index, "color", newColor);
@@ -40,14 +49,14 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
   return (
     <div className="mb-4 rounded border p-4">
       <h3 className="mb-2 text-lg font-semibold">Global Material Controls</h3>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <div>
           <label className="block">Color</label>
           <input
             type="color"
             name="color"
             className="w-full"
-            value={`#${config.color.getHexString()}`}
+            value={`#${globalConfig.color.getHexString()}`}
             onChange={onChange}
           />
         </div>
@@ -60,7 +69,7 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
             min="0"
             max="1"
             step="0.01"
-            value={config.metalness}
+            value={globalConfig.metalness}
             onChange={onChange}
           />
         </div>
@@ -73,7 +82,7 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
             min="0"
             max="1"
             step="0.01"
-            value={config.roughness}
+            value={globalConfig.roughness}
             onChange={onChange}
           />
         </div>
@@ -86,7 +95,7 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
             min="0"
             max="1"
             step="0.01"
-            value={config.clearcoat}
+            value={globalConfig.clearcoat}
             onChange={onChange}
           />
         </div>
@@ -99,7 +108,7 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
             min="0"
             max="1"
             step="0.01"
-            value={config.clearcoatRoughness}
+            value={globalConfig.clearcoatRoughness}
             onChange={onChange}
           />
         </div>
