@@ -30,17 +30,11 @@ export const Model: React.FC<ModelProps> = ({
   const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 
   let obj;
-  if (isObj(filename)) {
-    obj = useLoader(OBJLoader, file);
-  } else if (isGltf(filename) || isGlb(filename)) {
-    obj = useGLTF(file);
-  } else if (isFbx(filename)) {
-    obj = useFBX(file);
-  } else if (isMtl(filename)) {
-    obj = useLoader(MTLLoader, file);
-  } else {
-    console.log("Unknown file format");
-  }
+  if (isObj(filename)) obj = useLoader(OBJLoader, file);
+  else if (isGltf(filename) || isGlb(filename)) obj = useGLTF(file);
+  else if (isFbx(filename)) obj = useFBX(file);
+  else if (isMtl(filename)) obj = useLoader(MTLLoader, file);
+  else console.log("Unknown file format");
 
   let textureObj;
   if (texture) {

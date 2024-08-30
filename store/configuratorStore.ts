@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { proxy, useSnapshot } from "valtio";
 
 export interface ConfigMaterialProps {
-  color: string;
+  color: THREE.Color;
   metalness: number;
   roughness: number;
   clearcoat: number;
@@ -19,7 +19,7 @@ export interface ConfiguratorProps {
   meshesConfig: ConfigMaterialProps[];
 }
 
-const state = proxy<ConfiguratorProps>({
+export const state = proxy<ConfiguratorProps>({
   file: "",
   filename: "",
   texture: "",
@@ -29,6 +29,14 @@ const state = proxy<ConfiguratorProps>({
 });
 
 export const useStore = () => useSnapshot(state);
+
+export const initConfigState: ConfigMaterialProps = {
+  color: new THREE.Color(0xffffff),
+  metalness: 0.5,
+  roughness: 0.5,
+  clearcoat: 0,
+  clearcoatRoughness: 0,
+};
 
 export const actions = {
   setFile: (file: File) => {
@@ -43,8 +51,9 @@ export const actions = {
   },
   setMeshes: (meshes: THREE.Mesh[]) => {
     state.meshes = meshes;
+    state.meshesConfig = meshes.map(() => initConfigState);
   },
-  setMeshConfig: (index: number, config: ConfigMaterialProps) => {
-    state.meshesConfig[index] = config;
+  setMeshesConfig: (index: number, key: string, value: any) => {
+    state.meshesConfig[index][key] = value;
   },
 };

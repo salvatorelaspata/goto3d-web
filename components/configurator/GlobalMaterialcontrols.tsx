@@ -1,47 +1,53 @@
-"use client";
-
-import { actions, initConfigState } from "@/store/configuratorStore";
-import { useState } from "react";
+import React, { useState } from "react";
 import * as THREE from "three";
+import { actions, initConfigState } from "@/store/configuratorStore";
 
-export const MaterialControls = ({ index, meshes, updateMaterialProperty }) => {
+interface GlobalMaterialControlsProps {
+  meshes: THREE.Mesh[];
+  updateMaterialProperty: (index: number, property: string, value: any) => void;
+}
+
+export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
+  meshes,
+  updateMaterialProperty,
+}) => {
   const { setMeshesConfig } = actions;
   const [config, setConfig] = useState(initConfigState);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let _value: THREE.Color | string | number = e.target.value;
     const { name, value } = e.target;
+    let _value: THREE.Color | number =
+      name === "color" ? new THREE.Color(value) : parseFloat(value);
 
-    if (name === "color") {
-      _value = new THREE.Color(e.target.value);
-    } else {
-      _value = parseFloat(value);
-    }
-    updateMaterialProperty(index, name, _value);
     setConfig((prev) => ({ ...prev, [name]: _value }));
-    setMeshesConfig(index, name, _value);
+
+    meshes.forEach((_, index) => {
+      updateMaterialProperty(index, name, _value);
+      setMeshesConfig(index, name, _value);
+    });
   };
 
-  const randomizeColor = (index: number) => {
-    const color = Math.random() * 0xffffff;
-    setConfig((prev) => ({ ...prev, color: new THREE.Color(color) }));
-    setMeshesConfig(index, "color", new THREE.Color(color));
-    updateMaterialProperty(index, "color", new THREE.Color(color));
+  const randomizeAllColors = () => {
+    const newColor = new THREE.Color(Math.random() * 0xffffff);
+    setConfig((prev) => ({ ...prev, color: newColor }));
+
+    meshes.forEach((_, index) => {
+      updateMaterialProperty(index, "color", newColor);
+      setMeshesConfig(index, "color", newColor);
+    });
   };
 
   return (
     <div className="mb-4 rounded border p-4">
-      <h3 className="mb-2 text-lg font-semibold">
-        {meshes[index].name || `Mesh ${index + 1}`}
-      </h3>
-      <div className="grid grid-cols-2 gap-2">
+      <h3 className="mb-2 text-lg font-semibold">Global Material Controls</h3>
+      <div className="grid grid-cols-3 gap-2">
         <div>
           <label className="block">Color</label>
           <input
             type="color"
             name="color"
             className="w-full"
-            value={`#${config["color"].getHexString()}`}
+            value={`#${config.color.getHexString()}`}
             onChange={onChange}
           />
         </div>
@@ -54,7 +60,7 @@ export const MaterialControls = ({ index, meshes, updateMaterialProperty }) => {
             min="0"
             max="1"
             step="0.01"
-            value={config["metalness"]}
+            value={config.metalness}
             onChange={onChange}
           />
         </div>
@@ -67,7 +73,7 @@ export const MaterialControls = ({ index, meshes, updateMaterialProperty }) => {
             min="0"
             max="1"
             step="0.01"
-            value={config["roughness"]}
+            value={config.roughness}
             onChange={onChange}
           />
         </div>
@@ -80,7 +86,7 @@ export const MaterialControls = ({ index, meshes, updateMaterialProperty }) => {
             min="0"
             max="1"
             step="0.01"
-            value={config["clearcoat"]}
+            value={config.clearcoat}
             onChange={onChange}
           />
         </div>
@@ -93,16 +99,16 @@ export const MaterialControls = ({ index, meshes, updateMaterialProperty }) => {
             min="0"
             max="1"
             step="0.01"
-            value={config["clearcoatRoughness"]}
+            value={config.clearcoatRoughness}
             onChange={onChange}
           />
         </div>
         <div>
           <button
             className="w-full rounded bg-palette1 px-4 py-2 text-white"
-            onClick={() => randomizeColor(index)}
+            onClick={randomizeAllColors}
           >
-            Randomize Color
+            Randomize All Colors
           </button>
         </div>
       </div>

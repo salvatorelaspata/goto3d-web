@@ -22,6 +22,7 @@ export const Loading: React.FC = () => {
 
   useGSAP(() => {
     // Animazione del loader
+    if (!loaderRef.current) return;
     gsap.to(loaderRef.current, {
       rotation: 360,
       duration: 2,
@@ -29,7 +30,7 @@ export const Loading: React.FC = () => {
       ease: "linear",
     });
 
-    // Cambio e animazione delle frasi
+    if (!fraseRef.current) return;
     const intervalId = setInterval(() => {
       gsap.to(fraseRef.current, {
         opacity: 0,

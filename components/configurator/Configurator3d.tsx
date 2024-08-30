@@ -1,38 +1,23 @@
 "use client";
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { actions, useStore } from "@/store/configuratorStore";
 import { FileUpload } from "./FileUpload";
 import { MaterialControls } from "./MaterialControls";
+
 import { Model } from "./Model";
+import { GlobalMaterialControls } from "./GlobalMaterialcontrols";
 const { setMeshes } = actions;
 
 export const Configurator3d: React.FC = () => {
-  console.log("Configurator3d");
   const { file, filename, texture, meshes } = useStore();
-
   const meshRefs = useRef<THREE.Mesh[]>([]);
 
   useEffect(() => {
     meshRefs.current = meshRefs.current.slice(0, meshes.length);
   }, [meshes]);
-
-  const randomizeAllColors = () => {
-    meshRefs.current.forEach((meshRef: THREE.Mesh) => {
-      (meshRef.material as THREE.MeshPhysicalMaterial).color.set(
-        Math.random() * 0xffffff,
-      );
-
-      updateMaterialProperty(
-        meshRefs.current.indexOf(meshRef),
-        "color",
-        new THREE.Color(Math.random() * 0xffffff),
-      );
-    });
-  };
 
   const updateMaterialProperty = (index, property, value) => {
     if (meshRefs.current[index]) {
@@ -67,19 +52,16 @@ export const Configurator3d: React.FC = () => {
       </Canvas>
       {meshes.length > 0 && (
         <div className="flex flex-col justify-between p-4">
-          <button
-            onClick={randomizeAllColors}
-            className="mb-4 rounded bg-palette1 px-4 py-2 text-white"
-          >
-            Randomize All Colors
-          </button>
+          <GlobalMaterialControls
+            meshes={meshes as THREE.Mesh[]}
+            updateMaterialProperty={updateMaterialProperty}
+          />
           <div className="grid grid-cols-2 gap-4">
             {meshes.map((_: any, index) => (
               <MaterialControls
                 key={index}
                 index={index}
                 meshes={meshes}
-                meshRefs={meshRefs}
                 updateMaterialProperty={updateMaterialProperty}
               />
             ))}
