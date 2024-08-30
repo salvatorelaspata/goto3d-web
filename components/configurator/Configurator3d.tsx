@@ -1,12 +1,13 @@
 "use client";
 
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Model } from "./Model";
 import { FileUpload } from "./FileUpload";
 import { useStore } from "@/store/configuratorStore";
 import * as THREE from "three";
+import { MaterialControls } from "./MaterialControls";
 export const Configurator3d: React.FC = () => {
   console.log("Configurator3d");
   const { file, filename, texture } = useStore();
@@ -25,11 +26,6 @@ export const Configurator3d: React.FC = () => {
     });
   };
 
-  const randomizeColor = (index: number) => {
-    (meshRefs.current[index].material as THREE.MeshPhysicalMaterial).color.set(
-      Math.random() * 0xffffff,
-    );
-  };
   return (
     <div className="h-full">
       <FileUpload />
@@ -52,24 +48,23 @@ export const Configurator3d: React.FC = () => {
           />
         )}
       </Canvas>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-col justify-between p-4">
         <button
           onClick={randomizeAllColors}
-          className="rounded bg-blue-500 px-4 py-2 text-white"
+          className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
         >
           Randomize All Colors
         </button>
-        {meshes.map((mesh: any, index) => (
-          <div key={index} className="mb-2 flex items-center">
-            <span className="mr-2">{mesh.name || `Mesh ${index + 1}`}</span>
-            <button
-              onClick={() => randomizeColor(index)}
-              className="rounded bg-green-500 px-2 py-1 text-sm text-white"
-            >
-              Randomize Color
-            </button>
-          </div>
-        ))}
+        <div className="grid grid-cols-2 gap-4">
+          {meshes.map((mesh: any, index) => (
+            <MaterialControls
+              key={index}
+              index={index}
+              meshes={meshes}
+              meshRefs={meshRefs}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
