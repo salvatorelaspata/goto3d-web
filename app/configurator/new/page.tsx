@@ -1,6 +1,6 @@
 import PageTitle from "@/components/ui/PageTitle";
 import { protectedRoute } from "@/app/actions";
-import { Configurator3d } from "@/components/Configurator3d";
+import { Configurator3d } from "@/components/configurator/Configurator3d";
 
 export default async function NewProject() {
   await protectedRoute();

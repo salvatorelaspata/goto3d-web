@@ -21,7 +21,6 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   textureUrl,
   objectUrl,
 }) => {
-  console.log("Viewer3d");
   const { setTextureUrl, setObjectUrl } = actions;
   setTextureUrl(textureUrl);
   setObjectUrl(objectUrl);
@@ -43,6 +42,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
     setIsIpad(/iPad/.test(navigator.userAgent));
     setIsIOS(isIphone || isIpad);
   }, []);
+
   return (
     <div ref={containerRef} className="relative h-full w-full">
       <div className="absolute right-4 top-4 z-20">
