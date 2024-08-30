@@ -29,16 +29,22 @@ export const Configurator3d: React.FC = () => {
   };
 
   return (
-    <div className="h-full">
+    <div className="">
       <FileUpload />
 
       <Canvas
-        style={{ width: "100%", height: "400px" }}
+        style={{ width: "100%", height: "60vh" }}
         camera={{ position: [0, 0, 5] }}
       >
-        <OrbitControls />
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[3, 10, 7]} intensity={1.5} />
+        <OrbitControls
+          minDistance={0}
+          maxDistance={20}
+          enablePan={false}
+          enableDamping={true}
+          dampingFactor={0.25}
+        />
+        <ambientLight intensity={2.5} />
+        <directionalLight position={[3, 10, 7]} intensity={5} />
 
         {file && (
           <Model

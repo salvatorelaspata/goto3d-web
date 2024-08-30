@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useFBX, useGLTF, useTexture } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
@@ -25,7 +25,9 @@ export const Model: React.FC<ModelProps> = ({
   meshRefs,
 }) => {
   console.log("Model", file, filename, texture);
-  if (!file) return;
+  const groupRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [current, setCurrent] = useState<string | null>(null);
 
   const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 
@@ -49,11 +51,32 @@ export const Model: React.FC<ModelProps> = ({
       const _c = c;
       // create refence to the mesh
       if (c.type === "Mesh") {
-        setMeshs((prev) => [...prev, _c]);
         loadedMeshes.push(c);
       }
     });
+    setMeshs(loadedMeshes);
     setMeshes(loadedMeshes);
+
+    // Calcolare il bounding box del modello
+    const box = new THREE.Box3().setFromObject(obj);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+
+    // Calcolare il centro del bounding box
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+
+    // Calcolare il fattore di scala necessario per adattare l'altezza del modello all'altezza della scena
+    const desiredHeight = 10; // Altezza desiderata nella scena
+    const scale = desiredHeight / size.y;
+
+    // Applicare la scala al modello
+    groupRef?.current?.scale.set(scale, scale, scale);
+    groupRef?.current?.position.set(
+      -center.x * scale,
+      -center.y * scale,
+      -center.z * scale,
+    );
   }, [obj, setMeshes]);
 
   if (!meshs) return null;
@@ -69,5 +92,5 @@ export const Model: React.FC<ModelProps> = ({
     />
   ));
 
-  return <group>{ui}</group>;
+  return <group ref={groupRef}>{ui}</group>;
 };
