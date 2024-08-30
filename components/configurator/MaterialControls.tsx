@@ -1,23 +1,42 @@
+"use client";
+
+import { ConfigMaterialProps } from "@/store/configuratorStore";
 import { useState } from "react";
 import * as THREE from "three";
+
 export const MaterialControls = ({
   index,
   meshRefs,
   meshes,
   updateMaterialProperty,
 }) => {
-  const [color, setColor] = useState("#ffffff");
-  const [metalness, setMetalness] = useState(0.5);
-  const [roughness, setRoughness] = useState(0.5);
-  const [clearcoat, setClearcoat] = useState(0);
-  const [clearcoatRoughness, setClearcoatRoughness] = useState(0);
+  const configState: ConfigMaterialProps = {
+    color: "#ffffff",
+    metalness: 0.5,
+    roughness: 0.5,
+    clearcoat: 0,
+    clearcoatRoughness: 0,
+  };
+
+  const [config, setConfig] = useState(configState);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let _value: THREE.Color | string | number = e.target.value;
+    const { name, value } = e.target;
+    console.log("onChange", name, value);
+    if (name === "color") {
+      _value = new THREE.Color(e.target.value);
+    } else {
+      _value = parseFloat(value);
+    }
+    updateMaterialProperty(index, name, _value);
+    setConfig((prev) => ({ ...prev, [name]: _value }));
+  };
 
   const randomizeColor = (index: number) => {
     const color = Math.random() * 0xffffff;
-    (meshRefs.current[index].material as THREE.MeshPhysicalMaterial).color.set(
-      color,
-    );
-    setColor(`#${color.toString(16)}`);
+    setConfig((prev) => ({ ...prev, color: new THREE.Color(color) }));
+    updateMaterialProperty(index, "color", new THREE.Color(color));
   };
 
   return (
@@ -30,93 +49,62 @@ export const MaterialControls = ({
           <label className="block">Color</label>
           <input
             type="color"
+            name="color"
             className="w-full"
-            value={`#${meshRefs.current[index].material.color.getHexString()}`}
-            onChange={(e) => {
-              setColor(e.target.value);
-              console.log("color", e.target.value);
-              updateMaterialProperty(
-                index,
-                "color",
-                new THREE.Color(e.target.value),
-              );
-            }}
+            value={`#${config["color"].getHexString()}`}
+            onChange={onChange}
           />
         </div>
         <div>
           <label className="block">Metalness</label>
           <input
             type="range"
+            name="metalness"
             className="w-full"
             min="0"
             max="1"
             step="0.01"
-            value={metalness}
-            onChange={(e) => {
-              setMetalness(parseFloat(e.target.value));
-              updateMaterialProperty(
-                index,
-                "metalness",
-                parseFloat(e.target.value),
-              );
-            }}
+            value={config["metalness"]}
+            onChange={onChange}
           />
         </div>
         <div>
           <label className="block">Roughness</label>
           <input
             type="range"
+            name="roughness"
             className="w-full"
             min="0"
             max="1"
             step="0.01"
-            value={roughness}
-            onChange={(e) => {
-              setRoughness(parseFloat(e.target.value));
-              updateMaterialProperty(
-                index,
-                "roughness",
-                parseFloat(e.target.value),
-              );
-            }}
+            value={config["roughness"]}
+            onChange={onChange}
           />
         </div>
         <div>
           <label className="block">Clearcoat</label>
           <input
             type="range"
+            name="clearcoat"
             className="w-full"
             min="0"
             max="1"
             step="0.01"
-            value={clearcoat}
-            onChange={(e) => {
-              setClearcoat(parseFloat(e.target.value));
-              updateMaterialProperty(
-                index,
-                "clearcoat",
-                parseFloat(e.target.value),
-              );
-            }}
+            value={config["clearcoat"]}
+            onChange={onChange}
           />
         </div>
         <div>
           <label className="block">Clearcoat Roughness</label>
           <input
             type="range"
+            name="clearcoatRoughness"
             className="w-full"
             min="0"
             max="1"
             step="0.01"
-            value={clearcoatRoughness}
-            onChange={(e) => {
-              setClearcoatRoughness(parseFloat(e.target.value));
-              updateMaterialProperty(
-                index,
-                "clearcoatRoughness",
-                parseFloat(e.target.value),
-              );
-            }}
+            value={config["clearcoatRoughness"]}
+            onChange={onChange}
           />
         </div>
         <div>

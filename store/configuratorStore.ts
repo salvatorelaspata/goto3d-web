@@ -1,27 +1,31 @@
 "use client";
 
-import { MutableRefObject, RefObject, useMemo } from "react";
-import { proxy, useSnapshot } from "valtio";
 import * as THREE from "three";
-type Mesh = MutableRefObject<
-  THREE.Mesh<
-    THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-    THREE.Material | THREE.Material[],
-    THREE.Object3DEventMap
-  >
->;
-export interface ConfigState {
+import { proxy, useSnapshot } from "valtio";
+
+export interface ConfigMaterialProps {
+  color: string;
+  metalness: number;
+  roughness: number;
+  clearcoat: number;
+  clearcoatRoughness: number;
+}
+export interface ConfiguratorProps {
   file: string;
   filename: string;
   texture: string;
   textureName: string;
+  meshes: THREE.Mesh[];
+  meshesConfig: ConfigMaterialProps[];
 }
 
-const state = proxy<ConfigState>({
+const state = proxy<ConfiguratorProps>({
   file: "",
   filename: "",
   texture: "",
   textureName: "",
+  meshes: [],
+  meshesConfig: [],
 });
 
 export const useStore = () => useSnapshot(state);
@@ -36,5 +40,11 @@ export const actions = {
     const url = URL.createObjectURL(file);
     state.texture = url;
     state.textureName = file.name;
+  },
+  setMeshes: (meshes: THREE.Mesh[]) => {
+    state.meshes = meshes;
+  },
+  setMeshConfig: (index: number, config: ConfigMaterialProps) => {
+    state.meshesConfig[index] = config;
   },
 };

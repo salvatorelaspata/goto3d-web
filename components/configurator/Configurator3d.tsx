@@ -1,17 +1,19 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Model } from "./Model";
+import { actions, useStore } from "@/store/configuratorStore";
 import { FileUpload } from "./FileUpload";
-import { useStore } from "@/store/configuratorStore";
-import * as THREE from "three";
 import { MaterialControls } from "./MaterialControls";
+import { Model } from "./Model";
+const { setMeshes } = actions;
+
 export const Configurator3d: React.FC = () => {
   console.log("Configurator3d");
-  const { file, filename, texture } = useStore();
-  const [meshes, setMeshes] = useState<THREE.Mesh[]>([]);
+  const { file, filename, texture, meshes } = useStore();
+
   const meshRefs = useRef<THREE.Mesh[]>([]);
 
   useEffect(() => {
@@ -63,25 +65,27 @@ export const Configurator3d: React.FC = () => {
           />
         )}
       </Canvas>
-      <div className="flex flex-col justify-between p-4">
-        <button
-          onClick={randomizeAllColors}
-          className="mb-4 rounded bg-palette1 px-4 py-2 text-white"
-        >
-          Randomize All Colors
-        </button>
-        <div className="grid grid-cols-2 gap-4">
-          {meshes.map((_: any, index) => (
-            <MaterialControls
-              key={index}
-              index={index}
-              meshes={meshes}
-              meshRefs={meshRefs}
-              updateMaterialProperty={updateMaterialProperty}
-            />
-          ))}
+      {meshes.length > 0 && (
+        <div className="flex flex-col justify-between p-4">
+          <button
+            onClick={randomizeAllColors}
+            className="mb-4 rounded bg-palette1 px-4 py-2 text-white"
+          >
+            Randomize All Colors
+          </button>
+          <div className="grid grid-cols-2 gap-4">
+            {meshes.map((_: any, index) => (
+              <MaterialControls
+                key={index}
+                index={index}
+                meshes={meshes}
+                meshRefs={meshRefs}
+                updateMaterialProperty={updateMaterialProperty}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

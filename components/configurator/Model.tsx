@@ -1,12 +1,13 @@
 "use client";
-import { useFBX, useGLTF, useTexture } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
+
 import React, { useEffect, useState } from "react";
 import * as THREE from "three";
+import { useFBX, useGLTF, useTexture } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
-import { Mesh } from "./Mesh";
 import { isFbx, isGlb, isGltf, isMtl, isObj } from "@/utils/utils";
+import { Mesh } from "./Mesh";
 
 interface ModelProps {
   file: string;
@@ -26,7 +27,7 @@ export const Model: React.FC<ModelProps> = ({
   console.log("Model", file, filename, texture);
   if (!file) return;
 
-  const [_meshs, setMeshs] = useState<THREE.Mesh[]>([]);
+  const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 
   let obj;
   if (isObj(filename)) {
@@ -61,8 +62,8 @@ export const Model: React.FC<ModelProps> = ({
     setMeshes(loadedMeshes);
   }, [obj, setMeshes]);
 
-  if (!_meshs) return null;
-  const ui = _meshs.map((mesh, index) => (
+  if (!meshs) return null;
+  const ui = meshs.map((mesh, index) => (
     <Mesh
       key={index}
       mesh={mesh}

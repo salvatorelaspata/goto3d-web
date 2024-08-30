@@ -11,7 +11,6 @@ interface MeshProps {
 
 export const Mesh = React.forwardRef(
   ({ mesh, index, textureObj }: MeshProps, ref: any) => {
-    console.log("Mesh", mesh);
     return (
       <mesh ref={ref} key={index} geometry={mesh.geometry} position={[0, 0, 0]}>
         <meshPhysicalMaterial map={textureObj} attach={"material"} />
