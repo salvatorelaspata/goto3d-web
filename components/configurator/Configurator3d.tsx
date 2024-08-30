@@ -51,12 +51,12 @@ export const Configurator3d: React.FC = () => {
       <div className="flex flex-col justify-between p-4">
         <button
           onClick={randomizeAllColors}
-          className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+          className="mb-4 rounded bg-palette1 px-4 py-2 text-white"
         >
           Randomize All Colors
         </button>
         <div className="grid grid-cols-2 gap-4">
-          {meshes.map((mesh: any, index) => (
+          {meshes.map((_: any, index) => (
             <MaterialControls
               key={index}
               index={index}

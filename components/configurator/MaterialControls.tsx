@@ -8,9 +8,11 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
   const [clearcoatRoughness, setClearcoatRoughness] = useState(0);
 
   const randomizeColor = (index: number) => {
+    const color = Math.random() * 0xffffff;
     (meshRefs.current[index].material as THREE.MeshPhysicalMaterial).color.set(
-      Math.random() * 0xffffff,
+      color,
     );
+    setColor(`#${color.toString(16)}`);
   };
 
   const updateMaterialProperty = (index, property, value) => {
@@ -21,6 +23,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
       ).needsUpdate = true;
     }
   };
+
   return (
     <div className="mb-4 rounded border p-4">
       <h3 className="mb-2 text-lg font-semibold">
@@ -31,7 +34,8 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
           <label className="block">Color</label>
           <input
             type="color"
-            value={color}
+            className="w-full"
+            value={`#${meshRefs.current[index].material.color.getHexString()}`}
             onChange={(e) => {
               setColor(e.target.value);
               console.log("color", e.target.value);
@@ -47,6 +51,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
           <label className="block">Metalness</label>
           <input
             type="range"
+            className="w-full"
             min="0"
             max="1"
             step="0.01"
@@ -65,6 +70,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
           <label className="block">Roughness</label>
           <input
             type="range"
+            className="w-full"
             min="0"
             max="1"
             step="0.01"
@@ -83,6 +89,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
           <label className="block">Clearcoat</label>
           <input
             type="range"
+            className="w-full"
             min="0"
             max="1"
             step="0.01"
@@ -101,6 +108,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
           <label className="block">Clearcoat Roughness</label>
           <input
             type="range"
+            className="w-full"
             min="0"
             max="1"
             step="0.01"
@@ -117,7 +125,7 @@ export const MaterialControls = ({ index, meshRefs, meshes }) => {
         </div>
         <div>
           <button
-            className="rounded bg-blue-500 px-4 py-2 text-white"
+            className="w-full rounded bg-palette1 px-4 py-2 text-white"
             onClick={() => randomizeColor(index)}
           >
             Randomize Color
