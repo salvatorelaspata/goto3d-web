@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { actions } from "@/store/configuratorStore";
+import { actions, useStore } from "@/store/configuratorStore";
 
 export const FileUpload: React.FC = () => {
   const { setFile, setTexture } = actions;
+  const { file, texture } = useStore();
   const handleObjChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
@@ -34,6 +35,7 @@ export const FileUpload: React.FC = () => {
       <div className="flex flex-row content-center align-middle">
         <label className="mr-4 p-1">3d texture file:</label>
         <input
+          disabled={file}
           className="content-center align-middle"
           type="file"
           placeholder="3d texture file"

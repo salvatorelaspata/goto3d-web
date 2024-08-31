@@ -26,8 +26,8 @@ export const Model: React.FC<ModelProps> = ({
 }) => {
   console.log("Model", file, filename, texture);
   const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [current, setCurrent] = useState<string | null>(null);
+  // const [hovered, setHovered] = useState<string | null>(null);
+  // const [current, setCurrent] = useState<string | null>(null);
 
   const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 

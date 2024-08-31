@@ -4,7 +4,7 @@ import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import {
-  createThumbnail,
+  // createThumbnail,
   doCreate,
   pSendFiles,
   sendProjectToQueue,
@@ -13,20 +13,21 @@ import {
 import { actions } from "@/store/main";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
+// import { useRef, useState } from "react";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
 
   const onSubmit = async (formData: FormData) => {
     actions.showLoading();
-
     try {
       // 1. create project
       const id = await doCreate(formData);
       formData.set("id", id.toString());
       toast.success(`Project created: ${id}`);
       // 2. create thumbnail
-      await createThumbnail(formData);
+      // await initializeWorker(id);
+      // await createThumbnail(formData);
       toast.success("Thumbnail creato con successo");
       // 3. upload files
       toast.info("Caricamento di tutti file in corso...");
