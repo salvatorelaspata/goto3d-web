@@ -17,6 +17,7 @@ export const ThumbnailImage = () => {
   const handleFileChange = async (e) => {
     // check if the image is a heic image
     if (!e.target.files[0].name.endsWith(".heic")) {
+      setUrl(URL.createObjectURL(e.target.files[0]));
       return;
     }
 
