@@ -1,7 +1,6 @@
 "use client";
 import { PresetsType } from "@react-three/drei/helpers/environment-assets";
 import { proxy, useSnapshot } from "valtio";
-import * as THREE from "three";
 
 export interface ConfigState {
   environment: PresetsType | null;

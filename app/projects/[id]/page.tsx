@@ -1,11 +1,10 @@
 import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
-import { fetchData, retrieveSignedUrl } from "./actions";
+import { fetchData, retrieveSignedUrls } from "./actions";
 
 import { BlurImage } from "@/components/BlurImage";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
-import { DownloadAsset } from "@/components/projects/DownloadAsset";
 
 import { Viewer3d } from "@/components/viewer3d/Viewer3d";
 import { BigTextCentered } from "@/components/projects/BigText";
@@ -14,23 +13,32 @@ import { DangerZone } from "@/components/projects/DangerZone";
 import { protectedRoute } from "@/app/actions";
 import { notFound } from "next/navigation";
 import { _Object } from "@aws-sdk/client-s3";
+import { userAgent } from "next/server";
+import { headers } from "next/headers";
+import Link from "next/link";
 
-export default async function Project ({ params }: { params: { id: string } }) {
+const checkUserAgent = () => {
+  const { os, device } = userAgent({ headers: headers() });
+  const isMobile = device.type === "mobile";
+  const isIphone = os.name === "iOS" && device.model === "iPhone";
+  const isIpad = os.name === "iOS" && device.model === "iPad";
+
+  return { isMobile, isIphone, isIpad };
+};
+
+export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
 
-  const p = await fetchData({ id: params.id });
-  const project = p?.project;
+  const res = await fetchData({ id: params.id });
+  const project = res?.project;
 
   if (!project) return notFound();
 
-  const models: _Object[] | undefined = p?.models;
-  const r = await retrieveSignedUrl({ models });
-  let objectUrl = "";
-  let textureUrl = "";
-  if (r) {
-    objectUrl = r.objectSignedUrl;
-    textureUrl = r.textureSignedUrl;
-  }
+  const urls = await retrieveSignedUrls({ models: res?.models });
+
+  const objectUrl = urls?.find((u) => u?.key?.endsWith(".obj"))?.url || "";
+  const textureUrl =
+    urls?.find((u) => u?.key?.endsWith("baked_mesh_tex0.png"))?.url || "";
 
   const id = parseInt(params.id);
   const status = project?.status;
@@ -56,6 +64,8 @@ export default async function Project ({ params }: { params: { id: string } }) {
     );
   }
 
+  const { isMobile, isIphone, isIpad } = checkUserAgent();
+
   return (
     <>
       <section className="zfrom-[#006D77] m-4 flex h-[77vh] items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b to-[#83C5BE]">
@@ -64,6 +74,9 @@ export default async function Project ({ params }: { params: { id: string } }) {
             id={project.id}
             objectUrl={objectUrl}
             textureUrl={textureUrl}
+            isMobile={isMobile}
+            isIphone={isIphone}
+            isIpad={isIpad}
           />
         )}
       </section>
@@ -121,8 +134,8 @@ export default async function Project ({ params }: { params: { id: string } }) {
           <SectionTitle title="Thumbnail" />
           <div className="p-4">
             <BlurImage
-              name={p?.project?.name || ""}
-              imageSrc={p?.project?.thumbnail || ""}
+              name={project?.name || ""}
+              imageSrc={project?.thumbnail || ""}
             />
           </div>
         </div>
@@ -130,13 +143,11 @@ export default async function Project ({ params }: { params: { id: string } }) {
         <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Download" />
           <div className="grid grid-cols-1 md:grid-cols-3">
-            {models &&
-              models.map((model, index) => (
-                <DownloadAsset
-                  key={index}
-                  id={project?.id || 0}
-                  name={model.Key}
-                />
+            {urls &&
+              urls.map(({ key, url }) => (
+                <Link key={key} href={url || ""}>
+                  {key}
+                </Link>
               ))}
           </div>
         </div>

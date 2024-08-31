@@ -9,17 +9,24 @@ import { Scene } from "./Scene";
 import { getSignedUrl, listObjects } from "@/utils/s3/api";
 import type { _Object } from "@aws-sdk/client-s3";
 import { actions } from "@/store/viewerStore";
+import { actions as mainActions } from "@/store/main";
 
 interface Viewer3dProps {
   id: number;
   objectUrl: string;
   textureUrl: string;
+  isMobile: boolean;
+  isIphone: boolean;
+  isIpad: boolean;
 }
 
 export const Viewer3d: React.FC<Viewer3dProps> = ({
   id,
   textureUrl,
   objectUrl,
+  isMobile,
+  isIphone,
+  isIpad,
 }) => {
   const { setTextureUrl, setObjectUrl } = actions;
   setTextureUrl(textureUrl);
@@ -31,24 +38,17 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   const height = canvasRef.current?.clientHeight || 1;
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
-  const [isIphone, setIsIphone] = useState<boolean>(false);
-  const [isIpad, setIsIpad] = useState<boolean>(false);
-  const [isIOS, setIsIOS] = useState<boolean>(false);
   camera.position.z = 5;
   camera.lookAt(0, 0, 0);
-  // check if is in iphone or ipad
-  useEffect(() => {
-    setIsIphone(/iPhone/.test(navigator.userAgent));
-    setIsIpad(/iPad/.test(navigator.userAgent));
-    setIsIOS(isIphone || isIpad);
-  }, []);
 
   return (
     <div ref={containerRef} className="relative h-full w-full">
       <div className="absolute right-4 top-4 z-20">
-        {!isIphone && FullScreenSvg(containerRef)}
+        {!isMobile && FullScreenSvg(containerRef)}
       </div>
-      <div className="absolute left-4 top-4 z-20">{isIOS && ARSvg({ id })}</div>
+      <div className="absolute left-4 top-4 z-20">
+        {(isIphone || isIpad) && ARSvg({ id })}
+      </div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
         <Scene camera={camera} />
@@ -96,14 +96,16 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
 
 export const ARSvg = ({ id }: { id: number }) => {
   return (
-    // <form action={fetchUsdzUrl}>
     <svg
-      className="cursor-pointer rounded-sm"
+      className="cursor-pointer rounded-sm bg-palette1"
       viewBox="0 0 512 512"
       id="ARicons"
       onClick={async () => {
+        alert("AR");
+        mainActions.showLoading();
         const supabase = createClient();
         // get url for the usdz file
+
         try {
           const { data: project } = await supabase
             .from("project")
@@ -111,8 +113,9 @@ export const ARSvg = ({ id }: { id: number }) => {
             .eq("id", id)
             .single();
           // get the list of models
+          alert(`project ${project?.id}`);
           const models = await listObjects("dev", `${project?.id}/model`);
-
+          alert(`models ${models}`);
           const usdzName: string =
             models?.find((m) => m?.Key?.endsWith(".usdz"))?.Key || "";
 
@@ -128,17 +131,14 @@ export const ARSvg = ({ id }: { id: number }) => {
           a.setAttribute("href", usdzUrl);
           a.setAttribute("rel", "ar");
           a.click();
-          // if (instance && instance.parentNode) {
-          //   console.log("instance");
-          //   instance.parentNode.insertBefore(a, instance);
-          //   a.appendChild(instance);
-          // }
         } catch (error) {
-          console.log(error);
+          alert(`Error ${JSON.stringify(error)}`);
+        } finally {
+          mainActions.hideLoading();
         }
       }}
-      height="24px"
-      width="24px"
+      height="32px"
+      width="32px"
       xmlns="http://www.w3.org/2000/svg"
     >
       <polyline
@@ -147,7 +147,7 @@ export const ARSvg = ({ id }: { id: number }) => {
         stroke="#fff"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="24"
+        strokeWidth="32"
       />
       <line
         x1="256"

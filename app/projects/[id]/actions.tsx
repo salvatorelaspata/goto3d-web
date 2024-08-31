@@ -44,6 +44,30 @@ export const retrieveSignedUrl = async ({
   }
 };
 
+export const retrieveSignedUrls = async ({
+  models,
+}: {
+  models: _Object[] | undefined;
+}) => {
+  if (!models) return;
+  try {
+    const urls = await Promise.all(
+      models.map(async (m) => {
+        if (!m || !m.Key) return;
+        const signedUrl = await getSignedUrl("dev", m?.Key);
+        return signedUrl;
+      }),
+    );
+
+    return urls.map((u) => ({
+      key: u?.split("/").pop()?.split("?")[0] || "",
+      url: u,
+    }));
+  } catch (error) {
+    console.error("[projects][id][actions] - retrieveSignedUrls Error:", error);
+  }
+};
+
 export const deleteProject = async ({ id }: { id: number }) => {
   const supabase = createClient();
   try {
