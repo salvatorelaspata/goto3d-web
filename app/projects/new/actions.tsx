@@ -84,28 +84,28 @@ export const putThumbnail = async (file: File, projectId: string) => {
   }
 };
 
-// export const createThumbnail = async (formData: FormData) => {
-//   const file = formData.get("files") as File; // get the first file TODO: get the first image files
-//   const projectId = formData.get("id") as string;
-//   const id = uuidv4();
+export const createThumbnail = async (formData: FormData) => {
+  const file = formData.get("thumbnail") as File;
+  const projectId = formData.get("id") as string;
+  const id = uuidv4();
 
-//   if (!projectId) throw new Error("Project not found");
+  if (!projectId) throw new Error("Project not found");
 
-//   try {
-//     const ext = file.name.split(".").pop();
+  try {
+    const ext = file.name.split(".").pop();
 
-//     const buffer = await file.arrayBuffer();
-//     const reader = new Uint8Array(buffer);
+    const buffer = await file.arrayBuffer();
+    const reader = new Uint8Array(buffer);
 
-//     const upload = await putObject("public-dev", `${id}.${ext}`, reader);
+    const upload = await putObject("public-dev", `${id}.${ext}`, reader);
 
-//     if (!upload) throw new Error("Error uploading file");
+    if (!upload) throw new Error("Error uploading file");
 
-//     await updateThumbnail(parseInt(projectId), `${id}.${ext}`);
-//   } catch (error) {
-//     console.error("Error: thumbnail", error);
-//   }
-// };
+    await updateThumbnail(parseInt(projectId), `${id}.${ext}`);
+  } catch (error) {
+    console.error("Error: thumbnail", error);
+  }
+};
 
 export const pSendFiles = async (formData: FormData) => {
   // const supabase = createClient();
