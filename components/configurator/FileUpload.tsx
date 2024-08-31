@@ -35,7 +35,7 @@ export const FileUpload: React.FC = () => {
       <div className="flex flex-row content-center align-middle">
         <label className="mr-4 p-1">3d texture file:</label>
         <input
-          disabled={file}
+          disabled={!!file}
           className="content-center align-middle"
           type="file"
           placeholder="3d texture file"
