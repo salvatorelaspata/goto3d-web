@@ -7,6 +7,7 @@ export interface ConfigState {
   animate: boolean;
   objectUrl: string;
   textureUrl: string;
+  usdzUrl: string;
 }
 
 const state = proxy<ConfigState>({
@@ -14,6 +15,7 @@ const state = proxy<ConfigState>({
   animate: false,
   objectUrl: "",
   textureUrl: "",
+  usdzUrl: "",
 });
 
 export const useStore = () => useSnapshot(state);
@@ -27,6 +29,7 @@ export const actions = {
   // urls
   setObjectUrl: (object: string) => (state.objectUrl = object),
   setTextureUrl: (texture: string) => (state.textureUrl = texture),
+  setUsdzUrl: (usdz: string) => (state.usdzUrl = usdz),
   // object
   // setObject: (object: THREE.Object3D) => (state.object = object),
   // texture

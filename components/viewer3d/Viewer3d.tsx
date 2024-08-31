@@ -10,11 +10,14 @@ import { getSignedUrl, listObjects } from "@/utils/s3/api";
 import type { _Object } from "@aws-sdk/client-s3";
 import { actions } from "@/store/viewerStore";
 import { actions as mainActions } from "@/store/main";
+import Link from "next/link";
+import { ARSvg } from "./ARSvg";
 
 interface Viewer3dProps {
   id: number;
   objectUrl: string;
   textureUrl: string;
+  usdzUrl: string;
   isMobile: boolean;
   isIphone: boolean;
   isIpad: boolean;
@@ -24,13 +27,15 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   id,
   textureUrl,
   objectUrl,
+  usdzUrl,
   isMobile,
   isIphone,
   isIpad,
 }) => {
-  const { setTextureUrl, setObjectUrl } = actions;
+  const { setTextureUrl, setObjectUrl, setUsdzUrl } = actions;
   setTextureUrl(textureUrl);
   setObjectUrl(objectUrl);
+  setUsdzUrl(usdzUrl);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,7 +52,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
         {!isMobile && FullScreenSvg(containerRef)}
       </div>
       <div className="absolute left-4 top-4 z-20">
-        {(isIphone || isIpad) && ARSvg({ id })}
+        {(isIphone || isIpad) && ARSvg({ usdzUrl })}
       </div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>
@@ -93,187 +98,3 @@ export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
     </g>
   </svg>
 );
-
-export const ARSvg = ({ id }: { id: number }) => {
-  return (
-    <svg
-      className="cursor-pointer rounded-sm bg-palette1"
-      viewBox="0 0 512 512"
-      id="ARicons"
-      onClick={async () => {
-        alert("AR");
-        mainActions.showLoading();
-        const supabase = createClient();
-        // get url for the usdz file
-
-        try {
-          const { data: project } = await supabase
-            .from("project")
-            .select("*")
-            .eq("id", id)
-            .single();
-          // get the list of models
-          alert(`project ${project?.id}`);
-          const models = await listObjects("dev", `${project?.id}/model`);
-          alert(`models ${models}`);
-          const usdzName: string =
-            models?.find((m) => m?.Key?.endsWith(".usdz"))?.Key || "";
-
-          // get the signed url for the obj file
-          const usdzUrl = await getSignedUrl(
-            "dev",
-            `${project?.id}/model/${usdzName}`,
-          );
-
-          if (!usdzUrl) return;
-          // const instance = ref.current,
-          const a = document.createElement("a");
-          a.setAttribute("href", usdzUrl);
-          a.setAttribute("rel", "ar");
-          a.click();
-        } catch (error) {
-          alert(`Error ${JSON.stringify(error)}`);
-        } finally {
-          mainActions.hideLoading();
-        }
-      }}
-      height="32px"
-      width="32px"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <polyline
-        points="201.14 64 256 32 310.86 64"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="32"
-      />
-      <line
-        x1="256"
-        y1="32"
-        x2="256"
-        y2="112"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="310.86 448 256 480 201.14 448"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="24"
-      />
-      <line
-        x1="256"
-        y1="480"
-        x2="256"
-        y2="400"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="64 207.51 64 144 117.15 112.49"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="24"
-      />
-      <line
-        x1="64"
-        y1="144"
-        x2="131.29"
-        y2="184"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="448 304.49 448 368 394.85 399.51"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="24"
-      />
-      <line
-        x1="448"
-        y1="368"
-        x2="380.71"
-        y2="328"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="117.15 400 64 368 64 304.49"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="24"
-      />
-      <line
-        x1="64"
-        y1="368"
-        x2="130.64"
-        y2="328"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="394.85 112.49 448 144 448 207.51"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="24"
-      />
-      <line
-        x1="448"
-        y1="144"
-        x2="380.71"
-        y2="184"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <polyline
-        points="256 320 256 256 310.86 224"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-      <line
-        x1="256"
-        y1="256"
-        x2="201.14"
-        y2="224"
-        fill="none"
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeMiterlimit="10"
-        strokeWidth="24"
-      />
-    </svg>
-  );
-};

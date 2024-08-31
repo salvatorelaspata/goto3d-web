@@ -26,24 +26,6 @@ export const fetchData = async ({ id }: { id: string }) => {
   }
 };
 
-export const retrieveSignedUrl = async ({
-  models,
-}: {
-  models: _Object[] | undefined;
-}) => {
-  if (!models) return;
-  try {
-    const o = models.find((m) => m?.Key?.endsWith(".obj"))?.Key || "";
-    const objectSignedUrl = await getSignedUrl("dev", o);
-    const t =
-      models.find((m) => m?.Key?.endsWith("baked_mesh_tex0.png"))?.Key || "";
-    const textureSignedUrl = await getSignedUrl("dev", t);
-    return { objectSignedUrl, textureSignedUrl };
-  } catch (error) {
-    console.error("[projects][id][actions] - retrieveSignedUrl Error:", error);
-  }
-};
-
 export const retrieveSignedUrls = async ({
   models,
 }: {

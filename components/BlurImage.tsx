@@ -1,31 +1,17 @@
 "use client";
-import { getSignedUrl } from "@/utils/s3/api";
+
+import { cn } from "@/utils/utils";
 import Image from "next/image";
 import { useState } from "react";
 
-type Image = {};
-
-export function BlurImage({
-  name,
-  imageSrc,
-}: {
+interface BlurImageProps {
   name: string;
   imageSrc?: string;
-}) {
+}
+
+export const BlurImage: React.FC<BlurImageProps> = ({ name, imageSrc }) => {
   const [isLoading, setLoading] = useState(true);
-  const [image, setImage] = useState<string | null>(null);
-  if (imageSrc) {
-    getSignedUrl("public-dev", imageSrc)
-      .then((url) => {
-        setImage(url);
-        return url;
-      })
-      .catch((e) => console.error(e));
-  }
-  const [src, setSrc] = useState(image || "/placeholder-image.png");
-  function cn(...classes: string[]) {
-    return classes.filter(Boolean).join(" ");
-  }
+  const [src, setSrc] = useState(imageSrc || "/placeholder-image.png");
 
   return (
     <Image
@@ -43,4 +29,4 @@ export function BlurImage({
       onLoad={() => setLoading(false)}
     />
   );
-}
+};

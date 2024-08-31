@@ -39,6 +39,7 @@ export default async function Project({ params }: { params: { id: string } }) {
   const objectUrl = urls?.find((u) => u?.key?.endsWith(".obj"))?.url || "";
   const textureUrl =
     urls?.find((u) => u?.key?.endsWith("baked_mesh_tex0.png"))?.url || "";
+  const usdzUrl = urls?.find((u) => u?.key?.endsWith(".usdz"))?.url || "";
 
   const id = parseInt(params.id);
   const status = project?.status;
@@ -69,11 +70,12 @@ export default async function Project({ params }: { params: { id: string } }) {
   return (
     <>
       <section className="zfrom-[#006D77] m-4 flex h-[77vh] items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b to-[#83C5BE]">
-        {models && (
+        {objectUrl && (
           <Viewer3d
             id={project.id}
             objectUrl={objectUrl}
             textureUrl={textureUrl}
+            usdzUrl={usdzUrl}
             isMobile={isMobile}
             isIphone={isIphone}
             isIpad={isIpad}
@@ -142,11 +144,18 @@ export default async function Project({ params }: { params: { id: string } }) {
         {/* DOWNLOAD */}
         <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Download" />
-          <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {urls &&
               urls.map(({ key, url }) => (
                 <Link key={key} href={url || ""}>
-                  {key}
+                  <p className="grid grid-cols-4 content-center items-center text-start align-middle">
+                    <span className="col-span-1 align-middle">
+                      {key.endsWith(".png") ? "Texture:" : "Model:"}{" "}
+                    </span>
+                    <span className="col-span-3 align-middle text-palette5 underline">
+                      {key}
+                    </span>
+                  </p>{" "}
                 </Link>
               ))}
           </div>
