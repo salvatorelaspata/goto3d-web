@@ -63,9 +63,20 @@ export async function doCreate(formData: FormData) {
   return data?.id;
 }
 
-export const putThumbnail = async (file: File, projectId: string) => {
-  const id = uuidv4();
-
+export const putThumbnail = async ({
+  file,
+  projectId,
+  thumbnail,
+}: {
+  file: File;
+  projectId: string;
+  thumbnail?: string;
+}) => {
+  console.log("projectId", projectId, "thumbnail", thumbnail);
+  let id = uuidv4();
+  if (thumbnail) {
+    id = thumbnail.split(".")[0];
+  }
   if (!projectId) throw new Error("Project not found");
 
   try {
@@ -84,6 +95,7 @@ export const putThumbnail = async (file: File, projectId: string) => {
   }
 };
 
+// deprecated
 export const createThumbnail = async (formData: FormData) => {
   const file = formData.get("thumbnail") as File;
   const projectId = formData.get("id") as string;
@@ -105,6 +117,12 @@ export const createThumbnail = async (formData: FormData) => {
   } catch (error) {
     console.error("Error: thumbnail", error);
   }
+};
+
+export const pSendFile = async (projectId: string, file: File) => {
+  const buffer = await file.arrayBuffer();
+  const reader = new Uint8Array(buffer);
+  return putObject("dev", projectId + "/images/" + file.name, reader);
 };
 
 export const pSendFiles = async (formData: FormData) => {

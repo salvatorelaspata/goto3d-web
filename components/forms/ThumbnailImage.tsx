@@ -50,13 +50,6 @@ export const ThumbnailImage = () => {
       if (thumbnail.current) {
         thumbnail.current.files = fileList.files;
       }
-
-      // const img = document.createElement("img");
-      // img.src = URL.createObjectURL(blobPng as Blob);
-      // img.width = 200;
-      // img.height = 200;
-      // console.log("img", img);
-      // ref?.current?.appendChild(img);
     } catch (error) {
       console.error("Error converting heic to png", error);
     }

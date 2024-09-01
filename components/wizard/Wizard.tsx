@@ -7,7 +7,9 @@ import {
   createThumbnail,
   // createThumbnail,
   doCreate,
+  pSendFile,
   pSendFiles,
+  putThumbnail,
   sendProjectToQueue,
 } from "@/app/projects/new/actions";
 // import { useEffect, useTransition } from "react";
@@ -28,11 +30,25 @@ export const Wizard: React.FC = () => {
       toast.success(`Project created: ${id}`);
       // 2. create thumbnail
       // await initializeWorker(id);
-      await createThumbnail(formData);
+      // await createThumbnail(formData);
+      await putThumbnail({
+        file: formData.get("thumbnail") as File,
+        projectId: id.toString(),
+      });
       toast.success("Thumbnail creato con successo");
       // 3. upload files
       toast.info("Caricamento di tutti file in corso...");
-      await Promise.all(await pSendFiles(formData));
+      // await Promise.all(await pSendFiles(formData));
+      const files = formData.getAll("files") as File[];
+      for (const file of files) {
+        try {
+          await pSendFile(id.toString(), file);
+          toast.info(`File ${file.name} caricato con successo`);
+        } catch (error) {
+          toast.error(`Errore nel caricamento del file ${file.name}`);
+          throw error;
+        }
+      }
       toast.success("File caricati con successo");
       // 4. send project to queue
       await sendProjectToQueue(id);
