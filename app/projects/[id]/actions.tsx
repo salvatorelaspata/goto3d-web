@@ -33,17 +33,20 @@ export const retrieveSignedUrls = async ({
 }) => {
   if (!models) return;
   try {
-    const urls = await Promise.all(
+    type Model = { key: string; url: string; size: number };
+    const urls: Model[] = await Promise.all(
       models.map(async (m) => {
+        console.log(m);
         if (!m || !m.Key) return;
         const signedUrl = await getSignedUrl("dev", m?.Key);
-        return signedUrl;
+        return { url: signedUrl, size: m.Size };
       }),
     );
 
-    return urls.map((u) => ({
-      key: u?.split("/").pop()?.split("?")[0] || "",
-      url: u,
+    return urls.map(({ url, size }) => ({
+      key: url?.split("/").pop()?.split("?")[0] || "",
+      url: url,
+      size,
     }));
   } catch (error) {
     console.error("[projects][id][actions] - retrieveSignedUrls Error:", error);

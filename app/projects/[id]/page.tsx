@@ -17,6 +17,7 @@ import { userAgent } from "next/server";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Thumbnail } from "@/components/projects/Thumbnail";
+import { readableFileSize } from "@/utils/utils";
 
 const checkUserAgent = () => {
   const { os, device } = userAgent({ headers: headers() });
@@ -146,7 +147,7 @@ export default async function Project({ params }: { params: { id: string } }) {
           <SectionTitle title="Download" />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {urls &&
-              urls.map(({ key, url }) => (
+              urls.map(({ key, url, size }) => (
                 <Link key={key} href={url || ""}>
                   <p className="grid grid-cols-4 content-center items-center text-start align-middle">
                     <span className="col-span-1 align-middle">
@@ -155,7 +156,11 @@ export default async function Project({ params }: { params: { id: string } }) {
                     <span className="col-span-3 align-middle text-palette5 underline">
                       {key}
                     </span>
-                  </p>{" "}
+                    <span className="col-span-1 align-middle">Size:</span>
+                    <span className="col-span-3 align-middle">
+                      {readableFileSize(size)}
+                    </span>
+                  </p>
                 </Link>
               ))}
           </div>

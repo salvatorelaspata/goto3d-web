@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "bdcf4dc6-7177-45b0-9081-75bd5cd737e1"
+      }
+    },
+    "android": {
+      "package": "com.salvatorelaspata.configrealitydashboard"
+    }
+  }
+}

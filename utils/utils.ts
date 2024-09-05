@@ -7,3 +7,12 @@ export const isMtl = (filename: string) => filename.endsWith(".mtl");
 export function cn(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+export function readableFileSize(size: number) {
+  const i = size === 0 ? 0 : Math.floor(Math.log(size) / Math.log(1024));
+  return (
+    Number((size / Math.pow(1024, i)).toFixed(2)) * 1 +
+    " " +
+    ["B", "kB", "MB", "GB", "TB"][i]
+  );
+}
