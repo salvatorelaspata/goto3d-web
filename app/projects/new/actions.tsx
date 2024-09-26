@@ -119,7 +119,9 @@ export const createThumbnail = async (formData: FormData) => {
   }
 };
 
-export const pSendFile = async (projectId: string, file: File) => {
+export const pSendFile = async (formData: FormData) => {
+  const projectId = formData.get("id") as string;
+  const file = formData.get("file") as File;
   const buffer = await file.arrayBuffer();
   const reader = new Uint8Array(buffer);
   return putObject("dev", projectId + "/images/" + file.name, reader);

@@ -67,27 +67,27 @@ export default async function Home() {
         {/* WORKFLOW */}
         <section className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-palette2 p-6 px-4 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette1">
+            <h2 className="mb-4 text-xl font-semibold text-palette3">
               Creazione di Modelli 3D
             </h2>
-            <p>
+            <p className="text-palette1">
               Trasforma le tue foto in modelli 3D dettagliati con un solo clic.
             </p>
           </div>
           <div className="rounded-lg bg-palette2 p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette1">
+            <h2 className="mb-4 text-xl font-semibold text-palette3">
               Catalogo 3D
             </h2>
-            <p>
+            <p className="text-palette1">
               Crea e gestisci il tuo catalogo di modelli 3D in modo semplice e
               intuitivo.
             </p>
           </div>
           <div className="rounded-lg bg-palette2 p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette1">
+            <h2 className="mb-4 text-xl font-semibold text-palette3">
               Personalizzazione
             </h2>
-            <p>
+            <p className="text-palette1">
               Personalizza i tuoi modelli 3D per adattarli alle tue esigenze
               specifiche.
             </p>
@@ -95,7 +95,7 @@ export default async function Home() {
         </section>
         {/* FEATURES */}
         <section className="bg-palette3">
-          <div className="container mx-auto">
+          <div className="">
             <h2 className="m-4 text-center text-3xl font-bold text-palette1">
               Scopri le potenti funzionalità di goto3d
             </h2>
@@ -123,10 +123,10 @@ export default async function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="my-4 text-xl font-semibold text-palette1">
+                <h3 className="my-4 text-xl font-semibold text-palette3">
                   Creazione di modelli 3D dalle foto
                 </h3>
-                <p className="">
+                <p className="text-palette1">
                   Utilizza la nostra avanzata tecnologia di fotogrammetria per
                   trasformare una serie di foto in un modello 3D dettagliato.
                   Basta scattare alcune foto dell'oggetto da diverse angolazioni
@@ -150,10 +150,10 @@ export default async function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="my-4 text-xl font-semibold text-palette1">
+                <h3 className="my-4 text-xl font-semibold text-palette3">
                   Catalogo 3D interattivo
                 </h3>
-                <p className="">
+                <p className="text-palette1">
                   Organizza e gestisci i tuoi modelli 3D in un catalogo
                   interattivo e facile da navigare. Mostra i tuoi prodotti in
                   modo coinvolgente, permettendo ai clienti di esplorarli da
@@ -178,10 +178,10 @@ export default async function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="my-4 text-xl font-semibold text-palette1">
+                <h3 className="my-4 text-xl font-semibold text-palette3">
                   Personalizzazione avanzata
                 </h3>
-                <p className="">
+                <p className="text-palette1">
                   Modifica e personalizza i tuoi modelli 3D direttamente
                   nell'app. Cambia colori, texture e dettagli per adattare ogni
                   modello alle tue esigenze specifiche o alle richieste dei
@@ -205,10 +205,10 @@ export default async function Home() {
                     ></path>
                   </svg>
                 </div>
-                <h3 className="my-4 text-xl font-semibold text-palette1">
+                <h3 className="my-4 text-xl font-semibold text-palette3">
                   Esperienza mobile ottimizzata
                 </h3>
-                <p className="">
+                <p className="text-palette1">
                   Accedi e gestisci i tuoi modelli 3D ovunque tu sia con la
                   nostra app mobile ottimizzata. Cattura foto, crea modelli e
                   aggiorna il tuo catalogo direttamente dal tuo smartphone o
@@ -220,9 +220,7 @@ export default async function Home() {
         </section>
 
         <section className="p-4 text-center">
-          {user ? (
-            <Dashboard />
-          ) : (
+          {!user && (
             <>
               <h2 className="mb-4 text-3xl font-bold text-palette5">
                 Pronto a rivoluzionare il tuo mondo in 3D?
@@ -237,7 +235,7 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="bg-palette4 py-4 text-palette1">
+      <footer className="bg-palette1 py-4 text-palette3">
         <div className="container mx-auto px-4 text-center">
           <p>&copy; 2024 goto3d. Tutti i diritti riservati.</p>
         </div>

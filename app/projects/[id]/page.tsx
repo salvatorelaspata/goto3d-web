@@ -45,9 +45,10 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   const id = parseInt(params.id);
   const status = project?.status;
-  if (status === "error") {
-    throw new Error("Progetto in errore. Riprova creando un nuovo progetto.");
-  } else if (status === "in queue") {
+  // if (status === "error") {
+  //   throw new Error("Progetto in errore. Riprova creando un nuovo progetto.");
+  // } else
+  if (status === "in queue") {
     return (
       <BigTextCentered
         text="Progetto in coda"
@@ -60,6 +61,15 @@ export default async function Project({ params }: { params: { id: string } }) {
     return (
       <BigTextCentered
         text="Progetto in lavorazione"
+        id={id}
+        name={project?.name}
+        description={project?.description}
+      />
+    );
+  } else if (status === "error") {
+    return (
+      <BigTextCentered
+        text="Progetto in errore"
         id={id}
         name={project?.name}
         description={project?.description}
@@ -136,11 +146,11 @@ export default async function Project({ params }: { params: { id: string } }) {
         {/* THUMBNAIL */}
         <div className="mx-4 mt-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Thumbnail" />
-          <Thumbnail
+          {/* <Thumbnail
             id={project.id}
             name={project.name}
             thumbnail={project.thumbnail}
-          />
+          /> */}
         </div>
         {/* DOWNLOAD */}
         <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">

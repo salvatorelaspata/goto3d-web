@@ -54,14 +54,14 @@ export default async function RootLayout({
       suppressHydrationWarning={true}
     >
       <body className="bg-palette3">
-        <div className="flex h-full flex-1 flex-col">
-          <Suspense fallback={<Loading />}>
-            {!isError && <Header name={user.email} />}
-            <Loader />
-            <main className="h-full rounded-md">{children}</main>
-            <ToastComponent />
-          </Suspense>
-        </div>
+        {/* <div className="flex h-full flex-1 flex-col"> */}
+        <Suspense fallback={<Loading />}>
+          {!isError && <Header name={user.email} />}
+          <Loader />
+          <main className="rounded-md">{children}</main>
+          <ToastComponent />
+        </Suspense>
+        {/* </div> */}
         <Modal />
       </body>
     </html>

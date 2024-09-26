@@ -31,18 +31,22 @@ export const Wizard: React.FC = () => {
       // 2. create thumbnail
       // await initializeWorker(id);
       // await createThumbnail(formData);
-      await putThumbnail({
-        file: formData.get("thumbnail") as File,
-        projectId: id.toString(),
-      });
-      toast.success("Thumbnail creato con successo");
+      // await putThumbnail({
+      //   file: formData.get("thumbnail") as File,
+      //   projectId: id.toString(),
+      // });
+      // toast.success("Thumbnail creato con successo");
       // 3. upload files
-      toast.info("Caricamento di tutti file in corso...");
+      // toast.info("Caricamento di tutti file in corso...");
       // await Promise.all(await pSendFiles(formData));
       const files = formData.getAll("files") as File[];
       for (const file of files) {
         try {
-          await pSendFile(id.toString(), file);
+          // create form data with current file
+          const fileData = new FormData();
+          fileData.append("id", id.toString());
+          fileData.append("file", file);
+          await pSendFile(fileData);
           toast.info(`File ${file.name} caricato con successo`);
         } catch (error) {
           toast.error(`Errore nel caricamento del file ${file.name}`);

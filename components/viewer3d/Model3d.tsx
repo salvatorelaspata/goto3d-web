@@ -96,7 +96,7 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
           duration: 0.8,
           x: center.x,
           y: center.y,
-          z: center.z + size.z * 2,
+          z: center.z + size.z * 3,
         },
         0,
       )

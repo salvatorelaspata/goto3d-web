@@ -1,7 +1,7 @@
 "use client";
 import { actions, useStore } from "@/store/wizardStore";
 import { useEffect, useRef, useState } from "react";
-import { ThumbnailImage } from "./ThumbnailImage";
+// import { ThumbnailImage } from "./ThumbnailImage";
 
 const composeGallery = (files: FileList) => {
   const gallery = document.getElementById("gallery");
@@ -83,9 +83,9 @@ export const ImagesUpload: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3">
-      <ThumbnailImage />
-      <div className="col-span-2">
+    <div>
+      {/* <ThumbnailImage /> */}
+      <div>
         <label className="my-2 text-lg font-light text-palette1">
           Upload Images
           <span className="mx-1 text-red-600">*</span>
@@ -127,10 +127,7 @@ export const ImagesUpload: React.FC = () => {
           <h1 className="py-4 font-light text-palette1 sm:text-lg">
             File Selezionati ({files?.length || 0})
           </h1>
-          <ul
-            id="gallery"
-            className="grid h-60 grid-cols-2 overflow-y-auto lg:grid-cols-4"
-          >
+          <ul id="gallery" className="grid h-60 overflow-y-auto lg:grid-cols-4">
             <li
               id="empty"
               className="flex flex-col items-center justify-center text-center"
