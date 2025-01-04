@@ -2,6 +2,7 @@ import PageTitle from "@/components/ui/PageTitle";
 import { Projects } from "@/components/projects/Projects";
 import { protectedRoute } from "../actions";
 import { getProjects } from "./actions";
+import { DangerZone } from "@/components/projects/DangerZone";
 
 export default async function Project() {
   await protectedRoute();

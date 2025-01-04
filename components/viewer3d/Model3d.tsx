@@ -86,6 +86,7 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
     if (!object) return;
     const box = new THREE.Box3().setFromObject(object);
     const size = box.getSize(new THREE.Vector3());
+    console.log("size", size);
     const center = box.getCenter(new THREE.Vector3());
 
     const tm = gsap.timeline();

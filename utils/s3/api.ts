@@ -42,8 +42,14 @@ export const getSignedUrl = async (Bucket: string, Key: string) => {
 };
 
 export const deleteObject = async (Bucket: string, Key: string) => {
-  const response = await clientS3.send(
-    new DeleteObjectCommand({ Bucket, Key }),
-  );
-  return response;
+  console.log("[s3][api] - deleteObject", Bucket, Key);
+  try {
+    const response = await clientS3.send(
+      new DeleteObjectCommand({ Bucket, Key }),
+    );
+    console.log("[s3][api] - deleteObject Response:", response);
+    return response;
+  } catch (error) {
+    console.error("[s3][api] - deleteObject Error:", error);
+  }
 };

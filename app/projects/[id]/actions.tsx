@@ -76,13 +76,25 @@ export const deleteProject = async ({ id }: { id: number }) => {
 
     // retrive list of objects in the model folder
     const models = await listObjects("dev", `${id.toString()}/model`);
+    const images = await listObjects("dev", `${id.toString()}/images`);
     // delete all the objects in the model folder
-    if (models) {
-      await Promise.all(
-        models.map((m) =>
-          deleteObject("dev", `${id.toString()}/model/${m.Key}`),
-        ),
-      );
+    if (models.length) {
+      try {
+        await Promise.all(models.map((m) => deleteObject("dev", `${m.Key}`)));
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+
+    // delete all the objects in the images folder
+    if (images.length) {
+      console.log("images", images.length);
+      try {
+        await Promise.all(images.map((m) => deleteObject("dev", `${m.Key}`)));
+        console.log("successone");
+      } catch (error) {
+        console.log("error", error);
+      }
     }
 
     // delete the thumbnail
