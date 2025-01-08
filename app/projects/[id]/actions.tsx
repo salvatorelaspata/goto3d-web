@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 
 export const fetchData = async ({ id }: { id: string }) => {
   const _id: number = parseInt(id);
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const { data: project } = await supabase
       .from("project")
@@ -56,7 +56,7 @@ export const retrieveSignedUrls = async ({
 };
 
 export const deleteProject = async ({ id }: { id: number }) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     // get the thumbnail
     const { data } = await supabase
@@ -114,7 +114,7 @@ export const deleteProject = async ({ id }: { id: number }) => {
 };
 
 export const updateProject = async (formData: FormData) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = parseInt(formData.get("id") as string);
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;

@@ -3,11 +3,12 @@ import { Form, FormCatalogExtra } from "@/components/catalogs/Form";
 import { fetchData, getProjects } from "./actions";
 import { protectedRoute } from "@/app/actions";
 
-export default async function NewCatalog({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function NewCatalog(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   await protectedRoute();
   const projects = await getProjects();
   const catalog = await fetchData({ id: params.id });

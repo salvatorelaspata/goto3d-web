@@ -4,7 +4,7 @@ import { protectedRoute } from "@/app/actions";
 export default async function Profile() {
   await protectedRoute();
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

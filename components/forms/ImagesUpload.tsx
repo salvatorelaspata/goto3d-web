@@ -1,7 +1,6 @@
 "use client";
 import { actions, useStore } from "@/store/wizardStore";
 import { useEffect, useRef, useState } from "react";
-// import { ThumbnailImage } from "./ThumbnailImage";
 
 const composeGallery = (files: FileList) => {
   const gallery = document.getElementById("gallery");
@@ -84,7 +83,6 @@ export const ImagesUpload: React.FC = () => {
 
   return (
     <div>
-      {/* <ThumbnailImage /> */}
       <div>
         <label className="my-2 text-lg font-light text-palette1">
           Upload Images

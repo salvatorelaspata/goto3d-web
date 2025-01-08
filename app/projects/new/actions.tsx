@@ -20,7 +20,7 @@ export async function sendProjectToQueue(id: number) {
 }
 
 export async function updateThumbnail(id: number, thumbnail: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("project")
     .update({
@@ -43,7 +43,7 @@ export async function doCreate(formData: FormData) {
 
   const filesArray = Array.from(files).map((f) => f.name) as string[];
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("project")
     .insert({
@@ -128,7 +128,7 @@ export const pSendFile = async (formData: FormData) => {
 };
 
 export const pSendFiles = async (formData: FormData) => {
-  // const supabase = createClient();
+  // const supabase = await createClient();
   const projectId = formData.get("id") as string;
   const files = formData.getAll("files") as File[];
   return files.map(async (f) => {

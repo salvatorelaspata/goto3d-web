@@ -1,5 +1,7 @@
 import { Stepper } from "./Stepper";
 
+import type { JSX } from "react";
+
 interface WizardStepProps {
   form: JSX.Element;
   spiegone: JSX.Element;

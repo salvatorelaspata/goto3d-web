@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 
 export const fetchData = async ({ id }) => {
   const _id: number = parseInt(id);
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const { data: catalog, error } = await supabase
       .from("catalog")
@@ -29,7 +29,7 @@ export const fetchData = async ({ id }) => {
 };
 
 export async function updateCatalog(formData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = formData.get("id") as string;
   try {
     // update in catalog
@@ -74,7 +74,7 @@ export async function updateCatalog(formData) {
 }
 
 export async function getProjects() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")

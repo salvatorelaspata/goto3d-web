@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 export async function getCatalogs() {
-  const supabase = createClient();
+  const supabase = await createClient();
   // extract the catalogs from the database and the count of project in each catalog
   const { data: catalogs, error } = await supabase
     .from("catalog")

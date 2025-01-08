@@ -9,7 +9,7 @@ export default function Auth() {
     "use server";
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -22,8 +22,8 @@ export default function Auth() {
 
   const signInWithGoogle = async () => {
     "use server";
-    const supabase = createClient();
-    const origin = headers().get("origin");
+    const supabase = await createClient();
+    const origin = (await headers()).get("origin");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

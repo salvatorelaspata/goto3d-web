@@ -1,11 +1,18 @@
 // import { Viewer3d } from "@/components/viewer3d/Viewer3d";
 import { fetchData } from "@/app/projects/[id]/actions";
 
-export default async function Artifact({
-  params: { id, project },
-}: {
-  params: { id: string; project: string };
-}) {
+export default async function Artifact(
+  props: {
+    params: Promise<{ id: string; project: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    id,
+    project
+  } = params;
+
   const p = await fetchData({ id: project });
   if (!p || !p.project || !p.models) return null;
   return (

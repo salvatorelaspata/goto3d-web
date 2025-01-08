@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 export const fetchArtifact = async (id: string) => {
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     const { data: catalog, error } = await supabase
       .from("catalog")

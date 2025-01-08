@@ -3,14 +3,14 @@
 import { RefObject, Suspense, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { createClient } from "@/utils/supabase/client";
+// import { createClient } from "@/utils/supabase/client";
 import { Personalization } from "./Personalization";
 import { Scene } from "./Scene";
-import { getSignedUrl, listObjects } from "@/utils/s3/api";
+// import { getSignedUrl, listObjects } from "@/utils/s3/api";
 import type { _Object } from "@aws-sdk/client-s3";
 import { actions } from "@/store/viewerStore";
-import { actions as mainActions } from "@/store/main";
-import Link from "next/link";
+// import { actions as mainActions } from "@/store/main";
+// import Link from "next/link";
 import { ARSvg } from "./ARSvg";
 
 interface Viewer3dProps {
@@ -63,7 +63,7 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
 };
 
 // ICONS
-export const FullScreenSvg = (container: RefObject<HTMLDivElement>) => (
+export const FullScreenSvg = (container: RefObject<HTMLDivElement | null>) => (
   <svg
     className="cursor-pointer rounded-sm"
     onClick={() => {

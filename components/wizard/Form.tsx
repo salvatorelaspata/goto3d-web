@@ -2,7 +2,7 @@ import { useStore } from "@/store/wizardStore";
 import CompleteButton from "./CompleteButton";
 import NextButton from "./NextButton";
 interface FormProps {
-  ref?: React.RefObject<HTMLDivElement>;
+  ref?: React.RefObject<HTMLDivElement | null>;
   children: React.ReactNode;
   stretch?: boolean;
   latest?: boolean;

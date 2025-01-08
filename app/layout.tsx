@@ -6,7 +6,7 @@ import localFont from "next/font/local";
 import "@/styles/globals.css";
 import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
-import { Metadata } from "next";
+import { Metadata, type Viewport } from "next";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 // import Head from "next/head";
 
@@ -36,16 +36,26 @@ export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "GoTo3D",
   description: "From image to 3D model in seconds",
-  manifest: "/manifest.json",
-  themeColor: "#000000",
+  // manifest: "/manifest.json",
+  // themeColor: "#000000",
   appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
     title: "GoTo3D",
+    statusBarStyle: "black-translucent",
+    startupImage: [
+      "/apple-touch-startup-image-768x1004.jpeg",
+      {
+        url: "/apple-touch-startup-image-1536x2008.jpeg",
+        media: "(device-width: 768px) and (device-height: 1024px)",
+      },
+    ],
   },
   icons: {
     apple: [{ url: "/icon.png" }],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "black",
 };
 
 export default async function RootLayout({
@@ -53,7 +63,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error,
@@ -66,26 +76,14 @@ export default async function RootLayout({
       className={`${poppins.variable} m-0 font-sans`}
       suppressHydrationWarning={true}
     >
-      {/* <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" href="/icon.png" />
-
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="GoTo3D" />
-      </Head> */}
       <body className="bg-palette3">
-        {/* <div className="flex h-full flex-1 flex-col"> */}
         <Suspense fallback={<Loading />}>
           {!isError && <Header name={user.email} />}
           <Loader />
           <main className="rounded-md">{children}</main>
           <ToastComponent />
         </Suspense>
-        {/* </div> */}
         <Modal />
-
         <ServiceWorkerRegister />
       </body>
     </html>

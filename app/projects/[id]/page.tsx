@@ -14,13 +14,13 @@ import { protectedRoute } from "@/app/actions";
 import { notFound } from "next/navigation";
 import { _Object } from "@aws-sdk/client-s3";
 import { userAgent } from "next/server";
-import { headers } from "next/headers";
+import { headers, type UnsafeUnwrappedHeaders } from "next/headers";
 import Link from "next/link";
 import { Thumbnail } from "@/components/projects/Thumbnail";
 import { readableFileSize } from "@/utils/utils";
 
 const checkUserAgent = () => {
-  const { os, device } = userAgent({ headers: headers() });
+  const { os, device } = userAgent({ headers: (headers() as unknown as UnsafeUnwrappedHeaders) });
   const isMobile = device.type === "mobile";
   const isIphone = os.name === "iOS" && device.model === "iPhone";
   const isIpad = os.name === "iOS" && device.model === "iPad";
@@ -28,7 +28,8 @@ const checkUserAgent = () => {
   return { isMobile, isIphone, isIpad };
 };
 
-export default async function Project({ params }: { params: { id: string } }) {
+export default async function Project(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await protectedRoute();
 
   const res = await fetchData({ id: params.id });

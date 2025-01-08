@@ -37,7 +37,7 @@ export default function ToastComponent() {
         },
         (payload) => {
           toast.success(`Project completato ${payload.new.name}`);
-        }
+        },
       )
       .subscribe();
   }, []);

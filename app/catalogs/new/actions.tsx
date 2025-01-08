@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export const getProjects = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")
@@ -18,7 +18,7 @@ export const getProjects = async () => {
 };
 
 export async function doCreate(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const _public = formData.get("visibility") as string;
@@ -57,7 +57,7 @@ export async function doCreate(formData: FormData) {
 }
 
 export async function deleteCatalog(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = formData.get("id") as string;
 
   const { error: errorManyToMany } = await supabase

@@ -3,7 +3,8 @@ import { fetchArtifact } from "./actions";
 import { protectedRoute } from "@/app/actions";
 import ProjectCard from "@/components/projects/ProjectCard";
 
-export default async function Artifact({ params }: { params: { id: string } }) {
+export default async function Artifact(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   await protectedRoute();
   const artifact = await fetchArtifact(params.id);
   if (!artifact) return null;

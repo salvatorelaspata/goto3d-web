@@ -28,7 +28,7 @@ export interface FieldProps {
     >
   ) => void;
   onFileChange?: (e: React.ChangeEvent<FileEventTarget>) => void;
-  ref?: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
+  ref?: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null>;
 }
 
 type FileEventTarget = HTMLInputElement & { files: FileList };

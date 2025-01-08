@@ -2,7 +2,7 @@ import { getSignedUrl } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 
 export const getProjects = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")
