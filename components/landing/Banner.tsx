@@ -27,7 +27,10 @@ export default function Banner({
             </div>
             {user ? (
               <form action={goToDashboard}>
-                <button className="rounded-lg border bg-palette3 px-8 py-3 text-lg font-semibold text-palette1 transition duration-300 hover:bg-palette1 hover:text-palette3">
+                <button
+                  id="goToDashboard"
+                  className="rounded-lg border bg-palette3 px-8 py-3 text-lg font-semibold text-palette1 transition duration-300 hover:bg-palette1 hover:text-palette3"
+                >
                   Vai alla dashboard
                 </button>
               </form>

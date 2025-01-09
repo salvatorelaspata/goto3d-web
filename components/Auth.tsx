@@ -39,9 +39,7 @@ export default function Auth() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center rounded-xl bg-palette2 p-4 text-gray-100 shadow-md">
       <div className="my-8">
-        <h1 className="text-center text-2xl font-bold text-palette1">
-          Accedi o Registrati
-        </h1>
+        <h1 className="text-center text-2xl font-bold text-palette1">Accedi</h1>
         <Image src="/logo.png" alt="Config.Reality" width={200} height={200} />
       </div>
       <form className="flex w-full flex-col" action={signIn}>
@@ -56,15 +54,17 @@ export default function Auth() {
         <button
           className="mt-4 rounded-md bg-palette1 p-2 text-palette3"
           type="submit"
+          id="login-submit"
         >
           Accedi
         </button>
-        <button
+        {/* <button
           className="mt-4 rounded-md border border-dotted border-palette1 p-2 text-palette1"
           type="submit"
+          id="register-submit"
         >
           Registrati
-        </button>
+        </button> */}
       </form>
 
       <div className="relative flex w-full items-center p-4">

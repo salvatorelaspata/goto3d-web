@@ -191,7 +191,10 @@ export default async function Home() {
                 Pronto a rivoluzionare il tuo mondo in 3D?
               </h2>
               <form action={goToLogin}>
-                <button className="rounded-lg border border-palette1 bg-palette1 px-8 py-3 text-lg font-semibold text-palette5 transition duration-300 hover:bg-palette3 hover:text-palette1">
+                <button
+                  id="login"
+                  className="rounded-lg border border-palette1 bg-palette1 px-8 py-3 text-lg font-semibold text-palette5 transition duration-300 hover:bg-palette3 hover:text-palette1"
+                >
                   Inizia ora
                 </button>
               </form>
