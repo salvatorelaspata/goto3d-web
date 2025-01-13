@@ -1,25 +1,34 @@
 // create test for new project
+
 describe('New Project', () => {
   it('should create a new project without image', () => {
     // Sign in
     cy.visit('http://localhost:8080/')
+
+    cy.get('#login').click()
+
     cy.wait(1000)
-    // Fill out the login form
-    cy.get('input[name="email"]').type(`e2e.test.cy@gmail.com`)
-    cy.get('input[name="password"]').type('e2e.test.cy')
+
+    // Fill out the form
+    cy.get('input[name="email"]').type(`asd@asd.asd`)
+    cy.get('input[name="password"]').type('asdasd')
+
     // Submit the form
-    cy.get('button[type="submit"]').click()
+    cy.get('#login-submit').click()
     cy.wait(500)
     // navigate to new project page
     cy.get('a[href*="projects"]').click()
     cy.wait(500)
-    cy.get('a[href*="projects/new"]').click()
+    cy.get('button[type="submit"]').click()
     cy.wait(500)
     // Fill out the project form
-    cy.get('input[name="name"]').type('e2e test project')
+
+    cy.get('input[name="name"]').type(`e2e test project ${Date.now()}`)
     cy.get('textarea[name="description"]').type('e2e test project description')
 
-    cy.get('button[type="submit"]').click()
+    cy.get('#next-button-1').click()
+    cy.wait(1000)
+    cy.get('#next-button-2').click()
 
     // verify the project is created
   })
@@ -62,4 +71,4 @@ describe('New Project', () => {
   })
 })
 
-export {}
+export { }
