@@ -38,5 +38,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 # ToDo
+
 - [ ] /projects/:id - Visualizzare il modello 3d (verificare se usdz direttamente o necessario obj + texture)
-- [ ] Schema DB - Gestire status e sistemare relazioni in generale. 
+- [ ] Schema DB - Gestire status e sistemare relazioni in generale.
+
+ok
