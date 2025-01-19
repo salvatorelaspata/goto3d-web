@@ -34,14 +34,16 @@ export const retrieveSignedUrls = async ({
   if (!models) return;
   try {
     type Model = { key: string; url: string; size: number };
-    const urls: Model[] = await Promise.all(
-      models.map(async (m) => {
-        console.log(m);
-        if (!m || !m.Key) return;
-        const signedUrl = await getSignedUrl("dev", m?.Key);
-        return { url: signedUrl, size: m.Size };
-      }),
-    );
+    const urls: Model[] = (
+      await Promise.all(
+        models.map(async (m) => {
+          console.log(m);
+          if (!m || !m.Key) return;
+          const signedUrl = await getSignedUrl("dev", m?.Key);
+          return { url: signedUrl, size: m.Size };
+        }),
+      )
+    ).filter((url): url is Model => url !== undefined);
 
     return urls.map(({ url, size }) => ({
       key: url?.split("/").pop()?.split("?")[0] || "",
