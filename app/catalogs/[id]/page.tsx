@@ -21,3 +21,4 @@ export default async function NewCatalog({
     </div>
   );
 }
+export const runtime = "edge";

@@ -19,3 +19,4 @@ export default async function Artifact({
     </section>
   );
 }
+export const runtime = "edge";

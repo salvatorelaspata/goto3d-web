@@ -9,7 +9,10 @@
     "lint": "next lint",
     "update-types": "node ./scripts/update-types.js",
     "cypress": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.624.0",
@@ -31,17 +34,22 @@
     "gsap": "^3.12.5",
     "heic-convert": "^2.1.0",
     "heic2any": "^0.0.4",
+    "net": "^1.0.2",
     "next": "^14.2.5",
     "next-pwa": "^5.6.0",
+    "querystring": "^0.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-toastify": "^10.0.5",
+    "stream": "^0.0.3",
     "three": "^0.167.1",
+    "tls": "^0.0.1",
     "typescript": "^5.5.4",
     "valtio": "^1.13.2"
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.2",
+    "@cloudflare/next-on-pages": "^1.13.7",
     "@types/amqplib": "^0.10.5",
     "@types/dat.gui": "^0.7.13",
     "@types/heic-convert": "^2.1.0",

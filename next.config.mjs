@@ -3,6 +3,8 @@
 // if (process.env.NODE_ENV === "development") {
 //   await setupDevPlatform();
 // }
+import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
+
 import pwa from "next-pwa";
 const withPWA = pwa({
   dest: "public",
@@ -40,5 +42,9 @@ const nextConfig = withPWA({
     ],
   },
 });
+
+if (process.env.NODE_ENV === "development") {
+  await setupDevPlatform();
+}
 
 export default nextConfig;

@@ -1,5 +1,3 @@
-"use server";
-
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 
@@ -85,3 +83,4 @@ export async function getProjects() {
   }
   return projects;
 }
+export const runtime = "edge";

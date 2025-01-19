@@ -1,7 +1,7 @@
 import Auth from "@/components/Auth";
 import { redirect } from "next/navigation";
 
-export default async function Login () {
+export default async function Login() {
   const onBack = async () => {
     "use server";
     redirect("/");
@@ -10,7 +10,7 @@ export default async function Login () {
     <div className="flex flex-col items-stretch p-4">
       {/* back button */}
       <form action={onBack}>
-        <button className="absolute  left-8 top-8 bg-palette1 text-palette5 rounded-md p-2">
+        <button className="absolute left-8 top-8 rounded-md bg-palette1 p-2 text-palette5">
           🏚️
         </button>
       </form>
@@ -18,3 +18,4 @@ export default async function Login () {
     </div>
   );
 }
+export const runtime = "edge";

@@ -184,3 +184,4 @@ export default async function Project({ params }: { params: { id: string } }) {
     </>
   );
 }
+export const runtime = "edge";

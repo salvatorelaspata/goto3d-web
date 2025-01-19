@@ -9,7 +9,7 @@ export default async function Configurator() {
       <section className="m-4 flex h-[77vh] items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b from-[#006D77] to-[#83C5BE]"></section>
       <section className="m-4 flex flex-col justify-center rounded-lg bg-palette2">
         <PageTitle title="Dettagli" />
-        <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-palette5 py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="mx-auto my-4 w-full max-w-2xl rounded-lg bg-palette5 px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="col-span-2 py-2 md:col-span-1">
             <h3 className="mb-2 border-b border-palette3 font-mono text-xl font-bold text-palette1">
               General Info
@@ -30,3 +30,4 @@ export default async function Configurator() {
     </>
   );
 }
+export const runtime = "edge";

@@ -1,5 +1,3 @@
-"use server";
-
 import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 import type { _Object } from "@aws-sdk/client-s3";
@@ -131,3 +129,4 @@ export const updateProject = async (formData: FormData) => {
     console.error("[projects][id][actions] - updateProject Error:", error);
   }
 };
+export const runtime = "edge";

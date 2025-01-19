@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-
+export const runtime = "edge";
 export default async function () {
   return (
     <div className="flex h-full flex-col items-stretch p-4">

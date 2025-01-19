@@ -23,3 +23,4 @@ export async function getCatalogs() {
   }
   return catalogs;
 }
+export const runtime = "edge";

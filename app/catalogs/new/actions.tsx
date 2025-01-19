@@ -1,4 +1,3 @@
-"use server";
 import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
@@ -76,3 +75,4 @@ export async function deleteCatalog(formData: FormData) {
 
   revalidatePath("/catalogs");
 }
+export const runtime = "edge";

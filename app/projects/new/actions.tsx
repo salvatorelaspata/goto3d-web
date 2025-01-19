@@ -137,3 +137,4 @@ export const pSendFiles = async (formData: FormData) => {
     return putObject("dev", projectId + "/images/" + f.name, reader);
   });
 };
+// export const runtime = "edge";

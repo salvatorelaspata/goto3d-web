@@ -11,3 +11,4 @@ export const protectedRoute = async () => {
     return redirect("/login");
   }
 };
+export const runtime = "edge";

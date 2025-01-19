@@ -20,3 +20,4 @@ export const fetchArtifact = async (id: string) => {
     console.error("error", error);
   }
 };
+export const runtime = "edge";

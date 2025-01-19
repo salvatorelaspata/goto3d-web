@@ -30,3 +30,4 @@ const _getSignedThumbnail = async ({
   const signedUrl = await getSignedUrl("public-dev", thumbnail);
   return signedUrl;
 };
+export const runtime = "edge";

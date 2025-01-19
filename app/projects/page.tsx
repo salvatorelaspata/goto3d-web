@@ -34,3 +34,4 @@ export default async function Project() {
     </>
   );
 }
+export const runtime = "edge";

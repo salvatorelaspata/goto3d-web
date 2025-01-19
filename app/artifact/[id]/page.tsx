@@ -21,8 +21,8 @@ export default async function Artifact({ params }: { params: { id: string } }) {
       <section className="m-4 rounded-lg bg-palette2">
         <PageTitle title="Modelli 3D" />
 
-        <div className="mx-auto max-w-2xl py-8 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-          <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
             {artifact?.projects.map(({ project }) => (
               <ProjectCard
                 key={project?.id}
@@ -36,3 +36,4 @@ export default async function Artifact({ params }: { params: { id: string } }) {
     </>
   );
 }
+export const runtime = "edge";

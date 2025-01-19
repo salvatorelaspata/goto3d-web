@@ -3,12 +3,12 @@ import { Accordion } from "@/components/Accordion";
 export default async function FAQ() {
   return (
     <section className="w-full py-12">
-      <div className="container px-4 md:px-6 max-w-3xl mx-auto space-y-8">
+      <div className="container mx-auto max-w-3xl space-y-8 px-4 md:px-6">
         <div className="space-y-4 text-center">
-          <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-palette1">
+          <h1 className="text-3xl font-bold tracking-tighter text-palette1 sm:text-4xl md:text-5xl">
             Frequently Asked Questions
           </h1>
-          <p className="text-palette2  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+          <p className="text-palette2 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
             Get answers to the most common questions about our product.
           </p>
         </div>
@@ -22,3 +22,4 @@ export default async function FAQ() {
     </section>
   );
 }
+export const runtime = "edge";
