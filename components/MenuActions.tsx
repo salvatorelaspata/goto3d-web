@@ -9,7 +9,7 @@ export const logout = async () => {
   return redirect("/");
 };
 
-export const navTo = (e: FormData) => {
-  const url = (e.get("url") as string) || "/";
+export const navTo = async (formData: FormData) => {
+  const url = (formData.get("url") as string) || "/";
   return redirect(url);
 };

@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Menu } from "../Menu";
 import { routes } from "@/utils/constants";
 import { usePathname } from "next/navigation";
+import { HomeIcon } from "@heroicons/react/24/outline";
+import { ArrowRightOnRectangleIcon } from "@heroicons/react/20/solid";
+import { logout, navTo } from "../MenuActions";
 
 interface HeaderProps {
   name: string | undefined;
@@ -46,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
             <p className="ml-2 text-sm">Hey {name}</p>
           </Li>
 
-          <ul>
+          <ul className="flex items-center space-x-4">
             <div className="hidden items-stretch space-x-3 md:flex">
               {routes.map((item) => (
                 <Li key={item.name}>
@@ -59,6 +62,27 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
                   </Link>
                 </Li>
               ))}
+            </div>
+            <div className="flex items-center space-x-2">
+              <form action={navTo}>
+                <input type="hidden" name="url" value="/" />
+                <button
+                  type="submit"
+                  className={`${color} rounded-full p-2`}
+                  aria-label="Home"
+                >
+                  <HomeIcon className="h-5 w-5" />
+                </button>
+              </form>
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className={`${color} rounded-full p-2 bg-palette5`}
+                  aria-label="Logout"
+                >
+                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                </button>
+              </form>
             </div>
             <div className="flex items-stretch space-x-3 md:hidden">
               <Li>

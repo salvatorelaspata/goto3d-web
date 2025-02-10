@@ -72,9 +72,9 @@ export const Menu: React.FC<MenuProps> = ({ color }) => {
             </form>
           ))}
 
-          <form action={logout} className={`${color} block text-sm`}>
+          {/* <form action={logout} className={`${color} block text-sm`}>
             <button className="w-full px-4 py-3">Logout</button>
-          </form>
+          </form> */}
         </div>
       </div>
     </div>
