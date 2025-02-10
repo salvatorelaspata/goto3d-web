@@ -1,3 +1,4 @@
+import { Iubenda } from "@/components/Iubenda";
 import Banner from "@/components/landing/Banner";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -202,7 +203,9 @@ export default async function Home() {
 
       <footer className="bg-palette1 py-4 text-palette3">
         <div className="container mx-auto px-4 text-center">
-          <p>&copy; 2024 goto3d. Tutti i diritti riservati.</p>
+          <p>
+            &copy; 2024 goto3d. Tutti i diritti riservati. <Iubenda />
+          </p>
         </div>
       </footer>
     </div>

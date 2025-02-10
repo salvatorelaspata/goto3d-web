@@ -1,8 +1,7 @@
 import type React from "react";
-
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-palette1 text-palette3 text-center p-1 m-0">
+    <footer className="m-0 bg-palette1 p-1 text-center text-palette3">
       <p>
         <span className="font-bold">{`<POC/>`}</span> Powered with ❤️ by{" "}
         <a href="https://salvatorelaspata.net" className="underline">

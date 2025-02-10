@@ -14,12 +14,13 @@ import {
 } from "@/app/projects/new/actions";
 // import { useEffect, useTransition } from "react";
 import { actions } from "@/store/main";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 // import { useRef, useState } from "react";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
+  const router = useRouter();
 
   const onSubmit = async (formData: FormData) => {
     actions.showLoading();
@@ -28,17 +29,12 @@ export const Wizard: React.FC = () => {
       const id = await doCreate(formData);
       formData.set("id", id.toString());
       toast.success(`Project created: ${id}`);
+      
       // 2. create thumbnail
-      // await initializeWorker(id);
-      // await createThumbnail(formData);
-      // await putThumbnail({
-      //   file: formData.get("thumbnail") as File,
-      //   projectId: id.toString(),
-      // });
-      // toast.success("Thumbnail creato con successo");
+      await createThumbnail(formData);
+      toast.info(`Thumbnail created successfully`);
+      
       // 3. upload files
-      // toast.info("Caricamento di tutti file in corso...");
-      // await Promise.all(await pSendFiles(formData));
       const files = formData.getAll("files") as File[];
       for (const file of files) {
         try {
@@ -57,13 +53,13 @@ export const Wizard: React.FC = () => {
       // 4. send project to queue
       await sendProjectToQueue(id);
       toast.success("Progetto inviato alla coda");
+      actions.hideLoading();
+      router.push("/projects");
     } catch (error: any) {
       actions.hideLoading();
       toast.error(error.message);
       return;
     }
-    actions.hideLoading();
-    redirect("/projects");
   };
 
   return (

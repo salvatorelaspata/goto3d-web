@@ -13,6 +13,9 @@ const withPWA = pwa({
 const nextConfig = withPWA({
   reactStrictMode: false,
   experimental: {
+    serverActions: {
+      allowedOrigins: ["localhost:8080", "127.0.0.1:57035"],
+    },
     serverComponentsExternalPackages: ["@aws-sdk"],
   },
   images: {

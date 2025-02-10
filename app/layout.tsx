@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { Iubenda } from "@/components/Iubenda";
 // import Head from "next/head";
 
 const poppins = localFont({
@@ -32,12 +33,19 @@ const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`
   : "http://localhost:8080";
 
+  
+  import type { Viewport } from 'next'
+ 
+export const viewport: Viewport = {
+  themeColor: "#000000",
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
   title: "GoTo3D",
   description: "From image to 3D model in seconds",
   manifest: "/manifest.json",
-  themeColor: "#000000",
+  // themeColor: "#000000",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
