@@ -19,11 +19,11 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
   const submitRef = useRef<HTMLButtonElement>(null);
 
   const doUpdateThumbnail = async (formData: FormData) => {
-    await putThumbnail({
-      thumbnail: thumbnail || "",
-      file: formData.get("thumbnail") as File,
-      projectId: id.toString(),
-    });
+    // await putThumbnail({
+    //   thumbnail: thumbnail || "",
+    //   file: formData.get("thumbnail") as File,
+    //   projectId: id.toString(),
+    // });
     toast.success("Project updated");
   };
   const onChangeForm = (e: React.ChangeEvent<HTMLFormElement>) => {
