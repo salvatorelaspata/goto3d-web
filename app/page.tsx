@@ -22,6 +22,14 @@ export default async function Home() {
     "use server";
     redirect("/dashboard");
   };
+  const goToNewCatalog = async () => {
+    "use server";
+    redirect("/catalogs/new");
+  };
+  const goToNewProject = async () => {
+    "use server";
+    redirect("/projects/new");
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="mx-auto p-4">
@@ -29,6 +37,8 @@ export default async function Home() {
           user={user}
           goToLogin={goToLogin}
           goToDashboard={goToDashboard}
+          goToNewCatalog={goToNewCatalog}
+          goToNewProject={goToNewProject}
         />
         {/* WORKFLOW */}
         <section className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">

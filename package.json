@@ -16,7 +16,7 @@
     "@aws-sdk/s3-presigned-post": "^3.624.0",
     "@aws-sdk/s3-request-presigner": "^3.624.0",
     "@gsap/react": "^2.1.1",
-    "@heroicons/react": "^2.2.0",
+    "@heroicons/react": "^1.0.6",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
     "@react-three/postprocessing": "^2.16.2",

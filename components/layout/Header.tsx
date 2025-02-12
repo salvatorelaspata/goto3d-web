@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Menu } from "../Menu";
 import { routes } from "@/utils/constants";
 import { usePathname } from "next/navigation";
-import { HomeIcon } from "@heroicons/react/24/outline";
-import { ArrowRightOnRectangleIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/outline";
+import { ArrowRightIcon } from "@heroicons/react/solid";
 import { logout, navTo } from "../MenuActions";
 
 interface HeaderProps {
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
                   <Link
                     rel="noopener noreferrer"
                     href={item.url}
-                    className={`${color} rounded-md py-2 px-4`}
+                    className={`${color} rounded-md px-4 py-2`}
                   >
                     {item.name || ""}
                   </Link>
@@ -77,10 +77,10 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
               <form action={logout}>
                 <button
                   type="submit"
-                  className={`${color} rounded-full p-2 bg-palette5`}
+                  className={`${color} rounded-full bg-palette5 p-2`}
                   aria-label="Logout"
                 >
-                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                  <ArrowRightIcon className="h-5 w-5" />
                 </button>
               </form>
             </div>
