@@ -16,7 +16,6 @@ import { _Object } from "@aws-sdk/client-s3";
 import { userAgent } from "next/server";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { Thumbnail } from "@/components/projects/Thumbnail";
 import { readableFileSize } from "@/utils/utils";
 
 const checkUserAgent = () => {
@@ -146,11 +145,6 @@ export default async function Project({ params }: { params: { id: string } }) {
         {/* THUMBNAIL */}
         <div className="mx-4 mt-4 rounded-lg bg-palette1 p-4">
           <SectionTitle title="Thumbnail" />
-          {/* <Thumbnail
-            id={project.id}
-            name={project.name}
-            thumbnail={project.thumbnail}
-          /> */}
         </div>
         {/* DOWNLOAD */}
         <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">

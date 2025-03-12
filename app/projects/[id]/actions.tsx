@@ -4,6 +4,8 @@ import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 import type { _Object } from "@aws-sdk/client-s3";
 import { revalidatePath } from "next/cache";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const fetchData = async ({ id }: { id: string }) => {
   const _id: number = parseInt(id);
@@ -17,7 +19,10 @@ export const fetchData = async ({ id }: { id: string }) => {
 
     if (!project) throw new Error("No project found");
 
-    const models = await listObjects("dev", `${project?.id}/model`);
+    const models = await listObjects(
+      process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+      `${project?.id}/model`,
+    );
     if (!models) throw new Error("No models found");
 
     return { project, models };
@@ -39,7 +44,10 @@ export const retrieveSignedUrls = async ({
         models.map(async (m) => {
           console.log(m);
           if (!m || !m.Key) return;
-          const signedUrl = await getSignedUrl("dev", m?.Key);
+          const signedUrl = await getSignedUrl(
+            process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+            m?.Key,
+          );
           return { url: signedUrl, size: m.Size };
         }),
       )
@@ -77,12 +85,25 @@ export const deleteProject = async ({ id }: { id: number }) => {
     if (error) throw new Error(error.message);
 
     // retrive list of objects in the model folder
-    const models = await listObjects("dev", `${id.toString()}/model`);
-    const images = await listObjects("dev", `${id.toString()}/images`);
+    const models = await listObjects(
+      process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+      `${id.toString()}/model`,
+    );
+    const images = await listObjects(
+      process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+      `${id.toString()}/images`,
+    );
     // delete all the objects in the model folder
     if (models.length) {
       try {
-        await Promise.all(models.map((m) => deleteObject("dev", `${m.Key}`)));
+        await Promise.all(
+          models.map((m) =>
+            deleteObject(
+              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+              `${m.Key}`,
+            ),
+          ),
+        );
       } catch (error) {
         console.log("error", error);
       }
@@ -92,7 +113,14 @@ export const deleteProject = async ({ id }: { id: number }) => {
     if (images.length) {
       console.log("images", images.length);
       try {
-        await Promise.all(images.map((m) => deleteObject("dev", `${m.Key}`)));
+        await Promise.all(
+          images.map((m) =>
+            deleteObject(
+              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+              `${m.Key}`,
+            ),
+          ),
+        );
         console.log("successone");
       } catch (error) {
         console.log("error", error);
@@ -102,8 +130,11 @@ export const deleteProject = async ({ id }: { id: number }) => {
     // delete the thumbnail
     if (data?.thumbnail) {
       const t = data.thumbnail.split("/").pop();
-      // await supabase.storage.from("public-dev").remove([t as string]);
-      await deleteObject("public-dev", t as string);
+
+      await deleteObject(
+        process.env.NEXT_CLOUDFLARE_R2_BUCKET_PUBLIC_NAME ?? "",
+        t as string,
+      );
     }
 
     revalidatePath("/projects");

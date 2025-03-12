@@ -84,7 +84,6 @@ export const ImagesUpload: React.FC = () => {
 
   return (
     <div>
-      {/* <ThumbnailImage /> */}
       <div>
         <label className="my-2 text-lg font-light text-palette1">
           Upload Images

@@ -3,20 +3,10 @@ import { useStore } from "@/store/wizardStore";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
-import {
-  createThumbnail,
-  // createThumbnail,
-  doCreate,
-  pSendFile,
-  pSendFiles,
-  putThumbnail,
-  sendProjectToQueue,
-} from "@/app/projects/new/actions";
-// import { useEffect, useTransition } from "react";
+import { processProject } from "@/app/projects/new/actions";
 import { actions } from "@/store/main";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-// import { useRef, useState } from "react";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
@@ -25,33 +15,8 @@ export const Wizard: React.FC = () => {
   const onSubmit = async (formData: FormData) => {
     actions.showLoading();
     try {
-      // 1. create project
-      const id = await doCreate(formData);
-      formData.set("id", id.toString());
-      toast.success(`Project created: ${id}`);
-      
-      // 2. create thumbnail
-      await createThumbnail(formData);
-      toast.info(`Thumbnail created successfully`);
-      
-      // 3. upload files
-      const files = formData.getAll("files") as File[];
-      for (const file of files) {
-        try {
-          // create form data with current file
-          const fileData = new FormData();
-          fileData.append("id", id.toString());
-          fileData.append("file", file);
-          await pSendFile(fileData);
-          toast.info(`File ${file.name} caricato con successo`);
-        } catch (error) {
-          toast.error(`Errore nel caricamento del file ${file.name}`);
-          throw error;
-        }
-      }
-      toast.success("File caricati con successo");
-      // 4. send project to queue
-      await sendProjectToQueue(id);
+      toast.info("Creazione progetto in corso");
+      await processProject(formData);
       toast.success("Progetto inviato alla coda");
       actions.hideLoading();
       router.push("/projects");
