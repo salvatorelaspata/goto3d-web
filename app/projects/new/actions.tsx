@@ -48,18 +48,17 @@ export async function processProject(formData: FormData) {
   const projectId = data.id
   console.log("projectId", projectId);
   // creo la thumbnail (la prima immagine, la converto se è heic)
-  const file = files[0];
-  let jpgFile: File | null = null;
-  if (file.type === "image/heic") jpgFile = await _convertHeicToJpg(file);
-  else jpgFile = file;
-
+  let file = files[0];
+  console.log(file.type);
+  if (file.type === "image/heic") {
+    file = await _convertHeicToJpg(file);
+  }
+  console.log(file.type)
   // creo uuid
   const uuid = uuidv4();
-
   const ext = file.name.split(".").pop();
   const buffer = await file.arrayBuffer();
   const reader = new Uint8Array(buffer);
-
   await putObject(
     process.env.NEXT_CLOUDFLARE_R2_BUCKET_PUBLIC_NAME ?? "",
     `${uuid}.${ext}`,
@@ -106,9 +105,10 @@ const _convertHeicToJpg = async (file: File) => {
       body: formData,
     },
   );
-
+  console.log('Converting heic to jpg');
   if (!response.ok) throw new Error("Error converting heic to jpg");
   // return the file type File
   const blob = await response.blob();
-  return new File([blob], file.name, { type: "image/jpeg" });
+  const filename = file.name.toLowerCase().replace("heic", "jpg");
+  return new File([blob], filename, { type: "image/jpeg" });
 };

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 interface BlurImageProps {
   name: string;
-  imageSrc?: string;
+  imageSrc?: string | null;
 }
 
 export const BlurImage: React.FC<BlurImageProps> = ({ name, imageSrc }) => {

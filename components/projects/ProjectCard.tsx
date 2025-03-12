@@ -72,7 +72,7 @@ export default function ProjectCard({
       <div className="flex justify-center">
         <BlurImage
           name={project?.name || ""}
-          imageSrc={project?.thumbnail || ""}
+          imageSrc={project?.thumbnail}
         />
       </div>
       <div className="p-4">
