@@ -18,7 +18,7 @@ export const BlurImage: React.FC<BlurImageProps> = ({ name, imageSrc }) => {
       alt={name}
       height={208}
       width={320}
-      src={src}
+      src={src || "/placeholder-image.png"}
       className={cn(
         "h-48 w-full object-cover duration-700 ease-in-out group-hover:opacity-75",
         isLoading
