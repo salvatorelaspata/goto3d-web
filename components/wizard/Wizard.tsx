@@ -7,6 +7,9 @@ import { processProject } from "@/app/projects/new/actions";
 import { actions } from "@/store/main";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { createClient } from "@/utils/supabase/client";
+
+const supabase = createClient();
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
@@ -16,7 +19,19 @@ export const Wizard: React.FC = () => {
     actions.showLoading();
     try {
       toast.info("Creazione progetto in corso");
-      await processProject(formData);
+      // await processProject(formData);
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token;
+      const response = await fetch('/api/process-wizard', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Errore durante la creazione del progetto');
+      }
       toast.success("Progetto inviato alla coda");
       actions.hideLoading();
       router.push("/projects");
