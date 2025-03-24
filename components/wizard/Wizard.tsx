@@ -3,7 +3,7 @@ import { useStore } from "@/store/wizardStore";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
-import { processProject } from "@/app/projects/new/actions";
+// import { processProject } from "@/app/projects/new/actions";
 import { actions } from "@/store/main";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";

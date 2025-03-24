@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/client';
 import { Database } from '@/types/supabase';
 import { putObject } from '@/utils/s3/api';
 import { sendToQueue } from '@/utils/amqpClient';
+import { PutObjectCommandOutput } from '@aws-sdk/client-s3';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +14,7 @@ type order = Database["public"]["Enums"]["orders"];
 type feature = Database["public"]["Enums"]["features"];
 
 export async function POST(req: Request) {
+  console.time('Processing time'); // Monitoraggio
   const authHeader = req.headers.get('Authorization');
   const token = authHeader?.replace('Bearer ', '');
   const supabase = createClient(token);
@@ -51,7 +53,7 @@ export async function POST(req: Request) {
     console.log('Step 3: Processing images'); // Monitoraggio
     const processedImages: string[] = [];
     let thumbnailName = '';
-
+    const pAll: Promise<PutObjectCommandOutput>[] = []
     for (const image of images) {
       console.log(`Processing image: ${image.name}`); // Monitoraggio
       let buffer = Buffer.from(await image.arrayBuffer());
@@ -60,10 +62,10 @@ export async function POST(req: Request) {
 
       const reader = new Uint8Array(buffer);
       console.log(`Uploading image to Cloudflare R2: ${image.name}`); // Monitoraggio
-      await putObject(process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+      pAll.push(putObject(process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
         project.id.toString() + "/images/" + image.name,
         reader
-      );
+      ));
 
       if (processedImages.length === 0) {
         console.log('Generating and uploading thumbnail'); // Monitoraggio
@@ -78,6 +80,8 @@ export async function POST(req: Request) {
       processedImages.push(`${fileName}`);
     }
 
+    await Promise.all(pAll);
+
     console.log('Step 4: Updating Supabase record with thumbnail'); // Monitoraggio
     await supabase
       .from("project")
@@ -86,11 +90,12 @@ export async function POST(req: Request) {
 
     console.log('Step 5: Sending project to queue'); // Monitoraggio
     await sendToQueue(project.id);
-
+    console.timeEnd('Processing time'); // Monitoraggio
     console.log('Process completed successfully'); // Monitoraggio
     return NextResponse.json({ success: true, project });
   } catch (error) {
     console.error('API Error:', error); // Monitoraggio errori
+    console.timeEnd('Processing time'); // Monitoraggio
     return NextResponse.json(
       { error: 'Errore durante l\'elaborazione' },
       { status: 500 }
