@@ -7,7 +7,6 @@ import { BoxLoader } from "./BoxLoader";
 import { Suspense } from "react";
 
 export function Scene({ camera }: { camera: THREE.PerspectiveCamera }) {
-  console.log("Scene");
   return (
     <>
       <OrbitControls

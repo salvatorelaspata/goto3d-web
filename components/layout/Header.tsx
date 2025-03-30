@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Menu } from "../Menu";
 import { routes } from "@/utils/constants";
 import { usePathname } from "next/navigation";
-import { HomeIcon } from "@heroicons/react/outline";
-import { ArrowRightIcon } from "@heroicons/react/solid";
+import { HomeIcon, LogoutIcon } from "@heroicons/react/outline";
 import { logout, navTo } from "../MenuActions";
 
 interface HeaderProps {
@@ -80,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ name }) => {
                   className={`${color} rounded-full bg-palette5 p-2`}
                   aria-label="Logout"
                 >
-                  <ArrowRightIcon className="h-5 w-5" />
+                  <LogoutIcon className="h-5 w-5" />
                 </button>
               </form>
             </div>

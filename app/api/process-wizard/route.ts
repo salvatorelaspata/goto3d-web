@@ -107,7 +107,7 @@ const _convertHeicToJpg = async (file: File) => {
   console.log(`Converting HEIC to JPG: ${file.name}`); // Monitoraggio
   const formData = new FormData();
   formData.append("file", file);
-
+  console.time('heic_to_jpg'); // Monitoraggio
   const response = await fetch(
     "https://heic_to_jpg.salvatorelaspata.dev/convert",
     {
@@ -115,6 +115,7 @@ const _convertHeicToJpg = async (file: File) => {
       body: formData,
     },
   );
+  console.timeEnd('heic_to_jpg'); // Monitoraggio
   if (!response.ok) throw new Error("Error converting heic to jpg");
   const blob = await response.blob();
   const filename = file.name.toLowerCase().replace("heic", "jpg");

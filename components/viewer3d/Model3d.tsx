@@ -1,12 +1,14 @@
 "use client";
 import { useStore } from "@/store/viewerStore";
 import { Environment } from "@react-three/drei";
+// import { USDZLoader } from "three/examples/jsm/loaders/UsdZLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+import { TextureLoader } from "three/src/loaders/TextureLoader";
+
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 import type { Mesh } from "three";
-import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -19,7 +21,9 @@ interface Model3DProps {
 
 export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   // console.log("Model3D");
-  const { objectUrl, textureUrl, environment, animate } = useStore();
+  const { objectUrl, textureUrl, usdzUrl, environment, animate } = useStore();
+  // const [usdz, setUsdz] = useState<THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined>(undefined);
+
   const [object, setObject] = useState<
     THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined
   >(undefined);
@@ -34,30 +38,33 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   useEffect(() => {
     const load = async () => {
       actions.showLoading();
-      const aAll: Promise<THREE.Texture | THREE.Object3D>[] = [];
+      const pAll: Promise<THREE.Texture | THREE.Object3D>[] = [];
       const textureLoader = new TextureLoader();
-      const objectLoader = new OBJLoader();
-
       if (!textureUrl) {
-        const t = await textureLoader.loadAsync("/placeholder-image.png");
-        setTexture(t);
+        pAll.push(textureLoader.loadAsync("/placeholder-image.png"));
       } else {
-        aAll.push(textureLoader.loadAsync(textureUrl));
+        pAll.push(textureLoader.loadAsync(textureUrl));
       }
 
-      if (objectUrl) aAll.push(objectLoader.loadAsync(objectUrl));
-      try {
-        const values = await Promise.all(aAll);
+      if (objectUrl) {
+        const objectLoader = new OBJLoader();
+        pAll.push(objectLoader.loadAsync(objectUrl));
+      }
 
+      // if (usdzUrl) {
+      //   const usdzLoader = new USDZLoader();
+      //   const _usdz = await usdzLoader.loadAsync(usdzUrl);
+      //   setUsdz(_usdz);
+      // }
+
+      const values = await Promise.all(pAll);
+      try {
         const t = values[0] as THREE.Texture;
         const o = values[1] as THREE.Object3D<THREE.Object3DEventMap>;
-
         if (o) console.log("object found");
         else throw new Error("No object found");
-
         setTexture(t);
         setObject(o);
-
         const geo = (object: THREE.Object3D<THREE.Object3DEventMap>) => {
           let g: THREE.BufferGeometry | undefined = undefined;
           if (!object) return g;
@@ -69,7 +76,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
           });
           return g;
         };
-
         setGeometry(geo(o));
       } catch (e) {
         console.error(e);
@@ -84,11 +90,11 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
 
   useGSAP(() => {
     if (!object) return;
+    debugger;
     const box = new THREE.Box3().setFromObject(object);
     const size = box.getSize(new THREE.Vector3());
     console.log("size", size);
     const center = box.getCenter(new THREE.Vector3());
-
     const tm = gsap.timeline();
     if (mesh?.current) {
       tm.to(
@@ -131,11 +137,14 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   return (
     <>
       {environment && <Environment preset={environment} background />}
-      {geometry && (
-        <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>
-          <meshPhysicalMaterial map={texture as THREE.Texture} />
-        </mesh>
-      )}
+      {/* {usdz && <primitive object={usdz} position={[0, 0, 0]} rotation={[0, 0, 0]} />} */}
+      <mesh ref={mesh} position={[0, 0, 0]}>
+        {geometry && (
+          <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>
+            <meshPhysicalMaterial map={texture as THREE.Texture} />
+          </mesh>
+        )}
+      </mesh>
     </>
   );
 };

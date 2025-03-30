@@ -21,19 +21,10 @@ const state = proxy<ConfigState>({
 export const useStore = () => useSnapshot(state);
 
 export const actions = {
-  // env
   setEnvironment: (environment: PresetsType | null) =>
     (state.environment = environment),
-  // animate
   setAnimation: (animate: boolean) => (state.animate = animate),
-  // urls
   setObjectUrl: (object: string) => (state.objectUrl = object),
   setTextureUrl: (texture: string) => (state.textureUrl = texture),
   setUsdzUrl: (usdz: string) => (state.usdzUrl = usdz),
-  // object
-  // setObject: (object: THREE.Object3D) => (state.object = object),
-  // texture
-  // setTexture: (texture: THREE.Texture) => (state.texture = texture),
-  // geometry
-  // setGeometry: (geometry: THREE.BufferGeometry) => (state.geometry = geometry),
 };
