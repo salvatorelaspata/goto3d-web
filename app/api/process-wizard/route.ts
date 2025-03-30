@@ -67,15 +67,15 @@ export async function POST(req: Request) {
         reader
       ));
 
-      if (processedImages.length === 0) {
-        console.log('Generating and uploading thumbnail'); // Monitoraggio
-        const thumbnail = await _convertHeicToJpg(image);
-        thumbnailName = `${project.id}/thumbnail.jpg`;
-        await putObject(process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
-          thumbnailName,
-          new Uint8Array(await thumbnail.arrayBuffer())
-        );
-      }
+      // if (processedImages.length === 0) {
+      //   console.log('Generating and uploading thumbnail'); // Monitoraggio
+      //   const thumbnail = await _convertHeicToJpg(image);
+      //   thumbnailName = `${project.id}/thumbnail.jpg`;
+      //   await putObject(process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+      //     thumbnailName,
+      //     new Uint8Array(await thumbnail.arrayBuffer())
+      //   );
+      // }
 
       processedImages.push(`${fileName}`);
     }
@@ -103,21 +103,21 @@ export async function POST(req: Request) {
   }
 }
 
-const _convertHeicToJpg = async (file: File) => {
-  console.log(`Converting HEIC to JPG: ${file.name}`); // Monitoraggio
-  const formData = new FormData();
-  formData.append("file", file);
-  console.time('heic_to_jpg'); // Monitoraggio
-  const response = await fetch(
-    "https://heic_to_jpg.salvatorelaspata.dev/convert",
-    {
-      method: "POST",
-      body: formData,
-    },
-  );
-  console.timeEnd('heic_to_jpg'); // Monitoraggio
-  if (!response.ok) throw new Error("Error converting heic to jpg");
-  const blob = await response.blob();
-  const filename = file.name.toLowerCase().replace("heic", "jpg");
-  return new File([blob], filename, { type: "image/jpeg" });
-};
+// const _convertHeicToJpg = async (file: File) => {
+//   console.log(`Converting HEIC to JPG: ${file.name}`); // Monitoraggio
+//   const formData = new FormData();
+//   formData.append("file", file);
+//   console.time('heic_to_jpg'); // Monitoraggio
+//   const response = await fetch(
+//     "https://heic_to_jpg.salvatorelaspata.dev/convert",
+//     {
+//       method: "POST",
+//       body: formData,
+//     },
+//   );
+//   console.timeEnd('heic_to_jpg'); // Monitoraggio
+//   if (!response.ok) throw new Error("Error converting heic to jpg");
+//   const blob = await response.blob();
+//   const filename = file.name.toLowerCase().replace("heic", "jpg");
+//   return new File([blob], filename, { type: "image/jpeg" });
+// };
