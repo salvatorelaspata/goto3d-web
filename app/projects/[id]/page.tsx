@@ -37,11 +37,16 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   const urls = await retrieveSignedUrls({ models: res?.models });
 
-  const objectUrl = urls?.find((u) => u?.key?.endsWith(".obj"))?.url || "";
+  const objectUrl = urls?.find((u) => u?.key == "model.obj")?.url || "";
   const textureUrl =
     urls?.find((u) => u?.key?.endsWith("baked_mesh_tex0.png"))?.url || "";
-  const usdzUrl = urls?.find((u) => u?.key?.endsWith(".usdz"))?.url || "";
-
+  const usdzUrl = urls?.find((u) => u?.key?.endsWith("/model.usdz"))?.url || "";
+  console.log({
+    objectUrl,
+    textureUrl,
+    usdzUrl,
+    urls,
+  })
   const id = parseInt(params.id);
   const status = project?.status;
 

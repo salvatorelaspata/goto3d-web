@@ -42,7 +42,6 @@ export const retrieveSignedUrls = async ({
     const urls: Model[] = (
       await Promise.all(
         models.map(async (m) => {
-          console.log(m);
           if (!m || !m.Key) return;
           const signedUrl = await getSignedUrl(
             process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",

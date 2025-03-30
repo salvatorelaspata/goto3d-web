@@ -90,7 +90,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
 
   useGSAP(() => {
     if (!object) return;
-    debugger;
     const box = new THREE.Box3().setFromObject(object);
     const size = box.getSize(new THREE.Vector3());
     console.log("size", size);
