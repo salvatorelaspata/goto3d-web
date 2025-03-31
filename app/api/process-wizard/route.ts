@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/client';
+// import { createClient } from '@/utils/supabase/client';
+
 import { Database } from '@/types/supabase';
 import { putObject } from '@/utils/s3/api';
 import { sendToQueue } from '@/utils/amqpClient';
 import { PutObjectCommandOutput } from '@aws-sdk/client-s3';
+import { createClient } from '@/utils/supabase/server';
 
 export const runtime = 'nodejs';
 
@@ -15,9 +17,10 @@ type feature = Database["public"]["Enums"]["features"];
 
 export async function POST(req: Request) {
   console.time('Processing time'); // Monitoraggio
-  const authHeader = req.headers.get('Authorization');
-  const token = authHeader?.replace('Bearer ', '');
-  const supabase = createClient(token);
+  // const authHeader = req.headers.get('Authorization');
+  // const token = authHeader?.replace('Bearer ', '');
+  // const supabase = createClient(token);
+  const supabase = createClient();
   try {
     console.log('Step 1: Parsing multipart form data'); // Monitoraggio
     const formData = await req.formData();

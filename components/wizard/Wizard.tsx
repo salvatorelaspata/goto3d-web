@@ -21,7 +21,9 @@ export const Wizard: React.FC = () => {
       toast.info("Creazione progetto in corso");
       // await processProject(formData);
       const session = await supabase.auth.getSession();
+      console.log(session)
       const token = session.data.session?.access_token;
+      console.log(token)
       const response = await fetch('/api/process-wizard', {
         method: 'POST',
         headers: {
@@ -29,6 +31,7 @@ export const Wizard: React.FC = () => {
         },
         body: formData,
       });
+      console.log(response)
       if (!response.ok) {
         throw new Error('Errore durante la creazione del progetto');
       }
