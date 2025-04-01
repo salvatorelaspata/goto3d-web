@@ -39,7 +39,7 @@ export default async function Project({ params }: { params: { id: string } }) {
 
   const objectUrl = urls?.find((u) => u?.key == "model.obj")?.url || "";
   const textureUrl =
-    urls?.find((u) => u?.key?.endsWith("baked_mesh_tex0.png"))?.url || "";
+    urls?.find((u) => u?.key?.endsWith("tex0.png"))?.url || "";
   const usdzUrl = urls?.find((u) => u?.key?.endsWith("/model.usdz"))?.url || "";
   console.log({
     objectUrl,
