@@ -10,6 +10,8 @@ import { actions } from "@/store/viewerStore";
 import { ArrowsExpandIcon, CubeTransparentIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
+import { actions as mainActions } from "@/store/main";
+
 interface Viewer3dProps {
   id: number;
   objectUrl: string;
@@ -61,9 +63,24 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
         } />}
       </div>
       <div className="absolute left-4 top-4 z-20">
-        {(isIphone || isIpad) && <Link href={usdzUrl}>
-          <CubeTransparentIcon className="h-8 w-8 cursor-pointer rounded-sm" />
-        </Link>}
+        {(isIphone || isIpad) &&
+          <CubeTransparentIcon className="h-8 w-8 cursor-pointer rounded-sm" onClick={async () => {
+            alert("AR");
+            mainActions.showLoading();
+            try {
+              if (!usdzUrl) return;
+              // const instance = ref.current,
+              const a = document.createElement("a");
+              a.setAttribute("href", usdzUrl);
+              a.setAttribute("rel", "ar");
+              a.click();
+            } catch (error) {
+              alert(`Error ${JSON.stringify(error)}`);
+            } finally {
+              mainActions.hideLoading();
+            }
+          }} />
+        }
       </div>
       <Personalization />
       <Canvas camera={camera} ref={canvasRef}>

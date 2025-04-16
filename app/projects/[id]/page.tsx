@@ -36,11 +36,11 @@ export default async function Project({ params }: { params: { id: string } }) {
   if (!project) return notFound();
 
   const urls = await retrieveSignedUrls({ models: res?.models });
-
+  console.log("urls", urls);
   const objectUrl = urls?.find((u) => u?.key == "model.obj")?.url || "";
   const textureUrl =
     urls?.find((u) => u?.key?.endsWith("tex0.png"))?.url || "";
-  const usdzUrl = urls?.find((u) => u?.key?.endsWith("/model.usdz"))?.url || "";
+  const usdzUrl = urls?.find((u) => u?.key?.endsWith("model.usdz"))?.url || "";
   console.log({
     objectUrl,
     textureUrl,
