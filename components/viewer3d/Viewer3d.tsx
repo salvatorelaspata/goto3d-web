@@ -56,8 +56,8 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
               } else {
                 document.exitFullscreen();
               }
-            } catch (error) {
-              console.log("fullScreenError", error);
+            } catch {
+              // Fullscreen not supported or failed silently
             }
           }
         } />}

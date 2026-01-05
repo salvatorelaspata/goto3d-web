@@ -2,7 +2,6 @@ import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import { fetchData, retrieveSignedUrls } from "./actions";
 
-import { BlurImage } from "@/components/BlurImage";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
 
@@ -36,17 +35,10 @@ export default async function Project({ params }: { params: { id: string } }) {
   if (!project) return notFound();
 
   const urls = await retrieveSignedUrls({ models: res?.models });
-  console.log("urls", urls);
   const objectUrl = urls?.find((u) => u?.key == "model.obj")?.url || "";
   const textureUrl =
     urls?.find((u) => u?.key?.endsWith("tex0.png"))?.url || "";
   const usdzUrl = urls?.find((u) => u?.key?.endsWith("model.usdz"))?.url || "";
-  console.log({
-    objectUrl,
-    textureUrl,
-    usdzUrl,
-    urls,
-  })
   const id = parseInt(params.id);
   const status = project?.status;
 

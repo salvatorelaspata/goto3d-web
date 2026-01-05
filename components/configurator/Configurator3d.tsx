@@ -78,21 +78,8 @@ export const Configurator3d: React.FC = () => {
         <button
           className="w-full bg-palette1 p-8 text-palette3"
           onClick={() => {
-            console.log(
-              "meshRefs",
-              meshRefs.current.map((mesh) => ({
-                color: (
-                  mesh.material as THREE.MeshPhysicalMaterial
-                ).color.getHexString(),
-                roughness: (mesh.material as THREE.MeshPhysicalMaterial)
-                  .roughness,
-                metalness: (mesh.material as THREE.MeshPhysicalMaterial)
-                  .metalness,
-                clearcoat: mesh.material as THREE.MeshPhysicalMaterial,
-                clearcoatRoughness: mesh.material as THREE.MeshPhysicalMaterial,
-              })),
-            );
-
+            // TODO: Implement actual save functionality
+            // Currently just shows confirmation
             alert("Salvato");
           }}
         >

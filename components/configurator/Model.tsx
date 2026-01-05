@@ -24,7 +24,6 @@ export const Model: React.FC<ModelProps> = ({
   setMeshes,
   meshRefs,
 }) => {
-  console.log("Model", file, filename, texture);
   const groupRef = useRef<THREE.Group>(null);
   // const [hovered, setHovered] = useState<string | null>(null);
   // const [current, setCurrent] = useState<string | null>(null);
@@ -36,7 +35,7 @@ export const Model: React.FC<ModelProps> = ({
   else if (isGltf(filename) || isGlb(filename)) obj = useGLTF(file);
   else if (isFbx(filename)) obj = useFBX(file);
   else if (isMtl(filename)) obj = useLoader(MTLLoader, file);
-  else console.log("Unknown file format");
+  // Unknown file format - handled by obj being undefined
 
   let textureObj;
   if (texture) {
@@ -46,7 +45,6 @@ export const Model: React.FC<ModelProps> = ({
   useEffect(() => {
     const loadedMeshes: any[] = [];
     obj.traverse((c: any) => {
-      console.log("c", c.name, c.type);
       if (c.type === "Group") return;
       const _c = c;
       // create refence to the mesh

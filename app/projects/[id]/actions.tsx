@@ -4,13 +4,15 @@ import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 import type { _Object } from "@aws-sdk/client-s3";
 import { revalidatePath } from "next/cache";
-import dotenv from "dotenv";
-dotenv.config();
 
 export const fetchData = async ({ id }: { id: string }) => {
   const _id: number = parseInt(id);
   const supabase = createClient();
   try {
+    // Verify user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
     const { data: project } = await supabase
       .from("project")
       .select("*")
@@ -18,6 +20,11 @@ export const fetchData = async ({ id }: { id: string }) => {
       .single();
 
     if (!project) throw new Error("No project found");
+
+    // Verify ownership
+    if (project.user_id !== user.id) {
+      throw new Error("Not authorized to access this project");
+    }
 
     const models = await listObjects(
       process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
@@ -27,7 +34,10 @@ export const fetchData = async ({ id }: { id: string }) => {
 
     return { project, models };
   } catch (error) {
-    console.error("[projects][id][actions] - fetchData Error:", error);
+    // Log only in development
+    if (process.env.NODE_ENV === "development") {
+      console.error("[projects][id][actions] - fetchData Error:", error);
+    }
   }
 };
 
@@ -58,19 +68,30 @@ export const retrieveSignedUrls = async ({
       size,
     }));
   } catch (error) {
-    console.error("[projects][id][actions] - retrieveSignedUrls Error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("[projects][id][actions] - retrieveSignedUrls Error:", error);
+    }
   }
 };
 
 export const deleteProject = async ({ id }: { id: number }) => {
   const supabase = createClient();
   try {
-    // get the thumbnail
-    const { data } = await supabase
+    // Verify user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
+    // Verify ownership before deletion
+    const { data: projectCheck } = await supabase
       .from("project")
-      .select("thumbnail")
+      .select("user_id, thumbnail")
       .eq("id", id)
       .single();
+
+    if (!projectCheck) throw new Error("Project not found");
+    if (projectCheck.user_id !== user.id) {
+      throw new Error("Not authorized to delete this project");
+    }
 
     // delete the project_catalog entry
     const { error: errorDep } = await supabase
@@ -94,42 +115,31 @@ export const deleteProject = async ({ id }: { id: number }) => {
     );
     // delete all the objects in the model folder
     if (models.length) {
-      try {
-        await Promise.all(
-          models.map((m) =>
-            deleteObject(
-              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
-              `${m.Key}`,
-            ),
+      await Promise.all(
+        models.map((m) =>
+          deleteObject(
+            process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+            `${m.Key}`,
           ),
-        );
-      } catch (error) {
-        console.log("error", error);
-      }
+        ),
+      ).catch(() => {});
     }
 
     // delete all the objects in the images folder
     if (images.length) {
-      console.log("images", images.length);
-      try {
-        await Promise.all(
-          images.map((m) =>
-            deleteObject(
-              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
-              `${m.Key}`,
-            ),
+      await Promise.all(
+        images.map((m) =>
+          deleteObject(
+            process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+            `${m.Key}`,
           ),
-        );
-        console.log("successone");
-      } catch (error) {
-        console.log("error", error);
-      }
+        ),
+      ).catch(() => {});
     }
 
     // delete the thumbnail
-    if (data?.thumbnail) {
-      const t = data.thumbnail.split("/").pop();
-
+    if (projectCheck?.thumbnail) {
+      const t = projectCheck.thumbnail.split("/").pop();
       await deleteObject(
         process.env.NEXT_CLOUDFLARE_R2_BUCKET_PUBLIC_NAME ?? "",
         t as string,
@@ -139,7 +149,10 @@ export const deleteProject = async ({ id }: { id: number }) => {
     revalidatePath("/projects");
     revalidatePath("/catalogs");
   } catch (error) {
-    console.error("[projects][id][actions] - deleteProject Error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("[projects][id][actions] - deleteProject Error:", error);
+    }
+    throw error;
   }
 };
 
@@ -150,6 +163,22 @@ export const updateProject = async (formData: FormData) => {
   const description = formData.get("description") as string;
 
   try {
+    // Verify user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
+    // Verify ownership before update
+    const { data: projectCheck } = await supabase
+      .from("project")
+      .select("user_id")
+      .eq("id", id)
+      .single();
+
+    if (!projectCheck) throw new Error("Project not found");
+    if (projectCheck.user_id !== user.id) {
+      throw new Error("Not authorized to update this project");
+    }
+
     const { error } = await supabase
       .from("project")
       .update({ name, description })
@@ -158,6 +187,9 @@ export const updateProject = async (formData: FormData) => {
     revalidatePath(`/projects/${id}`);
     return error;
   } catch (error) {
-    console.error("[projects][id][actions] - updateProject Error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("[projects][id][actions] - updateProject Error:", error);
+    }
+    throw error;
   }
 };

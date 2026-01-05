@@ -42,15 +42,15 @@ export const getSignedUrl = async (Bucket: string, Key: string) => {
 };
 
 export const deleteObject = async (Bucket: string, Key: string) => {
-  // await supabase.storage.from("public-dev").remove([t as string]);
-  console.log("[s3][api] - deleteObject", Bucket, Key);
   try {
     const response = await clientS3.send(
       new DeleteObjectCommand({ Bucket, Key }),
     );
-    console.log("[s3][api] - deleteObject Response:", response);
     return response;
   } catch (error) {
-    console.error("[s3][api] - deleteObject Error:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("[s3][api] - deleteObject Error:", error);
+    }
+    throw error;
   }
 };

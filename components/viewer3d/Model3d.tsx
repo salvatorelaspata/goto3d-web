@@ -61,8 +61,7 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
       try {
         const t = values[0] as THREE.Texture;
         const o = values[1] as THREE.Object3D<THREE.Object3DEventMap>;
-        if (o) console.log("object found");
-        else throw new Error("No object found");
+        if (!o) throw new Error("No object found");
         setTexture(t);
         setObject(o);
         const geo = (object: THREE.Object3D<THREE.Object3DEventMap>) => {
@@ -77,11 +76,10 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
           return g;
         };
         setGeometry(geo(o));
-      } catch (e) {
-        console.error(e);
+      } catch {
+        // Error loading 3D model - handled silently
       } finally {
         actions.hideLoading();
-        console.log("finally");
       }
     };
 
@@ -92,7 +90,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
     if (!object) return;
     const box = new THREE.Box3().setFromObject(object);
     const size = box.getSize(new THREE.Vector3());
-    console.log("size", size);
     const center = box.getCenter(new THREE.Vector3());
     const tm = gsap.timeline();
     if (mesh?.current) {

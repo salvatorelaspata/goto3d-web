@@ -24,9 +24,7 @@ export const Wizard: React.FC = () => {
     try {
       toast.info("Creazione progetto in corso");
       const session = await supabase.auth.getSession();
-      console.log(session)
       const token = session.data.session?.access_token;
-      console.log(token)
       const headers = { 'Authorization': `Bearer ${token}` }
       const name = formData.get("name") as string;
       const description = formData.get("description") as string;
@@ -52,7 +50,6 @@ export const Wizard: React.FC = () => {
         .single();
 
       if (error) {
-        console.error('Error creating project:', error);
         toast.error("Error creating project: " + error.message);
         actions.hideLoading();
         return;
@@ -69,10 +66,8 @@ export const Wizard: React.FC = () => {
             headers,
             body: imageFormData
           })
-          console.log(`Image ${image.name} uploaded successfully`);
           toast.success(`Image ${image.name} uploaded successfully`);
         } catch (error) {
-          console.error(`Error processing image ${image.name}:`, error);
           toast.error(`Error processing image ${image.name}: ${error}`);
         }
       }
@@ -87,7 +82,6 @@ export const Wizard: React.FC = () => {
       });
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error sending project to queue:', errorData);
         toast.error("Error sending project to queue: " + errorData.error);
         actions.hideLoading();
         return;

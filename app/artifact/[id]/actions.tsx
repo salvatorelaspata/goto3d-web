@@ -17,6 +17,8 @@ export const fetchArtifact = async (id: string) => {
 
     return catalog;
   } catch (error) {
-    console.error("error", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("fetchArtifact error:", error);
+    }
   }
 };
