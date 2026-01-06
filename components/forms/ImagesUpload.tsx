@@ -1,82 +1,67 @@
 "use client";
 import { actions, useStore } from "@/store/wizardStore";
-import { useEffect, useRef, useState } from "react";
-// import { ThumbnailImage } from "./ThumbnailImage";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const composeGallery = (files: FileList) => {
-  const gallery = document.getElementById("gallery");
-  if (gallery) {
-    gallery.innerHTML = "";
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const li = document.createElement("li");
-        li.className = "flex flex-col items-center m-2 mx-auto";
-        const img = document.createElement("img");
-        // const base64 = e.target?.result as string;
-        // check if the file is .png or .jpg
-        // if (file.type === "image/png" || file.type === "image/jpeg") {
-        img.src = URL.createObjectURL(file); // base64;
-        // } else {
-        //   // if not, use the default image
-        //   img.src = "/placeholder-image.png";
-        // }
-        img.loading = "lazy";
-        img.alt = file.name;
-        // use background image instead of src
-
-        img.className = "rounded-md max-h-20 max-w-20 m-1 text-black";
-        const p = document.createElement("p");
-        p.className =
-          "text-sm text-gray-900 text-center truncate w-32 hover:text-wrap";
-        p.textContent = file.name;
-
-        li.appendChild(img);
-        li.appendChild(p);
-        gallery.appendChild(li);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-};
+interface FilePreview {
+  name: string;
+  url: string;
+}
 
 export const ImagesUpload: React.FC = () => {
   const [dragActive, setDragActive] = useState(false);
+  const [previews, setPreviews] = useState<FilePreview[]>([]);
   const { files } = useStore();
   const { setFiles } = actions;
   const hiddenInput = useRef<HTMLInputElement>(null);
-  const onclick = (e) => {
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     hiddenInput.current?.click();
-  };
-  useEffect(() => {
-    if (files.length > 0) {
-      composeGallery(files as FileList);
-    }
   }, []);
 
-  function handleDrop(e: any) {
+  // Genera le preview quando cambiano i files
+  useEffect(() => {
+    if (!files || files.length === 0) {
+      setPreviews([]);
+      return;
+    }
+
+    const newPreviews: FilePreview[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      newPreviews.push({
+        name: file.name,
+        url: URL.createObjectURL(file),
+      });
+    }
+    setPreviews(newPreviews);
+
+    // Cleanup: revoca gli URL quando il componente si smonta o i file cambiano
+    return () => {
+      newPreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
+    };
+  }, [files]);
+
+  function handleDrop(e: React.DragEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     setFiles(e.dataTransfer.files);
-    composeGallery(e.dataTransfer.files);
   }
 
-  function handleDragLeave(e: any) {
+  function handleDragLeave(e: React.DragEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
   }
 
-  function handleDragOver(e: any) {
+  function handleDragOver(e: React.DragEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(true);
   }
 
-  function handleDragEnter(e: any) {
+  function handleDragEnter(e: React.DragEvent<HTMLElement>) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(true);
@@ -103,7 +88,6 @@ export const ImagesUpload: React.FC = () => {
             <input
               ref={hiddenInput}
               type="file"
-              // accept="image/*"
               name="files"
               multiple
               className="hidden"
@@ -111,12 +95,11 @@ export const ImagesUpload: React.FC = () => {
                 const files = e.target.files;
                 if (files) {
                   setFiles(files);
-                  composeGallery(files);
                 }
               }}
             />
             <button
-              onClick={onclick}
+              onClick={handleClick}
               className="focus:shadow-outline mt-4 rounded-sm bg-palette1 px-3 py-1 font-light text-palette3 focus:outline-none"
             >
               Oppure seleziona
@@ -124,30 +107,46 @@ export const ImagesUpload: React.FC = () => {
           </header>
 
           <h1 className="py-4 font-light text-palette1 sm:text-lg">
-            File Selezionati ({files?.length || 0})
+            File Selezionati ({previews.length})
           </h1>
-          <ul id="gallery" className="grid h-60 overflow-y-auto lg:grid-cols-4">
-            <li
-              id="empty"
-              className="flex flex-col items-center justify-center text-center"
-            >
-              <svg
-                className="h-12 w-12 text-palette5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                ></path>
-              </svg>
-              <span className="text-small font-light text-gray-500">
-                Nessun file selezionati
-              </span>
-            </li>
+          <ul className="grid h-60 overflow-y-auto lg:grid-cols-4">
+            {previews.length === 0 ? (
+              <li className="flex flex-col items-center justify-center text-center">
+                <svg
+                  className="h-12 w-12 text-palette5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+                <span className="text-small font-light text-gray-500">
+                  Nessun file selezionati
+                </span>
+              </li>
+            ) : (
+              previews.map((preview, index) => (
+                <li
+                  key={index}
+                  className="mx-auto m-2 flex flex-col items-center"
+                >
+                  <img
+                    src={preview.url}
+                    alt={preview.name}
+                    loading="lazy"
+                    className="m-1 max-h-20 max-w-20 rounded-md text-black"
+                  />
+                  <p className="w-32 truncate text-center text-sm text-gray-900 hover:text-wrap">
+                    {preview.name}
+                  </p>
+                </li>
+              ))
+            )}
           </ul>
         </section>
       </div>

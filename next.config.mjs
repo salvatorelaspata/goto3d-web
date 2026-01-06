@@ -54,10 +54,10 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withPWA({
-  reactStrictMode: false,
+  reactStrictMode: true,
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:8080", "127.0.0.1:57035"],
+      allowedOrigins: [process.env.NEXT_PUBLIC_SITE_URL || "localhost:8080"],
     },
     serverComponentsExternalPackages: ["@aws-sdk", "amqplib"],
   },

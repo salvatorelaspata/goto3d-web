@@ -6,15 +6,18 @@ export default async function Artifact({
 }: {
   params: { id: string; project: string };
 }) {
-  const p = await fetchData({ id: project });
-  if (!p || !p.project || !p.models) return null;
+  const res = await fetchData({ id: project });
+  if (!res.success) return null;
+
+  const { project: projectData } = res.data;
+
   return (
     <section className="h-screen p-4">
       <div className="relative flex h-full w-full flex-col items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b from-[#006D77] to-[#83C5BE]">
         <h1 className="absolute left-4 top-4 text-lg font-bold tracking-tight md:text-6xl">
-          {p.project.name}
+          {projectData.name}
         </h1>
-        {/* <Viewer3d id={p.project.id} objectUrl="" textureUrl="" /> */}
+        {/* <Viewer3d id={projectData.id} objectUrl="" textureUrl="" /> */}
       </div>
     </section>
   );

@@ -19,12 +19,21 @@ export const Configurator3d: React.FC = () => {
     meshRefs.current = meshRefs.current.slice(0, meshes.length);
   }, [meshes]);
 
-  const updateMaterialProperty = (index, property, value) => {
-    if (meshRefs.current[index]) {
-      meshRefs.current[index].material[property] = value;
-      (
-        meshRefs.current[index].material as THREE.MeshPhysicalMaterial
-      ).needsUpdate = true;
+  const updateMaterialProperty = (
+    index: number,
+    property: string,
+    value: THREE.Color | number
+  ): void => {
+    const mesh = meshRefs.current[index];
+    if (mesh) {
+      const material = mesh.material as THREE.MeshPhysicalMaterial;
+      if (property === "color") {
+        material.color = value as THREE.Color;
+      } else {
+        (material as unknown as Record<string, number>)[property] =
+          value as number;
+      }
+      material.needsUpdate = true;
     }
   };
 

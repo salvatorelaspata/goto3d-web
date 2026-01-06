@@ -7,11 +7,7 @@ import { actions } from "@/store/main";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { createClient } from "@/utils/supabase/client";
-import type { Database } from "@/types/supabase";
-
-type detail = Database["public"]["Enums"]["details"];
-type order = Database["public"]["Enums"]["orders"];
-type feature = Database["public"]["Enums"]["features"];
+import { validateProjectFormData } from "@/lib/validations/project";
 
 const supabase = createClient();
 
@@ -21,18 +17,23 @@ export const Wizard: React.FC = () => {
 
   const onSubmit = async (formData: FormData) => {
     actions.showLoading();
+
+    // Validate form data
+    const validation = validateProjectFormData(formData);
+    if (!validation.success) {
+      const errors = validation.error.issues.map((e) => e.message).join(", ");
+      toast.error(errors);
+      actions.hideLoading();
+      return;
+    }
+
+    const { name, description, detail, order, feature, files: images } = validation.data;
+
     try {
       toast.info("Creazione progetto in corso");
       const session = await supabase.auth.getSession();
       const token = session.data.session?.access_token;
       const headers = { 'Authorization': `Bearer ${token}` }
-      const name = formData.get("name") as string;
-      const description = formData.get("description") as string;
-      const detail = formData.get("detail") as detail;
-      const order = formData.get("order") as order;
-      const feature = formData.get("feature") as feature;
-
-      const images = formData.getAll('files') as File[];
       const filesArray = Array.from(images).map((f) => f.name) as string[];
 
       const { data: project, error } = await supabase
@@ -67,8 +68,9 @@ export const Wizard: React.FC = () => {
             body: imageFormData
           })
           toast.success(`Image ${image.name} uploaded successfully`);
-        } catch (error) {
-          toast.error(`Error processing image ${image.name}: ${error}`);
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          toast.error(`Error processing image ${image.name}: ${message}`);
         }
       }
 
@@ -90,9 +92,10 @@ export const Wizard: React.FC = () => {
       toast.success("Progetto inviato alla coda");
       actions.hideLoading();
       router.push("/projects");
-    } catch (error: any) {
+    } catch (err) {
       actions.hideLoading();
-      toast.error(error.message);
+      const message = err instanceof Error ? err.message : "Errore sconosciuto";
+      toast.error(message);
       return;
     }
   };

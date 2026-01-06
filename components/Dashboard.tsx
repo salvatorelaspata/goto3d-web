@@ -3,13 +3,36 @@ import { getProjects } from "@/app/projects/actions";
 import { getCatalogs } from "@/app/catalogs/actions";
 import CatalogCard from "./catalogs/CatalogCard";
 import Link from "next/link";
-async function fetchData() {
+import type { Tables } from "@/types/supabase";
+import type { ReactNode } from "react";
+
+type Project = Tables<"project">;
+
+type Catalog = Pick<
+  Tables<"catalog">,
+  "id" | "title" | "description" | "public" | "artifact"
+> & {
+  projects: { project_id: number | null }[];
+};
+
+interface DashboardData {
+  projects: Project[] | null;
+  catalogs: Catalog[] | null;
+}
+
+async function fetchData(): Promise<DashboardData> {
   const projects = await getProjects();
   const catalogs = await getCatalogs();
   return { projects, catalogs };
 }
 
-const DashboardSection = ({ title, href, children }) => (
+interface DashboardSectionProps {
+  title: string;
+  href: string;
+  children: ReactNode;
+}
+
+const DashboardSection = ({ title, href, children }: DashboardSectionProps) => (
   <div className="group flex cursor-pointer flex-col rounded-xl bg-palette2 p-4 text-palette1 shadow-xl">
     <Link
       href={href}

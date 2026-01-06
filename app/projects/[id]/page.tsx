@@ -30,15 +30,15 @@ export default async function Project({ params }: { params: { id: string } }) {
   await protectedRoute();
 
   const res = await fetchData({ id: params.id });
-  const project = res?.project;
+  if (!res.success) return notFound();
 
-  if (!project) return notFound();
+  const { project, models } = res.data;
 
-  const urls = await retrieveSignedUrls({ models: res?.models });
-  const objectUrl = urls?.find((u) => u?.key == "model.obj")?.url || "";
-  const textureUrl =
-    urls?.find((u) => u?.key?.endsWith("tex0.png"))?.url || "";
-  const usdzUrl = urls?.find((u) => u?.key?.endsWith("model.usdz"))?.url || "";
+  const urlsRes = await retrieveSignedUrls({ models });
+  const urls = urlsRes.success ? urlsRes.data : [];
+  const objectUrl = urls.find((u) => u.key === "model.obj")?.url || "";
+  const textureUrl = urls.find((u) => u.key.endsWith("tex0.png"))?.url || "";
+  const usdzUrl = urls.find((u) => u.key.endsWith("model.usdz"))?.url || "";
   const id = parseInt(params.id);
   const status = project?.status;
 

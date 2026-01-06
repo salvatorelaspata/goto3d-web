@@ -53,7 +53,11 @@ export const actions = {
     state.meshes = meshes;
     state.meshesConfig = meshes.map(() => initConfigState);
   },
-  setMeshesConfig: (index: number, key: string, value: any) => {
-    state.meshesConfig[index][key] = value;
+  setMeshesConfig: (
+    index: number,
+    key: keyof ConfigMaterialProps,
+    value: THREE.Color | number
+  ) => {
+    (state.meshesConfig[index][key] as THREE.Color | number) = value;
   },
 };

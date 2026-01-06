@@ -1,11 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as THREE from "three";
-import { actions, initConfigState, useStore } from "@/store/configuratorStore";
+import {
+  actions,
+  ConfigMaterialProps,
+  initConfigState,
+  useStore,
+} from "@/store/configuratorStore";
 
 interface GlobalMaterialControlsProps {
   meshes: THREE.Mesh[];
-  updateMaterialProperty: (index: number, property: string, value: any) => void;
+  updateMaterialProperty: (
+    index: number,
+    property: string,
+    value: THREE.Color | number
+  ) => void;
 }
 
 export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
@@ -25,14 +34,15 @@ export const GlobalMaterialControls: React.FC<GlobalMaterialControlsProps> = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let _value: THREE.Color | number =
+    const propertyName = name as keyof ConfigMaterialProps;
+    const _value: THREE.Color | number =
       name === "color" ? new THREE.Color(value) : parseFloat(value);
 
-    setGlobalConfig((prev) => ({ ...prev, [name]: _value }));
+    setGlobalConfig((prev) => ({ ...prev, [propertyName]: _value }));
 
     meshes.forEach((_, index) => {
-      updateMaterialProperty(index, name, _value);
-      setMeshesConfig(index, name, _value);
+      updateMaterialProperty(index, propertyName, _value);
+      setMeshesConfig(index, propertyName, _value);
     });
   };
 

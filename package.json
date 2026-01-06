@@ -39,7 +39,8 @@
     "react-toastify": "^10.0.5",
     "three": "^0.167.1",
     "typescript": "^5.5.4",
-    "valtio": "^1.13.2"
+    "valtio": "^1.13.2",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.10.2",

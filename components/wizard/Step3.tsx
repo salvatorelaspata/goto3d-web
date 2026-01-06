@@ -118,7 +118,7 @@ export const Step3: React.FC = () => {
                   value={option.value}
                   d={option.default}
                   selected={
-                    store[field.name] === option.value ? option.value : ""
+                    store[field.name as keyof typeof store] === option.value ? option.value : ""
                   }
                   pro={false}
                   disabled={false}

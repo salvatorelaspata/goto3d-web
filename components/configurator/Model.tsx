@@ -13,8 +13,8 @@ interface ModelProps {
   file: string;
   filename: string;
   texture: string;
-  setMeshes: any;
-  meshRefs: any;
+  setMeshes: (meshes: THREE.Mesh[]) => void;
+  meshRefs: React.MutableRefObject<THREE.Mesh[]>;
 }
 
 export const Model: React.FC<ModelProps> = ({
@@ -30,26 +30,26 @@ export const Model: React.FC<ModelProps> = ({
 
   const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
 
-  let obj;
+  let obj: THREE.Group | THREE.Object3D | undefined;
   if (isObj(filename)) obj = useLoader(OBJLoader, file);
-  else if (isGltf(filename) || isGlb(filename)) obj = useGLTF(file);
+  else if (isGltf(filename) || isGlb(filename)) obj = useGLTF(file).scene;
   else if (isFbx(filename)) obj = useFBX(file);
-  else if (isMtl(filename)) obj = useLoader(MTLLoader, file);
+  else if (isMtl(filename)) obj = useLoader(MTLLoader, file) as unknown as THREE.Object3D;
   // Unknown file format - handled by obj being undefined
 
-  let textureObj;
+  let textureObj: THREE.Texture | undefined;
   if (texture) {
     textureObj = useTexture(texture);
   }
 
   useEffect(() => {
-    const loadedMeshes: any[] = [];
-    obj.traverse((c: any) => {
-      if (c.type === "Group") return;
-      const _c = c;
-      // create refence to the mesh
-      if (c.type === "Mesh") {
-        loadedMeshes.push(c);
+    if (!obj) return;
+
+    const loadedMeshes: THREE.Mesh[] = [];
+    obj.traverse((child: THREE.Object3D) => {
+      if (child.type === "Group") return;
+      if (child.type === "Mesh") {
+        loadedMeshes.push(child as THREE.Mesh);
       }
     });
     setMeshs(loadedMeshes);
@@ -85,7 +85,7 @@ export const Model: React.FC<ModelProps> = ({
       index={index}
       textureObj={textureObj}
       ref={(el) => {
-        meshRefs.current[index] = el;
+        if (el) meshRefs.current[index] = el;
       }}
     />
   ));

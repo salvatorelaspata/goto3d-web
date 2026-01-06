@@ -6,7 +6,11 @@ import { actions, initConfigState, useStore } from "@/store/configuratorStore";
 interface MaterialControlsProps {
   index: number;
   meshes: THREE.Mesh[];
-  updateMaterialProperty: (index: number, property: string, value: any) => void;
+  updateMaterialProperty: (
+    index: number,
+    property: string,
+    value: THREE.Color | number
+  ) => void;
 }
 
 export const MaterialControls: React.FC<MaterialControlsProps> = ({

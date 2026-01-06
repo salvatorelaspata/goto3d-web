@@ -14,11 +14,19 @@ export const getProjects = async () => {
     throw new Error(error.message);
   }
 
-  projects.forEach(async (project) => {
-    project.thumbnail = await _getSignedThumbnail({
-      thumbnail: project.thumbnail,
-    });
-  });
+  // projects.forEach(async (project) => {
+  //   project.thumbnail = await _getSignedThumbnail({
+  //     thumbnail: project.thumbnail,
+  //   });
+  // });
+
+  await Promise.all(
+    projects!.map(async (project) => {
+      project.thumbnail = await _getSignedThumbnail({
+        thumbnail: project.thumbnail,
+      });
+    }),
+  );
 
   return projects;
 };

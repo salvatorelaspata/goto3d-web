@@ -18,7 +18,7 @@ export const Personalization: React.FC = () => {
         >
           <span>None</span>
         </div>
-        {Object.keys(environmentViewer).map((key) => {
+        {(Object.keys(environmentViewer) as Array<keyof typeof environmentViewer>).map((key) => {
           return (
             <div
               key={key}
