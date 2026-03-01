@@ -105,7 +105,7 @@ export default async function Home() {
                 <p className="text-palette1">
                   Utilizza la nostra avanzata tecnologia di fotogrammetria per
                   trasformare una serie di foto in un modello 3D dettagliato.
-                  Basta scattare alcune foto dell'oggetto da diverse angolazioni
+                  Basta scattare alcune foto dell&apos;oggetto da diverse angolazioni
                   e lasciare che goto3d faccia il resto.
                 </p>
               </div>
@@ -159,7 +159,7 @@ export default async function Home() {
                 </h3>
                 <p className="text-palette1">
                   Modifica e personalizza i tuoi modelli 3D direttamente
-                  nell'app. Cambia colori, texture e dettagli per adattare ogni
+                  nell&apos;app. Cambia colori, texture e dettagli per adattare ogni
                   modello alle tue esigenze specifiche o alle richieste dei
                   clienti.
                 </p>

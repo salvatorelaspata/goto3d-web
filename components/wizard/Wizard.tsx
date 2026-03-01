@@ -1,116 +1,123 @@
 "use client";
-import { useStore } from "@/store/wizardStore";
+import { useStore, actions as wizardActions } from "@/store/wizardStore";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
-import { actions } from "@/store/main";
+import { UploadProgress } from "./UploadProgress";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { createClient } from "@/utils/supabase/client";
 import { validateProjectFormData } from "@/lib/validations/project";
-
-const supabase = createClient();
+import {
+  createProject,
+  submitProjectToQueue,
+  rollbackProject,
+} from "@/app/projects/new/actions";
+import { parallelLimit } from "@/lib/utils/parallelLimit";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
   const router = useRouter();
 
   const onSubmit = async (formData: FormData) => {
-    actions.showLoading();
-
-    // Validate form data
+    // Validate form data client-side
     const validation = validateProjectFormData(formData);
     if (!validation.success) {
       const errors = validation.error.issues.map((e) => e.message).join(", ");
       toast.error(errors);
-      actions.hideLoading();
       return;
     }
 
-    const { name, description, detail, order, feature, files: images } = validation.data;
+    const { files: images } = validation.data;
 
     try {
-      toast.info("Creazione progetto in corso");
-      const session = await supabase.auth.getSession();
-      const token = session.data.session?.access_token;
-      const headers = { 'Authorization': `Bearer ${token}` }
-      const filesArray = Array.from(images).map((f) => f.name) as string[];
+      // Phase 1: Create project via server action
+      wizardActions.setUploadState("creating");
 
-      const { data: project, error } = await supabase
-        .from('project')
-        .insert([{
-          name,
-          description,
-          detail,
-          order,
-          feature,
-          files: filesArray,
-          status: "in queue"
-        }])
-        .select()
-        .single();
-
-      if (error) {
-        toast.error("Error creating project: " + error.message);
-        actions.hideLoading();
+      const createResult = await createProject(formData);
+      if (!createResult.success) {
+        toast.error(createResult.error);
+        wizardActions.resetUploadProgress();
         return;
       }
 
-      for (const image of images) {
+      const projectId = createResult.data.id;
 
+      // Phase 2: Upload images in parallel (max 4 concurrent)
+      wizardActions.setUploadState("uploading");
+      wizardActions.setUploadTotal(images.length);
+
+      const uploadTasks = images.map((image) => () => {
         const imageFormData = new FormData();
-        imageFormData.append('id', project.id.toString() as string);
-        imageFormData.append('file', image);
-        try {
-          await fetch('/api/image-upload', {
-            method: 'POST',
-            headers,
-            body: imageFormData
-          })
-          toast.success(`Image ${image.name} uploaded successfully`);
-        } catch (err) {
-          const message = err instanceof Error ? err.message : String(err);
-          toast.error(`Error processing image ${image.name}: ${message}`);
-        }
-      }
-
-      const sendToQueueFormData = new FormData();
-      sendToQueueFormData.append('id', project.id.toString() as string);
-
-      const response = await fetch('/api/send-to-queue', {
-        method: 'POST',
-        headers,
-        body: sendToQueueFormData
+        imageFormData.append("id", projectId.toString());
+        imageFormData.append("file", image);
+        return fetch("/api/image-upload", {
+          method: "POST",
+          body: imageFormData,
+        }).then(async (res) => {
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({ error: "Upload failed" }));
+            throw new Error(data.error || `HTTP ${res.status}`);
+          }
+          wizardActions.incrementUploadCompleted();
+          return res;
+        });
       });
-      if (!response.ok) {
-        const errorData = await response.json();
-        toast.error("Error sending project to queue: " + errorData.error);
-        actions.hideLoading();
+
+      const uploadResults = await parallelLimit(uploadTasks, 4);
+
+      const failures = uploadResults.filter((r) => r.status === "rejected");
+      if (failures.length > 0) {
+        for (const f of failures) {
+          const reason =
+            f.status === "rejected" && f.reason instanceof Error
+              ? f.reason.message
+              : String((f as PromiseRejectedResult).reason);
+          wizardActions.addUploadError(reason);
+        }
+        toast.error(
+          `${failures.length} immagini non caricate. Rollback in corso...`
+        );
+        await rollbackProject(projectId);
+        wizardActions.resetUploadProgress();
         return;
       }
 
-      toast.success("Progetto inviato alla coda");
-      actions.hideLoading();
+      // Phase 3: Submit to queue
+      wizardActions.setUploadState("queuing");
+
+      const queueResult = await submitProjectToQueue(projectId);
+      if (!queueResult.success) {
+        toast.error(queueResult.error);
+        await rollbackProject(projectId);
+        wizardActions.resetUploadProgress();
+        return;
+      }
+
+      toast.success("Progetto creato e inviato alla coda");
+      wizardActions.resetwizardStore();
       router.push("/projects");
     } catch (err) {
-      actions.hideLoading();
-      const message = err instanceof Error ? err.message : "Errore sconosciuto";
+      wizardActions.resetUploadProgress();
+      const message =
+        err instanceof Error ? err.message : "Errore sconosciuto";
       toast.error(message);
-      return;
     }
   };
 
   return (
-    <form action={onSubmit}>
-      <div className={currentStep === 1 ? "block" : "hidden"}>
-        <Step1 />
-      </div>
-      <div className={currentStep === 2 ? "block" : "hidden"}>
-        <Step2 />
-      </div>
-      <div className={currentStep === 3 ? "block" : "hidden"}>
-        <Step3 />
-      </div>
-    </form>
+    <>
+      <UploadProgress />
+      <form action={onSubmit}>
+        <div className={currentStep === 1 ? "block" : "hidden"}>
+          <Step1 />
+        </div>
+        <div className={currentStep === 2 ? "block" : "hidden"}>
+          <Step2 />
+        </div>
+        <div className={currentStep === 3 ? "block" : "hidden"}>
+          <Step3 />
+        </div>
+      </form>
+    </>
   );
 };

@@ -15,7 +15,7 @@ export default async function Project() {
             Crea il tuo progetto 3D
           </h1>
           <p className="text-lg md:text-xl">
-            Hai un'oggetto che vuoi trasformare in 3D? Inizia subito!
+            Hai un&apos;oggetto che vuoi trasformare in 3D? Inizia subito!
           </p>
           <form action="/projects/new">
             <button

@@ -1,16 +1,20 @@
-import { proxy, useSnapshot } from "valtio";
+import { proxy, useSnapshot, ref } from "valtio";
 import type { Database } from "@/types/supabase";
-import { createClient } from "@/utils/supabase/client";
 import { actions as mainActions } from "@/store/main";
+import { checkProjectNameExists } from "@/app/projects/new/actions";
+
+export type UploadState = "idle" | "creating" | "uploading" | "queuing";
+
 export interface WizardProps {
   error: string;
   currentStep: number;
+
   // step1
   name: string;
   description: string;
 
   // step2
-  files: FileList | [];
+  files: File[];
   files_url: string[];
 
   // step3
@@ -18,11 +22,11 @@ export interface WizardProps {
   order: Database["public"]["Enums"]["orders"];
   feature: Database["public"]["Enums"]["features"];
 
-  status: string;
-  catalog_id: number | null;
-  project_id: number;
-
-  // progress: string[];
+  // upload progress
+  uploadState: UploadState;
+  uploadTotal: number;
+  uploadCompleted: number;
+  uploadErrors: string[];
 }
 
 export const wizardStore = proxy<WizardProps>({
@@ -32,18 +36,17 @@ export const wizardStore = proxy<WizardProps>({
   name: "",
   description: "",
 
-  files: [],
+  files: ref([]) as File[],
   files_url: [],
 
   detail: "reduced",
   order: "sequential",
   feature: "normal",
 
-  status: "in queue",
-  catalog_id: null,
-  project_id: 0,
-
-  // progress: [],
+  uploadState: "idle",
+  uploadTotal: 0,
+  uploadCompleted: 0,
+  uploadErrors: [],
 });
 
 export const useStore = () => useSnapshot(wizardStore);
@@ -51,24 +54,8 @@ export const useStore = () => useSnapshot(wizardStore);
 const checksMandatory = [
   () => wizardStore.name.length > 0,
   () => wizardStore.files.length > 0,
-  () => {
-    // console.log(wizardStore.detail, wizardStore.order, wizardStore.feature);
-    return true;
-  },
-  () => true, // wizardStore.status.length > 0,
+  () => true,
 ];
-
-const checkNameExists = async () => {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from("project")
-    .select("name")
-    .eq("name", wizardStore.name);
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
-};
 
 export const actions = {
   nextStep: async () => {
@@ -79,8 +66,12 @@ export const actions = {
       return (wizardStore.error = "Compila tutti i campi obbligatori");
     }
     if (wizardStore.currentStep === 1) {
-      const data = await checkNameExists();
-      if (data.length > 0) {
+      const result = await checkProjectNameExists(wizardStore.name);
+      if (!result.success) {
+        mainActions.hideLoading();
+        return (wizardStore.error = result.error);
+      }
+      if (result.data) {
         mainActions.hideLoading();
         return (wizardStore.error = "Nome progetto già esistente");
       }
@@ -104,14 +95,15 @@ export const actions = {
     wizardStore.currentStep = 1;
     wizardStore.name = "";
     wizardStore.description = "";
-    wizardStore.files = [];
+    wizardStore.files = ref([]) as File[];
     wizardStore.files_url = [];
     wizardStore.detail = "reduced";
     wizardStore.order = "sequential";
     wizardStore.feature = "normal";
-    wizardStore.status = "in queue";
-    // wizardStore.catalog_id = null;
-    // wizardStore.project_id = 0;
+    wizardStore.uploadState = "idle";
+    wizardStore.uploadTotal = 0;
+    wizardStore.uploadCompleted = 0;
+    wizardStore.uploadErrors = [];
   },
 
   // step1
@@ -121,13 +113,9 @@ export const actions = {
 
   // step2
   setFiles: (files: FileList | []) => {
-    wizardStore.files = files;
-    // iterate files and get the filename
-    const files_url: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      files_url.push(files[i].name);
-    }
-    wizardStore.files_url = files_url;
+    // Use ref() to prevent valtio from proxying File objects
+    wizardStore.files = ref(Array.from(files)) as File[];
+    wizardStore.files_url = wizardStore.files.map((f) => f.name);
   },
 
   // step3
@@ -137,9 +125,16 @@ export const actions = {
     (wizardStore.order = order),
   setFeature: (feature: Database["public"]["Enums"]["features"]) =>
     (wizardStore.feature = feature),
-  // addProgress: (file: string) => wizardStore.progress.push(file),
-  // step4 - coming soon
-  // setStatus: (status: string) => (wizardStore.status = status),
-  // setCatalogId: (catalog_id: number | null) => (wizardStore.catalog_id = catalog_id),
-  // setProjectId: (project_id: number) => (wizardStore.project_id = project_id),
+
+  // upload progress
+  setUploadState: (state: UploadState) => (wizardStore.uploadState = state),
+  setUploadTotal: (total: number) => (wizardStore.uploadTotal = total),
+  incrementUploadCompleted: () => (wizardStore.uploadCompleted += 1),
+  addUploadError: (error: string) => wizardStore.uploadErrors.push(error),
+  resetUploadProgress: () => {
+    wizardStore.uploadState = "idle";
+    wizardStore.uploadTotal = 0;
+    wizardStore.uploadCompleted = 0;
+    wizardStore.uploadErrors = [];
+  },
 };

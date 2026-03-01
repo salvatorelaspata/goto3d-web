@@ -52,42 +52,42 @@ export const Step2: React.FC = () => {
               definite.
             </li>
           </ul>
-          <p className="py-2 text-lg font-bold">📏 Dimensioni dell'oggetto:</p>
+          <p className="py-2 text-lg font-bold">📏 Dimensioni dell&apos;oggetto:</p>
           <p className="underline underline-offset-4">
             È possibile fotografare oggetti di diverse dimensioni, purchè essi
             si possano inquadrare, nella loro interezza, con la fotocamera.
           </p>
 
           <p className="py-2 text-lg font-bold">
-            📷 Come fotografare l'oggetto:
+            📷 Come fotografare l&apos;oggetto:
           </p>
 
           <ul className="list-inside list-disc">
             <li className="px-2">
-              Muovere la fotocamera intorno all'oggetto, scattando foto da
+              Muovere la fotocamera intorno all&apos;oggetto, scattando foto da
               diverse angolazioni e ad altezze diverse,
             </li>
             <li className="px-2">
-              Mettere l'oggetto su una piattaforma girevole e ruotarlo mentre si
+              Mettere l&apos;oggetto su una piattaforma girevole e ruotarlo mentre si
               scattano le foto.
             </li>
           </ul>
           <p className="mt-2 rounded-lg bg-gray-100 p-2">
             🧐:{" "}
             <i>
-              È possibile spostare l'oggetto tra uno scatto e l'altro per
+              È possibile spostare l&apos;oggetto tra uno scatto e l&apos;altro per
               fotografare tutti i lati, purchè esso non si pieghi o deformi.
             </i>
           </p>
 
           <p className="py-2 text-lg font-bold">🤳 Come fare le foto:</p>
           <p>
-            Posiziona l'oggetto in modo che riempia la maggior parte possibile
-            dell'inquadratura della fotocamera senza escludere o tagliare alcuna
+            Posiziona l&apos;oggetto in modo che riempia la maggior parte possibile
+            dell&apos;inquadratura della fotocamera senza escludere o tagliare alcuna
             parte.
           </p>
           <p>
-            Utilizza un'apertura di diaframma sufficientemente stretta per
+            Utilizza un&apos;apertura di diaframma sufficientemente stretta per
             mantenere una messa a fuoco nitida. Scattare alla massima
             risoluzione supportata dalla fotocamera e utilizzare il formato RAW,
             se possibile.

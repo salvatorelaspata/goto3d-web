@@ -26,8 +26,8 @@ export const fileSchema = z
   .instanceof(File)
   .refine((file) => file.size > 0, "Il file è vuoto")
   .refine(
-    (file) => file.size <= 50 * 1024 * 1024,
-    "Il file non può superare i 50MB"
+    (file) => file.size <= 10 * 1024 * 1024,
+    "Il file non può superare i 10MB"
   )
   .refine(
     (file) =>

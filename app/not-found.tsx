@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function () {
+export default async function NotFound() {
   return (
     <div className="flex h-full flex-col items-stretch p-4">
       <div className="flex h-full justify-center rounded-xl bg-palette2 p-4 text-palette1">

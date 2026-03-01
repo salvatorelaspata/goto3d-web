@@ -11,7 +11,7 @@ export default async function Project() {
             Configura il tuo progetto 3D
           </h1>
           <p className="text-lg md:text-xl">
-            Hai un'oggetto che vuoi configurare? Utilizza il configuratore
+            Hai un&apos;oggetto che vuoi configurare? Utilizza il configuratore
           </p>
           <form action="/configurator/new">
             <button

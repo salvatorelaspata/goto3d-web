@@ -11,8 +11,6 @@ const fields = [
     id: "formOrder",
     label: "Orders",
     name: "order",
-    // description:
-    //   "L'ordine dei campioni. Se si forniscono le immagini in ordine, con immagini adiacenti una accanto all'altra si possono ottenere prestazioni migliori. Questa impostazione non ha alcun impatto sulla qualità dell'oggetto prodotto.",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/sampleordering-swift.property",
     icon: "👔",
     options: [
@@ -34,8 +32,6 @@ const fields = [
     label: "Features",
     name: "feature",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/featuresensitivity-swift.property",
-    // description:
-    //   "La precisione del rilevamento dei punti di riferimento. Il processo di fotogrammetria si basa sulla ricerca di punti di riferimento identificabili nella sovrapposizione delle immagini. I punti di riferimento possono essere difficili da identificare se le immagini non hanno un contrasto sufficiente, non sono a fuoco o se l'oggetto è di un solo colore e manca di dettagli superficiali.",
     icon: "💎",
     options: [
       {
@@ -52,10 +48,8 @@ const fields = [
     label: "Details",
     name: "detail",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/request/detail",
-    // description: "The level of detail of the project",
     icon: "🧐",
     options: [
-      // { label: "Preview", value: "preview", description: "more fast" },
       {
         label: "Reduced",
         value: "reduced",
@@ -91,21 +85,18 @@ const accordionLegend = [
 ];
 
 export const Step3: React.FC = () => {
-  // const { detail, order, feature } = useStore();
   const { setDetail, setOrder, setFeature } = actions;
 
   const store = useStore();
 
   const form = (
     <Form stretch latest>
-      {/* create card radio group to select the detail, order and features */}
       {fields.map((field) => (
         <div key={field.id} className="flex flex-col">
           <label className="text-lg my-2 text-palette1">
             {field.label}
             <span className="text-red-500 ml-1">*</span>
           </label>
-          {/* <label className="my-2 text-sm">{field.description}</label> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {field.options.map((option) => (
               <div key={option.value} className="flex flex-col">

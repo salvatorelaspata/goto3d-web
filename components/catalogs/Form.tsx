@@ -156,7 +156,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
         catalogActions.addProject(project.project_id);
       });
     }
-  }, [catalog]);
+  }, [catalog, setTitle, setDescription, setPublic]);
 
   let [isPending, startTransition] = useTransition();
 

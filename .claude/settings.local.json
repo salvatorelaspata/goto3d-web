@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm run cypress:run:*)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm show:*)",
+      "Bash(npm install:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(file:*)",
+      "Bash(npx next:*)",
+      "WebSearch",
+      "Bash(npm uninstall:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm view:*)"
+    ]
+  }
+}

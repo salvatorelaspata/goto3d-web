@@ -1,11 +1,8 @@
-// import { setupDevPlatform } from "@cloudflare/next-on-pages/next-dev";
+import withSerwistInit from "@serwist/next";
 
-// if (process.env.NODE_ENV === "development") {
-//   await setupDevPlatform();
-// }
-import pwa from "next-pwa";
-const withPWA = pwa({
-  dest: "public",
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
   disable: process.env.NODE_ENV === "development",
 });
 
@@ -53,7 +50,7 @@ const securityHeaders = [
 ];
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPWA({
+const nextConfig = withSerwist({
   reactStrictMode: true,
   experimental: {
     serverActions: {

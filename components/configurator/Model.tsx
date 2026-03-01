@@ -9,38 +9,22 @@ import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
 import { isFbx, isGlb, isGltf, isMtl, isObj } from "@/utils/utils";
 import { Mesh } from "./Mesh";
 
-interface ModelProps {
-  file: string;
-  filename: string;
+interface ModelInnerProps {
+  obj: THREE.Group | THREE.Object3D;
   texture: string;
   setMeshes: (meshes: THREE.Mesh[]) => void;
   meshRefs: React.MutableRefObject<THREE.Mesh[]>;
 }
 
-export const Model: React.FC<ModelProps> = ({
-  file,
-  filename,
+const ModelInner: React.FC<ModelInnerProps> = ({
+  obj,
   texture,
   setMeshes,
   meshRefs,
 }) => {
   const groupRef = useRef<THREE.Group>(null);
-  // const [hovered, setHovered] = useState<string | null>(null);
-  // const [current, setCurrent] = useState<string | null>(null);
-
   const [meshs, setMeshs] = useState<THREE.Mesh[]>([]);
-
-  let obj: THREE.Group | THREE.Object3D | undefined;
-  if (isObj(filename)) obj = useLoader(OBJLoader, file);
-  else if (isGltf(filename) || isGlb(filename)) obj = useGLTF(file).scene;
-  else if (isFbx(filename)) obj = useFBX(file);
-  else if (isMtl(filename)) obj = useLoader(MTLLoader, file) as unknown as THREE.Object3D;
-  // Unknown file format - handled by obj being undefined
-
-  let textureObj: THREE.Texture | undefined;
-  if (texture) {
-    textureObj = useTexture(texture);
-  }
+  const textureObj = useTexture(texture || "/placeholder.png");
 
   useEffect(() => {
     if (!obj) return;
@@ -55,20 +39,16 @@ export const Model: React.FC<ModelProps> = ({
     setMeshs(loadedMeshes);
     setMeshes(loadedMeshes);
 
-    // Calcolare il bounding box del modello
     const box = new THREE.Box3().setFromObject(obj);
     const size = new THREE.Vector3();
     box.getSize(size);
 
-    // Calcolare il centro del bounding box
     const center = new THREE.Vector3();
     box.getCenter(center);
 
-    // Calcolare il fattore di scala necessario per adattare l'altezza del modello all'altezza della scena
-    const desiredHeight = 10; // Altezza desiderata nella scena
+    const desiredHeight = 10;
     const scale = desiredHeight / size.y;
 
-    // Applicare la scala al modello
     groupRef?.current?.scale.set(scale, scale, scale);
     groupRef?.current?.position.set(
       -center.x * scale,
@@ -83,7 +63,7 @@ export const Model: React.FC<ModelProps> = ({
       key={index}
       mesh={mesh}
       index={index}
-      textureObj={textureObj}
+      textureObj={texture ? textureObj : undefined}
       ref={(el) => {
         if (el) meshRefs.current[index] = el;
       }}
@@ -91,4 +71,43 @@ export const Model: React.FC<ModelProps> = ({
   ));
 
   return <group ref={groupRef}>{ui}</group>;
+};
+
+const ObjModel: React.FC<Omit<ModelProps, "filename">> = (props) => {
+  const obj = useLoader(OBJLoader, props.file);
+  return <ModelInner obj={obj} texture={props.texture} setMeshes={props.setMeshes} meshRefs={props.meshRefs} />;
+};
+
+const GltfModel: React.FC<Omit<ModelProps, "filename">> = (props) => {
+  const { scene } = useGLTF(props.file);
+  return <ModelInner obj={scene} texture={props.texture} setMeshes={props.setMeshes} meshRefs={props.meshRefs} />;
+};
+
+const FbxModel: React.FC<Omit<ModelProps, "filename">> = (props) => {
+  const obj = useFBX(props.file);
+  return <ModelInner obj={obj} texture={props.texture} setMeshes={props.setMeshes} meshRefs={props.meshRefs} />;
+};
+
+const MtlModel: React.FC<Omit<ModelProps, "filename">> = (props) => {
+  const obj = useLoader(MTLLoader, props.file) as unknown as THREE.Object3D;
+  return <ModelInner obj={obj} texture={props.texture} setMeshes={props.setMeshes} meshRefs={props.meshRefs} />;
+};
+
+interface ModelProps {
+  file: string;
+  filename: string;
+  texture: string;
+  setMeshes: (meshes: THREE.Mesh[]) => void;
+  meshRefs: React.MutableRefObject<THREE.Mesh[]>;
+}
+
+export const Model: React.FC<ModelProps> = (props) => {
+  const { filename } = props;
+
+  if (isObj(filename)) return <ObjModel {...props} />;
+  if (isGltf(filename) || isGlb(filename)) return <GltfModel {...props} />;
+  if (isFbx(filename)) return <FbxModel {...props} />;
+  if (isMtl(filename)) return <MtlModel {...props} />;
+
+  return null;
 };

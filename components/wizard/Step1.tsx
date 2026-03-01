@@ -1,4 +1,3 @@
-// import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Input } from "../forms/Input";
 import { Textarea } from "../forms/Textarea";
@@ -6,9 +5,6 @@ import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
-// import { gsap } from "gsap";
-// import { useGSAP } from "@gsap/react";
-// gsap.registerPlugin(useGSAP);
 
 export const Step1: React.FC = () => {
   const { name, description } = useStore();

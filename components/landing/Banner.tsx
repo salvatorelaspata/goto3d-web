@@ -27,7 +27,7 @@ export default function Banner({
               <p>
                 Con goto3d, dai vita ai tuoi oggetti partendo da semplici foto,
                 crea un catalogo 3D mozzafiato e personalizza i tuoi modelli
-                come mai prima d'ora.
+                come mai prima d&apos;ora.
               </p>
             </div>
             {user ? (

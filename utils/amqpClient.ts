@@ -1,33 +1,19 @@
-import amqp from "amqplib/callback_api";
+import amqp from "amqplib";
 
-// Only use server-side environment variable (never NEXT_PUBLIC_)
 const connectionString =
   process.env.QUEUE_CONNECTION_STRING || "amqp://localhost";
 
-export const sendToQueue = (message: number): Promise<void> => {
+export const sendToQueue = async (message: number): Promise<void> => {
   const queueName = process.env.QUEUE_NAME || "processing-dev";
-  return new Promise((resolve, reject) => {
-    amqp.connect(connectionString, (err, connection) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-
-      connection.createChannel((err, channel) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        channel.assertQueue(queueName, { durable: true });
-        channel.sendToQueue(queueName, Buffer.from(message.toString()), {
-          persistent: true,
-        });
-        setTimeout(() => {
-          connection.close();
-          resolve();
-        }, 500);
-      });
+  const connection = await amqp.connect(connectionString);
+  try {
+    const channel = await connection.createChannel();
+    await channel.assertQueue(queueName, { durable: true });
+    channel.sendToQueue(queueName, Buffer.from(message.toString()), {
+      persistent: true,
     });
-  });
+    await channel.close();
+  } finally {
+    await connection.close();
+  }
 };

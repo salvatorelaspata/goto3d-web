@@ -34,39 +34,36 @@ export default function ProjectCard({
     order,
     detail,
   });
-  let href = `/projects/${id}`;
-  if (!artifact) {
-    useEffect(() => {
-      const supabase = createClient();
-      if (!id) return;
-      const filter = `id=eq.${id}`;
-      // console.log("[ProjectCard] subscribing to changes", filter);
-      const channel = supabase.channel(`realtime project card ${id}`).on(
-        "postgres_changes",
-        {
-          event: "UPDATE",
-          schema: "public",
-          table: "project",
-          filter,
-        },
-        (payload) => {
-          setProject({ ...payload.new });
-        },
-      );
-      channel.subscribe();
+  const href = artifact ? `/artifact/${artifact}/${id}` : `/projects/${id}`;
 
-      return () => {
-        channel.unsubscribe();
-      };
-    }, []);
-  } else {
-    href = `/artifact/${artifact}/${id}`;
-  }
+  useEffect(() => {
+    if (artifact) return;
+    const supabase = createClient();
+    if (!id) return;
+    const filter = `id=eq.${id}`;
+    const channel = supabase.channel(`realtime project card ${id}`).on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "project",
+        filter,
+      },
+      (payload) => {
+        setProject({ ...payload.new });
+      },
+    );
+    channel.subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [artifact, id]);
 
   return (
     <Link
       key={id}
-      className="group relative mx-auto w-64 cursor-pointer overflow-hidden rounded-lg bg-palette3 shadow-lg transition duration-300 ease-in-out hover:scale-105"
+      className="group relative mx-auto w-full max-w-sm cursor-pointer overflow-hidden rounded-lg bg-palette3 shadow-lg transition duration-300 ease-in-out hover:scale-105"
       href={href}
     >
       <div className="flex justify-center">
