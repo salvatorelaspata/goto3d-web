@@ -4,16 +4,22 @@
 
 @import "~react-toastify/dist/ReactToastify.min.css";
 
-/* https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919 */
-/*
-html,
-body,
-body > div:first-child,
-div#__next,
-div#__next > div {
-  height: 100%;
+@layer base {
+  :root {
+    --palette1: #006D77;
+    --palette2: #83C5BE;
+    --palette3: #EDF6F9;
+    --palette4: #FFDDD2;
+    --palette5: #E29578;
+  }
+  .dark {
+    --palette1: #4DD8E0;
+    --palette2: #2A6F6A;
+    --palette3: #1A1A2E;
+    --palette4: #3D2B2B;
+    --palette5: #E29578;
+  }
 }
-*/
 
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-scrollbar#css_scrollbar_selectors */
 ::-webkit-scrollbar {
@@ -34,4 +40,16 @@ div#__next > div {
 ::-webkit-scrollbar-thumb {
   background-color: lightgray;
   border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar {
+  background-color: #1a1a2e;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background-color: #2a2a3e;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #4a4a5e;
 }

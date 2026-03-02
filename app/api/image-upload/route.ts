@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import { NextResponse } from 'next/server';
 import { putObject } from '@/utils/s3/api';
 import { createClient } from '@/utils/supabase/server';
@@ -96,7 +97,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, project: id, file: sanitizedFilename });
   } catch (error) {
-    console.error('API Error:', error);
+    Sentry.captureException(error, { tags: { api: "image-upload" } });
     return NextResponse.json(
       { error: 'Errore durante l\'elaborazione' },
       { status: 500 }

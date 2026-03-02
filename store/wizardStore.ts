@@ -1,7 +1,7 @@
 import { proxy, useSnapshot, ref } from "valtio";
 import type { Database } from "@/types/supabase";
 import { actions as mainActions } from "@/store/main";
-import { checkProjectNameExists } from "@/app/projects/new/actions";
+import { checkProjectNameExists } from "@/app/[locale]/projects/new/actions";
 
 export type UploadState = "idle" | "creating" | "uploading" | "queuing";
 

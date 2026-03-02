@@ -1,8 +1,25 @@
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "@/i18n/routing";
 import { updateSession } from "@/utils/supabase/middleware";
 
+const intlMiddleware = createMiddleware(routing);
+
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  // Step 1: Run next-intl middleware for locale routing
+  const intlResponse = intlMiddleware(request);
+
+  // Step 2: Run Supabase session update
+  const supabaseResponse = await updateSession(request);
+
+  // Step 3: Merge cookies from Supabase response into the intl response
+  if (supabaseResponse) {
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      intlResponse.cookies.set(cookie.name, cookie.value);
+    });
+  }
+
+  return intlResponse;
 }
 
 export const config = {
@@ -13,8 +30,10 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
-     * Feel free to modify this pattern to include more paths.
+     * - api routes
+     * - auth callback
+     * - monitoring (sentry tunnel)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/|auth/|monitoring|sw\\.js|manifest\\.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

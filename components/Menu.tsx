@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { navTo } from "./MenuActions";
-import { routes } from "@/utils/constants";
+import { useTranslations } from "next-intl";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -13,7 +13,14 @@ interface MenuProps {
 }
 
 export const Menu: React.FC<MenuProps> = ({ color }) => {
+  const t = useTranslations("nav");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const routes = [
+    { name: t("dashboard"), url: "/dashboard" },
+    { name: t("projects"), url: "/projects" },
+    { name: t("catalogs"), url: "/catalogs" },
+    { name: t("configurator"), url: "/configurator" },
+  ];
   const container = useRef(null);
   const { contextSafe } = useGSAP({ scope: container }); // we can pass in a config object as the 1st parameter to make scoping simple
   const ref = useRef(null);

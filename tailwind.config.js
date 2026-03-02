@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -10,17 +11,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        palette1: "#006D77",
-        palette2: "#83C5BE",
-        palette3: "#EDF6F9",
-        palette4: "#FFDDD2",
-        palette5: "#E29578",
-
-        // darkpalette1: "#770A00",
-        // darkpalette2: "#C5838A",
-        // darkpalette3: "#F9F0ED",
-        // darkpalette4: "#D2F4FF",
-        // darkpalette5: "#78C5E2",
+        palette1: "var(--palette1)",
+        palette2: "var(--palette2)",
+        palette3: "var(--palette3)",
+        palette4: "var(--palette4)",
+        palette5: "var(--palette5)",
       },
       fontFamily: {
         sans: ["var(--font-poppins)"],

@@ -52,7 +52,7 @@ export const Loading: React.FC = () => {
       className={`fixed left-0 top-0 z-50 flex h-screen w-screen flex-col items-center justify-center overflow-hidden bg-palette2 opacity-75`}
     >
       <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-palette5"></div>
-      <p ref={fraseRef} className="mt-4 text-lg font-semibold text-gray-700">
+      <p ref={fraseRef} className="mt-4 text-lg font-semibold text-gray-700 dark:text-gray-300">
         {fraseCorrente}
       </p>
     </div>

@@ -72,7 +72,7 @@ export const Step2: React.FC = () => {
               scattano le foto.
             </li>
           </ul>
-          <p className="mt-2 rounded-lg bg-gray-100 p-2">
+          <p className="mt-2 rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
             🧐:{" "}
             <i>
               È possibile spostare l&apos;oggetto tra uno scatto e l&apos;altro per

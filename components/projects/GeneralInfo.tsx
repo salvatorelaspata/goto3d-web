@@ -2,7 +2,7 @@
 import { useState } from "react";
 import SectionTitle from "../ui/SectionTitle";
 import { StatusText } from "../StatusText";
-import { updateProject } from "@/app/projects/[id]/actions";
+import { updateProject } from "@/app/[locale]/projects/[id]/actions";
 import { toast } from "react-toastify";
 interface GeneralInfoProps {
   id: number;

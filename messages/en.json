@@ -1,0 +1,187 @@
+{
+  "common": {
+    "appName": "GoTo3D",
+    "loading": "Loading...",
+    "create": "CREATE",
+    "delete": "Delete",
+    "update": "Update",
+    "reset": "Reset",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "or": "Or",
+    "skipToContent": "Skip to main content"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "catalogs": "Catalogs",
+    "configurator": "Configurator",
+    "home": "Home",
+    "logout": "Logout",
+    "hey": "Hey {name}"
+  },
+  "theme": {
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "locale": {
+    "it": "IT",
+    "en": "EN"
+  },
+  "landing": {
+    "heroTitle": "3D Model Creation",
+    "heroDescription": "Transform your photos into detailed 3D models with a single click.",
+    "catalogTitle": "3D Catalog",
+    "catalogDescription": "Create and manage your 3D model catalog easily and intuitively.",
+    "customizationTitle": "Customization",
+    "customizationDescription": "Customize your 3D models to fit your specific needs.",
+    "featuresTitle": "Discover the powerful features of goto3d",
+    "feature1Title": "3D model creation from photos",
+    "feature1Description": "Use our advanced photogrammetry technology to transform a series of photos into a detailed 3D model. Just take some photos of the object from different angles and let goto3d do the rest.",
+    "feature2Title": "Interactive 3D catalog",
+    "feature2Description": "Organize and manage your 3D models in an interactive, easy-to-navigate catalog. Showcase your products engagingly, allowing customers to explore them from every angle.",
+    "feature3Title": "Advanced customization",
+    "feature3Description": "Edit and customize your 3D models directly in the app. Change colors, textures, and details to adapt each model to your specific needs or customer requests.",
+    "feature4Title": "Optimized mobile experience",
+    "feature4Description": "Access and manage your 3D models wherever you are with our optimized mobile app. Capture photos, create models, and update your catalog directly from your smartphone or tablet.",
+    "ctaTitle": "Ready to revolutionize your 3D world?",
+    "ctaButton": "Get started",
+    "footer": "© 2024 goto3d. All rights reserved."
+  },
+  "auth": {
+    "title": "Sign In or Register",
+    "signIn": "Sign In",
+    "signUp": "Register",
+    "or": "Or",
+    "signInWithGoogle": "Sign in with Google",
+    "email": "email",
+    "password": "password"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Overview of your GoTo3D account",
+    "stats": "Statistics",
+    "totalProjects": "Total Projects",
+    "inQueue": "In Queue",
+    "processing": "Processing",
+    "completed": "Completed",
+    "errors": "Errors",
+    "projectsSection": "Projects",
+    "catalogsSection": "Catalogs",
+    "noProjects": "No projects",
+    "noProjectsDesc": "Create your first project to convert images to 3D models.",
+    "createProject": "Create Project",
+    "noCatalogs": "No catalogs",
+    "noCatalogsDesc": "Create a catalog to organize and share your 3D models.",
+    "createCatalog": "Create Catalog",
+    "newProject": "New Project",
+    "newCatalog": "New Catalog"
+  },
+  "projects": {
+    "title": "Create your 3D project",
+    "subtitle": "Have an object you want to turn into 3D? Start now!",
+    "yourProjects": "Your Projects",
+    "deleteConfirm": "Are you sure you want to delete this project? This action is irreversible.",
+    "deleting": "Deleting...",
+    "deleted": "Project deleted successfully",
+    "deleteProject": "Delete project",
+    "inQueue": "Project in queue",
+    "processing": "Project processing",
+    "error": "Project error",
+    "loadingViewer": "Loading 3D viewer...",
+    "details": "Details",
+    "models3d": "3D Models"
+  },
+  "catalogs": {
+    "title": "Create your 3D Product Catalog",
+    "subtitle": "Share it with your customers.",
+    "yourCatalogs": "Your Catalogs",
+    "newCatalog": "NEW CATALOG",
+    "generalInfo": "General Information",
+    "catalogTitle": "Title",
+    "titlePlaceholder": "Enter a title",
+    "catalogDescription": "Catalog description (optional)",
+    "descriptionPlaceholder": "Enter a description",
+    "visibility": "Visibility",
+    "public": "Public",
+    "private": "Private",
+    "publicDesc": "Everyone can view this catalog",
+    "privateDesc": "Only you can view this catalog",
+    "preview": "Preview",
+    "viewCatalog": "View catalog",
+    "addProjects": "Add projects to your catalog",
+    "deleteConfirm": "Are you sure you want to delete this catalog?",
+    "catalogCreated": "Catalog created: {id}",
+    "catalogDeleted": "Catalog deleted successfully {id}",
+    "catalogUpdated": "Catalog updated successfully {id}"
+  },
+  "configurator": {
+    "title": "Configure your 3D project",
+    "subtitle": "Have an object you want to configure? Use the configurator",
+    "configure": "CONFIGURE",
+    "yourConfigurations": "Your Configured Projects"
+  },
+  "wizard": {
+    "step2Title": "Step 2: Upload your project photos",
+    "uploadImages": "Upload Images",
+    "dragAndDrop": "Drag and drop your photos",
+    "orSelect": "Or select",
+    "selectedFiles": "Selected Files ({count})",
+    "noFilesSelected": "No files selected",
+    "creatingProject": "Creating project...",
+    "uploadingImages": "Uploading images",
+    "sendingToQueue": "Sending to processing queue...",
+    "errors": "Errors:",
+    "uploadFailed": "{count} images not uploaded. Rolling back...",
+    "projectCreated": "Project created and sent to queue",
+    "unknownError": "Unknown error",
+    "photoGuide": {
+      "whatToPhoto": "What object to photograph:",
+      "staticObjects": "Choose static objects that don't bend or deform while taking photos.",
+      "noMovingParts": "Choose objects without moving or removable parts.",
+      "noReflective": "Choose objects without reflective or transparent parts.",
+      "withDetails": "Choose objects with well-defined details and textures.",
+      "objectSize": "Object size:",
+      "objectSizeDesc": "You can photograph objects of various sizes, as long as they can be framed entirely by the camera.",
+      "howToPhoto": "How to photograph the object:",
+      "moveCamera": "Move the camera around the object, taking photos from different angles and heights,",
+      "turntable": "Place the object on a turntable and rotate it while taking photos.",
+      "tip": "You can move the object between shots to photograph all sides, as long as it doesn't bend or deform.",
+      "howToTakePhotos": "How to take photos:",
+      "fillFrame": "Position the object so it fills as much of the camera frame as possible without excluding or cropping any part.",
+      "aperture": "Use a sufficiently narrow aperture to maintain sharp focus. Shoot at the maximum resolution supported by the camera and use RAW format if possible.",
+      "whatToAvoid": "What to avoid:",
+      "avoidReflective": "Avoid reflective or transparent objects, such as mirrors or glass.",
+      "avoidBending": "Avoid objects that bend or deform during photography.",
+      "avoidSize": "Avoid objects that are too large or too small for the camera.",
+      "avoidLighting": "Avoid taking photos in environments that are too dark or too bright."
+    }
+  },
+  "errors": {
+    "notFound": "404 - Resource not found",
+    "backToHome": "Back to Home",
+    "authFailed": "Could not authenticate user"
+  },
+  "loader": {
+    "phrases": [
+      "Loading...",
+      "We're preparing everything for you...",
+      "Just a moment...",
+      "Almost ready..."
+    ]
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Get answers to the most common questions about our product."
+  }
+}

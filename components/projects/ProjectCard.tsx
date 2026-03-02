@@ -2,7 +2,7 @@
 
 import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/client";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 import { BlurImage } from "../BlurImage";
 import Tags from "../Tags";

@@ -108,7 +108,7 @@ jobs:
 
 - **Priorita**: P1
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]` (verificato 2026-03-02: `@sentry/nextjs` non in package.json, nessun file `sentry.*.config.ts`)
+- **Stato**: `[x]` completato 2026-03-02 (@sentry/nextjs v10.40.0 configurato: client/server/edge configs con DSN da env var, sampling 10%, Session Replay, tutti i console.error migrati a Sentry.captureException in 5 action files + 1 API route, 3 error.tsx + Canvas3dErrorBoundary integrati, CSP aggiornata, tunnelRoute /monitoring attivo)
 - **Dipendenze**: Account Sentry
 
 ### Problema

@@ -4,14 +4,14 @@ import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { UploadProgress } from "./UploadProgress";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { toast } from "react-toastify";
 import { validateProjectFormData } from "@/lib/validations/project";
 import {
   createProject,
   submitProjectToQueue,
   rollbackProject,
-} from "@/app/projects/new/actions";
+} from "@/app/[locale]/projects/new/actions";
 import { parallelLimit } from "@/lib/utils/parallelLimit";
 
 export const Wizard: React.FC = () => {

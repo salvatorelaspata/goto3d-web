@@ -1,9 +1,11 @@
 "use client";
-import { deleteProject } from "@/app/projects/[id]/actions";
+import { deleteProject } from "@/app/[locale]/projects/[id]/actions";
 import { actions } from "@/store/main";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { useEffect, useTransition } from "react";
 import { toast } from "react-toastify";
+import { useTranslations } from "next-intl";
+
 interface DangerZoneProps {
   id: number;
 }
@@ -11,6 +13,7 @@ interface DangerZoneProps {
 export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("projects");
 
   useEffect(() => {
     if (isPending) return;
@@ -18,15 +21,15 @@ export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
 
   const onSubmit = async (formData: FormData) => {
     // eslint-disable-next-line no-alert
-    if (confirm("Are you sure you want to delete this project? This action is irreversible.")) {
+    if (confirm(t("deleteConfirm"))) {
       const id = formData.get("id");
       actions.showLoading();
 
       startTransition(async () => {
         try {
-          toast.info("Cancellazione in corso...");
+          toast.info(t("deleting"));
           if (id) await deleteProject({ id: parseInt(id as string) });
-          toast.success("Progetto cancellato con successo");
+          toast.success(t("deleted"));
         } catch (error: any) {
           actions.hideLoading();
           toast.error(error.message);
@@ -43,9 +46,9 @@ export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
       <button
         onClick={() => {}}
         type="submit"
-        className="rounded-lg bg-red-500 p-2 text-palette3"
+        className="rounded-lg bg-red-500 dark:bg-red-700 p-2 text-palette3"
       >
-        Delete project
+        {t("deleteProject")}
       </button>
     </form>
   );

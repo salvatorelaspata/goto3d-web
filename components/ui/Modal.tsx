@@ -7,9 +7,9 @@ export const Modal: React.FC = () => {
     <div>
       {/* <div className="fixed inset-0 z-50 bg-black bg-opacity-50"></div> */}
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="relative w-11/12 h-3/4 bg-white rounded-md shadow-lg">
+        <div className="relative w-11/12 h-3/4 bg-white dark:bg-gray-800 rounded-md shadow-lg">
           <div className="flex justify-between p-4">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
               Modal Title
             </h3>
             <button

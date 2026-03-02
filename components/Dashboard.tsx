@@ -1,7 +1,7 @@
 import PageTitle from "./ui/PageTitle";
 import ProjectCard from "./projects/ProjectCard";
-import { getProjects } from "@/app/projects/actions";
-import { getCatalogs } from "@/app/catalogs/actions";
+import { getProjects } from "@/app/[locale]/projects/actions";
+import { getCatalogs } from "@/app/[locale]/catalogs/actions";
 import CatalogCard from "./catalogs/CatalogCard";
 import type { Tables } from "@/types/supabase";
 import { PROJECT_STATUS } from "@/lib/constants";

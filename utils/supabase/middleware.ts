@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
+import { locales, defaultLocale } from "@/i18n/config";
 
 const protectedPaths = [
   "/dashboard",
@@ -8,6 +9,24 @@ const protectedPaths = [
   "/configurator",
   "/profile",
 ];
+
+function stripLocalePrefix(pathname: string): string {
+  for (const locale of locales) {
+    if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+      return pathname.slice(`/${locale}`.length) || "/";
+    }
+  }
+  return pathname;
+}
+
+function getLocaleFromPath(pathname: string): string {
+  for (const locale of locales) {
+    if (pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`) {
+      return locale;
+    }
+  }
+  return defaultLocale;
+}
 
 export const updateSession = async (request: NextRequest) => {
   try {
@@ -67,23 +86,25 @@ export const updateSession = async (request: NextRequest) => {
     );
 
     // This will refresh session if expired - required for Server Components
-    // https://supabase.com/docs/guides/auth/server-side/nextjs
     const { error } = await supabase.auth.getUser();
 
+    // Strip locale prefix before checking protected paths
+    const strippedPath = stripLocalePrefix(request.nextUrl.pathname);
+    const locale = getLocaleFromPath(request.nextUrl.pathname);
+
     const isProtected = protectedPaths.some((path) =>
-      request.nextUrl.pathname.startsWith(path)
+      strippedPath.startsWith(path)
     );
 
     if (isProtected && error) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(
+        new URL(`/${locale}/login`, request.url)
+      );
     }
 
     request.headers.set("x-next-pathname", request.nextUrl.pathname);
     return response;
   } catch (e) {
-    // If you are here, a Supabase client could not be created!
-    // This is likely because you have not set up environment variables.
-    // Check out http://localhost:3000 for Next Steps.
     return NextResponse.next({
       request: {
         headers: request.headers,

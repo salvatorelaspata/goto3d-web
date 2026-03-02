@@ -1,0 +1,187 @@
+import dynamic from "next/dynamic";
+import PageTitle from "@/components/ui/PageTitle";
+import { formatSupabaseDate } from "@/utils/constants";
+import { PROJECT_STATUS } from "@/lib/constants";
+import { fetchData, retrieveSignedUrls } from "./actions";
+
+import SectionTitle from "@/components/ui/SectionTitle";
+import { StatusText } from "@/components/StatusText";
+
+const Viewer3d = dynamic(
+  () => import("@/components/viewer3d/Viewer3d").then((mod) => mod.Viewer3d),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center justify-center">
+        <p className="text-palette1">Caricamento viewer 3D...</p>
+      </div>
+    ),
+  }
+);
+import { BigTextCentered } from "@/components/projects/BigText";
+import { GeneralInfo } from "@/components/projects/GeneralInfo";
+import { DangerZone } from "@/components/projects/DangerZone";
+import { protectedRoute } from "@/app/[locale]/actions";
+import { notFound } from "next/navigation";
+import { _Object } from "@aws-sdk/client-s3";
+import { userAgent } from "next/server";
+import { headers } from "next/headers";
+import Link from "next/link";
+import { readableFileSize } from "@/utils/utils";
+
+const checkUserAgent = () => {
+  const { os, device } = userAgent({ headers: headers() });
+  const isMobile = device.type === "mobile";
+  const isIphone = os.name === "iOS" && device.model === "iPhone";
+  const isIpad = os.name === "iOS" && device.model === "iPad";
+
+  return { isMobile, isIphone, isIpad };
+};
+
+export default async function Project({ params }: { params: { id: string } }) {
+  await protectedRoute();
+
+  const res = await fetchData({ id: params.id });
+  if (!res.success) return notFound();
+
+  const { project, models } = res.data;
+
+  const urlsRes = await retrieveSignedUrls({ models });
+  const urls = urlsRes.success ? urlsRes.data : [];
+  const objectUrl = urls.find((u) => u.key === "model.obj")?.url || "";
+  const textureUrl = urls.find((u) => u.key.endsWith("tex0.png"))?.url || "";
+  const usdzUrl = urls.find((u) => u.key.endsWith("model.usdz"))?.url || "";
+  const id = parseInt(params.id);
+  const status = project?.status;
+
+  if (status === PROJECT_STATUS.IN_QUEUE) {
+    return (
+      <BigTextCentered
+        text="Progetto in coda"
+        id={id}
+        name={project?.name}
+        description={project?.description}
+      />
+    );
+  } else if (status === PROJECT_STATUS.PROCESSING) {
+    return (
+      <BigTextCentered
+        text="Progetto in lavorazione"
+        id={id}
+        name={project?.name}
+        description={project?.description}
+      />
+    );
+  } else if (status === PROJECT_STATUS.ERROR) {
+    return (
+      <BigTextCentered
+        text="Progetto in errore"
+        id={id}
+        name={project?.name}
+        description={project?.description}
+      />
+    );
+  }
+
+  const { isMobile, isIphone, isIpad } = checkUserAgent();
+
+  return (
+    <>
+      <section className="m-4 flex h-[77vh] items-center justify-center rounded-lg bg-palette2 bg-gradient-to-b from-palette1 to-palette2">
+        {objectUrl && (
+          <Viewer3d
+            id={project.id}
+            objectUrl={objectUrl}
+            textureUrl={textureUrl}
+            usdzUrl={usdzUrl}
+            isMobile={isMobile}
+            isIphone={isIphone}
+            isIpad={isIpad}
+          />
+        )}
+      </section>
+      <section className="m-4 flex flex-col justify-center rounded-lg bg-palette2">
+        <PageTitle title="Dettagli" />
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {/* GENERAL INFO */}
+          <GeneralInfo
+            id={project.id}
+            name={project.name}
+            description={project.description}
+            status={project.status}
+          />
+
+          {/* DETAILS */}
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
+            <SectionTitle title="Details" />
+            <div className="grid">
+              <StatusText label="Detail" text={project.detail as string} />
+              <StatusText label="Feature" text={project.feature as string} />
+              <StatusText label="Order" text={project.order as string} />
+            </div>
+          </div>
+          {/* TIMESTAMPS */}
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
+            <SectionTitle title="Timestamps" />
+            <div className="grid">
+              <StatusText
+                label="Created at"
+                text={formatSupabaseDate(project.created_at || "")}
+              />
+              <StatusText
+                label="Process start"
+                text={formatSupabaseDate(project.process_start || "")}
+              />
+              <StatusText
+                label="Process end"
+                text={formatSupabaseDate(project.process_end || "")}
+              />
+            </div>
+          </div>
+          {/* ADDITIONAL INFO */}
+          <div className="mx-4 rounded-lg bg-palette1 p-4">
+            <SectionTitle title="Additional Info" />
+            <div className="grid">
+              <StatusText
+                label="Images"
+                text={project.files?.length || "N/A"}
+              />
+            </div>
+          </div>
+        </div>
+        {/* THUMBNAIL */}
+        <div className="mx-4 mt-4 rounded-lg bg-palette1 p-4">
+          <SectionTitle title="Thumbnail" />
+        </div>
+        {/* DOWNLOAD */}
+        <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
+          <SectionTitle title="Download" />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {urls &&
+              urls.map(({ key, url, size }) => (
+                <Link key={key} href={url || ""}>
+                  <p className="grid grid-cols-4 content-center items-center text-start align-middle">
+                    <span className="col-span-1 align-middle">
+                      {key.endsWith(".png") ? "Texture:" : "Model:"}{" "}
+                    </span>
+                    <span className="col-span-3 align-middle text-palette5 underline">
+                      {key}
+                    </span>
+                    <span className="col-span-1 align-middle">Size:</span>
+                    <span className="col-span-3 align-middle">
+                      {readableFileSize(size)}
+                    </span>
+                  </p>
+                </Link>
+              ))}
+          </div>
+        </div>
+        {/* DANGER */}
+        <div className="mx-4 my-4 rounded-lg bg-palette1 p-4">
+          <SectionTitle title="Danger Zone" />
+          <DangerZone id={project.id} />
+        </div>
+      </section>
+    </>
+  );
+}

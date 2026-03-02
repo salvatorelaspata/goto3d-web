@@ -15,7 +15,7 @@ export const UploadProgress: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+      <div className="mx-4 w-full max-w-md rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl">
         {uploadState === "creating" && (
           <div className="flex flex-col items-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-palette2 border-t-palette1" />
@@ -36,7 +36,7 @@ export const UploadProgress: React.FC = () => {
                 style={{ width: `${percentage}%` }}
               />
             </div>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-gray-600 dark:text-gray-300">
               {uploadCompleted} / {uploadTotal} ({percentage}%)
             </p>
           </div>
@@ -52,9 +52,9 @@ export const UploadProgress: React.FC = () => {
         )}
 
         {uploadErrors.length > 0 && (
-          <div className="mt-4 rounded-md bg-red-50 p-3">
-            <p className="mb-1 text-sm font-medium text-red-800">Errori:</p>
-            <ul className="list-disc pl-4 text-sm text-red-700">
+          <div className="mt-4 rounded-md bg-red-50 dark:bg-red-900/30 p-3">
+            <p className="mb-1 text-sm font-medium text-red-800 dark:text-red-300">Errori:</p>
+            <ul className="list-disc pl-4 text-sm text-red-700 dark:text-red-400">
               {uploadErrors.map((err, i) => (
                 <li key={i}>{err}</li>
               ))}

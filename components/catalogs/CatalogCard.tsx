@@ -1,5 +1,7 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { Link } from "@/i18n/routing";
+import { redirect } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/config";
 
 interface CardProps {
   id: number;
@@ -19,7 +21,8 @@ export default function CatalogCard({
 }: CardProps) {
   async function navigate() {
     "use server";
-    redirect(`${artifact}`);
+    const locale = (await getLocale()) as Locale;
+    redirect({ href: artifact as string, locale });
   }
 
   return (

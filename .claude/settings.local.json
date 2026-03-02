@@ -18,7 +18,8 @@
       "Bash(npm view:*)",
       "Bash(grep:*)",
       "Bash(npm run:*)",
-      "mcp__supabase__list_migrations"
+      "mcp__supabase__list_migrations",
+      "Bash(find:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

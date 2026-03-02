@@ -1,0 +1,187 @@
+{
+  "common": {
+    "appName": "GoTo3D",
+    "loading": "Caricamento in corso...",
+    "create": "CREA",
+    "delete": "Elimina",
+    "update": "Aggiorna",
+    "reset": "Reset",
+    "close": "Close",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "back": "Indietro",
+    "next": "Avanti",
+    "submit": "Invia",
+    "confirm": "Conferma",
+    "yes": "Si",
+    "no": "No",
+    "or": "Oppure",
+    "skipToContent": "Salta al contenuto principale"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "projects": "Progetti",
+    "catalogs": "Cataloghi",
+    "configurator": "Configurator",
+    "home": "Home",
+    "logout": "Logout",
+    "hey": "Hey {name}"
+  },
+  "theme": {
+    "switchToLight": "Passa alla modalità chiara",
+    "switchToDark": "Passa alla modalità scura"
+  },
+  "locale": {
+    "it": "IT",
+    "en": "EN"
+  },
+  "landing": {
+    "heroTitle": "Creazione di Modelli 3D",
+    "heroDescription": "Trasforma le tue foto in modelli 3D dettagliati con un solo clic.",
+    "catalogTitle": "Catalogo 3D",
+    "catalogDescription": "Crea e gestisci il tuo catalogo di modelli 3D in modo semplice e intuitivo.",
+    "customizationTitle": "Personalizzazione",
+    "customizationDescription": "Personalizza i tuoi modelli 3D per adattarli alle tue esigenze specifiche.",
+    "featuresTitle": "Scopri le potenti funzionalità di goto3d",
+    "feature1Title": "Creazione di modelli 3D dalle foto",
+    "feature1Description": "Utilizza la nostra avanzata tecnologia di fotogrammetria per trasformare una serie di foto in un modello 3D dettagliato. Basta scattare alcune foto dell'oggetto da diverse angolazioni e lasciare che goto3d faccia il resto.",
+    "feature2Title": "Catalogo 3D interattivo",
+    "feature2Description": "Organizza e gestisci i tuoi modelli 3D in un catalogo interattivo e facile da navigare. Mostra i tuoi prodotti in modo coinvolgente, permettendo ai clienti di esplorarli da ogni angolazione.",
+    "feature3Title": "Personalizzazione avanzata",
+    "feature3Description": "Modifica e personalizza i tuoi modelli 3D direttamente nell'app. Cambia colori, texture e dettagli per adattare ogni modello alle tue esigenze specifiche o alle richieste dei clienti.",
+    "feature4Title": "Esperienza mobile ottimizzata",
+    "feature4Description": "Accedi e gestisci i tuoi modelli 3D ovunque tu sia con la nostra app mobile ottimizzata. Cattura foto, crea modelli e aggiorna il tuo catalogo direttamente dal tuo smartphone o tablet.",
+    "ctaTitle": "Pronto a rivoluzionare il tuo mondo in 3D?",
+    "ctaButton": "Inizia ora",
+    "footer": "© 2024 goto3d. Tutti i diritti riservati."
+  },
+  "auth": {
+    "title": "Accedi o Registrati",
+    "signIn": "Accedi",
+    "signUp": "Registrati",
+    "or": "Oppure",
+    "signInWithGoogle": "Accedi con Google",
+    "email": "email",
+    "password": "password"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Panoramica del tuo account GoTo3D",
+    "stats": "Statistiche",
+    "totalProjects": "Totale Progetti",
+    "inQueue": "In Coda",
+    "processing": "In Lavorazione",
+    "completed": "Completati",
+    "errors": "Errori",
+    "projectsSection": "Progetti",
+    "catalogsSection": "Cataloghi",
+    "noProjects": "Nessun progetto",
+    "noProjectsDesc": "Crea il tuo primo progetto per convertire immagini in modelli 3D.",
+    "createProject": "Crea Progetto",
+    "noCatalogs": "Nessun catalogo",
+    "noCatalogsDesc": "Crea un catalogo per organizzare e condividere i tuoi modelli 3D.",
+    "createCatalog": "Crea Catalogo",
+    "newProject": "Nuovo Progetto",
+    "newCatalog": "Nuovo Catalogo"
+  },
+  "projects": {
+    "title": "Crea il tuo progetto 3D",
+    "subtitle": "Hai un oggetto che vuoi trasformare in 3D? Inizia subito!",
+    "yourProjects": "I Tuoi Progetti",
+    "deleteConfirm": "Sei sicuro di voler eliminare questo progetto? Questa azione è irreversibile.",
+    "deleting": "Cancellazione in corso...",
+    "deleted": "Progetto cancellato con successo",
+    "deleteProject": "Delete project",
+    "inQueue": "Progetto in coda",
+    "processing": "Progetto in lavorazione",
+    "error": "Progetto in errore",
+    "loadingViewer": "Caricamento viewer 3D...",
+    "details": "Dettagli",
+    "models3d": "Modelli 3D"
+  },
+  "catalogs": {
+    "title": "Crea il tuo Catalogo di Prodotti 3D",
+    "subtitle": "Condividilo con i tuoi clienti.",
+    "yourCatalogs": "I Tuoi Cataloghi",
+    "newCatalog": "NUOVO CATALOGO",
+    "generalInfo": "Informazioni generali",
+    "catalogTitle": "Titolo",
+    "titlePlaceholder": "Inserisci un titolo",
+    "catalogDescription": "Descrizione del catalogo (facoltativa)",
+    "descriptionPlaceholder": "Inserisci una descrizione",
+    "visibility": "Visibilità",
+    "public": "Pubblico",
+    "private": "Private",
+    "publicDesc": "Tutti possono visualizzare questo catalogo",
+    "privateDesc": "Solo tu puoi visualizzare questo catalogo",
+    "preview": "Preview",
+    "viewCatalog": "Visualizza il catalogo",
+    "addProjects": "Aggiungi i progetti al tuo catalogo",
+    "deleteConfirm": "Are you sure you want to delete this catalog?",
+    "catalogCreated": "Catalog created: {id}",
+    "catalogDeleted": "Catalog deleted successfully {id}",
+    "catalogUpdated": "Catalog updated successfully {id}"
+  },
+  "configurator": {
+    "title": "Configura il tuo progetto 3D",
+    "subtitle": "Hai un oggetto che vuoi configurare? Utilizza il configuratore",
+    "configure": "CONFIGURA",
+    "yourConfigurations": "I Tuoi Progetti Configurati"
+  },
+  "wizard": {
+    "step2Title": "Step 2: Carica le foto del tuo progetto",
+    "uploadImages": "Upload Images",
+    "dragAndDrop": "Trascina e rilascia le tue foto",
+    "orSelect": "Oppure seleziona",
+    "selectedFiles": "File Selezionati ({count})",
+    "noFilesSelected": "Nessun file selezionati",
+    "creatingProject": "Creazione progetto...",
+    "uploadingImages": "Upload immagini",
+    "sendingToQueue": "Invio alla coda di elaborazione...",
+    "errors": "Errori:",
+    "uploadFailed": "{count} immagini non caricate. Rollback in corso...",
+    "projectCreated": "Progetto creato e inviato alla coda",
+    "unknownError": "Errore sconosciuto",
+    "photoGuide": {
+      "whatToPhoto": "Quale oggetto fotografare:",
+      "staticObjects": "Scegliere oggetti statici che non si pieghino o deformino mentre si scattano le foto.",
+      "noMovingParts": "Scegliere oggetti senza parti mobili o parti rimovibili.",
+      "noReflective": "Scegliere oggetti senza parti riflettenti o trasparenti.",
+      "withDetails": "Scegliere oggetti con dettagli e texture ben definite.",
+      "objectSize": "Dimensioni dell'oggetto:",
+      "objectSizeDesc": "È possibile fotografare oggetti di diverse dimensioni, purchè essi si possano inquadrare, nella loro interezza, con la fotocamera.",
+      "howToPhoto": "Come fotografare l'oggetto:",
+      "moveCamera": "Muovere la fotocamera intorno all'oggetto, scattando foto da diverse angolazioni e ad altezze diverse,",
+      "turntable": "Mettere l'oggetto su una piattaforma girevole e ruotarlo mentre si scattano le foto.",
+      "tip": "È possibile spostare l'oggetto tra uno scatto e l'altro per fotografare tutti i lati, purchè esso non si pieghi o deformi.",
+      "howToTakePhotos": "Come fare le foto:",
+      "fillFrame": "Posiziona l'oggetto in modo che riempia la maggior parte possibile dell'inquadratura della fotocamera senza escludere o tagliare alcuna parte.",
+      "aperture": "Utilizza un'apertura di diaframma sufficientemente stretta per mantenere una messa a fuoco nitida. Scattare alla massima risoluzione supportata dalla fotocamera e utilizzare il formato RAW, se possibile.",
+      "whatToAvoid": "Cosa evitare:",
+      "avoidReflective": "Evitare oggetti riflettenti o trasparenti, come specchi o vetri.",
+      "avoidBending": "Evitare oggetti che si pieghino o deformino durante la fotografia.",
+      "avoidSize": "Evitare oggetti troppo grandi o troppo piccoli per la fotocamera.",
+      "avoidLighting": "Evitare di scattare foto in ambienti troppo bui o troppo luminosi."
+    }
+  },
+  "errors": {
+    "notFound": "404 - Risorsa non trovata",
+    "backToHome": "Torna alla Home",
+    "authFailed": "Could not authenticate user"
+  },
+  "loader": {
+    "phrases": [
+      "Caricamento in corso...",
+      "Stiamo preparando tutto per te...",
+      "Ancora un momento...",
+      "Quasi pronti..."
+    ]
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Get answers to the most common questions about our product."
+  }
+}

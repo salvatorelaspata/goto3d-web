@@ -31,7 +31,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
         name={name}
         type={type}
         onChange={onChange}
-        className="border w-full border-palette1 bg-white rounded-md p-2 text-palette5"
+        className="border w-full border-palette1 bg-white dark:bg-gray-800 rounded-md p-2 text-palette5"
       />
     </>
   );

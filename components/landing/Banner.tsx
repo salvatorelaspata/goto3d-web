@@ -3,10 +3,10 @@ import { PlusIcon } from "@heroicons/react/solid"; // Import Heroicons
 
 interface BannerProps {
   user: UserResponse["data"]["user"] | null;
-  goToLogin: () => Promise<never>;
-  goToDashboard: () => Promise<never>;
-  goToNewProject: () => Promise<never>;
-  goToNewCatalog: () => Promise<never>;
+  goToLogin: () => Promise<void | never>;
+  goToDashboard: () => Promise<void | never>;
+  goToNewProject: () => Promise<void | never>;
+  goToNewCatalog: () => Promise<void | never>;
 }
 
 export default function Banner({
