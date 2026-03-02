@@ -10,7 +10,7 @@
 
 - **Priorita**: P1
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (creato `components/viewer3d/Canvas3dErrorBoundary.tsx`, wrappato Canvas in Viewer3d e Configurator3d)
 - **Dipendenze**: -
 
 ### Problema
@@ -100,8 +100,10 @@ Wrappare i componenti 3D:
 
 - **Priorita**: P2
 - **Effort**: L (2-5 giorni)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (aria-labels su Viewer3d fullscreen/AR, Menu hamburger con aria-expanded, skip-to-content in layout.tsx, main id="main-content")
 - **Dipendenze**: -
+
+> **Verificato 2026-03-02**: Header.tsx ha 3 aria-label ("Back to homepage", "Home", "Logout"). `ui/Accordion.tsx` usa `aria-labelledby`. Mancano: aria-label su bottoni Viewer3d (fullscreen, AR), aria-expanded su menu hamburger, skip-to-content in layout.tsx.
 
 ### Problema
 Solo 5 attributi aria nell'intera codebase. Mancano: aria-labels su bottoni icona, aria-expanded su menu, alt text su immagini, focus management, skip-to-content.
@@ -187,19 +189,21 @@ Solo 5 attributi aria nell'intera codebase. Mancano: aria-labels su bottoni icon
 
 - **Priorita**: P2
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato
 - **Dipendenze**: -
 
-### Problema
-Alcuni componenti hanno `"use client"` senza necessita di interattivita client-side, forzando il rendering client e aumentando il bundle.
+> **Verificato 2026-03-02**: `Card.tsx` non ha "use client" e non usa hooks (gia corretto). `BlurImage.tsx` ha "use client" ed e necessario (usa `useState` per loading + `setSrc`). `Accordion.tsx` ha "use client" ed e necessario (usa `useState` per `isOpen` e `icon`). Nessuna azione necessaria.
+
+### Problema (risolto)
+I componenti analizzati hanno "use client" solo dove effettivamente necessario.
 
 ### Azioni
 
-| Componente | Motivo "use client" | Azione |
-|-----------|---------------------|--------|
-| `components/Card.tsx` | Nessuna interattivita | Rimuovere |
-| `components/BlurImage.tsx` | `useState` per loading | Valutare: se solo `onLoad`, rimuovere |
-| `components/Accordion.tsx` | Dipende dall'implementazione | Verificare se usa stato client |
+| Componente | Motivo "use client" | Azione | Stato |
+|-----------|---------------------|--------|-------|
+| `components/Card.tsx` | Nessuna interattivita | ~~Rimuovere~~ | ~~fatto~~ (gia senza "use client") |
+| `components/BlurImage.tsx` | `useState` per loading | Mantenere (necessario) | N/A |
+| `components/Accordion.tsx` | `useState` per isOpen | Mantenere (necessario) | N/A |
 
 **Nota**: prima di rimuovere, verificare che il componente non usi hooks, event handlers, o browser APIs.
 
@@ -220,7 +224,7 @@ Alcuni componenti hanno `"use client"` senza necessita di interattivita client-s
 
 - **Priorita**: P3
 - **Effort**: L (2-5 giorni)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: nessun `darkMode` in tailwind.config.js, colori dark commentati nel config, solo 3 classi `dark:` in Modal.tsx)
 - **Dipendenze**: Design palette dark mode
 
 ### Problema
@@ -280,7 +284,7 @@ Nessun supporto dark mode. Palette colori hardcoded per tema chiaro.
 
 - **Priorita**: P3
 - **Effort**: XL (1-2 settimane)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: `next-intl` non in package.json, nessuna directory `messages/`)
 - **Dipendenze**: Definizione scope lingue supportate
 
 ### Problema
@@ -331,12 +335,12 @@ npm install next-intl
 
 ## FE-06: Fix Hydration Mismatch e Hook Condizionale
 
-- **Priorita**: P2 -> **P1** (bug React critico)
+- **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (ToastComponent riscritto con cleanup `supabase.removeChannel()`, dead code rimosso; ProjectCard gia corretto con `channel.unsubscribe()` nel return)
 - **Dipendenze**: -
 
-> **ATTENZIONE**: `ProjectCard.tsx` ha un **hook condizionale** (`useEffect` dentro un blocco `if`). Questo viola la regola fondamentale dei Hooks React e puo causare crash o comportamenti imprevedibili. Da risolvere con priorita.
+> **ATTENZIONE RIDIMENSIONATA**: Verificato 2026-03-02 - il "bug critico" degli hook condizionali in `ProjectCard.tsx` e stato **ridimensionato**. L'`useEffect` e chiamato incondizionatamente (riga 39), con la condizione `if (artifact) return;` **dentro** l'hook (riga 40), il che e corretto secondo le Rules of Hooks. Restano problemi di cleanup nella subscription e potenziali hydration mismatch in `ToastComponent.tsx`.
 
 ### Problema
 - `ToastComponent.tsx`: Supabase real-time subscription creata su mount puo causare mismatch
@@ -391,7 +395,7 @@ useEffect(() => {
 
 - **Priorita**: P2
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (Card.tsx era dead code - non importato da nessun file - eliminato come parte di CQ-02)
 - **Dipendenze**: -
 
 ### Problema

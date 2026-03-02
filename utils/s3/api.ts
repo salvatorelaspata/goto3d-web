@@ -6,14 +6,16 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl as signUrl } from "@aws-sdk/s3-request-presigner";
 import { clientS3 } from "./client";
+import { SIGNED_URL_EXPIRY_SECONDS } from "@/lib/constants";
 
 export const listObjects = async (Bucket: string, path: string) => {
-  const response = await clientS3.send(new ListObjectsV2Command({ Bucket }));
-
-  if (!response.Contents) return [];
-  if (!path) return response.Contents;
-  const filtered = response.Contents.filter((c) => c?.Key?.startsWith(path));
-  return filtered;
+  const response = await clientS3.send(
+    new ListObjectsV2Command({
+      Bucket,
+      Prefix: path || undefined,
+    }),
+  );
+  return response.Contents ?? [];
 };
 
 export const getObject = async (Bucket: string, Key: string) => {
@@ -36,7 +38,7 @@ export const getSignedUrl = async (Bucket: string, Key: string) => {
   const signedUrl = await signUrl(
     clientS3,
     new GetObjectCommand({ Bucket, Key }),
-    { expiresIn: 3600 },
+    { expiresIn: SIGNED_URL_EXPIRY_SECONDS },
   );
   return signedUrl;
 };

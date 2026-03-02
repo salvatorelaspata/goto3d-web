@@ -5,27 +5,9 @@ import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function ToastComponent() {
-  // const sendNotification = (title: string, body: string) => {
-  //   if (Notification.permission === "granted") {
-  //     const n = new Notification(title, { body, icon: "/favicon.ico" })
-  //   }
-  // };
   useEffect(() => {
-    // request permission for notifications
-    // if (Notification.permission !== "granted") Notification.requestPermission();
-    // else console.log("Notifications are already granted");
-
     const supabase = createClient();
-    // supabase.auth.onAuthStateChange((event, session) => {
-    //   if (event === "SIGNED_IN") {
-    //     toast.success("Signed in");
-    //   }
-    //   if (event === "SIGNED_OUT") {
-    //     toast.success("Signed out");
-    //   }
-    // });
-    // console.log("[ToastComponent] subscribing to changes");
-    supabase
+    const channel = supabase
       .channel("realtime project")
       .on(
         "postgres_changes",
@@ -40,11 +22,11 @@ export default function ToastComponent() {
         }
       )
       .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
-  return (
-    <>
-      <ToastContainer />
-      {/* <button onClick={() => sendNotification("Hello", "World")}>Notify</button> */}
-    </>
-  );
+
+  return <ToastContainer />;
 }

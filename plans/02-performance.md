@@ -10,11 +10,10 @@
 
 - **Priorita**: P0
 - **Effort**: M (4-16h)
-- **Stato**: `[~]` parziale
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
-> **PROGRESSO**: Convertito a Promise API (async/await) e semplificato. Tuttavia crea **ancora una nuova connessione TCP per ogni messaggio** (`amqp.connect()` + `connection.close()` ad ogni invocazione). Mancano: connection pooling, retry logic, heartbeat, graceful shutdown.
-> **NOTA**: `/api/send-to-queue` e stata eliminata. `sendToQueue` e ora chiamato dalla server action `submitProjectToQueue` in `app/projects/new/actions.ts`.
+> **Completato 2026-03-02**: Riscritto `utils/amqpClient.ts` con connection pooling (singola connessione riutilizzata), retry con backoff (3 tentativi), heartbeat (30s), timeout (10s), auto-reconnect su errore, graceful shutdown su SIGINT/SIGTERM.
 
 ### Problema
 `utils/amqpClient.ts` crea una nuova connessione TCP per ogni messaggio e nessun retry logic. Sotto carico esaurisce il pool di connessioni RabbitMQ.
@@ -107,7 +106,7 @@ process.on("SIGINT", async () => {
 
 - **Priorita**: P1
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (mutations in useEffect, camera con useMemo, import _Object rimosso)
 - **Dipendenze**: -
 
 ### Problema
@@ -161,7 +160,7 @@ Rimuovere anche l'import non usato `_Object` dalla riga 8.
 
 - **Priorita**: P1
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (aggiunto Prefix a ListObjectsV2Command, rimosso filtro client-side)
 - **Dipendenze**: -
 
 ### Problema
@@ -197,7 +196,7 @@ export const listObjects = async (Bucket: string, path: string) => {
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (Viewer3d e Configurator3d caricati con `next/dynamic` ssr:false, loading state con messaggio)
 - **Dipendenze**: -
 
 ### Problema
@@ -242,8 +241,10 @@ const Configurator3d = dynamic(
 
 - **Priorita**: P2
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[~]` parziale
 - **Dipendenze**: -
+
+> **Verificato 2026-03-02**: `Promise.all` implementato in `app/projects/actions.tsx:23-29` per `getProjects()` e in `app/projects/[id]/actions.tsx:74-90` per i modelli. Pattern applicato ma non in modo uniforme ovunque.
 
 ### Problema
 Nelle server actions che listano progetti, per ogni progetto viene chiamata `getSignedUrl()` separatamente per i thumbnail. Con 50 progetti = 50 chiamate sequenziali a S3.
@@ -283,7 +284,7 @@ Per ulteriore ottimizzazione, valutare cache delle signed URLs con TTL < 1h (es.
 
 - **Priorita**: P3
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (`@next/bundle-analyzer` installato, `next.config.mjs` wrappato, script `npm run analyze` aggiunto)
 - **Dipendenze**: PERF-04 completato
 
 ### Problema

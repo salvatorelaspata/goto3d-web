@@ -1,7 +1,6 @@
 "use client";
 import { useStore } from "@/store/viewerStore";
 import { Environment } from "@react-three/drei";
-// import { USDZLoader } from "three/examples/jsm/loaders/UsdZLoader";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 
@@ -12,6 +11,7 @@ import type { Mesh } from "three";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { toast } from "react-toastify";
 import { actions } from "@/store/main";
 gsap.registerPlugin(useGSAP);
 
@@ -20,9 +20,7 @@ interface Model3DProps {
 }
 
 export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
-  // console.log("Model3D");
   const { objectUrl, textureUrl, usdzUrl, environment, animate } = useStore();
-  // const [usdz, setUsdz] = useState<THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined>(undefined);
 
   const [object, setObject] = useState<
     THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined
@@ -32,8 +30,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   );
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined);
   const mesh = useRef<THREE.Mesh>(null);
-
-  // create type to store array of promises type of Promise<Texture> or Promise<Object3D>
 
   useEffect(() => {
     const load = async () => {
@@ -50,12 +46,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
         const objectLoader = new OBJLoader();
         pAll.push(objectLoader.loadAsync(objectUrl));
       }
-
-      // if (usdzUrl) {
-      //   const usdzLoader = new USDZLoader();
-      //   const _usdz = await usdzLoader.loadAsync(usdzUrl);
-      //   setUsdz(_usdz);
-      // }
 
       const values = await Promise.all(pAll);
       try {
@@ -77,7 +67,7 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
         };
         setGeometry(geo(o));
       } catch {
-        // Error loading 3D model - handled silently
+        toast.error("Errore nel caricamento del modello 3D");
       } finally {
         actions.hideLoading();
       }
@@ -133,7 +123,6 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   return (
     <>
       {environment && <Environment preset={environment} background />}
-      {/* {usdz && <primitive object={usdz} position={[0, 0, 0]} rotation={[0, 0, 0]} />} */}
       <mesh ref={mesh} position={[0, 0, 0]}>
         {geometry && (
           <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>

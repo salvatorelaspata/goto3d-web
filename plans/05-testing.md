@@ -10,10 +10,12 @@
 
 - **Priorita**: P2 -> **P1** (regressione attiva)
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (baseUrl configurata, cy.login() custom command, test fixtures create, test riscritti con baseUrl e senza hardcoded waits/credentials)
 - **Dipendenze**: SEC-05 (credenziali env vars)
 
-> **REGRESSIONE ATTIVA**: I file immagine di test (`cypress/e2e/2-project/files/1-5.jpg`) sono stati eliminati dal working tree ma i test in `cypress/e2e/2-project/new.cy.ts` (righe 46-53) li referenziano ancora. I test di upload sono **sicuramente rotti**.
+> **RISOLTO 2026-03-02**: Regressione risolta. I file immagine di test (`cypress/e2e/2-project/files/1-5.jpg`) sono stati eliminati dal working tree ma i test in `cypress/e2e/2-project/new.cy.ts` (righe 46-53) li referenziano ancora. I test di upload sono **sicuramente rotti**.
+>
+> **Verificato 2026-03-02**: `cypress/e2e/2-project/files/` esiste ma e vuota. `cypress.config.ts` esiste ma senza `baseUrl`. `cypress/support/commands.ts` e un template vuoto senza custom commands. Test file presenti ma non funzionanti.
 
 ### Problema
 1. **REGRESSIONE**: File immagine test (`cypress/e2e/2-project/files/1-5.jpg`) eliminati - test di upload rotti
@@ -114,7 +116,7 @@ cy.wait('@imageUpload').its('response.statusCode').should('eq', 200);
 
 - **Priorita**: P2
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: solo 2 suite test - auth e project creation, nessuna directory 3-catalog o 4-permissions)
 - **Dipendenze**: TEST-01
 
 ### Problema
@@ -186,7 +188,7 @@ describe("Catalog CRUD", () => {
 
 - **Priorita**: P2
 - **Effort**: L (2-5 giorni)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (Vitest + Testing Library configurati, 28 test per validazioni, costanti e rate limiter. Scripts `test` e `test:run` aggiunti)
 - **Dipendenze**: -
 
 ### Problema
@@ -311,7 +313,7 @@ describe("projectSchema", () => {
 
 - **Priorita**: P3
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: zero test per API routes o server actions)
 - **Dipendenze**: TEST-03 (Vitest setup)
 
 > **AGGIORNAMENTO**: `/api/send-to-queue` e stata eliminata. La logica e ora nella server action `submitProjectToQueue` (`app/projects/new/actions.ts`). Testare anche `createProject` e `rollbackProject`.

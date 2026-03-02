@@ -1,11 +1,23 @@
+import dynamic from "next/dynamic";
 import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
+import { PROJECT_STATUS } from "@/lib/constants";
 import { fetchData, retrieveSignedUrls } from "./actions";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
 
-import { Viewer3d } from "@/components/viewer3d/Viewer3d";
+const Viewer3d = dynamic(
+  () => import("@/components/viewer3d/Viewer3d").then((mod) => mod.Viewer3d),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center justify-center">
+        <p className="text-palette1">Caricamento viewer 3D...</p>
+      </div>
+    ),
+  }
+);
 import { BigTextCentered } from "@/components/projects/BigText";
 import { GeneralInfo } from "@/components/projects/GeneralInfo";
 import { DangerZone } from "@/components/projects/DangerZone";
@@ -42,7 +54,7 @@ export default async function Project({ params }: { params: { id: string } }) {
   const id = parseInt(params.id);
   const status = project?.status;
 
-  if (status === "in queue") {
+  if (status === PROJECT_STATUS.IN_QUEUE) {
     return (
       <BigTextCentered
         text="Progetto in coda"
@@ -51,7 +63,7 @@ export default async function Project({ params }: { params: { id: string } }) {
         description={project?.description}
       />
     );
-  } else if (status === "processing") {
+  } else if (status === PROJECT_STATUS.PROCESSING) {
     return (
       <BigTextCentered
         text="Progetto in lavorazione"
@@ -60,7 +72,7 @@ export default async function Project({ params }: { params: { id: string } }) {
         description={project?.description}
       />
     );
-  } else if (status === "error") {
+  } else if (status === PROJECT_STATUS.ERROR) {
     return (
       <BigTextCentered
         text="Progetto in errore"

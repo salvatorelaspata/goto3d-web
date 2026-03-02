@@ -1,6 +1,7 @@
 "use server";
 import type { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
+import { PROJECT_STATUS } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 
 export const getProjects = async () => {
@@ -13,7 +14,7 @@ export const getProjects = async () => {
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")
-    .eq("status", "done")
+    .eq("status", PROJECT_STATUS.DONE)
     .order("created_at", { ascending: false });
 
   if (error) {

@@ -90,7 +90,7 @@ export const actions = {
   resetStep: () => {
     return (wizardStore.currentStep = 0);
   },
-  resetwizardStore: () => {
+  resetWizardStore: () => {
     wizardStore.error = "";
     wizardStore.currentStep = 1;
     wizardStore.name = "";

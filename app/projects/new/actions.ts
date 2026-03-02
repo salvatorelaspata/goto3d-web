@@ -2,8 +2,10 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { projectSchema } from "@/lib/validations/project";
+import { PROJECT_STATUS } from "@/lib/constants";
 import { sendToQueue } from "@/utils/amqpClient";
 import { listObjects, deleteObject } from "@/utils/s3/api";
+import { rateLimiter } from "@/lib/rate-limit";
 import { revalidatePath } from "next/cache";
 
 export type ActionResult<T> =
@@ -98,7 +100,7 @@ export async function createProject(
         order,
         feature,
         files: filesArray,
-        status: "in queue",
+        status: PROJECT_STATUS.IN_QUEUE,
       },
     ])
     .select()
@@ -122,6 +124,12 @@ export async function submitProjectToQueue(
 
   if (authError || !user) {
     return { success: false, error: "Non autorizzato" };
+  }
+
+  // Rate limiting per user
+  const { success: withinLimit } = rateLimiter.limit(user.id);
+  if (!withinLimit) {
+    return { success: false, error: "Troppe richieste, riprova tra poco" };
   }
 
   const { data: project, error: projectError } = await supabase

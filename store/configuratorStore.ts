@@ -19,7 +19,7 @@ export interface ConfiguratorProps {
   meshesConfig: ConfigMaterialProps[];
 }
 
-export const state = proxy<ConfiguratorProps>({
+export const configuratorStore = proxy<ConfiguratorProps>({
   file: "",
   filename: "",
   texture: "",
@@ -28,7 +28,7 @@ export const state = proxy<ConfiguratorProps>({
   meshesConfig: [],
 });
 
-export const useStore = () => useSnapshot(state);
+export const useStore = () => useSnapshot(configuratorStore);
 
 export const initConfigState: ConfigMaterialProps = {
   color: new THREE.Color(0xffffff),
@@ -41,23 +41,23 @@ export const initConfigState: ConfigMaterialProps = {
 export const actions = {
   setFile: (file: File) => {
     const url = URL.createObjectURL(file);
-    state.file = url;
-    state.filename = file.name;
+    configuratorStore.file = url;
+    configuratorStore.filename = file.name;
   },
   setTexture: (file: File) => {
     const url = URL.createObjectURL(file);
-    state.texture = url;
-    state.textureName = file.name;
+    configuratorStore.texture = url;
+    configuratorStore.textureName = file.name;
   },
   setMeshes: (meshes: THREE.Mesh[]) => {
-    state.meshes = meshes;
-    state.meshesConfig = meshes.map(() => initConfigState);
+    configuratorStore.meshes = meshes;
+    configuratorStore.meshesConfig = meshes.map(() => initConfigState);
   },
   setMeshesConfig: (
     index: number,
     key: keyof ConfigMaterialProps,
     value: THREE.Color | number
   ) => {
-    (state.meshesConfig[index][key] as THREE.Color | number) = value;
+    (configuratorStore.meshesConfig[index][key] as THREE.Color | number) = value;
   },
 };

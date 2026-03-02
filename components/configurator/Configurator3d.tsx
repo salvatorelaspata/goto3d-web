@@ -3,12 +3,14 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { toast } from "react-toastify";
 import { actions, useStore } from "@/store/configuratorStore";
 import { FileUpload } from "./FileUpload";
 import { MaterialControls } from "./MaterialControls";
 
 import { Model } from "./Model";
 import { GlobalMaterialControls } from "./GlobalMaterialcontrols";
+import { Canvas3dErrorBoundary } from "../viewer3d/Canvas3dErrorBoundary";
 const { setMeshes } = actions;
 
 export const Configurator3d: React.FC = () => {
@@ -41,30 +43,32 @@ export const Configurator3d: React.FC = () => {
     <div className="">
       <FileUpload />
 
-      <Canvas
-        style={{ width: "100%", height: "60vh" }}
-        camera={{ position: [0, 0, 5] }}
-      >
-        <OrbitControls
-          minDistance={0}
-          maxDistance={20}
-          enablePan={false}
-          enableDamping={true}
-          dampingFactor={0.25}
-        />
-        <ambientLight intensity={2.5} />
-        <directionalLight position={[3, 10, 7]} intensity={5} />
-
-        {file && (
-          <Model
-            file={file}
-            filename={filename}
-            texture={texture}
-            setMeshes={setMeshes}
-            meshRefs={meshRefs}
+      <Canvas3dErrorBoundary>
+        <Canvas
+          style={{ width: "100%", height: "60vh" }}
+          camera={{ position: [0, 0, 5] }}
+        >
+          <OrbitControls
+            minDistance={0}
+            maxDistance={20}
+            enablePan={false}
+            enableDamping={true}
+            dampingFactor={0.25}
           />
-        )}
-      </Canvas>
+          <ambientLight intensity={2.5} />
+          <directionalLight position={[3, 10, 7]} intensity={5} />
+
+          {file && (
+            <Model
+              file={file}
+              filename={filename}
+              texture={texture}
+              setMeshes={setMeshes}
+              meshRefs={meshRefs}
+            />
+          )}
+        </Canvas>
+      </Canvas3dErrorBoundary>
       {meshes.length > 0 && (
         <div className="flex flex-col justify-between p-4">
           <GlobalMaterialControls
@@ -88,8 +92,7 @@ export const Configurator3d: React.FC = () => {
           className="w-full bg-palette1 p-8 text-palette3"
           onClick={() => {
             // TODO: Implement actual save functionality
-            // Currently just shows confirmation
-            alert("Salvato");
+            toast.success("Configurazione salvata");
           }}
         >
           Salva

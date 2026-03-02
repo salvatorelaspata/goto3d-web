@@ -12,124 +12,8 @@ import { useStore } from "@/store/catalogStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { updateCatalog } from "@/app/catalogs/[id]/actions";
-
-interface CardProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Card: React.FC<CardProps> = ({ children, className }) => (
-  <div
-    className={`overflow-hidden rounded-lg bg-palette2 shadow-md ${className || ""}`}
-  >
-    {children}
-  </div>
-);
-
-interface CardHeaderProps {
-  title: string;
-  children?: React.ReactNode;
-}
-
-const CardHeader: React.FC<CardHeaderProps> = ({ title, children }) => (
-  <div className="border-b border-palette3 px-6 py-4">
-    {/* add effect text border */}
-    <h2 className="text-xl font-semibold text-palette1">{title}</h2>
-    {children}
-  </div>
-);
-
-interface CardContentProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const CardContent: React.FC<CardContentProps> = ({ children, className }) => (
-  <div className={`px-6 py-4 ${className || ""}`}>{children}</div>
-);
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  id: string;
-  placeholder: string;
-  className?: string;
-}
-
-const Input: React.FC<InputProps> = ({
-  id,
-  placeholder,
-  className,
-  ...props
-}) => (
-  <input
-    id={id}
-    type="text"
-    name={id}
-    placeholder={placeholder}
-    className={`w-full rounded-md border border-palette3 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
-    {...props}
-  />
-);
-
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  id: string;
-  placeholder: string;
-  className?: string;
-}
-
-const Textarea: React.FC<TextareaProps> = ({
-  id,
-  placeholder,
-  className,
-  ...props
-}) => (
-  <textarea
-    id={id}
-    name={id}
-    placeholder={placeholder}
-    className={`w-full rounded-md border border-palette3 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-palette5 ${className || ""}`}
-    rows={4}
-    {...props}
-  />
-);
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => (
-  <button
-    className={`rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${className || ""}`}
-    {...props}
-  >
-    {children}
-  </button>
-);
-
-interface ToggleProps {
-  children: React.ReactNode;
-  active: boolean;
-  onClick?: () => void;
-  side?: "left" | "right"; // determinate rounded
-}
-
-const Toggle: React.FC<ToggleProps> = ({ children, active, onClick, side }) => (
-  <button
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onClick && onClick();
-    }}
-    className={`px-4 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-      active
-        ? "scale-105 bg-palette1 text-palette3"
-        : "scale-95 bg-palette3 text-palette1"
-    } ${side === "left" && "rounded-r-none"} ${side === "right" && "rounded-l-none"} rounded-md`}
-  >
-    {children}
-  </button>
-);
+import { Card, CardHeader, CardContent } from "@/components/ui/Card";
+import { Input, Textarea, Button, Toggle } from "@/components/ui/FormElements";
 
 export type FormCatalogExtra =
   Database["public"]["Tables"]["catalog"]["Row"] & {
@@ -158,7 +42,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     }
   }, [catalog, setTitle, setDescription, setPublic]);
 
-  let [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (isPending) return;
@@ -172,6 +56,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
     startTransition(async () => {
       try {
         if (action === "delete") {
+          // eslint-disable-next-line no-alert
           const c = confirm("Are you sure you want to delete this catalog?");
           if (!c) {
             actions.hideLoading();

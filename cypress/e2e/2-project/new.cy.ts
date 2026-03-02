@@ -1,65 +1,37 @@
-// create test for new project
-describe('New Project', () => {
-  it('should create a new project without image', () => {
-    // Sign in
-    cy.visit('http://localhost:8080/')
-    cy.wait(1000)
-    // Fill out the login form
-    cy.get('input[name="email"]').type(`e2e.test.cy@gmail.com`)
-    cy.get('input[name="password"]').type('e2e.test.cy')
-    // Submit the form
-    cy.get('button[type="submit"]').click()
-    cy.wait(500)
-    // navigate to new project page
-    cy.get('a[href*="projects"]').click()
-    cy.wait(500)
-    cy.get('a[href*="projects/new"]').click()
-    cy.wait(500)
-    // Fill out the project form
-    cy.get('input[name="name"]').type('e2e test project')
-    cy.get('textarea[name="description"]').type('e2e test project description')
+describe("New Project", () => {
+  beforeEach(() => {
+    cy.login();
+  });
 
-    cy.get('button[type="submit"]').click()
+  it("should navigate to new project page", () => {
+    cy.get('a[href*="projects"]').click();
+    cy.url().should("include", "/projects");
+    cy.get('a[href*="projects/new"]').click();
+    cy.url().should("include", "/projects/new");
+  });
 
-    // verify the project is created
-  })
+  it("should create a new project without image", () => {
+    cy.visit("/projects/new");
+    cy.get('input[name="name"]').type("e2e test project");
+    cy.get('textarea[name="description"]').type("e2e test project description");
+    cy.get('button[type="submit"]').click();
+  });
 
-  it('should create a new project with image', () => {
-    // Sign in
-    cy.visit('http://localhost:8080/')
-    cy.wait(1000)
-    // Fill out the login form
-    cy.get('input[name="email"]').type(`e2e.test.cy@gmail.com`)
-    cy.get('input[name="password"]').type('e2e.test.cy')
-    // Submit the form
-    cy.get('button[type="submit"]').click()
-    cy.wait(500)
-    // navigate to new project page
-    cy.get('a[href*="projects"]').click()
-    cy.wait(500)
-    cy.get('a[href*="projects/new"]').click()
-    cy.wait(500)
-    // Fill out the project form
-    cy.get('input[name="name"]').type('e2e test project')
-    cy.get('textarea[name="description"]').type('e2e test project description')
-    // upload images
-    const fileNames = [
-      __dirname + '/files/1.jpg',
-      __dirname + '/files/2.jpg',
-      __dirname + '/files/3.jpg',
-      __dirname + '/files/4.jpg',
-      __dirname + '/files/5.jpg',
-    ]
-    cy.get('input[type="file"]').selectFile([...fileNames])
-    cy.get('button[type="submit"]').click()
+  it("should create a new project with images", () => {
+    cy.visit("/projects/new");
+    cy.get('input[name="name"]').type("e2e test project with images");
+    cy.get('textarea[name="description"]').type("e2e test project description");
 
-    cy.intercept('**').as('create')
+    cy.get('input[type="file"]').selectFile(
+      [
+        "cypress/fixtures/test-image-1.jpg",
+        "cypress/fixtures/test-image-2.jpg",
+        "cypress/fixtures/test-image-3.jpg",
+      ],
+      { force: true }
+    );
 
-    cy.wait('@create').then(interception => {
-      console.log(interception)
-    })
-    // verify the project is created
-  })
-})
-
-export {}
+    cy.intercept("POST", "/api/image-upload").as("imageUpload");
+    cy.get('button[type="submit"]').click();
+  });
+});

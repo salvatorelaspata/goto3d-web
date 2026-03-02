@@ -4,6 +4,7 @@ import { getProjects } from "@/app/projects/actions";
 import { getCatalogs } from "@/app/catalogs/actions";
 import CatalogCard from "./catalogs/CatalogCard";
 import type { Tables } from "@/types/supabase";
+import { PROJECT_STATUS } from "@/lib/constants";
 import StatCard from "./dashboard/StatCard";
 import EmptyState from "./dashboard/EmptyState";
 import QuickActions from "./dashboard/QuickActions";
@@ -36,12 +37,12 @@ export async function Dashboard() {
   const catalogList = catalogs ?? [];
 
   const totalProjects = projectList.length;
-  const inQueue = projectList.filter((p) => p.status === "in queue").length;
+  const inQueue = projectList.filter((p) => p.status === PROJECT_STATUS.IN_QUEUE).length;
   const processing = projectList.filter(
-    (p) => p.status === "processing",
+    (p) => p.status === PROJECT_STATUS.PROCESSING,
   ).length;
-  const done = projectList.filter((p) => p.status === "done").length;
-  const errors = projectList.filter((p) => p.status === "error").length;
+  const done = projectList.filter((p) => p.status === PROJECT_STATUS.DONE).length;
+  const errors = projectList.filter((p) => p.status === PROJECT_STATUS.ERROR).length;
 
   return (
     <>

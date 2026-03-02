@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { logout, navTo } from "./MenuActions";
+import { navTo } from "./MenuActions";
 import { routes } from "@/utils/constants";
 
 import gsap from "gsap";
@@ -50,6 +50,8 @@ export const Menu: React.FC<MenuProps> = ({ color }) => {
       {/* Dropdown toggle button */}
       <button
         onClick={toggleButton}
+        aria-label="Apri menu navigazione"
+        aria-expanded={isOpen}
         className={`${color} focus:border-primary1 relative z-30 block rounded-md border border-transparent p-2`}
       >
         {icon}
@@ -72,9 +74,6 @@ export const Menu: React.FC<MenuProps> = ({ color }) => {
             </form>
           ))}
 
-          {/* <form action={logout} className={`${color} block text-sm`}>
-            <button className="w-full px-4 py-3">Logout</button>
-          </form> */}
         </div>
       </div>
     </div>

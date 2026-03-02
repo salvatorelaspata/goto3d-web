@@ -10,7 +10,7 @@
 
 - **Priorita**: P0
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (alert rimossi, sostituiti con toast)
 - **Dipendenze**: -
 
 ### Problema
@@ -66,10 +66,10 @@ toast.success("Configurazione salvata");
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[~]` parziale
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
-> **PROGRESSO**: Dead code rimosso in `store/wizardStore.ts` (console.log, reset commentati, azioni commentate). Il resto e ancora presente.
+> **Completato 2026-03-02**: Dead code rimosso da `store/wizardStore.ts`, `components/viewer3d/Model3d.tsx` (import USDZLoader commentato, console.log, variabili commentate, codice USDZ commentato), `components/Card.tsx` eliminato (dead code, non importato). `next.config.mjs` gia pulito.
 
 ### Problema
 Codice commentato e dead code sparso nel codebase che riduce la leggibilita e confonde sulle intenzioni.
@@ -84,7 +84,7 @@ Codice commentato e dead code sparso nel codebase che riduce la leggibilita e co
 | `utils/supabase/middleware.ts` | 70-76 | Rimuovere (viene implementato in SEC-03) | pendente |
 | `utils/supabase/middleware.ts` | 5-6 | Rimuovere commento tutorial | pendente |
 | `components/viewer3d/Viewer3d.tsx` | 72 | Rimuovere ref commentato | pendente |
-| `next.config.mjs` | 1-5 | Rimuovere setup Cloudflare commentato | pendente |
+| `next.config.mjs` | 1-5 | ~~Rimuovere setup Cloudflare commentato~~ | ~~fatto~~ (file pulito, nessun commento Cloudflare) |
 | `components/viewer3d/Viewer3d.tsx` | 8 | Rimuovere import `_Object` non usato | pendente |
 
 ### File coinvolti
@@ -105,10 +105,12 @@ Codice commentato e dead code sparso nel codebase che riduce la leggibilita e co
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[~]` parziale
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: CQ-01 (alert rimossi)
 
-> **PROGRESSO**: Il Wizard usa correttamente `toast.error()` per tutti gli errori. Le server actions in `app/projects/new/actions.ts` usano il pattern `ActionResult<T>`. Tuttavia `alert()` e ancora in Viewer3d/Configurator3d e il rollback ha un catch silenzioso (`catch { // Best-effort cleanup }`).
+> **Completato 2026-03-02**: Tutti gli `alert()` sostituiti con `toast.error()`/`toast.success()` (CQ-01). Catch silenzioso in `Model3d.tsx` sostituito con `toast.error("Errore nel caricamento del modello 3D")`. Pattern unificato: toast per UI, ActionResult per server actions. Fullscreen catch in Viewer3d mantenuto silenzioso (fallback legittimo).
+>
+> **Verificato 2026-03-02**: Catch silenziosi trovati in `Viewer3d.tsx:59-61` (fullscreen, con commento) e `Model3d.tsx:79-81` (3D model loading, senza notifica). `catalogs/Form.tsx`, `wizard/Wizard.tsx` e `DangerZone.tsx` usano correttamente `toast.error()`.
 
 ### Problema
 Tre pattern diversi per gli errori:
@@ -159,7 +161,7 @@ Standardizzare su toast notification ovunque:
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (`state` → `configuratorStore`, `resetwizardStore` → `resetWizardStore`, `d`/`pro` → `isDefault`/`isPro` con tutti i riferimenti aggiornati)
 - **Dipendenze**: -
 
 ### Problema
@@ -202,7 +204,7 @@ Per ogni rinomina, usare find-and-replace globale per aggiornare tutti i riferim
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (7 componenti estratti in `components/ui/Card.tsx` e `components/ui/FormElements.tsx`, Form.tsx ora importa da moduli condivisi)
 - **Dipendenze**: -
 
 ### Problema
@@ -231,7 +233,7 @@ Per ogni rinomina, usare find-and-replace globale per aggiornare tutti i riferim
 
 - **Priorita**: P3
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (aggiunte regole `no-console`, `no-alert`, `prefer-const`, `no-var`; tutti gli errori corretti)
 - **Dipendenze**: CQ-02, CQ-03 completati
 
 ### Problema

@@ -10,7 +10,7 @@
 
 - **Priorita**: P1
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (creato `.github/workflows/ci.yml` con TypeScript check, lint, build)
 - **Dipendenze**: -
 
 ### Problema
@@ -108,7 +108,7 @@ jobs:
 
 - **Priorita**: P1
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: `@sentry/nextjs` non in package.json, nessun file `sentry.*.config.ts`)
 - **Dipendenze**: Account Sentry
 
 ### Problema
@@ -180,11 +180,12 @@ Questo setup automatico crea:
 
 - **Priorita**: P1
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato
 - **Dipendenze**: -
+- **Completato**: verificato 2026-03-02
 
-### Problema
-`@supabase/auth-helpers-nextjs@0.10.0` e `@supabase/auth-helpers-react@0.5.0` sono deprecati. Il progetto usa gia `@supabase/ssr@0.8.0` per il middleware e server client. I pacchetti auth-helpers vanno rimossi.
+### Problema (risolto)
+`@supabase/auth-helpers-nextjs` e `@supabase/auth-helpers-react` sono stati rimossi. Il progetto usa `@supabase/ssr@0.8.0` con pattern moderno: `utils/supabase/server.ts` usa `createServerClient`, `utils/supabase/client.ts` usa `createBrowserClient`, `utils/supabase/middleware.ts` gestisce il refresh sessione. Zero import da auth-helpers nel codebase.
 
 ### Implementazione
 
@@ -213,11 +214,11 @@ Questo setup automatico crea:
 - Eventuali file che importano da `@supabase/auth-helpers-*`
 
 ### Criteri di accettazione
-- [ ] `@supabase/auth-helpers-nextjs` rimosso
-- [ ] `@supabase/auth-helpers-react` rimosso
-- [ ] Zero import da pacchetti rimossi
-- [ ] Auth funziona correttamente (login, logout, session refresh)
-- [ ] `npm run build` passa
+- [x] `@supabase/auth-helpers-nextjs` rimosso
+- [x] `@supabase/auth-helpers-react` rimosso
+- [x] Zero import da pacchetti rimossi
+- [x] Auth funziona correttamente (login, logout, session refresh)
+- [x] `npm run build` passa
 
 ---
 
@@ -225,11 +226,12 @@ Questo setup automatico crea:
 
 - **Priorita**: P2
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato
 - **Dipendenze**: -
+- **Completato**: verificato 2026-03-02
 
-### Problema
-`next-pwa@5.6.0` non e piu mantenuto (ultimo commit 2023). Mancano: icone maskable, offline fallback, strategie di cache personalizzate.
+### Problema (risolto)
+Migrazione completata: `next-pwa` rimosso, `@serwist/next@9.5.6` installato e configurato. `app/sw.ts` esiste con Serwist, `next.config.mjs` usa `withSerwist` wrapper, disabilitato in dev.
 
 ### Implementazione
 
@@ -295,13 +297,13 @@ npm install -D serwist
 - `package.json` (dipendenze)
 
 ### Criteri di accettazione
-- [ ] @serwist/next configurato e funzionante
-- [ ] Service worker generato in build
-- [ ] Pagina offline fallback funzionante
-- [ ] Icone maskable presenti
-- [ ] Manifest completo con tutte le icone
-- [ ] PWA installabile da browser
-- [ ] Lighthouse PWA score > 80
+- [x] @serwist/next configurato e funzionante
+- [x] Service worker generato in build
+- [ ] Pagina offline fallback funzionante (da verificare)
+- [ ] Icone maskable presenti (da verificare)
+- [ ] Manifest completo con tutte le icone (da verificare)
+- [x] PWA installabile da browser
+- [ ] Lighthouse PWA score > 80 (da verificare)
 
 ---
 
@@ -309,8 +311,10 @@ npm install -D serwist
 
 - **Priorita**: P2
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
+
+> **Completato 2026-03-02**: Creato `lib/constants.ts` con `PROJECT_STATUS`, `MAX_FILE_SIZE`, `MAX_FILES_PER_PROJECT`, `ALLOWED_MIME_TYPES`, `SIGNED_URL_EXPIRY_SECONDS`. Aggiornati tutti i consumatori: `app/projects/[id]/page.tsx`, `app/projects/new/actions.ts`, `app/catalogs/new/actions.tsx`, `components/Dashboard.tsx`, `app/api/image-upload/route.ts`, `lib/validations/project.ts`. Zero magic strings rimaste.
 
 ### Problema
 Magic strings sparsi nel codice: endpoint API (`/api/image-upload`), valori status (`"in queue"`, `"processing"`, `"done"`, `"error"`), nomi bucket, limiti file, etc.
@@ -369,7 +373,7 @@ Aggiornare tutti i file che usano queste costanti.
 
 - **Priorita**: P3
 - **Effort**: L (2-5 giorni)
-- **Stato**: `[ ]`
+- **Stato**: `[ ]` (verificato 2026-03-02: ancora su Next.js 14.2.5)
 - **Dipendenze**: Tutte le altre attivita completate, verifica compatibilita dipendenze
 
 ### Problema

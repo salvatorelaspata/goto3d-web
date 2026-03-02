@@ -1,20 +1,10 @@
 import { NextResponse } from 'next/server';
 import { putObject } from '@/utils/s3/api';
 import { createClient } from '@/utils/supabase/server';
+import { MAX_FILE_SIZE, ALLOWED_MIME_TYPES } from '@/lib/constants';
+import { uploadRateLimiter } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
-
-// Allowed MIME types for image upload
-const ALLOWED_MIME_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-];
-
-// Max file size: 10MB
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 // Sanitize filename to prevent path traversal
 const sanitizeFilename = (filename: string): string => {
@@ -34,6 +24,15 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { error: 'Non autorizzato' },
         { status: 401 }
+      );
+    }
+
+    // Rate limiting per user
+    const { success: withinLimit } = uploadRateLimiter.limit(user.id);
+    if (!withinLimit) {
+      return NextResponse.json(
+        { error: 'Troppe richieste. Riprova tra poco.' },
+        { status: 429 }
       );
     }
 
@@ -70,7 +69,7 @@ export async function POST(req: Request) {
     }
 
     // Validate file type
-    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+    if (!(ALLOWED_MIME_TYPES as readonly string[]).includes(file.type)) {
       return NextResponse.json(
         { error: `Tipo file non consentito. Tipi permessi: ${ALLOWED_MIME_TYPES.join(', ')}` },
         { status: 400 }

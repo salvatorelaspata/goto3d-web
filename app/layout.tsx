@@ -9,7 +9,6 @@ import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { Iubenda } from "@/components/Iubenda";
-// import Head from "next/head";
 
 const poppins = localFont({
   src: [
@@ -45,7 +44,6 @@ export const metadata: Metadata = {
   title: "GoTo3D",
   description: "From image to 3D model in seconds",
   manifest: "/manifest.json",
-  // themeColor: "#000000",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -74,21 +72,17 @@ export default async function RootLayout({
       className={`${poppins.variable} m-0 font-sans`}
       suppressHydrationWarning={true}
     >
-      {/* <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" href="/icon.png" />
-
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="GoTo3D" />
-      </Head> */}
       <body className="bg-palette3">
-        {/* <div className="flex h-full flex-1 flex-col"> */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-palette1 focus:px-4 focus:py-2 focus:text-white"
+        >
+          Salta al contenuto principale
+        </a>
         <Suspense fallback={<Loading />}>
           {!isError && <Header name={user.email} />}
           <Loader />
-          <main className="rounded-md">{children}</main>
+          <main id="main-content" className="rounded-md">{children}</main>
           <ToastComponent />
         </Suspense>
         {/* </div> */}

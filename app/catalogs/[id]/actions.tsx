@@ -2,6 +2,7 @@
 
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
+import { catalogSchema } from "@/lib/validations/catalog";
 
 export const fetchData = async ({ id }: { id: string }) => {
   const _id: number = parseInt(id);
@@ -58,17 +59,25 @@ export async function updateCatalog(formData: FormData) {
       throw new Error("Not authorized to update this catalog");
     }
 
-    // update in catalog
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const visibility = formData.get("visibility") as string;
+    // Validate input
+    const validation = catalogSchema.safeParse({
+      title: formData.get("title"),
+      description: formData.get("description"),
+      visibility: formData.get("visibility"),
+    });
+
+    if (!validation.success) {
+      throw new Error(validation.error.issues[0].message);
+    }
+
+    const { title, description, visibility } = validation.data;
 
     const { error } = await supabase
       .from("catalog")
       .update({
         title,
-        description,
-        public: visibility === "true" ? true : false,
+        description: description || "",
+        public: visibility === "true",
       })
       .eq("id", parseInt(id))
       .single();

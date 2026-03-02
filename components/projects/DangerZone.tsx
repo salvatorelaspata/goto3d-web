@@ -10,20 +10,16 @@ interface DangerZoneProps {
 
 export const DangerZone: React.FC<DangerZoneProps> = ({ id }) => {
   const router = useRouter();
-  let [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (isPending) return;
   }, [isPending]);
 
   const onSubmit = async (formData: FormData) => {
-    if (
-      confirm(
-        "Are you sure you want to delete this project? This action is irreversible.",
-      )
-    ) {
+    // eslint-disable-next-line no-alert
+    if (confirm("Are you sure you want to delete this project? This action is irreversible.")) {
       const id = formData.get("id");
-      // console.log("id", id);
       actions.showLoading();
 
       startTransition(async () => {

@@ -31,7 +31,7 @@ export const MaterialControls: React.FC<MaterialControlsProps> = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    let _value: THREE.Color | number =
+    const _value: THREE.Color | number =
       name === "color" ? new THREE.Color(value) : parseFloat(value);
 
     setConfig((prev) => ({ ...prev, [name]: _value }));

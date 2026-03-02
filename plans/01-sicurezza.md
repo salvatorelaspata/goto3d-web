@@ -10,7 +10,7 @@
 
 - **Priorita**: P0
 - **Effort**: M (4-16h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (policy RLS corrette via Supabase MCP: INSERT/UPDATE scoped a user_id, project_catalog con owner-check su catalog, aggiunta policy cataloghi pubblici. Migrazioni locali sincronizzate con remote)
 - **Dipendenze**: Accesso admin Supabase
 
 ### Problema
@@ -79,7 +79,7 @@ L'intero modello di autorizzazione dipende da check applicativi (`project.user_i
 
 - **Priorita**: P0
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (in-memory rate limiter, 5 upload/min e 10 req/min per utente)
 - **Dipendenze**: -
 
 > **AGGIORNAMENTO**: `/api/send-to-queue` e stata eliminata. La logica di invio alla coda e ora nella server action `submitProjectToQueue` in `app/projects/new/actions.ts`. Il rate limiting va applicato alla API route rimasta e alla server action.
@@ -156,7 +156,7 @@ const requests = new Map<string, { count: number; resetAt: number }>();
 
 - **Priorita**: P1
 - **Effort**: S (1-4h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02 (protetti: /dashboard, /projects, /catalogs, /configurator, /profile; codice commentato rimosso)
 - **Dipendenze**: -
 
 ### Problema
@@ -193,7 +193,7 @@ Rimuovere il codice commentato alle righe 70-76.
 
 - **Priorita**: P0
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
 ### Problema
@@ -236,7 +236,7 @@ export async function GET(request: Request) {
 
 - **Priorita**: P0
 - **Effort**: XS (<1h)
-- **Stato**: `[ ]`
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
 ### Problema
@@ -291,10 +291,10 @@ export async function GET(request: Request) {
 
 - **Priorita**: P1
 - **Effort**: S (1-4h)
-- **Stato**: `[~]` parziale
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
-> **PROGRESSO**: La validazione Zod e stata implementata per la **creazione progetto** in `app/projects/new/actions.ts` (usa `projectSchema.safeParse`). Manca ancora la validazione su `updateProject` e `updateCatalog`.
+> **Completato 2026-03-02**: Validazione Zod aggiunta a `updateProject` (usa `projectSchema.pick`) e `updateCatalog` (usa `catalogSchema`). Creato `lib/validations/catalog.ts`.
 
 ### Problema
 `updateProject` e `updateCatalog` nelle server actions non validano i dati in input (nome, descrizione). Un utente potrebbe inviare dati malformati o eccessivamente lunghi.
@@ -344,10 +344,11 @@ export const catalogSchema = z.object({
 
 - **Priorita**: P1
 - **Effort**: XS (<1h)
-- **Stato**: `[~]` parziale
+- **Stato**: `[x]` completato 2026-03-02
 - **Dipendenze**: -
 
-> **PROGRESSO**: I limiti sono ora **allineati a 10MB** in entrambi i file (API route e Zod schema). Manca ancora la centralizzazione in `lib/constants.ts` come previsto.
+>
+> **Completato 2026-03-02**: Creato `lib/constants.ts` con `MAX_FILE_SIZE`, `MAX_FILES_PER_PROJECT`, `ALLOWED_MIME_TYPES`, `PROJECT_STATUS`. Aggiornati `app/api/image-upload/route.ts` e `lib/validations/project.ts` per usare le costanti centralizzate.
 
 ### Problema (originale)
 - API route (`app/api/image-upload/route.ts:18`): limite 10MB

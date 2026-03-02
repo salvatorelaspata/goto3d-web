@@ -1,9 +1,15 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
+const protectedPaths = [
+  "/dashboard",
+  "/projects",
+  "/catalogs",
+  "/configurator",
+  "/profile",
+];
+
 export const updateSession = async (request: NextRequest) => {
-  // This `try/catch` block is only here for the interactive tutorial.
-  // Feel free to remove once you have Supabase connected.
   try {
     // Create an unmodified response
     let response = NextResponse.next({
@@ -64,16 +70,13 @@ export const updateSession = async (request: NextRequest) => {
     // https://supabase.com/docs/guides/auth/server-side/nextjs
     const { error } = await supabase.auth.getUser();
 
-    if (request.nextUrl.pathname.startsWith("/dashboard") && error) {
+    const isProtected = protectedPaths.some((path) =>
+      request.nextUrl.pathname.startsWith(path)
+    );
+
+    if (isProtected && error) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
-    // if (
-    //   !user &&
-    //   request.nextUrl.pathname !== "/login" &&
-    //   request.nextUrl.pathname !== "/"
-    // ) {
-    //   return NextResponse.redirect(new URL("login", request.url));
-    // }
 
     request.headers.set("x-next-pathname", request.nextUrl.pathname);
     return response;

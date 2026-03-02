@@ -15,7 +15,14 @@
       "WebSearch",
       "Bash(npm uninstall:*)",
       "Bash(npm ls:*)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "Bash(grep:*)",
+      "Bash(npm run:*)",
+      "mcp__supabase__list_migrations"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }

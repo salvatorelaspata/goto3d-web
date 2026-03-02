@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MAX_FILE_SIZE, MAX_FILES_PER_PROJECT } from "@/lib/constants";
 
 // Enums matching Supabase database
 export const detailsEnum = z.enum(["preview", "reduced", "medium", "full", "raw"]);
@@ -26,8 +27,8 @@ export const fileSchema = z
   .instanceof(File)
   .refine((file) => file.size > 0, "Il file è vuoto")
   .refine(
-    (file) => file.size <= 10 * 1024 * 1024,
-    "Il file non può superare i 10MB"
+    (file) => file.size <= MAX_FILE_SIZE,
+    `Il file non può superare i ${MAX_FILE_SIZE / 1024 / 1024}MB`
   )
   .refine(
     (file) =>
@@ -40,7 +41,7 @@ export const fileSchema = z
 export const filesSchema = z
   .array(fileSchema)
   .min(1, "Carica almeno un'immagine")
-  .max(20, "Puoi caricare massimo 20 immagini");
+  .max(MAX_FILES_PER_PROJECT, `Puoi caricare massimo ${MAX_FILES_PER_PROJECT} immagini`);
 
 // Complete wizard form schema
 export const wizardFormSchema = projectSchema.extend({

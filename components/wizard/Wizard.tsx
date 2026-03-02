@@ -94,7 +94,7 @@ export const Wizard: React.FC = () => {
       }
 
       toast.success("Progetto creato e inviato alla coda");
-      wizardActions.resetwizardStore();
+      wizardActions.resetWizardStore();
       router.push("/projects");
     } catch (err) {
       wizardActions.resetUploadProgress();

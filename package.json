@@ -9,7 +9,10 @@
     "lint": "next lint",
     "update-types": "node ./scripts/update-types.js",
     "cypress": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "analyze": "ANALYZE=true next build",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1000.0",
@@ -38,20 +41,26 @@
     "fast-xml-parser": ">=5.3.8"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.6",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/amqplib": "^0.10.8",
     "@types/node": "^22.19.13",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@types/three": "^0.167.2",
+    "@vitejs/plugin-react": "^5.1.4",
     "autoprefixer": "^10.4.27",
     "cypress": "^13.13.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.5.12",
     "eslint-config-prettier": "^9.1.2",
+    "jsdom": "^28.1.0",
     "postcss": "^8.5.6",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.19",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }

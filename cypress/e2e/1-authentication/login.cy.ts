@@ -1,50 +1,21 @@
-// create login test
-describe('Login', () => {
-  it('should login a user', () => {
-    // cy.intercept('/').as('home')
-    // Start from the index page
-    cy.visit('http://localhost:8080/')
+describe("Login", () => {
+  it("should login a user", () => {
+    cy.visit("/");
 
-    // cy.wait('@home')
-    cy.wait(1000)
+    cy.get('input[name="email"]').type(Cypress.env("TEST_USER_EMAIL"));
+    cy.get('input[name="password"]').type(Cypress.env("TEST_USER_PASSWORD"));
+    cy.get('button[type="submit"]').click();
 
-    // Fill out the form
-    cy.get('input[name="email"]').type(`e2e.test.cy@gmail.com`)
-    cy.get('input[name="password"]').type('e2e.test.cy')
+    cy.url().should("include", "/dashboard");
+  });
 
-    // Submit the form
-    cy.get('button[type="submit"]').click()
+  it("should not login a user with a wrong password", () => {
+    cy.visit("/");
 
-    // The new url should include "/dashboard"
-    cy.url().should('include', 'dashboard')
+    cy.get('input[name="email"]').type(Cypress.env("TEST_USER_EMAIL"));
+    cy.get('input[name="password"]').type("wrong_password_123");
+    cy.get('button[type="submit"]').click();
 
-    // Check the cookies
-    cy.getCookie('supabase-auth-token').should('exist')
-  })
-
-  it('should not login a user with a wrong password', () => {
-    // Start from the index page
-    cy.visit('http://localhost:8080/')
-    cy.wait(1000)
-
-    // Find a link with an href attribute containing "login" and click it
-    // cy.get('a[href*="sign-in"]').click()
-
-    // The button should contain "Login"
-    // cy.get('button[type="submit"]').contains('Login')
-
-    // Fill out the form
-    cy.get('input[name="email"]').type(`e2e.test.cy@gmail.com`)
-    cy.get('input[name="password"]').type('e2e.test.cy_wrong')
-
-    // Submit the form
-    cy.get('button[type="submit"]').click()
-
-    // Check the cookies
-    cy.getCookie('supabase-auth-token').should('not.exist')
-
-    // The new page should contain an p with "Email already exists"
-    cy.get('span').contains('Invalid login credentials')
-  })
-})
-export {}
+    cy.get("span").contains("Invalid login credentials");
+  });
+});

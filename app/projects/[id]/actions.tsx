@@ -2,6 +2,7 @@
 
 import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
+import { projectSchema } from "@/lib/validations/project";
 import type { Database } from "@/types/supabase";
 import type { _Object } from "@aws-sdk/client-s3";
 import { revalidatePath } from "next/cache";
@@ -239,12 +240,24 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
 export const updateProject = async (formData: FormData): Promise<ActionResult<void>> => {
   const supabase = createClient();
   const id = parseInt(formData.get("id") as string);
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
 
   if (isNaN(id)) {
     return { success: false, error: "Invalid project ID" };
   }
+
+  // Validate input
+  const validation = projectSchema
+    .pick({ name: true, description: true })
+    .safeParse({
+      name: formData.get("name"),
+      description: formData.get("description"),
+    });
+
+  if (!validation.success) {
+    return { success: false, error: validation.error.issues[0].message };
+  }
+
+  const { name, description } = validation.data;
 
   try {
     // Verify user is authenticated
@@ -275,7 +288,7 @@ export const updateProject = async (formData: FormData): Promise<ActionResult<vo
 
     const { error } = await supabase
       .from("project")
-      .update({ name, description })
+      .update({ name, description: description || "" })
       .eq("id", id);
 
     if (error) {

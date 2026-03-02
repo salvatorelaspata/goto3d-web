@@ -1,0 +1,2 @@
+-- This migration was applied remotely via Supabase Dashboard.
+-- Stub file created for local synchronization.

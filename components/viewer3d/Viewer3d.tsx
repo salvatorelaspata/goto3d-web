@@ -1,14 +1,14 @@
 "use client";
 
-import { RefObject, Suspense, useEffect, useRef, useState } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { Personalization } from "./Personalization";
 import { Scene } from "./Scene";
-import type { _Object } from "@aws-sdk/client-s3";
 import { actions } from "@/store/viewerStore";
 import { ArrowsExpandIcon, CubeTransparentIcon } from "@heroicons/react/outline";
-import Link from "next/link";
+import { toast } from "react-toastify";
+import { Canvas3dErrorBoundary } from "./Canvas3dErrorBoundary";
 
 import { actions as mainActions } from "@/store/main";
 
@@ -31,24 +31,26 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
   isIphone,
   isIpad,
 }) => {
-  const { setTextureUrl, setObjectUrl, setUsdzUrl } = actions;
-  setTextureUrl(textureUrl);
-  setObjectUrl(objectUrl);
-  setUsdzUrl(usdzUrl);
+  useEffect(() => {
+    actions.setTextureUrl(textureUrl);
+    actions.setObjectUrl(objectUrl);
+    actions.setUsdzUrl(usdzUrl);
+  }, [textureUrl, objectUrl, usdzUrl]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const width = canvasRef.current?.clientWidth || 1;
-  const height = canvasRef.current?.clientHeight || 1;
-  const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
-  camera.position.z = 5;
-  camera.lookAt(0, 0, 0);
+  const camera = useMemo(() => {
+    const cam = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    cam.position.z = 5;
+    cam.lookAt(0, 0, 0);
+    return cam;
+  }, []);
 
   return (
     <div ref={containerRef} className="relative h-full w-full">
       <div className="absolute right-4 top-4 z-20">
-        {!isMobile && <ArrowsExpandIcon className="h-8 w-8 cursor-pointer rounded-sm" onClick={
+        {!isMobile && <ArrowsExpandIcon className="h-8 w-8 cursor-pointer rounded-sm" role="button" aria-label="Attiva schermo intero" tabIndex={0} onClick={
           () => {
             try {
               if (!document.fullscreenElement) {
@@ -64,18 +66,16 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
       </div>
       <div className="absolute left-4 top-4 z-20">
         {(isIphone || isIpad) &&
-          <CubeTransparentIcon className="h-8 w-8 cursor-pointer rounded-sm" onClick={async () => {
-            alert("AR");
+          <CubeTransparentIcon className="h-8 w-8 cursor-pointer rounded-sm" role="button" aria-label="Visualizza in realta aumentata" tabIndex={0} onClick={async () => {
             mainActions.showLoading();
             try {
               if (!usdzUrl) return;
-              // const instance = ref.current,
               const a = document.createElement("a");
               a.setAttribute("href", usdzUrl);
               a.setAttribute("rel", "ar");
               a.click();
-            } catch (error) {
-              alert(`Error ${JSON.stringify(error)}`);
+            } catch {
+              toast.error("Errore durante l'avvio AR");
             } finally {
               mainActions.hideLoading();
             }
@@ -83,9 +83,11 @@ export const Viewer3d: React.FC<Viewer3dProps> = ({
         }
       </div>
       <Personalization />
-      <Canvas camera={camera} ref={canvasRef}>
-        <Scene camera={camera} />
-      </Canvas>
+      <Canvas3dErrorBoundary>
+        <Canvas camera={camera} ref={canvasRef}>
+          <Scene camera={camera} />
+        </Canvas>
+      </Canvas3dErrorBoundary>
     </div>
   );
 };

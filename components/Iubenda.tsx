@@ -4,8 +4,8 @@ import { useEffect } from "react";
 export const Iubenda = () => {
   useEffect(() => {
     const loader = () => {
-      let s = document.createElement("script");
-      let tag = document.getElementsByTagName("script")[0];
+      const s = document.createElement("script");
+      const tag = document.getElementsByTagName("script")[0];
       s.src = "https://cdn.iubenda.com/iubenda.js";
       if (tag && tag.parentNode) tag.parentNode.insertBefore(s, tag);
     };

@@ -107,11 +107,11 @@ export const Step3: React.FC = () => {
                   label={option.label}
                   description={option.description}
                   value={option.value}
-                  d={option.default}
+                  isDefault={option.default}
                   selected={
                     store[field.name as keyof typeof store] === option.value ? option.value : ""
                   }
-                  pro={false}
+                  isPro={false}
                   disabled={false}
                   onChange={(e) => {
                     if (field.name === "detail") {

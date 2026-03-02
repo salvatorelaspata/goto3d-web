@@ -1,4 +1,9 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
 import withSerwistInit from "@serwist/next";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 const withSerwist = withSerwistInit({
   swSrc: "app/sw.ts",
@@ -93,4 +98,4 @@ const nextConfig = withSerwist({
   },
 });
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
