@@ -63,8 +63,8 @@ const nextConfig = withSerwist({
     serverActions: {
       allowedOrigins: [process.env.NEXT_PUBLIC_SITE_URL || "localhost:8080"],
     },
-    serverComponentsExternalPackages: ["@aws-sdk", "amqplib"],
   },
+  serverExternalPackages: ["@aws-sdk", "amqplib"],
   async headers() {
     return [
       {

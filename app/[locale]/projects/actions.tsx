@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const getProjects = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: projects, error } = await supabase
     .from("project")
     .select("*")

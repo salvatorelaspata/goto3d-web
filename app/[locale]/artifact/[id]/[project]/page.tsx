@@ -2,10 +2,11 @@
 import { fetchData } from "@/app/[locale]/projects/[id]/actions";
 
 export default async function Artifact({
-  params: { id, project },
+  params,
 }: {
-  params: { id: string; project: string };
+  params: Promise<{ id: string; project: string }>;
 }) {
+  const { id, project } = await params;
   const res = await fetchData({ id: project });
   if (!res.success) return null;
 

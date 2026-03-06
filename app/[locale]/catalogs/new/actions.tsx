@@ -5,7 +5,7 @@ import { PROJECT_STATUS } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 
 export const getProjects = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Verify user is authenticated
   const { data: { user } } = await supabase.auth.getUser();
@@ -24,7 +24,7 @@ export const getProjects = async () => {
 };
 
 export async function doCreate(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Verify user is authenticated
   const { data: { user } } = await supabase.auth.getUser();
@@ -71,7 +71,7 @@ export async function doCreate(formData: FormData) {
 }
 
 export async function deleteCatalog(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = formData.get("id") as string;
 
   // Verify user is authenticated

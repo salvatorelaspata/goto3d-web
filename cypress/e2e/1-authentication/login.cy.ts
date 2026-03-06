@@ -1,6 +1,6 @@
 describe("Login", () => {
   it("should login a user", () => {
-    cy.visit("/");
+    cy.visit("/login");
 
     cy.get('input[name="email"]').type(Cypress.env("TEST_USER_EMAIL"));
     cy.get('input[name="password"]').type(Cypress.env("TEST_USER_PASSWORD"));
@@ -10,7 +10,7 @@ describe("Login", () => {
   });
 
   it("should not login a user with a wrong password", () => {
-    cy.visit("/");
+    cy.visit("/login");
 
     cy.get('input[name="email"]').type(Cypress.env("TEST_USER_EMAIL"));
     cy.get('input[name="password"]').type("wrong_password_123");

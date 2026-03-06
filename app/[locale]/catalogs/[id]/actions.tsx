@@ -7,7 +7,7 @@ import { catalogSchema } from "@/lib/validations/catalog";
 
 export const fetchData = async ({ id }: { id: string }) => {
   const _id: number = parseInt(id);
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     // Verify user is authenticated
     const { data: { user } } = await supabase.auth.getUser();
@@ -38,7 +38,7 @@ export const fetchData = async ({ id }: { id: string }) => {
 };
 
 export async function updateCatalog(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = formData.get("id") as string;
 
   try {
@@ -113,7 +113,7 @@ export async function updateCatalog(formData: FormData) {
 }
 
 export async function getProjects() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Verify user is authenticated
   const { data: { user } } = await supabase.auth.getUser();

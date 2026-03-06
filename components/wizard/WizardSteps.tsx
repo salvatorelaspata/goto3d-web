@@ -1,8 +1,8 @@
 import { Stepper } from "./Stepper";
 
 interface WizardStepProps {
-  form: JSX.Element;
-  spiegone: JSX.Element;
+  form: React.JSX.Element;
+  spiegone: React.JSX.Element;
 }
 
 export const WizardStep: React.FC<WizardStepProps> = ({ form, spiegone }) => {

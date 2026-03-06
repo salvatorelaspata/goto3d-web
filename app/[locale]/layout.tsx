@@ -40,9 +40,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = params;
+  const { locale } = await params;
 
   // Validate locale
   if (!routing.locales.includes(locale as any)) {
@@ -52,7 +52,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const t = await getTranslations("common");
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error,
