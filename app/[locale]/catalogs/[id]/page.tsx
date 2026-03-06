@@ -6,11 +6,12 @@ import { protectedRoute } from "@/app/[locale]/actions";
 export default async function NewCatalog({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   await protectedRoute();
+  const { id } = await params;
   const projects = await getProjects();
-  const catalog = await fetchData({ id: params.id });
+  const catalog = await fetchData({ id });
   // console.log(catalog);
   return (
     <div className="m-4 rounded-lg bg-palette5">

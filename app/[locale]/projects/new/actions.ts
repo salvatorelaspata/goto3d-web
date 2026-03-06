@@ -15,7 +15,7 @@ export type ActionResult<T> =
 export async function checkProjectNameExists(
   name: string
 ): Promise<ActionResult<boolean>> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error: authError,
@@ -42,7 +42,7 @@ export async function checkProjectNameExists(
 export async function createProject(
   formData: FormData
 ): Promise<ActionResult<{ id: number }>> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error: authError,
@@ -116,7 +116,7 @@ export async function createProject(
 export async function submitProjectToQueue(
   projectId: number
 ): Promise<ActionResult<void>> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error: authError,
@@ -155,7 +155,7 @@ export async function submitProjectToQueue(
 export async function rollbackProject(
   projectId: number
 ): Promise<ActionResult<void>> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
     error: authError,

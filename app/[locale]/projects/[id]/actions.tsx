@@ -17,7 +17,7 @@ export const fetchData = async ({ id }: { id: string }): Promise<ActionResult<{ 
     return { success: false, error: "Invalid project ID" };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -105,7 +105,7 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
     return { success: false, error: "Invalid project ID" };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   try {
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -221,7 +221,7 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
 };
 
 export const updateProject = async (formData: FormData): Promise<ActionResult<void>> => {
-  const supabase = createClient();
+  const supabase = await createClient();
   const id = parseInt(formData.get("id") as string);
 
   if (isNaN(id)) {

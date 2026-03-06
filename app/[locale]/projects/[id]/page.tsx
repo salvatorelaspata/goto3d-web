@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import PageTitle from "@/components/ui/PageTitle";
 import { formatSupabaseDate } from "@/utils/constants";
 import { PROJECT_STATUS } from "@/lib/constants";
@@ -6,18 +5,7 @@ import { fetchData, retrieveSignedUrls } from "./actions";
 
 import SectionTitle from "@/components/ui/SectionTitle";
 import { StatusText } from "@/components/StatusText";
-
-const Viewer3d = dynamic(
-  () => import("@/components/viewer3d/Viewer3d").then((mod) => mod.Viewer3d),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-full w-full items-center justify-center">
-        <p className="text-palette1">Caricamento viewer 3D...</p>
-      </div>
-    ),
-  }
-);
+import { Viewer3dDynamic as Viewer3d } from "@/components/viewer3d/Viewer3dDynamic";
 import { BigTextCentered } from "@/components/projects/BigText";
 import { GeneralInfo } from "@/components/projects/GeneralInfo";
 import { DangerZone } from "@/components/projects/DangerZone";
@@ -29,8 +17,8 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { readableFileSize } from "@/utils/utils";
 
-const checkUserAgent = () => {
-  const { os, device } = userAgent({ headers: headers() });
+const checkUserAgent = async () => {
+  const { os, device } = userAgent({ headers: await headers() });
   const isMobile = device.type === "mobile";
   const isIphone = os.name === "iOS" && device.model === "iPhone";
   const isIpad = os.name === "iOS" && device.model === "iPad";
@@ -38,10 +26,11 @@ const checkUserAgent = () => {
   return { isMobile, isIphone, isIpad };
 };
 
-export default async function Project({ params }: { params: { id: string } }) {
+export default async function Project({ params }: { params: Promise<{ id: string }> }) {
   await protectedRoute();
+  const { id: paramId } = await params;
 
-  const res = await fetchData({ id: params.id });
+  const res = await fetchData({ id: paramId });
   if (!res.success) return notFound();
 
   const { project, models } = res.data;
@@ -51,7 +40,7 @@ export default async function Project({ params }: { params: { id: string } }) {
   const objectUrl = urls.find((u) => u.key === "model.obj")?.url || "";
   const textureUrl = urls.find((u) => u.key.endsWith("tex0.png"))?.url || "";
   const usdzUrl = urls.find((u) => u.key.endsWith("model.usdz"))?.url || "";
-  const id = parseInt(params.id);
+  const id = parseInt(paramId);
   const status = project?.status;
 
   if (status === PROJECT_STATUS.IN_QUEUE) {
@@ -83,7 +72,7 @@ export default async function Project({ params }: { params: { id: string } }) {
     );
   }
 
-  const { isMobile, isIphone, isIpad } = checkUserAgent();
+  const { isMobile, isIphone, isIpad } = await checkUserAgent();
 
   return (
     <>

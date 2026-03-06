@@ -4,7 +4,7 @@ import { getLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 
 export const protectedRoute = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

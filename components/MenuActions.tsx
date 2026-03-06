@@ -6,7 +6,7 @@ import { getLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 
 export const logout = async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   const locale = (await getLocale()) as Locale;
   return redirect({ href: "/", locale });
