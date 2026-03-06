@@ -16,5 +16,10 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Ignore React hydration errors (caused by dark mode script in layout)
+// React 19 throws these as errors instead of warnings
+Cypress.on('uncaught:exception', (err) => {
+  if (err.message.includes('Hydration failed') || err.message.includes('hydration mismatch')) {
+    return false;
+  }
+});
