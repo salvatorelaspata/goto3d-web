@@ -1,25 +1,6 @@
-import localFont from "next/font/local";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 import type { Viewport } from "next";
-
-const poppins = localFont({
-  src: [
-    {
-      path: "../public/fonts/Inter-Light.ttf",
-      weight: "200",
-    },
-    {
-      path: "../public/fonts/Inter-Medium.ttf",
-      weight: "400",
-    },
-    {
-      path: "../public/fonts/Inter-Bold.ttf",
-      weight: "700",
-    },
-  ],
-  variable: "--font-poppins",
-});
 
 const defaultUrl = process.env.SITE_URL
   ? `https://${process.env.SITE_URL}`

@@ -1,3 +1,4 @@
+import localFont from "next/font/local";
 import { Loader, Loading } from "@/components/Loader";
 import ToastComponent from "@/components/ToastComponent";
 import { Header } from "@/components/layout/Header";
@@ -11,6 +12,24 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { locales } from "@/i18n/config";
+
+const poppins = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Inter-Light.ttf",
+      weight: "200",
+    },
+    {
+      path: "../../public/fonts/Inter-Medium.ttf",
+      weight: "400",
+    },
+    {
+      path: "../../public/fonts/Inter-Bold.ttf",
+      weight: "700",
+    },
+  ],
+  variable: "--font-poppins",
+});
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -44,7 +63,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className="m-0 font-sans"
+      className={`m-0 font-sans ${poppins.variable}`}
       suppressHydrationWarning={true}
     >
       <head>
