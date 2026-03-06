@@ -43,6 +43,15 @@ export default async function Home() {
           goToDashboard={goToDashboard}
           goToNewCatalog={goToNewCatalog}
           goToNewProject={goToNewProject}
+          translations={{
+            bannerTitle: t("bannerTitle"),
+            bannerSubtitle: t("bannerSubtitle"),
+            bannerDescription: t("bannerDescription"),
+            goToDashboard: t("goToDashboard"),
+            newProject: t("newProject"),
+            newCatalog: t("newCatalog"),
+            startNow: t("startNow"),
+          }}
         />
         {/* WORKFLOW */}
         <section className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">

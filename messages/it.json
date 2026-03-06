@@ -6,7 +6,7 @@
     "delete": "Elimina",
     "update": "Aggiorna",
     "reset": "Reset",
-    "close": "Close",
+    "close": "Chiudi",
     "save": "Salva",
     "cancel": "Annulla",
     "back": "Indietro",
@@ -22,7 +22,7 @@
     "dashboard": "Dashboard",
     "projects": "Progetti",
     "catalogs": "Cataloghi",
-    "configurator": "Configurator",
+    "configurator": "Configuratore",
     "home": "Home",
     "logout": "Logout",
     "hey": "Hey {name}"
@@ -53,7 +53,14 @@
     "feature4Description": "Accedi e gestisci i tuoi modelli 3D ovunque tu sia con la nostra app mobile ottimizzata. Cattura foto, crea modelli e aggiorna il tuo catalogo direttamente dal tuo smartphone o tablet.",
     "ctaTitle": "Pronto a rivoluzionare il tuo mondo in 3D?",
     "ctaButton": "Inizia ora",
-    "footer": "© 2024 goto3d. Tutti i diritti riservati."
+    "footer": "© 2024 goto3d. Tutti i diritti riservati.",
+    "bannerTitle": "goto3d",
+    "bannerSubtitle": "Trasforma le tue idee in realtà 3D.",
+    "bannerDescription": "Con goto3d, dai vita ai tuoi oggetti partendo da semplici foto, crea un catalogo 3D mozzafiato e personalizza i tuoi modelli come mai prima d'ora.",
+    "goToDashboard": "Vai alla dashboard",
+    "newProject": "Crea nuovo progetto",
+    "newCatalog": "Crea nuovo catalogo",
+    "startNow": "Inizia ora"
   },
   "auth": {
     "title": "Accedi o Registrati",
@@ -91,7 +98,7 @@
     "deleteConfirm": "Sei sicuro di voler eliminare questo progetto? Questa azione è irreversibile.",
     "deleting": "Cancellazione in corso...",
     "deleted": "Progetto cancellato con successo",
-    "deleteProject": "Delete project",
+    "deleteProject": "Elimina progetto",
     "inQueue": "Progetto in coda",
     "processing": "Progetto in lavorazione",
     "error": "Progetto in errore",
@@ -111,16 +118,16 @@
     "descriptionPlaceholder": "Inserisci una descrizione",
     "visibility": "Visibilità",
     "public": "Pubblico",
-    "private": "Private",
+    "private": "Privato",
     "publicDesc": "Tutti possono visualizzare questo catalogo",
     "privateDesc": "Solo tu puoi visualizzare questo catalogo",
-    "preview": "Preview",
+    "preview": "Anteprima",
     "viewCatalog": "Visualizza il catalogo",
     "addProjects": "Aggiungi i progetti al tuo catalogo",
-    "deleteConfirm": "Are you sure you want to delete this catalog?",
-    "catalogCreated": "Catalog created: {id}",
-    "catalogDeleted": "Catalog deleted successfully {id}",
-    "catalogUpdated": "Catalog updated successfully {id}"
+    "deleteConfirm": "Sei sicuro di voler eliminare questo catalogo?",
+    "catalogCreated": "Catalogo creato: {id}",
+    "catalogDeleted": "Catalogo eliminato con successo {id}",
+    "catalogUpdated": "Catalogo aggiornato con successo {id}"
   },
   "configurator": {
     "title": "Configura il tuo progetto 3D",
@@ -130,7 +137,7 @@
   },
   "wizard": {
     "step2Title": "Step 2: Carica le foto del tuo progetto",
-    "uploadImages": "Upload Images",
+    "uploadImages": "Carica Immagini",
     "dragAndDrop": "Trascina e rilascia le tue foto",
     "orSelect": "Oppure seleziona",
     "selectedFiles": "File Selezionati ({count})",
@@ -167,7 +174,7 @@
   "errors": {
     "notFound": "404 - Risorsa non trovata",
     "backToHome": "Torna alla Home",
-    "authFailed": "Could not authenticate user"
+    "authFailed": "Impossibile autenticare l'utente"
   },
   "loader": {
     "phrases": [
@@ -178,10 +185,10 @@
     ]
   },
   "profile": {
-    "title": "Profile"
+    "title": "Profilo"
   },
   "faq": {
-    "title": "Frequently Asked Questions",
-    "subtitle": "Get answers to the most common questions about our product."
+    "title": "Domande Frequenti",
+    "subtitle": "Trova le risposte alle domande più comuni sul nostro prodotto."
   }
 }

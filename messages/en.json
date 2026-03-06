@@ -53,7 +53,14 @@
     "feature4Description": "Access and manage your 3D models wherever you are with our optimized mobile app. Capture photos, create models, and update your catalog directly from your smartphone or tablet.",
     "ctaTitle": "Ready to revolutionize your 3D world?",
     "ctaButton": "Get started",
-    "footer": "© 2024 goto3d. All rights reserved."
+    "footer": "© 2024 goto3d. All rights reserved.",
+    "bannerTitle": "goto3d",
+    "bannerSubtitle": "Transform your ideas into 3D reality.",
+    "bannerDescription": "With goto3d, bring your objects to life from simple photos, create a stunning 3D catalog and customize your models like never before.",
+    "goToDashboard": "Go to dashboard",
+    "newProject": "Create new project",
+    "newCatalog": "Create new catalog",
+    "startNow": "Start now"
   },
   "auth": {
     "title": "Sign In or Register",
