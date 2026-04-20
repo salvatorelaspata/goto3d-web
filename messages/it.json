@@ -69,7 +69,11 @@
     "or": "Oppure",
     "signInWithGoogle": "Accedi con Google",
     "email": "email",
-    "password": "password"
+    "password": "password",
+    "invalidEmail": "Inserisci un indirizzo email valido",
+    "passwordTooShort": "La password deve essere di almeno 8 caratteri",
+    "signInError": "Impossibile autenticare l'utente",
+    "signUpError": "Impossibile creare l'account"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -136,6 +140,10 @@
     "yourConfigurations": "I Tuoi Progetti Configurati"
   },
   "wizard": {
+    "errorRequiredFields": "Compila tutti i campi obbligatori",
+    "mandatoryFields": "Campi obbligatori",
+    "errorProjectNameExists": "Nome progetto già esistente",
+    "errorLoadingModel": "Errore nel caricamento del modello 3D",
     "step2Title": "Step 2: Carica le foto del tuo progetto",
     "uploadImages": "Carica Immagini",
     "dragAndDrop": "Trascina e rilascia le tue foto",
@@ -174,7 +182,19 @@
   "errors": {
     "notFound": "404 - Risorsa non trovata",
     "backToHome": "Torna alla Home",
-    "authFailed": "Impossibile autenticare l'utente"
+    "authFailed": "Impossibile autenticare l'utente",
+    "rendering3d": "Errore nel rendering 3D",
+    "webglNotSupported": "Il tuo browser potrebbe non supportare WebGL oppure si è verificato un errore imprevisto.",
+    "somethingWrong": "Qualcosa è andato storto",
+    "projectCreationError": "Si è verificato un errore durante la creazione del progetto.",
+    "retryButton": "Riprova",
+    "backToProjects": "Torna ai progetti",
+    "unauthorized": "Non autorizzato",
+    "configuratorError": "Si è verificato un errore nel configuratore.",
+    "dashboardError": "Si è verificato un errore nel caricamento della dashboard.",
+    "catalogsError": "Si è verificato un errore nel caricamento dei cataloghi.",
+    "backToDashboard": "Torna alla Dashboard",
+    "backToCatalogs": "Torna ai Cataloghi"
   },
   "loader": {
     "phrases": [

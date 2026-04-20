@@ -63,7 +63,7 @@ export const actions = {
     if (wizardStore.currentStep === 4) return;
     if (!checksMandatory[wizardStore.currentStep - 1]()) {
       setTimeout(() => mainActions.hideLoading(), 100);
-      return (wizardStore.error = "Compila tutti i campi obbligatori");
+      return (wizardStore.error = "wizard.errorRequiredFields");
     }
     if (wizardStore.currentStep === 1) {
       const result = await checkProjectNameExists(wizardStore.name);
@@ -73,7 +73,7 @@ export const actions = {
       }
       if (result.data) {
         mainActions.hideLoading();
-        return (wizardStore.error = "Nome progetto già esistente");
+        return (wizardStore.error = "wizard.errorProjectNameExists");
       }
     }
     mainActions.hideLoading();

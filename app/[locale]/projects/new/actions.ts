@@ -81,7 +81,7 @@ export async function createProject(
   }
 
   if (existing && existing.length > 0) {
-    return { success: false, error: "Nome progetto già esistente" };
+    return { success: false, error: "wizard.errorProjectNameExists" };
   }
 
   // Get file names from formData
@@ -127,7 +127,7 @@ export async function submitProjectToQueue(
   }
 
   // Rate limiting per user
-  const { success: withinLimit } = rateLimiter.limit(user.id);
+  const { success: withinLimit } = await rateLimiter.limit(user.id);
   if (!withinLimit) {
     return { success: false, error: "Troppe richieste, riprova tra poco" };
   }

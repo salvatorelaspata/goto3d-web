@@ -3,6 +3,7 @@ import { putObject } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 import { MAX_FILE_SIZE, ALLOWED_MIME_TYPES } from "@/lib/constants";
 import { uploadRateLimiter } from "@/lib/rate-limit";
+import { fileTypeFromBuffer } from "file-type";
 
 export const runtime = "nodejs";
 
@@ -28,7 +29,7 @@ export async function POST(req: Request) {
     }
 
     // Rate limiting per user
-    const { success: withinLimit } = uploadRateLimiter.limit(user.id);
+    const { success: withinLimit } = await uploadRateLimiter.limit(user.id);
     if (!withinLimit) {
       return NextResponse.json(
         { error: "Troppe richieste. Riprova tra poco." },
@@ -89,6 +90,20 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    // Verify file signature (magic number) — prevents renamed malicious files
+    const detectedType = await fileTypeFromBuffer(buffer);
+    if (
+      !detectedType ||
+      !(ALLOWED_MIME_TYPES as readonly string[]).includes(detectedType.mime) ||
+      detectedType.mime !== file.type
+    ) {
+      return NextResponse.json(
+        { error: "Il contenuto del file non corrisponde al tipo dichiarato." },
+        { status: 400 },
+      );
+    }
+
     const reader = new Uint8Array(buffer);
     const sanitizedFilename = sanitizeFilename(file.name);
 

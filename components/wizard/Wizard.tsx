@@ -13,10 +13,12 @@ import {
   rollbackProject,
 } from "@/app/[locale]/projects/new/actions";
 import { parallelLimit } from "@/lib/utils/parallelLimit";
+import { useTranslations } from "next-intl";
 
 export const Wizard: React.FC = () => {
   const { currentStep } = useStore();
   const router = useRouter();
+  const t = useTranslations("wizard");
 
   const onSubmit = async (formData: FormData) => {
     // Validate form data client-side
@@ -74,9 +76,7 @@ export const Wizard: React.FC = () => {
               : String((f as PromiseRejectedResult).reason);
           wizardActions.addUploadError(reason);
         }
-        toast.error(
-          `${failures.length} immagini non caricate. Rollback in corso...`
-        );
+        toast.error(t("uploadFailed", { count: failures.length }));
         await rollbackProject(projectId);
         wizardActions.resetUploadProgress();
         return;
@@ -93,13 +93,13 @@ export const Wizard: React.FC = () => {
         return;
       }
 
-      toast.success("Progetto creato e inviato alla coda");
+      toast.success(t("projectCreated"));
       wizardActions.resetWizardStore();
       router.push("/projects");
     } catch (err) {
       wizardActions.resetUploadProgress();
       const message =
-        err instanceof Error ? err.message : "Errore sconosciuto";
+        err instanceof Error ? err.message : t("unknownError");
       toast.error(message);
     }
   };

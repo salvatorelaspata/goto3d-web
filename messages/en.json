@@ -69,7 +69,11 @@
     "or": "Or",
     "signInWithGoogle": "Sign in with Google",
     "email": "email",
-    "password": "password"
+    "password": "password",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "signInError": "Could not authenticate user",
+    "signUpError": "Could not create account"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -136,6 +140,10 @@
     "yourConfigurations": "Your Configured Projects"
   },
   "wizard": {
+    "errorRequiredFields": "Please fill in all required fields",
+    "mandatoryFields": "Required fields",
+    "errorProjectNameExists": "Project name already exists",
+    "errorLoadingModel": "Error loading 3D model",
     "step2Title": "Step 2: Upload your project photos",
     "uploadImages": "Upload Images",
     "dragAndDrop": "Drag and drop your photos",
@@ -174,7 +182,19 @@
   "errors": {
     "notFound": "404 - Resource not found",
     "backToHome": "Back to Home",
-    "authFailed": "Could not authenticate user"
+    "authFailed": "Could not authenticate user",
+    "rendering3d": "3D rendering error",
+    "webglNotSupported": "Your browser may not support WebGL or an unexpected error occurred.",
+    "somethingWrong": "Something went wrong",
+    "projectCreationError": "An error occurred while creating the project.",
+    "retryButton": "Try again",
+    "backToProjects": "Back to projects",
+    "unauthorized": "Unauthorized",
+    "configuratorError": "An error occurred in the configurator.",
+    "dashboardError": "An error occurred while loading the dashboard.",
+    "catalogsError": "An error occurred while loading the catalogs.",
+    "backToDashboard": "Back to Dashboard",
+    "backToCatalogs": "Back to Catalogs"
   },
   "loader": {
     "phrases": [

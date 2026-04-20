@@ -14,7 +14,7 @@ export default function Error({
   const t = useTranslations("errors");
 
   useEffect(() => {
-    console.error("New project page error", error);
+    console.error("Dashboard page error", error);
   }, [error]);
 
   return (
@@ -24,7 +24,7 @@ export default function Error({
         <h2 className="mb-2 text-2xl font-bold text-palette1">
           {t("somethingWrong")}
         </h2>
-        <p className="mb-6 text-palette1/70">{t("projectCreationError")}</p>
+        <p className="mb-6 text-palette1/70">{t("dashboardError")}</p>
         {error.digest && (
           <p className="mb-4 font-mono text-xs text-palette1/50">
             Codice errore: {error.digest}
@@ -38,10 +38,10 @@ export default function Error({
             {t("retryButton")}
           </button>
           <Link
-            href="/projects"
+            href="/"
             className="w-full rounded-md border border-palette1 px-6 py-3 font-semibold text-palette1 transition-all hover:bg-palette1 hover:text-palette3"
           >
-            {t("backToProjects")}
+            {t("backToHome")}
           </Link>
         </div>
       </div>

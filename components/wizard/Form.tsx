@@ -1,6 +1,9 @@
+"use client";
+import { useTranslations } from "next-intl";
 import { useStore } from "@/store/wizardStore";
 import CompleteButton from "./CompleteButton";
 import NextButton from "./NextButton";
+
 interface FormProps {
   ref?: React.RefObject<HTMLDivElement>;
   children: React.ReactNode;
@@ -14,6 +17,8 @@ export const Form: React.FC<FormProps> = ({
   latest = false,
 }) => {
   const { error } = useStore();
+  const t = useTranslations();
+
   return (
     <div className="flex h-full flex-col border border-palette1 p-4 shadow-lg lg:rounded-l-xl">
       {children}
@@ -22,21 +27,15 @@ export const Form: React.FC<FormProps> = ({
       {error && (
         <p className="text-white">
           <span className="pr-1 text-xl text-red-600">Errore:</span>
-          {error}
+          {t(error as Parameters<typeof t>[0])}
         </p>
       )}
-      {divider}
-      {mandatory}
-      {/* space botton to bottom of div */}
+      <hr className="my-4 bg-palette1" />
+      <p className="mb-4 text-end text-palette1">
+        <span className="mr-1 font-bold text-red-600">*</span>
+        {t("wizard.mandatoryFields")}
+      </p>
       {latest ? <CompleteButton /> : <NextButton />}
     </div>
   );
 };
-
-const mandatory = (
-  <p className="mb-4 text-end text-palette1">
-    <span className="mr-1 font-bold text-red-600">*</span>Campi obbligatori
-  </p>
-);
-
-const divider = <hr className="my-4 bg-palette1" />;

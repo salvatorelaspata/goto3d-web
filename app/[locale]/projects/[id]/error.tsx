@@ -1,14 +1,16 @@
-"use client"; // Error components must be Client Components
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export default function Error({
   error,
 }: {
   error: Error & { digest?: string };
 }) {
+  const t = useTranslations("errors");
+
   useEffect(() => {
     console.error("Project detail page error", error);
   }, [error]);
@@ -26,13 +28,13 @@ export default function Error({
               height={200}
             />
           </div>
-          <h1 className="mb-4 text-center text-3xl">500 - Errore</h1>
+          <h1 className="mb-4 text-center text-3xl">500 - {t("somethingWrong")}</h1>
           <p className="mb-4 text-center text-lg">{error.message}</p>
           <Link
-            href={"/"}
+            href="/"
             className="text-center text-lg underline underline-offset-1"
           >
-            Torna alla Home
+            {t("backToHome")}
           </Link>
         </div>
       </div>

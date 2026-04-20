@@ -13,6 +13,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { toast } from "react-toastify";
 import { actions } from "@/store/main";
+import { useTranslations } from "next-intl";
 gsap.registerPlugin(useGSAP);
 
 interface Model3DProps {
@@ -21,6 +22,7 @@ interface Model3DProps {
 
 export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   const { objectUrl, textureUrl, usdzUrl, environment, animate } = useStore();
+  const t = useTranslations("wizard");
 
   const [object, setObject] = useState<
     THREE.Group | THREE.Object3D<THREE.Object3DEventMap> | undefined
@@ -72,14 +74,14 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
         };
         setGeometry(geo(o));
       } catch {
-        toast.error("Errore nel caricamento del modello 3D");
+        toast.error(t("errorLoadingModel"));
       } finally {
         actions.hideLoading();
       }
     };
 
     load();
-  }, [objectUrl, textureUrl]);
+  }, [objectUrl, textureUrl, t]);
 
   useGSAP(() => {
     if (!object) return;
