@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { actions, useStore } from "@/store/wizardStore";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -74,7 +75,7 @@ export const ImagesUpload: React.FC = () => {
           Upload Images
           <span className="mx-1 text-red-600">*</span>
         </label>
-        <section className="mx-auto flex h-full w-full flex-col overflow-auto rounded-md bg-white dark:bg-gray-800 p-4 shadow-xl">
+        <section className="mx-auto flex h-full w-full flex-col overflow-auto rounded-md bg-palette3 dark:bg-palette2 p-4 shadow-xl">
           <header
             onDrop={handleDrop}
             onDragLeave={handleDragLeave}
@@ -125,7 +126,7 @@ export const ImagesUpload: React.FC = () => {
                     d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
-                <span className="text-small font-light text-gray-500 dark:text-gray-400">
+                <span className="text-small font-light text-palette1/70">
                   Nessun file selezionati
                 </span>
               </li>
@@ -135,13 +136,15 @@ export const ImagesUpload: React.FC = () => {
                   key={index}
                   className="mx-auto m-2 flex flex-col items-center"
                 >
-                  <img
+                  <Image
                     src={preview.url}
                     alt={preview.name}
-                    loading="lazy"
-                    className="m-1 max-h-20 max-w-20 rounded-md text-black"
+                    width={80}
+                    height={80}
+                    unoptimized
+                    className="m-1 max-h-20 max-w-20 rounded-md"
                   />
-                  <p className="w-32 truncate text-center text-sm text-gray-900 dark:text-gray-200 hover:text-wrap">
+                  <p className="w-32 truncate text-center text-sm text-palette1 hover:text-wrap">
                     {preview.name}
                   </p>
                 </li>

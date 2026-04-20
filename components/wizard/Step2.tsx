@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ImagesUpload } from "../forms/ImagesUpload";
 import { Form } from "./Form";
 import { Legend } from "./Legend";
@@ -17,12 +18,18 @@ export const Step2: React.FC = () => {
     <Legend step={2} title="Step 2: Carica le foto del tuo progetto">
       <>
         <div className="grid grid-cols-2 gap-4">
-          <img
+          <Image
             src="/capturing-photographs-for-realitykit-object-capture-1@2x.png"
+            alt=""
+            width={300}
+            height={300}
             className="transition-transform duration-500 ease-in-out hover:scale-110 hover:transform"
           />
-          <img
+          <Image
             src="/capturing-photographs-for-realitykit-object-capture-2@2x.png"
+            alt=""
+            width={300}
+            height={300}
             className="transition-transform duration-500 ease-in-out hover:scale-110 hover:transform"
           />
         </div>
@@ -72,7 +79,7 @@ export const Step2: React.FC = () => {
               scattano le foto.
             </li>
           </ul>
-          <p className="mt-2 rounded-lg bg-gray-100 dark:bg-gray-800 p-2">
+          <p className="mt-2 rounded-lg bg-palette2/20 dark:bg-palette2/40 p-2">
             🧐:{" "}
             <i>
               È possibile spostare l&apos;oggetto tra uno scatto e l&apos;altro per

@@ -109,7 +109,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-medium text-palette1"
               >
                 {t("catalogTitle")}
               </label>
@@ -124,7 +124,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-sm font-medium text-palette1"
               >
                 {t("catalogDescription")}
               </label>
@@ -163,7 +163,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
                 </span>
               </Toggle>
               {/* descrizione della visibilità  */}
-              <p className="col-span-2 my-4 text-sm text-gray-700 dark:text-gray-300">
+              <p className="col-span-2 my-4 text-sm text-palette1">
                 {visibility ? t("publicDesc") : t("privateDesc")}
               </p>
             </CardContent>

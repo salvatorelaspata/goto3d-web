@@ -3,7 +3,12 @@ import { redirect } from "@/i18n/routing";
 import { getLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 
-export default async function Login() {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ message?: string }>;
+}) {
+  const { message } = await searchParams;
   const onBack = async () => {
     "use server";
     const locale = (await getLocale()) as Locale;
@@ -17,7 +22,7 @@ export default async function Login() {
           🏚️
         </button>
       </form>
-      <Auth />
+      <Auth message={message} />
     </div>
   );
 }

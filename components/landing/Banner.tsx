@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { UserResponse } from "@supabase/supabase-js";
 import { PlusIcon } from "@heroicons/react/solid"; // Import Heroicons
 
@@ -66,10 +67,10 @@ export default function Banner({
           </div>
           <div className="w-full md:w-1/2">
             <div className="aspect-w-16 aspect-h-9 flex justify-center">
-              <img
-                width="300"
-                height="300"
-                src="placeholder-image.png"
+              <Image
+                width={300}
+                height={300}
+                src="/placeholder-image.png"
                 alt="goto3d demo"
                 className="rounded-lg object-cover"
               />

@@ -17,7 +17,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
       <label
         id={`${id}--label`}
         htmlFor={id}
-        className="my-2 text-lg font-bold w-full [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] text-palette3"
+        className="my-2 text-lg font-bold w-full [text-shadow:_0_1px_1px_rgb(0_0_0_/_40%)] text-palette3 dark:text-white"
       >
         {label}
         {required && <span className="text-red-500 mx-1 italic">*</span>}
@@ -31,7 +31,7 @@ export const Input: React.FC<FieldProps & { required?: boolean }> = ({
         name={name}
         type={type}
         onChange={onChange}
-        className="border w-full border-palette1 bg-white dark:bg-gray-800 rounded-md p-2 text-palette5"
+        className="border w-full border-palette1 bg-palette3 dark:bg-palette2 rounded-md p-2 text-palette5 dark:text-white dark:placeholder-white/50"
       />
     </>
   );

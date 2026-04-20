@@ -7,7 +7,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "@/i18n/config";
 import { redirect as nextRedirect } from "next/navigation";
 
-export default async function Auth() {
+export default async function Auth({ message }: { message?: string }) {
   const t = await getTranslations("auth");
 
   const signIn = async (formData: FormData) => {
@@ -21,7 +21,7 @@ export default async function Auth() {
     });
     const locale = (await getLocale()) as Locale;
     if (error) {
-      return redirect({ href: "/?message=Could not authenticate user", locale });
+      return redirect({ href: "/login?message=Could not authenticate user", locale });
     }
     return redirect({ href: "/", locale });
   };
@@ -38,19 +38,24 @@ export default async function Auth() {
     });
     const locale = (await getLocale()) as Locale;
     if (error) {
-      return redirect({ href: "/?message=Could not authenticate user", locale });
+      return redirect({ href: "/login?message=Could not authenticate user", locale });
     }
     return nextRedirect(data.url);
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-xl bg-palette2 p-4 text-gray-100 shadow-md">
+    <div className="flex h-full w-full flex-col items-center justify-center rounded-xl bg-palette2 p-4 text-palette1 shadow-md">
       <div className="my-8">
         <h1 className="text-center text-2xl font-bold text-palette1">
           {t("title")}
         </h1>
         <Image src="/logo.png" alt="Config.Reality" width={200} height={200} />
       </div>
+      {message && (
+        <p className="mb-4 rounded-md bg-red-100 p-3 text-center text-sm text-red-700">
+          {message}
+        </p>
+      )}
       <form className="flex w-full flex-col" action={signIn}>
         <Input id="email" type="text" label={t("email")} name="email" required />
         <Input
@@ -85,11 +90,13 @@ export default async function Auth() {
         action={signInWithGoogle}
       >
         <button className="flex cursor-pointer flex-col items-center">
-          <img
+          <Image
             id="google"
             src="/google-logo.png"
             alt={t("signInWithGoogle")}
-            className="my-2 w-16 cursor-pointer rounded-full bg-white dark:bg-gray-700 p-2 shadow-md"
+            width={64}
+            height={64}
+            className="my-2 cursor-pointer rounded-full bg-palette3 dark:bg-palette2 p-2 shadow-md"
           />
           <p className="my-2 text-palette1">{t("signInWithGoogle")}</p>
         </button>

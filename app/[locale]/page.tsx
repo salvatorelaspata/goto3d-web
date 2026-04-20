@@ -35,7 +35,7 @@ export default async function Home() {
     redirect({ href: "/projects/new", locale });
   };
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-palette3">
       <main className="mx-auto p-4">
         <Banner
           user={user}

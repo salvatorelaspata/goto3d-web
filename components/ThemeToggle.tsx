@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export const ThemeToggle: React.FC = () => {
   const [dark, setDark] = useState(false);
+  const t = useTranslations("theme");
 
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
@@ -20,7 +22,7 @@ export const ThemeToggle: React.FC = () => {
     <button
       onClick={toggle}
       className="rounded-full p-2 text-palette1 transition hover:bg-palette2/30 dark:text-palette1"
-      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={dark ? t("switchToLight") : t("switchToDark")}
     >
       {dark ? (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

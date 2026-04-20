@@ -47,10 +47,15 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
         pAll.push(objectLoader.loadAsync(objectUrl));
       }
 
-      const values = await Promise.all(pAll);
+      const results = await Promise.allSettled(pAll);
       try {
-        const t = values[0] as THREE.Texture;
-        const o = values[1] as THREE.Object3D<THREE.Object3DEventMap>;
+        const [textureResult, objectResult] = results;
+        const t = textureResult?.status === "fulfilled"
+          ? (textureResult.value as THREE.Texture)
+          : undefined;
+        const o = objectResult?.status === "fulfilled"
+          ? (objectResult.value as THREE.Object3D<THREE.Object3DEventMap>)
+          : undefined;
         if (!o) throw new Error("No object found");
         setTexture(t);
         setObject(o);
@@ -123,13 +128,11 @@ export const Model3D: React.FC<Model3DProps> = ({ camera }) => {
   return (
     <>
       {environment && <Environment preset={environment} background />}
-      <mesh ref={mesh} position={[0, 0, 0]}>
-        {geometry && (
-          <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>
-            <meshPhysicalMaterial map={texture as THREE.Texture} />
-          </mesh>
-        )}
-      </mesh>
+      {geometry && (
+        <mesh ref={mesh} geometry={geometry} position={[0, 0, 0]}>
+          <meshPhysicalMaterial map={texture as THREE.Texture} />
+        </mesh>
+      )}
     </>
   );
 };

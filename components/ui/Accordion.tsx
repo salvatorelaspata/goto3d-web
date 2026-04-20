@@ -13,16 +13,16 @@ export default function Accordion({ items }: AccordionProps) {
         items.map((item, index) => (
           <div
             key={index}
-            className="accordion py-4 px-6 mb-7 transition-all duration-500 bg-gray-50 dark:bg-gray-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-gray-700 accordion-active:bg-indigo-50 dark:accordion-active:bg-gray-700"
+            className="accordion py-4 px-6 mb-7 transition-all duration-500 bg-palette3 dark:bg-palette2/40 rounded-2xl hover:bg-palette2/20 dark:hover:bg-palette2/60 accordion-active:bg-palette2/20 dark:accordion-active:bg-palette2/60"
             id={`${"basic-heading-one-with-arrow" + index}`}
           >
             <button
-              className="accordion-toggle group  inline-flex items-center justify-between leading-8 text-gray-900 dark:text-gray-100  w-full transition duration-500 text-left hover:text-indigo-600 dark:hover:text-indigo-400 accordion-active:text-indigo-600 dark:accordion-active:text-indigo-400"
+              className="accordion-toggle group inline-flex items-center justify-between leading-8 text-palette1 w-full transition duration-500 text-left hover:text-palette5 accordion-active:text-palette5"
               aria-controls="basic-collapse-one-with-arrow"
             >
               <h5> {item.title} </h5>
               <svg
-                className="text-gray-500 transition duration-500 group-hover:text-indigo-600 accordion-active:text-indigo-600 accordion-active:rotate-180"
+                className="text-palette1/60 transition duration-500 group-hover:text-palette5 accordion-active:text-palette5 accordion-active:rotate-180"
                 width="22"
                 height="22"
                 viewBox="0 0 22 22"
@@ -43,7 +43,7 @@ export default function Accordion({ items }: AccordionProps) {
               className="accordion-content  w-full px-0 overflow-hidden"
               aria-labelledby={`${"basic-heading-one-with-arrow" + index}`}
             >
-              <p className="text-base text-gray-900 dark:text-gray-200 leading-6">
+              <p className="text-base text-palette1 leading-6">
                 {item.content}
               </p>
             </div>

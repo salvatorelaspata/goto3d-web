@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import { protectedRoute } from "@/app/[locale]/actions";
 
@@ -12,10 +13,12 @@ export default async function Profile() {
     <div className="flex flex-col items-center">
       <div className="m-4 flex w-1/2 flex-col items-center space-x-4 rounded-lg bg-palette5 p-4 text-palette1">
         {user?.user_metadata.avatar_url ? (
-          <img
+          <Image
             src={user?.user_metadata.avatar_url}
             alt="Profile Picture"
-            className="h-16 w-16 rounded-full"
+            width={64}
+            height={64}
+            className="rounded-full"
           />
         ) : (
           <div className="m-4 h-16 w-16 rounded-full bg-palette2" />

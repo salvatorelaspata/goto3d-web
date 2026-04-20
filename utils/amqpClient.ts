@@ -1,14 +1,20 @@
 import amqp from "amqplib";
 
-const connectionString =
-  process.env.QUEUE_CONNECTION_STRING || "amqp://localhost";
+const connectionString: string = process.env.QUEUE_CONNECTION_STRING as string;
+
+if (!connectionString) {
+  throw new Error("QUEUE_CONNECTION_STRING environment variable is not set");
+}
+
 const QUEUE_NAME = process.env.QUEUE_NAME || "processing-dev";
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 1000;
+const MAX_RETRIES: number = 3;
+const RETRY_DELAY_MS: number = 1000;
 
 let connection: Awaited<ReturnType<typeof amqp.connect>> | null = null;
-let channel: Awaited<ReturnType<Awaited<ReturnType<typeof amqp.connect>>["createChannel"]>> | null = null;
+let channel: Awaited<
+  ReturnType<Awaited<ReturnType<typeof amqp.connect>>["createChannel"]>
+> | null = null;
 
 async function getChannel() {
   if (channel) return channel;

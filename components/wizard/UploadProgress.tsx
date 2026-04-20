@@ -15,7 +15,7 @@ export const UploadProgress: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="mx-4 w-full max-w-md rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl">
+      <div className="mx-4 w-full max-w-md rounded-lg bg-palette3 dark:bg-palette2 p-6 shadow-xl">
         {uploadState === "creating" && (
           <div className="flex flex-col items-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-palette2 border-t-palette1" />
@@ -36,7 +36,7 @@ export const UploadProgress: React.FC = () => {
                 style={{ width: `${percentage}%` }}
               />
             </div>
-            <p className="text-center text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-center text-sm text-palette1">
               {uploadCompleted} / {uploadTotal} ({percentage}%)
             </p>
           </div>

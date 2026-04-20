@@ -13,10 +13,10 @@
     --palette5: #E29578;
   }
   .dark {
-    --palette1: #4DD8E0;
-    --palette2: #2A6F6A;
-    --palette3: #1A1A2E;
-    --palette4: #3D2B2B;
+    --palette1: #62C8C2;
+    --palette2: #2E7A80;
+    --palette3: #0C2B2F;
+    --palette4: #3D2D26;
     --palette5: #E29578;
   }
 }
@@ -43,13 +43,13 @@
 }
 
 .dark ::-webkit-scrollbar {
-  background-color: #1a1a2e;
+  background-color: #0c2b2f;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background-color: #2a2a3e;
+  background-color: #1a4a50;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background-color: #4a4a5e;
+  background-color: #2e7a80;
 }
