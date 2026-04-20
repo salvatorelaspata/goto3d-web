@@ -1,6 +1,5 @@
 "use server";
 
-import * as Sentry from "@sentry/nextjs";
 import { Database } from "@/types/supabase";
 import { createClient } from "@/utils/supabase/server";
 import { catalogSchema } from "@/lib/validations/catalog";
@@ -33,7 +32,7 @@ export const fetchData = async ({ id }: { id: string }) => {
 
     return catalog;
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "fetchCatalogData" } });
+    console.error("fetchCatalogData failed", error);
   }
 };
 
@@ -107,7 +106,7 @@ export async function updateCatalog(formData: FormData) {
       }
     }
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "updateCatalog" } });
+    console.error("updateCatalog failed", error);
     throw error;
   }
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import React from "react";
 
 interface Props {
@@ -23,8 +22,9 @@ export class Canvas3dErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    Sentry.captureException(error, {
-      contexts: { react: { componentStack: errorInfo.componentStack } },
+    console.error("3D canvas rendering error", {
+      error,
+      componentStack: errorInfo.componentStack,
     });
   }
 

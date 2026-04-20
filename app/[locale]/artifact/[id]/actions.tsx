@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { createClient } from "@/utils/supabase/server";
 
 export const fetchArtifact = async (id: string) => {
@@ -18,6 +17,6 @@ export const fetchArtifact = async (id: string) => {
 
     return catalog;
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "fetchArtifact" } });
+    console.error("fetchArtifact failed", error);
   }
 };

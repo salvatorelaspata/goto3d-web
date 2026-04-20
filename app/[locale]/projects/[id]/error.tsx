@@ -1,5 +1,4 @@
 "use client"; // Error components must be Client Components
-import * as Sentry from "@sentry/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,7 +10,7 @@ export default function Error({
   error: Error & { digest?: string };
 }) {
   useEffect(() => {
-    Sentry.captureException(error);
+    console.error("Project detail page error", error);
   }, [error]);
 
   return (

@@ -32,9 +32,8 @@ export const config = {
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
      * - api routes
      * - auth callback
-     * - monitoring (sentry tunnel)
      */
     "/",
-    "/((?!_next/static|_next/image|favicon.ico|api/|auth/|monitoring|sw\\.js|manifest\\.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|api/|auth/|sw\\.js|manifest\\.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

@@ -1,6 +1,5 @@
 "use server";
 
-import * as Sentry from "@sentry/nextjs";
 import { deleteObject, getSignedUrl, listObjects } from "@/utils/s3/api";
 import { createClient } from "@/utils/supabase/server";
 import { projectSchema } from "@/lib/validations/project";
@@ -10,6 +9,14 @@ import { revalidatePath } from "next/cache";
 
 type ActionResult<T> = { success: true; data: T } | { success: false; error: string };
 type Project = Database["public"]["Tables"]["project"]["Row"];
+
+const logProjectActionError = (
+  action: string,
+  error: unknown,
+  details: Record<string, string | number> = {},
+) => {
+  console.error(`[projects/${action}]`, details, error);
+};
 
 export const fetchData = async ({ id }: { id: string }): Promise<ActionResult<{ project: Project; models: _Object[] }>> => {
   const _id: number = parseInt(id);
@@ -53,7 +60,7 @@ export const fetchData = async ({ id }: { id: string }): Promise<ActionResult<{ 
 
     return { success: true, data: { project, models: models ?? [] } };
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "fetchData" } });
+    logProjectActionError("fetchData", error);
     return { success: false, error: "An unexpected error occurred" };
   }
 };
@@ -81,7 +88,7 @@ export const retrieveSignedUrls = async ({
             );
             return { url: signedUrl, size: m.Size ?? 0 };
           } catch (error) {
-            Sentry.captureException(error, { tags: { action: "getSignedUrl", key: m.Key } });
+            logProjectActionError("getSignedUrl", error, { key: m.Key });
             return null;
           }
         }),
@@ -95,7 +102,7 @@ export const retrieveSignedUrls = async ({
 
     return { success: true, data: urls };
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "retrieveSignedUrls" } });
+    logProjectActionError("retrieveSignedUrls", error);
     return { success: false, error: "Failed to retrieve signed URLs" };
   }
 };
@@ -153,7 +160,7 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
       process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
       `${id.toString()}/model`,
     ).catch((error) => {
-      Sentry.captureException(error, { tags: { action: "listObjects", type: "models" } });
+      logProjectActionError("listObjects", error, { type: "models" });
       return [];
     });
 
@@ -161,22 +168,24 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
       process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
       `${id.toString()}/images`,
     ).catch((error) => {
-      Sentry.captureException(error, { tags: { action: "listObjects", type: "images" } });
+      logProjectActionError("listObjects", error, { type: "images" });
       return [];
     });
 
     // delete all the objects in the model folder
     if (models && models.length) {
       await Promise.all(
-        models.map((m: _Object) =>
-          m.Key
+        models.map((m: _Object) => {
+          const key = m.Key;
+          return key
             ? deleteObject(
-                process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
-                m.Key,
-              ).catch((error) => {
-                Sentry.captureException(error, { tags: { action: "deleteObject", type: "model", key: m.Key } });
-              })
-            : Promise.resolve(),
+              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+              key,
+            ).catch((error) => {
+              logProjectActionError("deleteObject", error, { type: "model", key });
+            })
+            : Promise.resolve();
+        },
         ),
       );
     }
@@ -184,15 +193,17 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
     // delete all the objects in the images folder
     if (images && images.length) {
       await Promise.all(
-        images.map((m: _Object) =>
-          m.Key
+        images.map((m: _Object) => {
+          const key = m.Key;
+          return key
             ? deleteObject(
-                process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
-                m.Key,
-              ).catch((error) => {
-                Sentry.captureException(error, { tags: { action: "deleteObject", type: "image", key: m.Key } });
-              })
-            : Promise.resolve(),
+              process.env.NEXT_CLOUDFLARE_R2_BUCKET_NAME ?? "",
+              key,
+            ).catch((error) => {
+              logProjectActionError("deleteObject", error, { type: "image", key });
+            })
+            : Promise.resolve();
+        },
         ),
       );
     }
@@ -205,7 +216,7 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
           process.env.NEXT_CLOUDFLARE_R2_BUCKET_PUBLIC_NAME ?? "",
           t,
         ).catch((error) => {
-          Sentry.captureException(error, { tags: { action: "deleteObject", type: "thumbnail", key: t } });
+          logProjectActionError("deleteObject", error, { type: "thumbnail", key: t });
         });
       }
     }
@@ -215,7 +226,7 @@ export const deleteProject = async ({ id }: { id: number }): Promise<ActionResul
 
     return { success: true, data: undefined };
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "deleteProject" } });
+    logProjectActionError("deleteProject", error);
     return { success: false, error: "An unexpected error occurred while deleting the project" };
   }
 };
@@ -281,7 +292,7 @@ export const updateProject = async (formData: FormData): Promise<ActionResult<vo
     revalidatePath(`/projects/${id}`);
     return { success: true, data: undefined };
   } catch (error) {
-    Sentry.captureException(error, { tags: { action: "updateProject" } });
+    logProjectActionError("updateProject", error);
     return { success: false, error: "An unexpected error occurred while updating the project" };
   }
 };
