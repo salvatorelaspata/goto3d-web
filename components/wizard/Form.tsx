@@ -20,22 +20,23 @@ export const Form: React.FC<FormProps> = ({
   const t = useTranslations();
 
   return (
-    <div className="flex h-full flex-col border border-palette1 p-4 shadow-lg lg:rounded-l-xl">
+    <div className="flex h-full flex-col rounded-xl border border-g3d-border bg-g3d-card p-6 shadow-sm">
       {children}
 
       {stretch && <div className="flex-grow" />}
       {error && (
-        <p className="text-white">
-          <span className="pr-1 text-xl text-red-600">Errore:</span>
+        <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-600 dark:text-red-400">
+          <span className="font-semibold">Errore: </span>
           {t(error as Parameters<typeof t>[0])}
         </p>
       )}
-      <hr className="my-4 bg-palette1" />
-      <p className="mb-4 text-end text-palette1">
-        <span className="mr-1 font-bold text-red-600">*</span>
-        {t("wizard.mandatoryFields")}
-      </p>
-      {latest ? <CompleteButton /> : <NextButton />}
+      <div className="mt-6 border-t border-g3d-border pt-4">
+        <p className="mb-3 text-end text-xs text-g3d-muted">
+          <span className="mr-1 font-bold text-red-500">*</span>
+          {t("wizard.mandatoryFields")}
+        </p>
+        {latest ? <CompleteButton /> : <NextButton />}
+      </div>
     </div>
   );
 };

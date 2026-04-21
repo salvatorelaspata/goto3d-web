@@ -73,7 +73,7 @@ export default async function LocaleLayout({
           }}
         />
       </head>
-      <body className="bg-palette3">
+      <body className="bg-g3d-bg">
         <NextIntlClientProvider messages={messages}>
           <a
             href="#main-content"

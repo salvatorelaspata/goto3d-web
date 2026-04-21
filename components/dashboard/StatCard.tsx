@@ -1,18 +1,24 @@
 interface StatCardProps {
   label: string;
   value: number;
-  icon: string;
-  bgColor: string;
+  accent?: "teal" | "coral" | "warning" | "error" | "neutral";
 }
 
-export default function StatCard({ label, value, icon, bgColor }: StatCardProps) {
+const ACCENT_CLASSES = {
+  teal: "bg-g3d-teal/10 text-g3d-teal",
+  coral: "bg-[#E67A5E]/10 text-[#E67A5E]",
+  warning: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  error: "bg-red-500/10 text-red-600 dark:text-red-400",
+  neutral: "bg-g3d-neutral text-g3d-muted",
+};
+
+export default function StatCard({ label, value, accent = "neutral" }: StatCardProps) {
   return (
-    <div className={`flex items-center gap-3 rounded-xl ${bgColor} p-4 shadow`}>
-      <span className="text-3xl">{icon}</span>
-      <div>
-        <p className="text-2xl font-bold text-palette1">{value}</p>
-        <p className="text-sm text-palette1/70">{label}</p>
-      </div>
+    <div className="rounded-xl bg-g3d-card border border-g3d-border p-5 shadow-sm">
+      <p className="text-3xl font-bold text-g3d-fg tabular-nums">{value}</p>
+      <p className={`mt-1.5 text-xs font-medium uppercase tracking-wider ${ACCENT_CLASSES[accent]}`}>
+        {label}
+      </p>
     </div>
   );
 }

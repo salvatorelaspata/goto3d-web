@@ -19,7 +19,16 @@
       "Bash(grep:*)",
       "Bash(npm run:*)",
       "mcp__supabase__list_migrations",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/design_extract)",
+      "Read(//tmp/**)",
+      "Bash(tar xf *)",
+      "Bash(mkdir -p /tmp/design2)",
+      "Bash(cp \"C:/Users/Salvatore/.claude/projects/C--Users-Salvatore-Documents-GitHub-goto3d-web/bbf7953e-8702-466e-b0d0-9b0b9c7eb5cc/tool-results/webfetch-1776768322769-ojg54h.bin\" /tmp/design2.bin)",
+      "Bash(gunzip -c /tmp/design2.bin)",
+      "Bash(tee /tmp/build_result.txt)",
+      "PowerShell(Stop-Process *)"
     ]
   },
   "enableAllProjectMcpServers": true,

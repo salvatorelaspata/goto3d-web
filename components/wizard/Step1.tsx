@@ -1,10 +1,8 @@
-import Image from "next/image";
-import { Input } from "../forms/Input";
-import { Textarea } from "../forms/Textarea";
 import { Form } from "./Form";
 import { Legend } from "./Legend";
 import { WizardStep } from "./WizardSteps";
 import { actions, useStore } from "@/store/wizardStore";
+import { Input, Textarea } from "@/components/ui/FormElements";
 
 export const Step1: React.FC = () => {
   const { name, description } = useStore();
@@ -12,47 +10,50 @@ export const Step1: React.FC = () => {
 
   const form = (
     <Form>
-      <Input
-        id="name"
-        disabled={false}
-        required={true}
-        label="Nome"
-        name="name"
-        type={"text"}
-        value={name}
-        onChange={(e) => setName(e.currentTarget.value)}
-      />
-
-      <Textarea
-        id="description"
-        disabled={false}
-        label="Descrizione (opzionale)"
-        name="description"
-        value={description}
-        onChange={(e) => setDescription(e.currentTarget.value)}
-      />
+      <div className="space-y-5">
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-g3d-fg mb-1">
+            Nome progetto <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="name"
+            placeholder="Es. Vaso in ceramica, Lampada vintage..."
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="description" className="block text-sm font-medium text-g3d-fg mb-1">
+            Descrizione <span className="text-g3d-muted font-normal">(opzionale)</span>
+          </label>
+          <Textarea
+            id="description"
+            placeholder="Una breve descrizione dell'oggetto da modellare..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+      </div>
     </Form>
   );
 
   const spiegone = (
-    <Legend step={1} title="Step 1: Scegli un nome al progetto">
-      <div className="center flex flex-col">
-        <Image
-          className="self-center"
-          alt="Step 1: Scegli un nome al progetto"
-          width={400}
-          height={400}
-          src="/capturing-photographs-for-realitykit-object-capture-1@2x.png"
-        />
-        <br />
-        <p className="py-4">
-          Il primo passo per creare un nuovo progetto è inserire il nome.
-        </p>
-        <br />
-        <p className="py-4">
-          Puoi scegliere di impostare una descrizione al tuo progetto.
-        </p>
-      </div>
+    <Legend step={1} title="Scegli un nome al progetto">
+      <ul className="space-y-3">
+        <li className="flex gap-2">
+          <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-g3d-teal/10 text-[10px] font-bold text-g3d-teal">1</span>
+          <span>Usa un nome <strong className="text-g3d-fg">descrittivo</strong> che identifichi chiaramente l&apos;oggetto.</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-g3d-teal/10 text-[10px] font-bold text-g3d-teal">2</span>
+          <span>La descrizione è opzionale ma aiuta a trovare il progetto in seguito.</span>
+        </li>
+        <li className="flex gap-2">
+          <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-g3d-teal/10 text-[10px] font-bold text-g3d-teal">3</span>
+          <span>Potrai modificare nome e descrizione in qualsiasi momento.</span>
+        </li>
+      </ul>
     </Legend>
   );
 

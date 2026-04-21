@@ -9,101 +9,71 @@ import type { Database } from "@/types/supabase";
 const fields = [
   {
     id: "formOrder",
-    label: "Orders",
+    label: "Ordine campioni",
     name: "order",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/sampleordering-swift.property",
-    icon: "👔",
     options: [
-      {
-        label: "Sequential",
-        value: "sequential",
-        description: "ordered by time",
-        default: true,
-      },
-      {
-        label: "Unordered",
-        value: "unordered",
-        description: "no specific order",
-      },
+      { label: "Sequenziale", value: "sequential", description: "Immagini in ordine temporale", default: true },
+      { label: "Non ordinato", value: "unordered", description: "Nessun ordine specifico" },
     ],
   },
   {
     id: "formFeature",
-    label: "Features",
+    label: "Sensibilità feature",
     name: "feature",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/configuration-swift.struct/featuresensitivity-swift.property",
-    icon: "💎",
     options: [
-      {
-        label: "Normal",
-        value: "normal",
-        default: true,
-        description: "no specific feature",
-      },
-      { label: "High", value: "high", description: "more features", pro: true },
+      { label: "Normale", value: "normal", default: true, description: "Rilevamento standard" },
+      { label: "Alta", value: "high", description: "Più punti di riferimento", pro: true },
     ],
   },
   {
     id: "formDetail",
-    label: "Details",
+    label: "Livello di dettaglio",
     name: "detail",
     docs: "https://developer.apple.com/documentation/realitykit/photogrammetrysession/request/detail",
-    icon: "🧐",
     options: [
-      {
-        label: "Reduced",
-        value: "reduced",
-        description: "good compromise",
-        default: true,
-      },
-      {
-        label: "Medium",
-        value: "medium",
-        description: "good compromise",
-      },
-      { label: "Full", value: "full", description: "more accurate", pro: true },
-      { label: "Raw", value: "raw", description: "original data", pro: true },
+      { label: "Ridotto", value: "reduced", description: "Elaborazione veloce", default: true },
+      { label: "Medio", value: "medium", description: "Buon compromesso" },
+      { label: "Completo", value: "full", description: "Alta precisione", pro: true },
+      { label: "Raw", value: "raw", description: "Dati originali", pro: true },
     ],
   },
 ];
 
 const accordionLegend = [
   {
-    title: "Orders",
-    content:
-      "L'ordine dei campioni. Se si forniscono le immagini in ordine, con immagini adiacenti una accanto all'altra si possono ottenere prestazioni migliori. Questa impostazione non ha alcun impatto sulla qualità dell'oggetto prodotto.",
+    title: "Ordine campioni",
+    content: "Se fornisci le immagini in ordine, con immagini adiacenti una accanto all'altra, puoi ottenere prestazioni migliori. Non impatta sulla qualità finale.",
   },
   {
-    title: "Features",
-    content:
-      "La precisione del rilevamento dei punti di riferimento. Il processo di fotogrammetria si basa sulla ricerca di punti di riferimento identificabili nella sovrapposizione delle immagini. I punti di riferimento possono essere difficili da identificare se le immagini non hanno un contrasto sufficiente, non sono a fuoco o se l'oggetto è di un solo colore e manca di dettagli superficiali.",
+    title: "Sensibilità feature",
+    content: "La precisione del rilevamento dei punti di riferimento. Con Alta sensibilità si ottengono più punti anche su superfici con poco contrasto.",
   },
   {
-    title: "Details",
-    content: "The level of detail of the project",
+    title: "Livello di dettaglio",
+    content: "Controlla la risoluzione del modello 3D risultante. Dettagli più alti richiedono più tempo di elaborazione.",
   },
 ];
 
 export const Step3: React.FC = () => {
   const { setDetail, setOrder, setFeature } = actions;
-
   const store = useStore();
 
   const form = (
     <Form stretch latest>
-      {fields.map((field) => (
-        <div key={field.id} className="flex flex-col">
-          <label className="text-lg my-2 text-palette1">
-            {field.label}
-            <span className="text-red-500 ml-1">*</span>
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {field.options.map((option) => (
-              <div key={option.value} className="flex flex-col">
+      <div className="space-y-6">
+        {fields.map((field) => (
+          <div key={field.id}>
+            <label className="mb-2 block text-sm font-medium text-g3d-fg">
+              {field.label} <span className="text-red-500">*</span>
+            </label>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {field.options.map((option) => (
                 <RadioCardProject
+                  key={option.value}
                   id={field.id}
                   name={field.name}
-                  icon={field.icon}
                   label={option.label}
                   description={option.description}
                   value={option.value}
@@ -111,38 +81,29 @@ export const Step3: React.FC = () => {
                   selected={
                     store[field.name as keyof typeof store] === option.value ? option.value : ""
                   }
-                  isPro={false}
+                  isPro={"pro" in option ? option.pro : false}
                   disabled={false}
                   onChange={(e) => {
                     if (field.name === "detail") {
-                      const value: Database["public"]["Enums"]["details"] = e
-                        .target.value as Database["public"]["Enums"]["details"];
-                      setDetail(value);
+                      setDetail(e.target.value as Database["public"]["Enums"]["details"]);
                     } else if (field.name === "order") {
-                      const value: Database["public"]["Enums"]["orders"] = e
-                        .target.value as Database["public"]["Enums"]["orders"];
-                      setOrder(value);
+                      setOrder(e.target.value as Database["public"]["Enums"]["orders"]);
                     } else if (field.name === "feature") {
-                      const value: Database["public"]["Enums"]["features"] = e
-                        .target
-                        .value as Database["public"]["Enums"]["features"];
-                      setFeature(value);
+                      setFeature(e.target.value as Database["public"]["Enums"]["features"]);
                     }
                   }}
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </Form>
   );
 
   const spiegone = (
-    <Legend step={3} title="Step 3: Configura il progetto">
-      <div className="overflow-y-scroll h-96 p-4">
-        <Accordion items={accordionLegend} />
-      </div>
+    <Legend step={3} title="Configura il progetto">
+      <Accordion items={accordionLegend} />
     </Legend>
   );
 

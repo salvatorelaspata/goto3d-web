@@ -1,4 +1,3 @@
-import { StepLegend } from "./StepLegend";
 import { wizardSteps } from "./Stepper";
 
 interface LegendProps {
@@ -8,17 +7,20 @@ interface LegendProps {
 }
 
 export const Legend: React.FC<LegendProps> = ({ children, step, title }) => {
-  const { title: titleStep } = wizardSteps[step - 1];
+  const stepData = wizardSteps[step - 1];
   return (
-    <>
-      <div className="border border-palette1 bg-palette3 p-4 text-palette1 shadow-lg lg:rounded-r-xl">
-        <div className="w-full space-y-4 rounded-xl border border-palette1 p-4 rtl:space-x-reverse sm:flex sm:space-x-8 sm:space-y-0">
-          <StepLegend title={titleStep} step={step} />
+    <div className="bg-g3d-card border border-g3d-border rounded-xl p-5 shadow-sm">
+      {/* Step tag */}
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-6 h-6 rounded-full bg-g3d-teal-light flex items-center justify-center text-xs font-mono font-bold text-g3d-teal">
+          {step}
         </div>
-
-        <h3 className="p-4 text-lg font-bold text-palette5">{title}</h3>
-        {children}
+        <span className="text-xs font-mono text-g3d-muted uppercase tracking-wider">
+          {stepData?.title}
+        </span>
       </div>
-    </>
+      <h3 className="text-sm font-semibold text-g3d-fg mb-4">{title}</h3>
+      <div className="text-sm text-g3d-muted leading-relaxed">{children}</div>
+    </div>
   );
 };

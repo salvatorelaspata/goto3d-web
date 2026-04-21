@@ -34,9 +34,11 @@ export default async function Home() {
     const locale = (await getLocale()) as Locale;
     redirect({ href: "/projects/new", locale });
   };
+
   return (
-    <div className="min-h-screen bg-palette3">
-      <main className="mx-auto p-4">
+    <div className="min-h-screen bg-g3d-bg">
+      <main>
+        {/* Hero */}
         <Banner
           user={user}
           goToLogin={goToLogin}
@@ -53,170 +55,146 @@ export default async function Home() {
             startNow: t("startNow"),
           }}
         />
-        {/* WORKFLOW */}
-        <section className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-palette2 p-6 px-4 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette3">
-              {t("heroTitle")}
-            </h2>
-            <p className="text-palette1">
-              {t("heroDescription")}
-            </p>
-          </div>
-          <div className="rounded-lg bg-palette2 p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette3">
-              {t("catalogTitle")}
-            </h2>
-            <p className="text-palette1">
-              {t("catalogDescription")}
-            </p>
-          </div>
-          <div className="rounded-lg bg-palette2 p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-palette3">
-              {t("customizationTitle")}
-            </h2>
-            <p className="text-palette1">
-              {t("customizationDescription")}
-            </p>
-          </div>
-        </section>
-        {/* FEATURES */}
-        <section className="bg-palette3">
-          <div className="">
-            <h2 className="m-4 text-center text-3xl font-bold text-palette1">
-              {t("featuresTitle")}
-            </h2>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div className="flex flex-col items-center rounded-lg border border-palette1 bg-palette2 p-8 text-center">
-                <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-palette5">
-                  <svg
-                    className="h-12 w-12 text-palette3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                    ></path>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="my-4 text-xl font-semibold text-palette3">
-                  {t("feature1Title")}
-                </h3>
-                <p className="text-palette1">
-                  {t("feature1Description")}
-                </p>
-              </div>
-              <div className="flex flex-col items-center rounded-lg border border-palette1 bg-palette2 p-8 text-center">
-                <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-palette5">
-                  <svg
-                    className="h-12 w-12 text-palette3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="my-4 text-xl font-semibold text-palette3">
-                  {t("feature2Title")}
-                </h3>
-                <p className="text-palette1">
-                  {t("feature2Description")}
-                </p>
-              </div>
 
-              <div className="flex flex-col items-center rounded-lg border border-palette1 bg-palette2 p-8 text-center">
-                <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-palette5">
-                  <svg
-                    className="h-12 w-12 text-palette3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="my-4 text-xl font-semibold text-palette3">
-                  {t("feature3Title")}
-                </h3>
-                <p className="text-palette1">
-                  {t("feature3Description")}
-                </p>
+        {/* Feature cards */}
+        <section className="bg-g3d-bg px-8 md:px-14 py-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Card 1 */}
+            <div className="bg-g3d-card border border-g3d-border rounded-xl p-6 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-g3d-coral flex items-center justify-center">
+                <CameraIcon />
               </div>
-              <div className="flex flex-col items-center rounded-lg border border-palette1 bg-palette2 p-8 text-center">
-                <div className="mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-palette5">
-                  <svg
-                    className="h-12 w-12 text-palette3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="my-4 text-xl font-semibold text-palette3">
-                  {t("feature4Title")}
-                </h3>
-                <p className="text-palette1">
-                  {t("feature4Description")}
-                </p>
+              <div>
+                <h3 className="text-base font-semibold text-g3d-fg mb-1">{t("heroTitle")}</h3>
+                <p className="text-sm text-g3d-muted leading-relaxed">{t("heroDescription")}</p>
+              </div>
+              <div className="mt-auto">
+                <IsoCube palette="coral" />
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-g3d-card border border-g3d-border rounded-xl p-6 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-g3d-coral flex items-center justify-center">
+                <FolderIcon />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-g3d-fg mb-1">{t("catalogTitle")}</h3>
+                <p className="text-sm text-g3d-muted leading-relaxed">{t("catalogDescription")}</p>
+              </div>
+              <div className="mt-auto">
+                <IsoCube palette="teal" />
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-g3d-card border border-g3d-border rounded-xl p-6 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-g3d-coral flex items-center justify-center">
+                <PaletteIcon />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-g3d-fg mb-1">{t("customizationTitle")}</h3>
+                <p className="text-sm text-g3d-muted leading-relaxed">{t("customizationDescription")}</p>
+              </div>
+              <div className="mt-auto">
+                <IsoCube palette="violet" />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="p-4 text-center">
-          {!user && (
-            <>
-              <h2 className="mb-4 text-3xl font-bold text-palette5">
+        {/* Features section */}
+        <section className="px-8 md:px-14 py-10 border-t border-g3d-border">
+          <h2 className="text-2xl md:text-3xl font-bold text-g3d-teal mb-10 tracking-tight">
+            {t("featuresTitle")}
+          </h2>
+          <div className="space-y-0">
+            {[
+              { n: "01", title: t("feature1Title"), desc: t("feature1Description") },
+              { n: "02", title: t("feature2Title"), desc: t("feature2Description") },
+              { n: "03", title: t("feature3Title"), desc: t("feature3Description") },
+              { n: "04", title: t("feature4Title"), desc: t("feature4Description") },
+            ].map((f, i) => (
+              <div
+                key={f.n}
+                className="grid grid-cols-1 md:grid-cols-[80px_1fr] gap-6 py-8 border-b border-g3d-border last:border-b-0"
+              >
+                <span className="font-mono text-sm text-g3d-muted">{f.n}</span>
+                <div>
+                  <h3 className="text-xl font-semibold text-g3d-fg mb-2">{f.title}</h3>
+                  <p className="text-sm text-g3d-muted leading-relaxed max-w-2xl">{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA */}
+        {!user && (
+          <section className="mx-8 md:mx-14 my-10 px-8 py-10 md:px-12 md:py-12 bg-g3d-teal rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white tracking-tight mb-2">
                 {t("ctaTitle")}
               </h2>
-              <form action={goToLogin}>
-                <button className="rounded-lg border border-palette1 bg-palette1 px-8 py-3 text-lg font-semibold text-palette5 transition duration-300 hover:bg-palette3 hover:text-palette1">
-                  {t("ctaButton")}
-                </button>
-              </form>
-            </>
-          )}
-        </section>
+              <p className="text-sm text-[rgba(247,248,245,0.7)]">
+                {locale === "it" ? "Prova gratis per 14 giorni · 5 modelli inclusi" : "Free 14-day trial · 5 models included"}
+              </p>
+            </div>
+            <form action={goToLogin}>
+              <button className="flex items-center gap-2 px-6 py-3 bg-g3d-coral hover:bg-g3d-coral-hover text-white rounded-lg font-semibold text-sm transition-colors whitespace-nowrap">
+                {t("ctaButton")} →
+              </button>
+            </form>
+          </section>
+        )}
       </main>
 
-      <footer className="bg-palette1 py-4 text-palette3">
-        <div className="container mx-auto px-4 text-center">
-          <p>
-            {t("footer")} <Iubenda />
-          </p>
-        </div>
+      <footer className="px-8 md:px-14 py-5 bg-g3d-teal flex items-center justify-between text-[rgba(247,248,245,0.7)] text-xs font-mono">
+        <span>© 2026 goto3d</span>
+        <span>
+          <Iubenda />
+        </span>
       </footer>
     </div>
+  );
+}
+
+/* ── Inline SVG icons ─────────────────────────── */
+function CameraIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 7h3l2-2h8l2 2h3v11H3z" />
+      <circle cx="12" cy="13" r="3" />
+    </svg>
+  );
+}
+function FolderIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 6h6l2 2h10v10H3z" />
+    </svg>
+  );
+}
+function PaletteIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3a9 9 0 00-9 9 9 9 0 009 9h2a2 2 0 002-2 2 2 0 00-2-2h-1a2 2 0 01-2-2 2 2 0 012-2h3a3 3 0 003-3 7 7 0 00-7-7z" />
+    </svg>
+  );
+}
+
+function IsoCube({ palette }: { palette: "teal" | "coral" | "violet" }) {
+  const colors: Record<string, [string, string, string]> = {
+    teal:   ["#2C9A9F", "#D96A4F", "#165E66"],
+    coral:  ["#EF8F76", "#C15540", "#2C9A9F"],
+    violet: ["#9B87FF", "#7C5CFF", "#5237CC"],
+  };
+  const [top, left, right] = colors[palette];
+  return (
+    <svg width="100%" height="80" viewBox="0 0 160 80" aria-hidden="true">
+      <path d="M80 8 L122 32 L80 56 L38 32 Z" fill={top} />
+      <path d="M38 32 L80 56 L80 80 L38 56 Z" fill={left} />
+      <path d="M122 32 L80 56 L80 80 L122 56 Z" fill={right} />
+    </svg>
   );
 }

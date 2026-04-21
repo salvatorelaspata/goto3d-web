@@ -6,22 +6,18 @@ interface DashboardSectionHeaderProps {
   href: string;
 }
 
-export default function DashboardSectionHeader({
-  title,
-  count,
-  href,
-}: DashboardSectionHeaderProps) {
+export default function DashboardSectionHeader({ title, count, href }: DashboardSectionHeaderProps) {
   return (
-    <div className="flex items-center justify-between px-4 pt-4">
-      <div className="flex justify-center w-full">
-        <h2 className="text-3xl font-extrabold [text-shadow:_0_1px_1px_rgb(255_255_255_/_40%)] m-4 text-palette1">
-          {title}{" "}
-          <span className="text-lg font-normal text-palette1/60">({count})</span>
-        </h2>
+    <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center gap-2">
+        <h2 className="text-base font-semibold text-g3d-fg">{title}</h2>
+        <span className="rounded-full bg-g3d-neutral px-2 py-0.5 text-xs font-mono text-g3d-muted">
+          {count}
+        </span>
       </div>
       <Link
         href={href}
-        className="whitespace-nowrap text-sm font-medium text-palette1 underline-offset-4 hover:underline"
+        className="text-xs font-medium text-g3d-teal hover:underline underline-offset-2"
       >
         Vedi tutti →
       </Link>

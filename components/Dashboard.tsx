@@ -1,4 +1,4 @@
-import PageTitle from "./ui/PageTitle";
+import { Link } from "@/i18n/routing";
 import ProjectCard from "./projects/ProjectCard";
 import { getProjects } from "@/app/[locale]/projects/actions";
 import { getCatalogs } from "@/app/[locale]/catalogs/actions";
@@ -7,7 +7,6 @@ import type { Tables } from "@/types/supabase";
 import { PROJECT_STATUS } from "@/lib/constants";
 import StatCard from "./dashboard/StatCard";
 import EmptyState from "./dashboard/EmptyState";
-import QuickActions from "./dashboard/QuickActions";
 import DashboardSectionHeader from "./dashboard/DashboardSectionHeader";
 
 type Project = Tables<"project">;
@@ -25,8 +24,7 @@ interface DashboardData {
 }
 
 async function fetchData(): Promise<DashboardData> {
-  const projects = await getProjects();
-  const catalogs = await getCatalogs();
+  const [projects, catalogs] = await Promise.all([getProjects(), getCatalogs()]);
   return { projects, catalogs };
 }
 
@@ -38,114 +36,87 @@ export async function Dashboard() {
 
   const totalProjects = projectList.length;
   const inQueue = projectList.filter((p) => p.status === PROJECT_STATUS.IN_QUEUE).length;
-  const processing = projectList.filter(
-    (p) => p.status === PROJECT_STATUS.PROCESSING,
-  ).length;
+  const processing = projectList.filter((p) => p.status === PROJECT_STATUS.PROCESSING).length;
   const done = projectList.filter((p) => p.status === PROJECT_STATUS.DONE).length;
   const errors = projectList.filter((p) => p.status === PROJECT_STATUS.ERROR).length;
 
   return (
-    <>
-      {/* Stats Section */}
-      <section className="m-4 rounded-lg bg-palette3">
-        <PageTitle title="Statistiche" />
-        <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
-          <div className="flex justify-end mb-6">
-            <QuickActions />
-          </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            <StatCard
-              label="Totale Progetti"
-              value={totalProjects}
-              icon="📦"
-              bgColor="bg-palette3"
-            />
-            <StatCard
-              label="In Coda"
-              value={inQueue}
-              icon="⏳"
-              bgColor="bg-palette4"
-            />
-            <StatCard
-              label="In Lavorazione"
-              value={processing}
-              icon="⚙️"
-              bgColor="bg-palette2/30"
-            />
-            <StatCard
-              label="Completati"
-              value={done}
-              icon="✅"
-              bgColor="bg-palette2/50"
-            />
-            <StatCard
-              label="Errori"
-              value={errors}
-              icon="❌"
-              bgColor="bg-palette5/30"
-            />
-          </div>
+    <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+      {/* Page header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-g3d-fg">Dashboard</h1>
+          <p className="mt-1 text-sm text-g3d-muted">Panoramica del tuo account GoTo3D</p>
         </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/projects/new"
+            className="rounded-lg bg-g3d-teal px-4 py-2 text-sm font-medium text-white transition hover:opacity-90"
+          >
+            + Nuovo Progetto
+          </Link>
+          <Link
+            href="/catalogs/new"
+            className="rounded-lg border border-g3d-border bg-g3d-card px-4 py-2 text-sm font-medium text-g3d-fg transition hover:bg-g3d-neutral"
+          >
+            + Nuovo Catalogo
+          </Link>
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <StatCard label="Totale" value={totalProjects} accent="teal" />
+        <StatCard label="In Coda" value={inQueue} accent="neutral" />
+        <StatCard label="In Lavorazione" value={processing} accent="warning" />
+        <StatCard label="Completati" value={done} accent="teal" />
+        <StatCard label="Errori" value={errors} accent="error" />
+      </div>
+
+      {/* Recent projects */}
+      <section>
+        <DashboardSectionHeader title="Progetti recenti" count={totalProjects} href="/projects" />
+        {projectList.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {projectList.slice(0, 8).map((project) => (
+              <ProjectCard key={project.id.toString()} {...project} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Nessun progetto"
+            description="Crea il tuo primo progetto per convertire immagini in modelli 3D."
+            ctaLabel="Crea Progetto"
+            ctaHref="/projects/new"
+          />
+        )}
       </section>
 
-      {/* Progetti Section */}
-      <section className="m-4 rounded-lg bg-palette2">
-        <DashboardSectionHeader
-          title="Progetti"
-          count={totalProjects}
-          href="/projects"
-        />
-        <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
-          {projectList.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {projectList.slice(0, 6).map((project) => (
-                <ProjectCard key={project.id.toString()} {...project} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon="📁"
-              title="Nessun progetto"
-              description="Crea il tuo primo progetto per convertire immagini in modelli 3D."
-              ctaLabel="Crea Progetto"
-              ctaHref="/projects/new"
-            />
-          )}
-        </div>
+      {/* Recent catalogs */}
+      <section>
+        <DashboardSectionHeader title="Cataloghi recenti" count={catalogList.length} href="/catalogs" />
+        {catalogList.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {catalogList.slice(0, 6).map((catalog) => (
+              <CatalogCard
+                artifact={`/artifact/${catalog.artifact}`}
+                key={catalog.id}
+                title={catalog.title || `Catalogo ${catalog.id}`}
+                number={catalog.projects.length}
+                public={catalog.public}
+                id={catalog.id}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="Nessun catalogo"
+            description="Crea un catalogo per organizzare e condividere i tuoi modelli 3D."
+            ctaLabel="Crea Catalogo"
+            ctaHref="/catalogs/new"
+          />
+        )}
       </section>
-
-      {/* Cataloghi Section */}
-      <section className="m-4 rounded-lg bg-palette5">
-        <DashboardSectionHeader
-          title="Cataloghi"
-          count={catalogList.length}
-          href="/catalogs"
-        />
-        <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:max-w-7xl lg:px-8">
-          {catalogList.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {catalogList.slice(0, 6).map((catalog) => (
-                <CatalogCard
-                  artifact={`/artifact/${catalog.artifact}`}
-                  key={catalog.id}
-                  title={catalog.title || `Catalogo ${catalog.id}`}
-                  number={catalog.projects.length}
-                  public={catalog.public}
-                  id={catalog.id}
-                />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon="📚"
-              title="Nessun catalogo"
-              description="Crea un catalogo per organizzare e condividere i tuoi modelli 3D."
-              ctaLabel="Crea Catalogo"
-              ctaHref="/catalogs/new"
-            />
-          )}
-        </div>
-      </section>
-    </>
+    </div>
   );
 }

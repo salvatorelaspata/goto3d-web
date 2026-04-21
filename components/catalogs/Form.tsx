@@ -109,7 +109,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-palette1"
+                className="block text-sm font-medium text-g3d-fg"
               >
                 {t("catalogTitle")}
               </label>
@@ -124,7 +124,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             <div>
               <label
                 htmlFor="description"
-                className="block text-sm font-medium text-palette1"
+                className="block text-sm font-medium text-g3d-fg"
               >
                 {t("catalogDescription")}
               </label>
@@ -163,7 +163,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
                 </span>
               </Toggle>
               {/* descrizione della visibilità  */}
-              <p className="col-span-2 my-4 text-sm text-palette1">
+              <p className="col-span-2 my-4 text-sm text-g3d-fg">
                 {visibility ? t("publicDesc") : t("privateDesc")}
               </p>
             </CardContent>
@@ -176,7 +176,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
                 className="w-full"
                 target="_blank"
               >
-                <p className="text-palette3 underline-offset-1 hover:underline hover:underline-offset-2">
+                <p className="text-white underline-offset-1 hover:underline hover:underline-offset-2">
                   {t("viewCatalog")}
                 </p>
               </Link>
@@ -209,7 +209,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             type="button"
             name="btn"
             onClick={reset}
-            className="w-64 bg-palette3 px-6 py-2 text-palette1 transition-colors duration-200 hover:bg-palette3"
+            className="w-64 bg-g3d-neutral px-6 py-2 text-g3d-fg transition-colors duration-200 hover:bg-g3d-border"
           >
             Reset
           </Button>
@@ -218,7 +218,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
             type="submit"
             value={"delete"}
             name="btn"
-            className="w-64 bg-red-500 dark:bg-red-700 px-6 py-2 text-palette3 transition-colors duration-200"
+            className="w-64 bg-red-500 dark:bg-red-700 px-6 py-2 text-white transition-colors duration-200"
           >
             {tc("delete")}
           </Button>
@@ -227,7 +227,7 @@ export const Form: React.FC<FormProps> = ({ projects, catalog }) => {
           type="submit"
           value={catalog ? "update" : "create"}
           name="btn"
-          className="w-64 bg-palette1 px-6 py-2 text-palette3 shadow-lg transition-colors duration-200 hover:bg-palette2 hover:shadow-xl"
+          className="w-64 bg-g3d-teal px-6 py-2 text-white shadow-sm transition-colors duration-200 hover:opacity-90 hover:shadow-md"
         >
           {catalog ? tc("update") : tc("create")}
         </Button>
